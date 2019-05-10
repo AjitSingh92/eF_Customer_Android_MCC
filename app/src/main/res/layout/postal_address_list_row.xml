@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_address_row"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<TextView
+    android:id="@+id/tv_address"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/TextAppearance.AppCompat.Small"
+    android:fontFamily="@font/avenir_roman"
+    android:text="@string/app_name"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:padding="@dimen/_3sdp"
+    />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@color/gray"/>
+</LinearLayout>

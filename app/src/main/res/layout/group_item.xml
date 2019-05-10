@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/RlClick"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="#F8F5F5"
+        android:padding="@dimen/_5sdp">
+
+        <TextView
+            android:id="@+id/headerNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:text="@string/special_offers"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:id="@+id/dropdownImg"
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_7sdp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_weight="1"
+            android:background="@drawable/down_arraw"
+            android:gravity="center"
+            android:rotation="-90"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            android:tint="@color/black" />
+
+    </RelativeLayout>
+</LinearLayout>

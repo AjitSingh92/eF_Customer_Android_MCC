@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "428549606507",
+    "firebase_url": "https://easyfood-d93c0.firebaseio.com",
+    "project_id": "easyfood-d93c0",
+    "storage_bucket": "easyfood-d93c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428549606507:android:f81e334be96e12a3",
+        "android_client_info": {
+          "package_name": "com.lexxdigital.easyfooduserapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428549606507-srdmn2s06u862ceebj5iovv5cc8d2rgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4o4oInYfqshhmf1dkNyM9xkFenA6lMj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428549606507-srdmn2s06u862ceebj5iovv5cc8d2rgl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_450sdp"
+    android:layout_margin="@dimen/_20sdp"
+    android:background="@drawable/cardview"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/cross_tv"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/circle_gray"
+            android:padding="@dimen/_10sdp"
+            android:src="@mipmap/x_copy" />
+
+        <TextView
+            android:id="@+id/privacy_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fm"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:text="Restaurant FAQ"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_22sdp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_450sdp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/privacy_polc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fm"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/faq"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/faqs_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:fontFamily="@font/avenir_medium"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="@color/descolor"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/orange" />
+
+        <WebView
+            android:id="@+id/web_faqs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:visibility="gone"
+            tools:ignore="WebViewLayout">
+
+        </WebView>
+    </LinearLayout>
+
+
+</LinearLayout>

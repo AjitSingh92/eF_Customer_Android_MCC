@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.EditProfileFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/top_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_medium"
+                        android:textSize="@dimen/_14sdp"
+                        android:gravity="center"
+                        android:textColor="#2e3333"
+                        android:text="Jonathan Smith" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_medium"
+                        android:textSize="@dimen/_14sdp"
+                        android:gravity="center"
+                        android:textColor="#828585"
+                        android:text="61 Gloucester Road" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_medium"
+                        android:textSize="@dimen/_14sdp"
+                        android:gravity="center"
+                        android:textColor="#828585"
+                        android:text="Birmingham B19 1AA" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_medium"
+                        android:textSize="@dimen/_14sdp"
+                        android:gravity="center"
+                        android:textColor="#828585"
+                        android:text="Tel: 07881 234 5678" />
+                </LinearLayout>
+                <FrameLayout
+                    android:id="@+id/fm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profileImg"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/avatar" />
+                    <LinearLayout
+                        android:id="@+id/add_image"
+                        android:layout_width="@dimen/_27sdp"
+                        android:layout_height="@dimen/_27sdp"
+                        android:visibility="visible"
+                        android:layout_marginTop="@dimen/_65sdp"
+                        android:background="@drawable/circle"
+                        android:layout_marginStart="@dimen/_185sdp"
+                        android:gravity="center"
+                        android:layout_marginLeft="@dimen/_185sdp">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/plus" />
+
+                    </LinearLayout>
+
+
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/edit_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_1sdp"
+                    android:background="@drawable/bg_edit_two"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:ems="10"
+                    android:fontFamily="@font/avenir_medium"
+                    android:inputType="text"
+                    android:hint="First Name"
+                    android:text=""
+                    android:textColor="#706f6f"
+                    android:textSize="@dimen/_16sdp" />
+                <EditText
+                    android:id="@+id/edit_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_1sdp"
+                    android:background="@drawable/bg_edit_two"
+                    android:ems="10"
+                    android:fontFamily="@font/avenir_medium"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:hint="Last Name"
+                    android:text=""
+                    android:textColor="#706f6f"
+                    android:textSize="@dimen/_16sdp" />
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_1sdp"
+                    android:background="@drawable/bg_edit_two"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:visibility="visible"
+                    android:fontFamily="@font/avenir_medium"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:hint="Email"
+                    android:text=""
+                    android:textColor="#706f6f"
+                    android:textSize="@dimen/_16sdp" />
+                <EditText
+                    android:id="@+id/edit_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_60sdp"
+                    android:background="@drawable/bg_edit_two"
+                    android:ems="10"
+                    android:fontFamily="@font/avenir_medium"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:hint="Phone"
+                    android:text=""
+                    android:textColor="#706f6f"
+                    android:textSize="@dimen/_16sdp" />
+
+
+
+            </LinearLayout>
+        </ScrollView>
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:textAllCaps="false"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"
+            android:fontFamily="@font/avenir_medium"
+            android:background="@color/orange"
+            android:text="Confirm" />
+    </RelativeLayout>
+</FrameLayout>

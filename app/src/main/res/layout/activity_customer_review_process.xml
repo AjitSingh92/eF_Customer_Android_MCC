@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    android:orientation="vertical"
+    >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/toolbarhide"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+
+        android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/ivToolBarback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_10sdp">
+
+            <ImageView
+                android:id="@+id/ivToolBarbackTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_arrow_back_black_24dp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/tvToolbarTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp" />
+
+
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:background="@color/white"
+
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/restoimage"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_120sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/default_restaurant_image"
+                         />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/restologo"
+                        android:layout_width="@dimen/_140sdp"
+                        android:layout_height="@dimen/_140sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:src="@drawable/restaurant_default_logo"
+                       />
+
+
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/resto_name"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:text=""
+                android:fontFamily="@font/avenir_black"
+                android:textColor="@color/descolor"
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:id="@+id/restoAddress"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_medium"
+                android:text="Harmony House, 100 Waterloo Road, B66 4JN"
+                android:textColor="@color/item_name"
+
+
+                />
+
+            <TextView
+                android:id="@+id/order_no"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Order No. 01234567890"
+                android:fontFamily="@font/avenir_black"
+                android:textColor="@color/descolor"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                android:elevation="@dimen/_10sdp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#f7f4f4"
+                        android:text="Please rate your experience\n with  this restaurant"
+                        android:padding="@dimen/_5sdp"
+                        android:fontFamily="@font/avenir_black"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#3c3c3b"
+                        android:gravity="center"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/white"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Food quality"
+                            android:gravity="center"
+                            android:layout_marginTop="20dp"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/avenir_black"
+                            />
+                        <RatingBar
+                            android:id="@+id/rat_food_quality"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:theme="@style/RatingBar"
+                            android:isIndicator="false"
+                            android:scaleX="0.6"
+                            android:scaleY="0.6"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery time"
+                            android:gravity="center"
+                            android:fontFamily="@font/avenir_black"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            />
+                        <RatingBar
+                            android:id="@+id/rat_delivery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:theme="@style/RatingBar"
+                            android:isIndicator="false"
+                            android:scaleX="0.6"
+                            android:scaleY="0.6"
+
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Likelihood to order again"
+                            android:gravity="center"
+                            android:fontFamily="@font/avenir_black"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            />
+                        <RatingBar
+                            android:id="@+id/rat_like_orderagain"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:theme="@style/RatingBar"
+                            android:isIndicator="false"
+                            android:scaleX="0.6"
+                            android:scaleY="0.6"
+                            android:numStars="5"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Likelihood to recommend"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/avenir_black"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:textStyle="bold"
+                            />
+                        <RatingBar
+                            android:id="@+id/like_recommend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:theme="@style/RatingBar"
+                            android:isIndicator="false"
+                            android:scaleX="0.6"
+                            android:scaleY="0.6"
+                            android:numStars="5"
+                            />
+                        <TextView
+                            android:id="@+id/submit_process"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Submit"
+                            android:gravity="center"
+                            android:enabled="false"
+                            android:fontFamily="@font/avenir_medium"
+                            android:background="@color/gray"
+                            android:padding="@dimen/_10sdp"
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/white"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

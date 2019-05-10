@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_margin="@dimen/_5sdp"
+    android:padding="@dimen/_10sdp"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:buttonTint="@color/orange"
+        android:layout_height="wrap_content"
+        android:scaleY="1.6"
+        android:scaleX="1.6"
+        android:clickable="true"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/modifier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="left|start"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:text="Select"
+        android:textColor="#828585"
+        android:textSize="@dimen/_14sdp"
+        />
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="right"
+
+        android:text=""
+        android:textColor="#828585"
+        android:textSize="@dimen/_14sdp"
+        />
+
+</LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/add_remove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f7f4f4"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:padding="@dimen/_15sdp"
+        >
+
+        <LinearLayout
+            android:id="@+id/btn_remove"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/border_circle_gray"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_2sdp"
+                android:layout_gravity="center"
+                android:background="@color/gray"
+
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/p_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/descolor"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/btn_add"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/border_circle_gray"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="19dp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_below="@+id/fm"
+
+                android:layout_gravity="center"
+                android:fontFamily="@font/avenir_black"
+                android:gravity="center"
+
+                android:text="+"
+                android:textColor="@color/descolor"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

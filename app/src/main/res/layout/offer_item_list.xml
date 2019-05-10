@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_sub_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="Subcategory"
+        android:textColor="@android:color/black"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/click_items"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_menu_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:text="Item"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_price"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:text="£00.00"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_items_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingBottom="5dp"
+        android:text="Any 12” pizza, 2 fillet burgers, 6 spicy wings,2 regular fries 1.5ltr bottle"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="12dp"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/clickCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f7f4f4"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:paddingTop="15dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/item_remove"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/border_circle_gray"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:background="@android:color/holo_red_dark" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/item_add"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/border_circle_gray"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

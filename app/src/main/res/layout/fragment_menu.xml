@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f0f1f4"
+    android:nestedScrollingEnabled="true"
+    tools:context=".fragments.InfoFragment">
+
+    <!--<com.lexxdigital.easyfooduserapp.utility.NonScrollExpandableListView
+        android:id="@+id/infoList"
+        android:background="#f0f1f4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
+        android:transcriptMode="disabled"
+        android:animateLayoutChanges="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp" />-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list.restaurantMenuList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="#f0f1f4" />
+
+</FrameLayout>

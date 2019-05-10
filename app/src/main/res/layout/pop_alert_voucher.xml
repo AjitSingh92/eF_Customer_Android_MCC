@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_white">
+
+    <RelativeLayout
+        android:id="@+id/holeItemClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_voucher" />
+
+            <TextView
+                android:id="@+id/heading"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/avenir_black"
+                android:gravity="center"
+                android:text="Voucher code has been accepted"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_20sdp" />
+
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:autoText="true"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/descolor"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <TextView
+                android:id="@+id/edit_details_tv"
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_below="@+id/fm"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:background="@drawable/recatangle_orange"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="OK"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/cross_tv"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="@drawable/circle_gray"
+            android:padding="@dimen/_6sdp"
+            android:src="@mipmap/x_copy" />
+    </RelativeLayout>
+
+</LinearLayout>

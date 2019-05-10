@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+
+    android:layout_width="match_parent"
+    android:layout_margin="@dimen/_5sdp"
+    android:padding="@dimen/_10sdp"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        >
+
+        <ImageView
+            android:id="@+id/rightImg"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:visibility="visible"
+            android:background="@drawable/recatangle_orange"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/right"
+
+            />
+
+        <ImageView
+            android:id="@+id/not_right_tv"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:visibility="visible"
+            android:background="@drawable/border_recatangle"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/right"
+
+            />
+
+
+    </FrameLayout>
+
+
+
+    <TextView
+        android:id="@+id/modifier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="left|start"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:text="Select"
+        android:textColor="#828585"
+        android:textSize="@dimen/_14sdp"
+        />
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="right"
+
+        android:text="+ £0.00"
+        android:textColor="#828585"
+        android:textSize="@dimen/_14sdp"
+        />
+</LinearLayout>

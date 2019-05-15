@@ -22,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -202,14 +204,15 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                     mDealAdapter.notifyDataSetChanged();
                     int limitref = 10;
 
-                    if (Constants.isInternetConnectionAvailable(3000)) {
-                        swipreferesh.setRefreshing(false);
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        swipreferesh.setRefreshing(true);
+                        editSearch.setText("");
                         getDeals(val.getPostCode(), limitref, offset, restFilter, sortedByValue, filterOfferValue);
 
 
                     } else {
                         swipreferesh.setRefreshing(false);
-                        Constants.showDialog(getActivity(), "Please check internet connection.");
+                        dialogNoInternetConnection("Please check internet connection.");
                     }
 
                     //  getDeals(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
@@ -260,13 +263,13 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
         try {
             if (val.getPostCode() != null) {
-                if (Constants.isInternetConnectionAvailable(3000)) {
+                if (Constants.isInternetConnectionAvailable(300)) {
                     dialog.show();
                     getDeals(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
                     getFilters(val.getPostCode());
 
                 } else {
-                    Constants.showDialog(getActivity(), "Please check internet connection.");
+                    dialogNoInternetConnection("Please check internet connection.");
                 }
 
             } else {
@@ -422,7 +425,8 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             @Override
             public void onResponse(Call<RestaurantsDealResponse> call, Response<RestaurantsDealResponse> response) {
                 try {
-
+                    if (swipreferesh != null)
+                        swipreferesh.setRefreshing(false);
                     dialog.hide();
                     if (response.body().getSuccess()) {
                         data = response.body().getData();
@@ -469,6 +473,8 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                         restaurauntCount.setText("Unable to load, Swipe down to reload.");
                     }
                 } catch (Exception e) {
+                    if (swipreferesh != null)
+                        swipreferesh.setRefreshing(false);
                     dialog.hide();
                     if (restaurauntCount != null) {
                         restaurauntCount.setText("Restaurants delivering to");
@@ -479,6 +485,8 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
             @Override
             public void onFailure(Call<RestaurantsDealResponse> call, Throwable t) {
+                if (swipreferesh != null)
+                    swipreferesh.setRefreshing(false);
                 dialog.hide();
                 if (restaurauntCount != null) {
                     restaurauntCount.setText("Server not responding");
@@ -756,12 +764,12 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                         temp.add(restFilter.get(i));
                 }
 
-                if (Constants.isInternetConnectionAvailable(3000)) {
+                if (Constants.isInternetConnectionAvailable(300)) {
                     getDeals(val.getPostCode(), limitfilt, offset, temp, sortedByValue, filterOfferValue);
                     filterDialog.dismiss();
                 } else {
                     filterDialog.dismiss();
-                    Constants.showDialog(getActivity(), "Please check internet connection.");
+                    dialogNoInternetConnection("Please check internet connection.");
                 }
 
             }
@@ -945,19 +953,26 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     public void dialogNoInternetConnection(String message) {
         LayoutInflater factory = LayoutInflater.from(getActivity());
         final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
-        final AlertDialog noteDialog = new AlertDialog.Builder(getActivity()).create();
-        noteDialog.setView(mDialogView);
-        noteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        final Animation animShake = AnimationUtils.loadAnimation(mContext, R.anim.shake);
 
         TextView tvMessage = mDialogView.findViewById(R.id.message);
         tvMessage.setText(message);
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                noteDialog.dismiss();
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    startActivity(new Intent(mContext, DashboardActivity.class));
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
             }
         });
 
-        noteDialog.show();
+        alertDialog.show();
     }
 }

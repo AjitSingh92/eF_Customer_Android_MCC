@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapp.R;
 
 import com.lexxdigital.easyfooduserapp.adapters.order_details.OrderDetailsMenuProductAdapter;
@@ -28,15 +29,24 @@ import com.lexxdigital.easyfooduserapp.adapters.order_details.OrderDetailsSpecia
 import com.lexxdigital.easyfooduserapp.adapters.order_details.OrderDetailsUpsellProductAdapter;
 import com.lexxdigital.easyfooduserapp.api.CancelInterface;
 import com.lexxdigital.easyfooduserapp.api.OrderDetailsInterface;
+import com.lexxdigital.easyfooduserapp.cart_db.DatabaseHelper;
 import com.lexxdigital.easyfooduserapp.customer_review.CustomerReviewProcess;
 import com.lexxdigital.easyfooduserapp.model.cancelorder.CancelOrderResponse;
 import com.lexxdigital.easyfooduserapp.model.cancelorder.CancelRequest;
+import com.lexxdigital.easyfooduserapp.model.myorder.OrderDetails;
+import com.lexxdigital.easyfooduserapp.model.myorder.PreviousOrderDetail;
 import com.lexxdigital.easyfooduserapp.model.order_details.Data;
 import com.lexxdigital.easyfooduserapp.model.order_details.OrderDetailsRequest;
 import com.lexxdigital.easyfooduserapp.model.order_details.OrderDetailsResponse;
 import com.lexxdigital.easyfooduserapp.order_status.OrderStatusActivity;
+import com.lexxdigital.easyfooduserapp.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.CartData;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategoryCart;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProductSize;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.ProductModifier;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.SpecialOffer;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.UpsellProduct;
 import com.lexxdigital.easyfooduserapp.utility.ApiClient;
 import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.GlobalValues;
@@ -69,16 +79,22 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     String orderId, restoId, restoName, restoLogo, restoImage, restoAddress, OrdAvgRating;
     private Dialog dialog;
     SharedPreferencesClass sharePre;
-
+    private DatabaseHelper db;
+    Gson gson = new Gson();
+    PreviousOrderDetail previousOrderDetailList;
+    OrderDetails orderDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Constants.setStatusBarGradiant(this);
         setContentView(R.layout.activity_order_details);
+        db = new DatabaseHelper(this);
         sharePre = new SharedPreferencesClass(this);
         addReview = findViewById(R.id.add_review);
+        addReview.setOnClickListener(this);
         orderAgain = findViewById(R.id.order_again);
+        orderAgain.setOnClickListener(this);
         restName = findViewById(R.id.rest_name);
         orderNo = findViewById(R.id.order_no);
         orderDate = findViewById(R.id.order_date);
@@ -99,6 +115,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         llTrack.setOnClickListener(this);
         llReview = findViewById(R.id.ll_review);
         llCacelOrder = findViewById(R.id.ll_cancel);
+        llCacelOrder.setOnClickListener(this);
         tvAddressType = findViewById(R.id.tv_AddressType);
         tvAddress = findViewById(R.id.tv_Address);
 
@@ -126,7 +143,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
         getCardList();
         Log.e("orderDetails", "onCreate:orderId " + orderId + " strOrderNo: " + strOrderNo + " restoName: " + restoName + " restoImage:" + restoImage);
-        addReview.setOnClickListener(new View.OnClickListener() {
+       /* addReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CustomerReviewProcess.class);
@@ -142,13 +159,13 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
 //                addReview.setClickable(false);
             }
-        });
-        llCacelOrder.setOnClickListener(new View.OnClickListener() {
+        });*/
+        /*llCacelOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog("Are you sure Cancel order!");
             }
-        });
+        });*/
     }
 
     @Override
@@ -214,6 +231,41 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                     e.printStackTrace();
                 }
                 break;
+            case R.id.add_review:
+                Intent intent = new Intent(getApplicationContext(), CustomerReviewProcess.class);
+                intent.putExtra("orderId", orderId);
+                intent.putExtra("restoId", restoId);
+                intent.putExtra("orderNo", strOrderNo);
+                intent.putExtra("restologo", restoLogo);
+                intent.putExtra("restoname", restoName);
+                intent.putExtra("restoimage", restoImage);
+                intent.putExtra("restoAdd", restoAddress);
+                startActivityForResult(intent, 200);
+                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+
+//                addReview.setClickable(false);
+                break;
+
+            case R.id.order_again:
+                if (db.getCartData() == null) {
+                    insertData(previousOrderDetailList);
+                } else {
+                    db.deleteCart();
+                    insertData(previousOrderDetailList);
+                    Intent i = new Intent(OrderDetailActivity.this, RestaurantDetailsActivity.class);
+                    i.putExtra("RESTAURANTID", previousOrderDetailList.getRestaurantId());
+                    i.putExtra("RESTAURANTNAME", previousOrderDetailList.getRestaurantName());
+                    sharePre.setString(sharePre.RESTUARANT_ID, previousOrderDetailList.getRestaurantId());
+                    sharePre.setString(sharePre.RESTUARANT_NAME, previousOrderDetailList.getRestaurantName());
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+//                    alertDailogConfirm("Alert message", dataList.getRestaurantId(), dataList.getRestaurantName(), position);
+                }
+                break;
+            case R.id.ll_cancel:
+                showDialog("Are you sure Cancel order!");
+                break;
 
         }
 
@@ -233,6 +285,33 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                     dialog.hide();
                     if (response.body().getSuccess()) {
                         Log.d("prevOrder", "onResponse: orderrrrrrr sucesss");
+                        orderDetails = new OrderDetails();
+                        orderDetails.setData(response.body().getData().getOrderDetails().getData());
+                        previousOrderDetailList = new PreviousOrderDetail(response.body().getData().getOrderId(),
+                                response.body().getData().getRestaurantId(),
+                                response.body().getData().getRestaurantName(),
+                                response.body().getData().getRestaurantLogo(),
+                                response.body().getData().getRestaurantImage(),
+                                response.body().getData().getAvgRating(),
+                                response.body().getData().getCustomerId(),
+                                response.body().getData().getCartId(),
+                                response.body().getData().getOrderNum(),
+                                response.body().getData().getOrderTotal(),
+                                response.body().getData().getOrderDateTime(),
+                                response.body().getData().getIsPaid(),
+                                response.body().getData().getPaymentMode(),
+                                response.body().getData().getPaymentStatus(),
+                                response.body().getData().getIsDelivered(),
+                                response.body().getData().getDeliveryTime(),
+                                response.body().getData().getDeliveryOption(),
+                                response.body().getData().getDeliveryDateTime(),
+                                response.body().getData().getDeliveryCharge(),
+                                response.body().getData().getDiscountAmount(),
+                                response.body().getData().getOrderSubtotal(),
+                                response.body().getData().getVoucherId(),
+                                response.body().getData().getOfferId(),
+                                response.body().getData().getOrderStatus(),
+                                response.body().getData().getOrderNotes(), orderDetails, response.body().getData().getTotal());
 
                         dataList = response.body().getData().getOrderDetails().getData();
                         orderId = response.body().getData().getOrderId();
@@ -317,11 +396,13 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                             llTrack.setVisibility(View.GONE);
 
                             if (response.body().getData().getOrder_review_rating() > 0) {
-                                llReview.setVisibility(View.GONE);
+                                llReview.setVisibility(View.VISIBLE);
                                 addReview.setVisibility(View.GONE);
+                                orderAgain.setVisibility(View.VISIBLE);
                             } else {
                                 llReview.setVisibility(View.VISIBLE);
                                 addReview.setVisibility(View.VISIBLE);
+                                orderAgain.setVisibility(View.VISIBLE);
                             }
 
                         } else if (strOrderStatus.equalsIgnoreCase("rejected")) {
@@ -332,8 +413,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                             llCacelOrder.setVisibility(View.GONE);
                             llTrack.setVisibility(View.GONE);
 
-                            llReview.setVisibility(View.GONE);
+                            llReview.setVisibility(View.VISIBLE);
                             addReview.setVisibility(View.GONE);
+                            orderAgain.setVisibility(View.VISIBLE);
 
                             /*if (fltRating > 0) {
                                 llReview.setVisibility(View.VISIBLE);
@@ -350,8 +432,11 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                             if (fltRating > 0) {
                                 llReview.setVisibility(View.VISIBLE);
                                 addReview.setVisibility(View.GONE);
+                                orderAgain.setVisibility(View.VISIBLE);
                             } else {
                                 llReview.setVisibility(View.VISIBLE);
+                                addReview.setVisibility(View.GONE);
+                                orderAgain.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -496,5 +581,92 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     protected void onStop() {
         super.onStop();
         dialog.dismiss();
+    }
+
+    public void insertData(PreviousOrderDetail previousOrderDetailList) {
+
+        List<ProductModifier> productModifiers = null;
+        List<MenuProductSize> menuProductSize = null;
+        /* menu product*/
+        for (int i = 0; i < previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().size(); i++) {
+            long id = db.getMenuCategoryIfExit(previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId());
+            if (id == -1) {
+                id = db.insertMenuCategory(previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryName(), "", "");
+            }
+
+
+            List<MenuProduct> menuProducts = previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuProducts();
+
+            for (int j = 0; j < menuProducts.size(); j++) {
+
+                menuProductSize = menuProducts.get(j).getMenuProductSize();
+
+                if (menuProductSize.size() > 0) {
+                    for (int k = 0; k < menuProductSize.size(); k++) {
+
+                    }
+                }
+                productModifiers = menuProducts.get(j).getProductModifiers();
+
+                if (productModifiers.size() > 0) {
+                    for (int k = 0; k < productModifiers.size(); k++) {
+
+                    }
+                }
+
+                db.insertMenuProduct(id, menuProducts.get(j).getMenuSubCatId(), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
+                        menuProducts.get(j).getMenuProductId(),
+                        menuProducts.get(j).getProductName(),
+                        menuProducts.get(j).getVegType(),
+                        menuProducts.get(j).getMenuProductPrice(),
+                        menuProducts.get(j).getUserappProductImage(),
+                        menuProducts.get(j).getEcomProductImage(),
+                        menuProducts.get(j).getProductOverallRating(),
+                        menuProducts.get(j).getOriginalQuantity(),
+                        gson.toJson(menuProductSize),
+                        gson.toJson(productModifiers),
+                        menuProducts.get(j).getOriginalQuantity(),
+                        Double.parseDouble(menuProducts.get(j).getMenuProductPrice()),
+                        menuProducts.get(j).getMenuProductPrice());
+            }
+
+            List<MenuCategoryCart> menuSubCategory = previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuSubCategory();
+            if (menuSubCategory.size() > 0) {
+                for (int j = 0; j < menuSubCategory.size(); j++) {
+
+                   /* db.insertMenuProduct(id, menuProducts.get(j).getMenuSubCatId(), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getMenuProductId(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getProductName(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getVegType(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getMenuProductPrice(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getUserappProductImage(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getEcomProductImage(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getProductOverallRating(),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getOriginalQuantity(),
+                            gson.toJson(menuProductSize),
+                            gson.toJson(productModifiers),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getOriginalQuantity(),
+                            Double.parseDouble( menuSubCategory.get(i).getMenuProducts().get(j).getMenuProductPrice()),
+                            menuSubCategory.get(i).getMenuProducts().get(j).getMenuProductPrice());*/
+                }
+            }
+
+        }
+
+        /*  Special offers*/
+        List<SpecialOffer> specialOfferList = previousOrderDetailList.getOrderDetails().getData().getSpecialOffers();
+        if (specialOfferList.size() > 0) {
+            for (int i = 0; i < specialOfferList.size(); i++) {
+                db.insertSpecialOffer(specialOfferList.get(i));
+            }
+        }
+
+        /* Upsell product*/
+        List<UpsellProduct> upsellProductList = previousOrderDetailList.getOrderDetails().getData().getUpsellProducts();
+        if (upsellProductList.size() > 0) {
+            for (int i = 0; i < upsellProductList.size(); i++) {
+                db.insertUpsellProducts(upsellProductList.get(i));
+            }
+        }
     }
 }

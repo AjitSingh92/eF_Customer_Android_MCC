@@ -953,7 +953,7 @@
                                     android:layout_marginLeft="@dimen/_20sdp"
                                     android:fontFamily="@font/avenir_medium"
                                     android:gravity="right|end"
-                                    android:text="Discount"
+                                    android:text="£0.00"
                                     android:textColor="@color/descolor"
                                     android:textSize="@dimen/_12sdp" />
 
@@ -1080,7 +1080,7 @@
                                     android:layout_below="@+id/fm"
                                     android:fontFamily="@font/avenir_medium"
                                     android:gravity="right"
-                                    android:text="£2.50"
+                                    android:text="£0.00"
                                     android:textColor="@color/descolor"
                                     android:textSize="@dimen/_12sdp" />
 
@@ -1112,7 +1112,7 @@
 
                                     <TextView
                                         android:id="@+id/total_count"
-                                        android:layout_width="@dimen/_18sdp"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/fm"
                                         android:layout_gravity="center"
@@ -1676,15 +1676,15 @@
 
 
                 <LinearLayout
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:background="@drawable/rounded_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/footer_total_count"
-                        android:layout_width="@dimen/_18sdp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/fm"
                         android:layout_gravity="center"

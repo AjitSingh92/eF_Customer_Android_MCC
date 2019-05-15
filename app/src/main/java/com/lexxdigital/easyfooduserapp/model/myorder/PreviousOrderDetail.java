@@ -89,6 +89,39 @@ public class PreviousOrderDetail {
     @Expose
     private Integer total;
 
+    public PreviousOrderDetail() {
+    }
+
+    public PreviousOrderDetail(String orderId, String restaurantId, String restaurantName, String restaurantLogo, String restaurantImage, String avgRating, String customerId, String cartId, String orderNum, String orderTotal, String orderDateTime, Integer isPaid, String paymentMode, String paymentStatus, Integer isDelivered, String deliveryTime, String deliveryOption, String deliveryDateTime, String deliveryCharge, String discountAmount, String orderSubtotal, String voucherId, String offerId, String orderStatus, String orderNotes, OrderDetails orderDetails, Integer total) {
+        this.orderId = orderId;
+        this.restaurantId = restaurantId;
+        this.restaurantName = restaurantName;
+        this.restaurantLogo = restaurantLogo;
+        this.restaurantImage = restaurantImage;
+        this.avgRating = avgRating;
+        this.customerId = customerId;
+        this.cartId = cartId;
+        this.orderNum = orderNum;
+        this.orderTotal = orderTotal;
+        this.orderDateTime = orderDateTime;
+        this.isPaid = isPaid;
+        this.paymentMode = paymentMode;
+        this.paymentStatus = paymentStatus;
+        this.isDelivered = isDelivered;
+        this.deliveryTime = deliveryTime;
+        this.deliveryOption = deliveryOption;
+        this.deliveryDateTime = deliveryDateTime;
+        this.deliveryCharge = deliveryCharge;
+        this.discountAmount = discountAmount;
+        this.orderSubtotal = orderSubtotal;
+        this.voucherId = voucherId;
+        this.offerId = offerId;
+        this.orderStatus = orderStatus;
+        this.orderNotes = orderNotes;
+        this.orderDetails = orderDetails;
+        this.total = total;
+    }
+
     public String getOrderId() {
         return orderId;
     }

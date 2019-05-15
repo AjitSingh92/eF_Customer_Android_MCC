@@ -60,6 +60,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             this.restaurantFavRemove = (TextView) itemView.findViewById(R.id.restaurant_fav_remove);
             this.favIcon = itemView.findViewById(R.id.favourites);
 
+
             this.imRatingImage = itemView.findViewById(R.id.im_ratingImage);
             this.llDelivery = itemView.findViewById(R.id.ll_delivery);
             this.lyClick = itemView.findViewById(R.id.ly_click);
@@ -146,6 +147,12 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.restaurantImage);
 
+            holder.favIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    postionInterface.onclickedFav(listPosition);
+                }
+            });
             holder.restaurantFavRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

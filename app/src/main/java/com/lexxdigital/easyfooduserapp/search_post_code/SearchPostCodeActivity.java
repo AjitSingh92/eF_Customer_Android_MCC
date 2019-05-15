@@ -42,9 +42,12 @@ import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.api.EditProfileInterface;
+import com.lexxdigital.easyfooduserapp.api.RestaurantsDealsInterface;
 import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
 import com.lexxdigital.easyfooduserapp.model.edit_account_request.EditAccountRequest;
 import com.lexxdigital.easyfooduserapp.model.edit_account_response.EditAccountResponse;
+import com.lexxdigital.easyfooduserapp.model.landing_page_request.CheckDeliveryPostcodeRequest;
+import com.lexxdigital.easyfooduserapp.model.landing_page_response.CheckDeliveryPostcodeResponse;
 import com.lexxdigital.easyfooduserapp.search_post_code.api.SearchPostCodeInterface;
 import com.lexxdigital.easyfooduserapp.search_post_code.model.search_request.SearchPostCodeRequest;
 import com.lexxdigital.easyfooduserapp.search_post_code.model.search_response.SearchPostCodeResponse;
@@ -191,19 +194,9 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
                     if (response.body().getSuccess()) {
                         String pstcode = response.body().getData().getPostcode();
-                        dialog.hide();
-                        val.setPostCode(pstcode);
-                        sharedPreferencesClass.setPostalCode(pstcode);
 
-                        updateAccountDetail(); // Update Postal code
+                        checkRestaurantDeliveryPostcode(pstcode);
 
-                        Intent i = new Intent(SearchPostCodeActivity.this, DashboardActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //i.putExtra("POSTCODE", pstcode);
-                        startActivity(i);
-                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-                        finish();
                     } else {
                         dialog.hide();
                         //val.setPostCode(null);
@@ -212,7 +205,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                 } catch (Exception e) {
                     dialog.hide();
                     Log.e("Error <>>>", ">>>>>" + e.getMessage());
-                   // val.setPostCode(null);
+                    // val.setPostCode(null);
                     alertDialogNoRestaurant();
                 }
             }
@@ -221,7 +214,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
             public void onFailure(Call<SearchPostCodeResponse> call, Throwable t) {
                 Log.e("Error <>>>", ">>>>>" + t.getMessage());
                 dialog.hide();
-               // val.setPostCode(null);
+                // val.setPostCode(null);
                 alertDialogNoRestaurant();
             }
         });
@@ -708,6 +701,47 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
             @Override
             public void onFailure(Call<EditAccountResponse> call, Throwable t) {
 
+            }
+        });
+    }
+
+    public void checkRestaurantDeliveryPostcode(String postalCode) {
+        final String postcode = postalCode;
+        RestaurantsDealsInterface apiInterface = ApiClient.getClient(this).create(RestaurantsDealsInterface.class);
+        CheckDeliveryPostcodeRequest request = new CheckDeliveryPostcodeRequest();
+        request.setPostCode(postalCode);
+
+        Call<CheckDeliveryPostcodeResponse> call3 = apiInterface.getCheckDeliveryPostcode(request);
+        call3.enqueue(new Callback<CheckDeliveryPostcodeResponse>() {
+            @Override
+            public void onResponse(Call<CheckDeliveryPostcodeResponse> call, Response<CheckDeliveryPostcodeResponse> response) {
+                if (response.body().getSuccess()) {
+                    dialog.hide();
+                    if (response.body().getData().getIsDelivering() == 1) {
+                        val.setPostCode(postcode);
+                        sharedPreferencesClass.setPostalCode(postcode);
+
+                        updateAccountDetail(); // Update Postal code
+
+                        Intent i = new Intent(SearchPostCodeActivity.this, DashboardActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        //i.putExtra("POSTCODE", pstcode);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                        finish();
+                    }
+                } else {
+                    dialog.hide();
+                    alertDialogNoRestaurant();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckDeliveryPostcodeResponse> call, Throwable t) {
+                dialog.hide();
+                alertDialogNoRestaurant();
+                Log.e("Error <>>>", ">>>>>" + t.getMessage());
             }
         });
     }

@@ -33,6 +33,7 @@ import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
 import com.lexxdigital.easyfooduserapp.model.add_model.AddressRequestModel;
 import com.lexxdigital.easyfooduserapp.model.add_model.AddressResponseModel;
+import com.lexxdigital.easyfooduserapp.order_details_activity.OrderDetailActivity;
 import com.lexxdigital.easyfooduserapp.order_status.models.OrderStatusRequestModel;
 import com.lexxdigital.easyfooduserapp.order_status.models.OrderStatusResponseModel;
 import com.lexxdigital.easyfooduserapp.search_post_code.SearchPostCodeActivity;
@@ -126,6 +127,17 @@ public class OrderStatusActivity extends AppCompatActivity {
 
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
 
+        tvOrderId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(OrderStatusActivity.this, OrderDetailActivity.class);
+                intent.putExtra("order_no", OrderId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            }
+        });
 
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override

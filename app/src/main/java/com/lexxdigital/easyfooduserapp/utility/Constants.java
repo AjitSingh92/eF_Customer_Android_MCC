@@ -3,6 +3,7 @@ package com.lexxdigital.easyfooduserapp.utility;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,10 +14,13 @@ import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
@@ -182,5 +186,15 @@ public class Constants {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
+
+    public static void hideKeyboard(Context activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
 
 }

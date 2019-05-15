@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -268,6 +270,8 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     Double updateSubTotal = 0.0d;
     private List<String> productIdForUpsell;
     TimeSlotDialogFragment timeSlotDialogFragment;
+    Boolean isPreOrder = false;
+    String restuarantOpenStatus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -424,8 +428,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
             if (totalItemOnCart > 0) {
                 dialog.show();
-                getRestaurantDetails(sharedPreferencesClass.getString(sharedPreferencesClass.RESTUARANT_ID));
-
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    getRestaurantDetails(sharedPreferencesClass.getString(sharedPreferencesClass.RESTUARANT_ID));
+                } else {
+                    dialogNoInternetConnection("Please check internet connection.", 1);
+                }
                 //getAddressList(); // By-default  default address
 
                 if (coponcode.getText().toString().trim() == null && coponcode.getText().toString().equalsIgnoreCase("")) {
@@ -557,7 +564,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             productIdForUpsell.add(cartMenu.get(i).getMenuProductId());
         }
         if (productIdForUpsell.size() > 0) {
-            getUpSellProducts(productIdForUpsell);
+            if (Constants.isInternetConnectionAvailable(300)) {
+                getUpSellProducts(productIdForUpsell);
+            } else {
+                dialogNoInternetConnection("Please check internet connection.", 2);
+            }
+
         }
         initViewSpecialOffer();
 
@@ -655,27 +667,32 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     } else {
                         if (orderType.equalsIgnoreCase("Delivery")) {
                             if (totalPrice >= Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())) {
-                                if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null) {
+                                if (!isPreOrder) {
+                                    if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null) {
 //                                    if (sharedPreferencesClass.getString(sharedPreferencesClass.BILLING_ADDRESS) != null) {
-                                    Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("orderType", orderType);
-                                    intent.putExtra("deliveryCharge", deliveryFeesAmt);
-                                    intent.putExtra("ORDER_TOTAL", netAmount);
-                                    intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                                    intent.putExtra("voucherDiscount", voucherDiscount);
-                                    intent.putExtra("notes", tvAddNoteData.getText().toString());
-                                    intent.putExtra("appliedVoucherCode", appliedVoucherCode);
-                                    intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
-                                    intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
-                                    startActivity(intent);
-                                    getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                                        Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.putExtra("orderType", orderType);
+                                        intent.putExtra("deliveryCharge", deliveryFeesAmt);
+                                        intent.putExtra("ORDER_TOTAL", netAmount);
+                                        intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
+                                        intent.putExtra("voucherDiscount", voucherDiscount);
+                                        intent.putExtra("notes", tvAddNoteData.getText().toString());
+                                        intent.putExtra("appliedVoucherCode", appliedVoucherCode);
+                                        intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
+                                        intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
+                                        startActivity(intent);
+                                        getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 //                                    } else {
 //                                        alertDailogConfirm("Please select or add billing address");
 //                                    }
-                                } else {
-                                    alertDailogConfirm("Please select or add delivery address");
+                                    } else {
+                                        alertDailogConfirm("Please select or add delivery address");
 
+                                    }
+                                } else {
+                                    timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this);
+                                    timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
                                 }
                             } else {
                                 alertDailogConfirm("Minimum order value " + mContext.getString(R.string.currency) + String.format("%.2f", Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())));
@@ -715,7 +732,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 if (btnApplyVoucherCode.getTag().equals("apply")) {
                     if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
                         tvVoucherStatus.setVisibility(View.VISIBLE);
-                        getVoucherApply(coponcode.getText().toString());
+                        if (Constants.isInternetConnectionAvailable(300)) {
+                            getVoucherApply(coponcode.getText().toString());
+                        } else {
+                            dialogNoInternetConnection("Please check internet connection.", 3);
+                        }
+
 
                     } else {
                         coponcode.requestFocus();
@@ -893,9 +915,16 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         noteDialog.setView(mDialogView);
         noteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
+        final LinearLayout llNotePad = mDialogView.findViewById(R.id.llNotePad);
         final EditText notePadDetails = mDialogView.findViewById(R.id.desIdEt);
         final TextView tvCountText = mDialogView.findViewById(R.id.tv_countText);
         tvCountText.setText(notePadDetails.length() + "/" + "150");
+        llNotePad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constants.hideKeyboard(getActivity(), v);
+            }
+        });
 
         if (sharedPreferencesClass.getString(sharedPreferencesClass.NOTEPAD) != null) {
 
@@ -1653,6 +1682,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(backImage);
                         }
+
+                        restuarantOpenStatus = response.body().getData().getRestaurants().getStatus();
+                        if (restuarantOpenStatus.equalsIgnoreCase("closed")) {
+                            isPreOrder = true;
+                        }
+
                         sharedPreferencesClass.setString(sharedPreferencesClass.RESTAURANT_NAME_SLUG, response.body().getData().getRestaurants().getRestaurantSlug());
                         restaurantName.setText(res.getData().getRestaurants().getRestaurantName());
                         tvRestaurantAdddress.setText(res.getData().getRestaurants().getAddress());
@@ -1740,8 +1775,48 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         if (!time.equalsIgnoreCase("")) {
             deliveryDate.setVisibility(View.VISIBLE);
             deliveryDate.setText(time.substring(0, 10));
-            deliveryTime.setText(time.substring(12, time.length()));
-            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, deliveryDate + " " + deliveryTime.getText().toString().substring(7) + ":00");
+            deliveryTime.setText(time.substring(11, time.length()));
+            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, deliveryDate.getText().toString() + " " + deliveryTime.getText().toString().substring(7) + ":00");
+            isPreOrder=false;
+        } else {
+            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, "");
         }
+    }
+
+    public void dialogNoInternetConnection(String message, final int status) {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        final Animation animShake = AnimationUtils.loadAnimation(mContext, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    switch (status) {
+                        case 1:
+                            getRestaurantDetails(sharedPreferencesClass.getString(sharedPreferencesClass.RESTUARANT_ID));
+                            break;
+                        case 2:
+                            getUpSellProducts(productIdForUpsell);
+                            break;
+                        case 3:
+                            getVoucherApply(coponcode.getText().toString());
+                            break;
+                    }
+
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

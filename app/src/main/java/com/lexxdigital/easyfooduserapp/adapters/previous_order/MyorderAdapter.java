@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumo
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.ProductModifier;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.SpecialOffer;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.UpsellProduct;
+import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
 import java.util.List;
@@ -165,11 +168,16 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             public void onClick(View v) {
                 try {
                     if (dataList.getOrderDetails().getData().getMenuCategoryCarts() != null) {
-                        Intent intent = new Intent(context, OrderDetailActivity.class);
-                        intent.putExtra("order_no", dataList.getOrderNum());
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                        if (Constants.isInternetConnectionAvailable(300)) {
+                            Intent intent = new Intent(context, OrderDetailActivity.class);
+                            intent.putExtra("order_no", dataList.getOrderNum());
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                        } else {
+                            dialogNoInternetConnection("Please check internet connection.");
+                        }
+
                     }
 
                 } catch (ActivityNotFoundException e) {
@@ -181,13 +189,16 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent = new Intent(context, OrderStatusActivity.class);
-                    intent.putExtra("order_no", dataList.getOrderNum());
-                    sharePre.setOrderIDKey(dataList.getOrderNum());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                    activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        Intent intent = new Intent(context, OrderStatusActivity.class);
+                        intent.putExtra("order_no", dataList.getOrderNum());
+                        sharePre.setOrderIDKey(dataList.getOrderNum());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.");
+                    }
                 } catch (ActivityNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -199,7 +210,17 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                 if (db.getCartData() == null) {
                     insertData(previousOrderDetailList.get(position));
                 } else {
-                    alertDailogConfirm("Alert message", dataList.getRestaurantId(), dataList.getRestaurantName(), position);
+                    db.deleteCart();
+                    insertData(previousOrderDetailList.get(position));
+                    Intent i = new Intent(context, RestaurantDetailsActivity.class);
+                    i.putExtra("RESTAURANTID", dataList.getRestaurantId());
+                    i.putExtra("RESTAURANTNAME", dataList.getRestaurantName());
+                    sharePre.setString(sharePre.RESTUARANT_ID, dataList.getRestaurantId());
+                    sharePre.setString(sharePre.RESTUARANT_NAME, dataList.getRestaurantName());
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                    activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+//                    alertDailogConfirm("Alert message", dataList.getRestaurantId(), dataList.getRestaurantName(), position);
                 }
             }
         });
@@ -214,11 +235,15 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             public void onClick(View v) {
 
                 try {
-                    Intent intent = new Intent(context, OrderDetailActivity.class);
-                    intent.putExtra("order_no", dataList.getOrderNum());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                    activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        Intent intent = new Intent(context, OrderDetailActivity.class);
+                        intent.putExtra("order_no", dataList.getOrderNum());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.");
+                    }
                 } catch (ActivityNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -404,5 +429,29 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                 db.insertUpsellProducts(upsellProductList.get(i));
             }
         }
+    }
+
+    public void dialogNoInternetConnection(String message) {
+        LayoutInflater factory = LayoutInflater.from(this.activity);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this.activity).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final Animation animShake = AnimationUtils.loadAnimation(this.activity, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

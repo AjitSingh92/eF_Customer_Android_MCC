@@ -23,7 +23,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static Retrofit retrofit = null;
-    private static int REQUEST_TIMEOUT = 100;
+    private static int REQUEST_TIMEOUT = 60;
+    private static int READ_TIMEOUT = 30;
+    private static int WRITE_TIMEOUT = 15;
     private static OkHttpClient okHttpClient;
 
     public static Retrofit getClient(Context context) {
@@ -46,8 +48,8 @@ public class ApiClient {
     private static void initOkHttp(final Context context) {
         OkHttpClient.Builder httpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS);
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS);
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -72,14 +74,14 @@ public class ApiClient {
     }
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager)context
+        ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
             try {
                 URL url = new URL("http://www.google.com/");
-                HttpURLConnection urlc = (HttpURLConnection)url.openConnection();
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("User-Agent", "test");
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(10000); // mTimeout is in seconds

@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.adapters.AddressDialogAdapter;
@@ -33,6 +34,7 @@ import com.lexxdigital.easyfooduserapp.model.address_list_request.AddressDeliver
 import com.lexxdigital.easyfooduserapp.model.address_list_request.AddressListRequest;
 import com.lexxdigital.easyfooduserapp.model.address_list_response.AddressListResponse;
 import com.lexxdigital.easyfooduserapp.utility.ApiClient;
+import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.GlobalValues;
 import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
@@ -151,7 +153,13 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
         recyclerLayoutManager.setScrollEnabled(true);
         recyclerViewList.setLayoutManager(recyclerLayoutManager);
 
-        getAddressList();
+        if (Constants.isInternetConnectionAvailable(300)) {
+            getAddressList();
+        } else {
+            Toast.makeText(context, "Please check internet connection.", Toast.LENGTH_SHORT).show();
+            dismiss();
+        }
+
     }
 
     @Override

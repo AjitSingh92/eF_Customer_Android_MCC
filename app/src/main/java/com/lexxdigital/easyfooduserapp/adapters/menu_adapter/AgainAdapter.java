@@ -108,7 +108,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                 llMinus.setVisibility(View.GONE);
             }
 
-            tvCategory.setText( data.get(position).getProductName());
+            tvCategory.setText(data.get(position).getProductName());
             //tvCategory.setText(data.get(position).getQuantity() + "x" + data.get(position).getProductName());
 
             int itemQty = data.get(position).getOriginalQuantity();
@@ -120,8 +120,8 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                     itemTotalPrice += (itemQty * Double.parseDouble(menuProductSize.getProductSizePrice()));
                     View child1 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
                     ((TextView) child1.findViewById(R.id.tv_name)).setTypeface(null, Typeface.BOLD);
-                    ((TextView) child1.findViewById(R.id.tv_name)).setText( itemQty+ "x" + menuProductSize.getProductSizeName());
-                    ((TextView) child1.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + (itemQty * Double.parseDouble(menuProductSize.getProductSizePrice())));
+                    ((TextView) child1.findViewById(R.id.tv_name)).setText(itemQty + "x" + menuProductSize.getProductSizeName());
+                    ((TextView) child1.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (itemQty * Double.parseDouble(menuProductSize.getProductSizePrice()))));
                     llModifier.addView(child1);
                     if (menuProductSize.getSizeModifiers().size() > 0) {
                         for (SizeModifier sizeModifier : menuProductSize.getSizeModifiers()) {
@@ -145,7 +145,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
 
                                     if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
                                         if (free == maxAllowFree) {
-                                            ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + (qtyy * Double.parseDouble(modifier.getModifierProductPrice())));
+                                            ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(modifier.getModifierProductPrice()))));
                                             itemTotalPrice += (qtyy * Double.parseDouble(modifier.getModifierProductPrice()));
                                         } else {
                                             int qty = Integer.parseInt(modifier.getOriginalQuantity());
@@ -153,7 +153,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                                                 int nQty = qty - maxAllowFree;
                                                 free = maxAllowFree;
                                                 qty = (nQty * itemQty);
-                                                ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + (qty * Double.parseDouble(modifier.getModifierProductPrice())));
+                                                ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
                                                 itemTotalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
 
                                             } else {
@@ -162,7 +162,8 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                                             }
                                         }
                                     } else {
-                                        ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + (qtyy * Double.parseDouble(modifier.getModifierProductPrice())));
+
+                                        ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(modifier.getModifierProductPrice()))));
                                         itemTotalPrice += (qtyy * Double.parseDouble(modifier.getModifierProductPrice()));
                                     }
 
@@ -201,7 +202,8 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                         if (productModifier.getModifierType().equalsIgnoreCase("free")) {
 
                             if (free == maxAllowFree) {
-                                ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + (qty * Double.parseDouble(modifier.getModifierProductPrice())));
+
+                                ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
                                 itemTotalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
                             } else {
                                 int qtyy = Integer.parseInt(modifier.getOriginalQuantity());
@@ -209,7 +211,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                                     int nQty = qtyy - maxAllowFree;
                                     free = maxAllowFree;
                                     qtyy = (nQty * itemQty);
-                                    ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + (qtyy * Double.parseDouble(modifier.getModifierProductPrice())));
+                                    ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(modifier.getModifierProductPrice()))));
                                     itemTotalPrice += (qtyy * Double.parseDouble(modifier.getModifierProductPrice()));
                                 } else {
                                     ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
@@ -218,7 +220,8 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                             }
 
                         } else {
-                            ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + (qty * Double.parseDouble(modifier.getModifierProductPrice())));
+
+                            ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
                             itemTotalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
                         }
 

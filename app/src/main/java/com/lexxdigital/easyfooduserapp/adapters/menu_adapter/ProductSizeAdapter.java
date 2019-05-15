@@ -107,10 +107,12 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             }
                         } else {
                             for (Modifier modifier : sizeModifierAdapter.getSelectedList().get(j).getModifier()) {
-                                int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                if (modifier.getOriginalQuantity() != null && !modifier.getOriginalQuantity().equals("0")) {
+                                    int qty = Integer.parseInt(modifier.getOriginalQuantity());
 
-                                Modifier modifier1 = new Modifier(modifier.getProductId(), modifier.getUnit(), modifier.getModifierProductPrice(), modifier.getProductName(), modifier.getOriginalQuantity(), modifier.getOriginalQuantity(), (qty * Double.parseDouble(modifier.getModifierProductPrice())), (qty * Double.parseDouble(modifier.getModifierProductPrice())));
-                                modifiers.add(modifier1);
+                                    Modifier modifier1 = new Modifier(modifier.getProductId(), modifier.getUnit(), modifier.getModifierProductPrice(), modifier.getProductName(), modifier.getOriginalQuantity(), modifier.getOriginalQuantity(), (qty * Double.parseDouble(modifier.getModifierProductPrice())), (qty * Double.parseDouble(modifier.getModifierProductPrice())));
+                                    modifiers.add(modifier1);
+                                }
                             }
                         }
                         SizeModifier sizeModifier = new SizeModifier(sizeModifierAdapter.getSelectedList().get(j).getModifierName(),

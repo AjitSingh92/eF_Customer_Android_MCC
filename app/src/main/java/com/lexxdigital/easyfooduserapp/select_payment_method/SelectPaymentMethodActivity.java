@@ -20,6 +20,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -144,7 +146,12 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
             Log.e("order data", totalAmount + "," + subTotalAmount + "," + deliveryFee);
         }
-        getCardList();
+        if (Constants.isInternetConnectionAvailable(300)) {
+            getCardList();
+        } else {
+            dialogNoInternetConnection("Please check internet connection.", 1);
+        }
+
 //        initView(dataList);
 
     }
@@ -239,9 +246,19 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
                     if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAddress() != null) {
                         if (voucherPaymentType.equalsIgnoreCase("card")) {
-                            callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
+                            if (Constants.isInternetConnectionAvailable(300)) {
+                                callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
+                            } else {
+                                dialogNoInternetConnection("Please check internet connection.", 0);
+                            }
+
                         } else if (voucherPaymentType.equalsIgnoreCase("")) {
-                            callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
+                            if (Constants.isInternetConnectionAvailable(300)) {
+                                callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
+                            } else {
+                                dialogNoInternetConnection("Please check internet connection.", 0);
+                            }
+
                         } else {
                             alertVoucherApply("", "card", exDate.getText().toString(), exYear.getText().toString());
                         }
@@ -333,9 +350,19 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
 
                         if (voucherPaymentType.equalsIgnoreCase("cash")) {
-                            callAPI("", "cash", "", "");
+                            if (Constants.isInternetConnectionAvailable(300)) {
+                                callAPI("", "cash", "", "");
+                            } else {
+                                dialogNoInternetConnection("Please check internet connection.", 0);
+                            }
+
                         } else if (voucherPaymentType.equalsIgnoreCase("")) {
-                            callAPI("", "cash", "", "");
+                            if (Constants.isInternetConnectionAvailable(300)) {
+                                callAPI("", "cash", "", "");
+                            } else {
+                                dialogNoInternetConnection("Please check internet connection.", 0);
+                            }
+
                         } else {
                             alertVoucherApply("", "cash", "", "");
                         }
@@ -715,8 +742,12 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                 if (!voucherCode.equalsIgnoreCase(paymentType)) {
                     totalAmount = totalAmount + voucherAmount;
                 }
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    callAPI(token, paymentType, exDate, exYear);
+                } else {
+                    dialogNoInternetConnection("Please check internet connection.", 0);
+                }
 
-                callAPI(token, paymentType, exDate, exYear);
                 noteDialog.dismiss();
             }
         });
@@ -784,5 +815,33 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     protected void onStop() {
         super.onStop();
         dialog.dismiss();
+    }
+
+    public void dialogNoInternetConnection(String message, final int status) {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final Animation animShake = AnimationUtils.loadAnimation(mContext, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    if (status == 1) {
+                        getCardList();
+                    }
+
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

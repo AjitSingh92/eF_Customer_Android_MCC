@@ -378,7 +378,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 sharePre.setString(sharePre.RESTUARANT_NAME, "");
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                 i.putExtra("RESTAURANTID", currentRestId);
-                i.putExtra("RESTAURANTNAME", responseDeals.get(mListPosition).getId());
+                i.putExtra("RESTAURANTNAME", currentRestuarant);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(i);
 

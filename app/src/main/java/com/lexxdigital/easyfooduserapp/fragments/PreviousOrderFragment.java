@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -21,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ import com.lexxdigital.easyfooduserapp.model.myorder.PreviousOrderResponse;
 import com.lexxdigital.easyfooduserapp.model.myorder.ReqstPrevOrder;
 import com.lexxdigital.easyfooduserapp.order_details_activity.OrderDetailActivity;
 import com.lexxdigital.easyfooduserapp.utility.ApiClient;
+import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.GlobalValues;
 
 import java.util.ArrayList;
@@ -126,7 +130,12 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                     swipreferesh.setRefreshing(true);
                 }*/
                 try {
-                    getCardList();
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        getCardList();
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.");
+                    }
+
                 } catch (Exception e) {
                     Toast.makeText(mContext, "Server error. Try again.", Toast.LENGTH_SHORT).show();
                 }
@@ -150,8 +159,13 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == previousOrderDetails.size() - 1) {
                         //bottom of list!
                         //loadMore();
-                        getCardList();
-                        isLoading = true;
+                        if (Constants.isInternetConnectionAvailable(300)) {
+                            getCardList();
+                            isLoading = true;
+                        } else {
+                            dialogNoInternetConnection("Please check internet connection.");
+                        }
+
                     }
                 }
             }
@@ -257,9 +271,14 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                 try {
                     if (response.body().getSuccess()) {
                         dialog.dismiss();
-                        getCardList();
-                        //myorderAdapter.notifyDataSetChanged();
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        if (Constants.isInternetConnectionAvailable(300)) {
+                            getCardList();
+                            //myorderAdapter.notifyDataSetChanged();
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            dialogNoInternetConnection("Please check internet connection.");
+                        }
+
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
@@ -280,7 +299,13 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        getCardList();
+        if (Constants.isInternetConnectionAvailable(300)) {
+            getCardList();
+        } else {
+            if (swipreferesh != null)
+                swipreferesh.setRefreshing(false);
+            dialogNoInternetConnection("Please check internet connection.");
+        }
     }
 
     public void showDialog(String msg, final String orderNo) {
@@ -332,5 +357,30 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         }
 
 
+    }
+
+
+    public void dialogNoInternetConnection(String message) {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final Animation animShake = AnimationUtils.loadAnimation(mContext, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    getCardList();
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

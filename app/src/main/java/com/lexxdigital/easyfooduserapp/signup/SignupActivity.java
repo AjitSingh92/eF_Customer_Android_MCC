@@ -31,6 +31,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -207,8 +209,12 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 CropImage.startPickImageActivity(this);
                 break;
             case R.id.sendVerivication:
-                validationVerification();
-                //       alertDialogforgotPassword();
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    validationVerification();
+                    //       alertDialogforgotPassword();
+                } else {
+                    dialogNoInternetConnection("Please check internet connection.");
+                }
                 break;
         }
     }
@@ -270,8 +276,8 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialog.setCancelable(false);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextView tvPhoneEnding=mDialogView.findViewById(R.id.tv_mobileEnding);
-        tvPhoneEnding.setText("Please check your mail inbox or text messages for phone number ending "+ mobile.substring(mobile.length()-4, mobile.length())+" and enter the verification code");
+        TextView tvPhoneEnding = mDialogView.findViewById(R.id.tv_mobileEnding);
+        tvPhoneEnding.setText("Please check your mail inbox or text messages for phone number ending " + mobile.substring(mobile.length() - 4, mobile.length()) + " and enter the verification code");
         pin = (EditText) mDialogView.findViewById(R.id.pin_tv);
 
         SmsReceiver.bindListener(new SmsListener() {
@@ -1003,5 +1009,29 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
 
             }
         });
+    }
+
+    public void dialogNoInternetConnection(String message) {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

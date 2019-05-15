@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -114,8 +116,12 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
                 if (swipreferesh != null) {
                     swipreferesh.setRefreshing(true);
                 }
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    getAddressList();
+                } else {
+                    dialogNoInternetConnection("Please check internet connection.");
+                }
 
-                getAddressList();
             }
         });
 
@@ -326,7 +332,12 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
         super.onResume();
         if (dialog != null)
             dialog.show();
-        getAddressList();
+        if (Constants.isInternetConnectionAvailable(300)) {
+            getAddressList();
+        } else {
+            dialogNoInternetConnection("Please check internet connection.");
+        }
+
     }
 
     @Override
@@ -356,6 +367,38 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
 
     @Override
     public void onRefresh() {
-        getAddressList();
+        if (Constants.isInternetConnectionAvailable(300)) {
+            getAddressList();
+        } else {
+            dialogNoInternetConnection("Please check internet connection.");
+        }
+
+    }
+
+    public void dialogNoInternetConnection(String message) {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        final Animation animShake = AnimationUtils.loadAnimation(mContext, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    getAddressList();
+
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

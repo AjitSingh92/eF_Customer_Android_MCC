@@ -27,6 +27,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -351,7 +353,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         showPriceAndView(null, null, 0);
         extras = getIntent().getExtras();
         if (extras != null) {
-            getRestaurantDetails(extras.getString("RESTAURANTID"));
+            if (Constants.isInternetConnectionAvailable(300)) {
+                getRestaurantDetails(extras.getString("RESTAURANTID"));
+            } else {
+                dialogNoInternetConnection("Please check internet connection.");
+            }
 
         }
     }
@@ -1407,4 +1413,29 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         }
     }
 
+    public void dialogNoInternetConnection(String message) {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        final Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    startActivity(new Intent(RestaurantDetailsActivity.this, RestaurantDetailsActivity.class));
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
+    }
 }

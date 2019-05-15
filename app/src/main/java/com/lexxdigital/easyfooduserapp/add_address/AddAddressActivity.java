@@ -1,6 +1,7 @@
 package com.lexxdigital.easyfooduserapp.add_address;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,7 +24,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -339,7 +343,12 @@ public class AddAddressActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 //if (!TextUtils.isEmpty(searchAddress.getText().toString()))
                 if (!strTtlAddress.trim().equalsIgnoreCase(""))
-                    manageAddress();
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        manageAddress();
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.");
+                    }
+
                 else
                     Toast.makeText(val, "Please select or add location first", Toast.LENGTH_SHORT).show();
             }
@@ -554,9 +563,9 @@ public class AddAddressActivity extends AppCompatActivity implements
             requestModel.setAddress_1(address1);
             requestModel.setAddress_2(address2);
             requestModel.setAddress_type(locationTag);
-            if (cityName != null && !cityName.equalsIgnoreCase("")){
+            if (cityName != null && !cityName.equalsIgnoreCase("")) {
                 requestModel.setCity(cityName);
-            }else {
+            } else {
                 requestModel.setCity("");
             }
             requestModel.setCountry(countyName);
@@ -611,8 +620,8 @@ public class AddAddressActivity extends AppCompatActivity implements
                         address = addresses.get(i);
                         if (address.getPostalCode() != null) {
 
-                            Log.e("AddAddrees", "getSetAddress:address.toStr:>>>>> "+address.toString() );
-                            cityName  = address.getLocality();
+                            Log.e("AddAddrees", "getSetAddress:address.toStr:>>>>> " + address.toString());
+                            cityName = address.getLocality();
 
                             address1 = addresses.get(0).getAddressLine(0);
                             address2 = addresses.get(0).getAddressLine(1);
@@ -638,8 +647,8 @@ public class AddAddressActivity extends AppCompatActivity implements
                             strTtlAddress = address1 + " " + cityName + " " + postalCode + " " + countyName;
 
                             Log.e("Postal code", "Postal code: " + address.getPostalCode()
-                                    +" address1:"+ address1+"// city:"+cityName+"//postalCode:"+postalCode+"//countyName:"+countyName
-                                );
+                                    + " address1:" + address1 + "// city:" + cityName + "//postalCode:" + postalCode + "//countyName:" + countyName
+                            );
 
                             searchAddress.setText(strTtlAddress);
                             //tvViewAddress.setText(strTtlAddress);
@@ -681,5 +690,32 @@ public class AddAddressActivity extends AppCompatActivity implements
     protected void onStop() {
         super.onStop();
         dialog.dismiss();
+    }
+
+    public void dialogNoInternetConnection(String message) {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        final Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    manageAddress();
+
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
     }
 }

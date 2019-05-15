@@ -1,8 +1,11 @@
 package com.lexxdigital.easyfooduserapp.dialogs;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,10 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.adapters.AddressDialogAdapter;
@@ -28,6 +35,7 @@ import com.lexxdigital.easyfooduserapp.model.AddressList;
 import com.lexxdigital.easyfooduserapp.model.restuarant_time_slot.TimeSlotRequest;
 import com.lexxdigital.easyfooduserapp.model.restuarant_time_slot.TimeSlotResponse;
 import com.lexxdigital.easyfooduserapp.utility.ApiClient;
+import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
 import java.util.ArrayList;
@@ -104,7 +112,15 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         tomorrowSpinner = view.findViewById(R.id.spinner_tomorrow);
         view.findViewById(R.id.cross_tv).setOnClickListener(this);
         view.findViewById(R.id.btn_ok).setOnClickListener(this);
-        getTimeSlot();
+
+        if (Constants.isInternetConnectionAvailable(300)) {
+            getTimeSlot();
+        } else {
+
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+            dismiss();
+
+        }
 
 
     }
@@ -135,7 +151,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 toDay = (String) parent.getItemAtPosition(position);
                 Log.e("item", toDay);
-                if (!toDay.equalsIgnoreCase("Tomorrow")) {
+                if (!toDay.equalsIgnoreCase("Today")) {
                     tomorrowSpinner.setSelection(0);
                 }
 
@@ -154,7 +170,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tomorrow = (String) parent.getItemAtPosition(position);
                 Log.e("item", tomorrow);
-                if (!tomorrow.equalsIgnoreCase("Today")) {
+                if (!tomorrow.equalsIgnoreCase("Tomorrow")) {
                     todaySpinner.setSelection(0);
                 }
 
@@ -284,6 +300,10 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                         } else {
                             tomorrowSpinner.setVisibility(View.GONE);
                         }
+
+                        if (response.body().getData().getToday() != null && response.body().getData().getToday().size() == 0 && response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() == 0) {
+                            dismiss();
+                        }
                         initView();
                     } else {
 
@@ -304,5 +324,29 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         });
     }
 
+    public void dialogNoInternetConnection(String message) {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constants.isInternetConnectionAvailable(300)) {
+                    alertDialog.dismiss();
+                    dismiss();
+                } else mDialogView.findViewById(R.id.okTv).startAnimation(animShake);
+
+            }
+        });
+
+        alertDialog.show();
+    }
 
 }

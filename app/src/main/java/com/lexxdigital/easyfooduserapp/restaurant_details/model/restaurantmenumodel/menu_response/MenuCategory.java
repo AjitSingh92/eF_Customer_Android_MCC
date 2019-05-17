@@ -19,12 +19,17 @@ public class MenuCategory {
     @SerializedName("menuProducts")
     @Expose
     private List<MenuProduct> menuProducts = null;
+    @SerializedName("meal")
+    @Expose
+    List<Meal> meal;
 
-    public MenuCategory(String menuCategoryId, String menuCategoryName, List<MenuCategory> menuSubCategory, List<MenuProduct> menuProducts) {
+
+    public MenuCategory(String menuCategoryId, String menuCategoryName, List<MenuCategory> menuSubCategory, List<MenuProduct> menuProducts, List<Meal> meal) {
         this.menuCategoryId = menuCategoryId;
         this.menuCategoryName = menuCategoryName;
         this.menuSubCategory = menuSubCategory;
         this.menuProducts = menuProducts;
+        this.meal = meal;
     }
 
     public String getMenuCategoryId() {
@@ -59,6 +64,14 @@ public class MenuCategory {
         this.menuProducts = menuProducts;
     }
 
+    public List<Meal> getMeal() {
+        return meal;
+    }
+
+    public void setMeal(List<Meal> meal) {
+        this.meal = meal;
+    }
+
     @Override
     public String toString() {
         return "MenuCategory{" +
@@ -66,6 +79,7 @@ public class MenuCategory {
                 ", menuCategoryName='" + menuCategoryName + '\'' +
                 ", menuSubCategory=" + menuSubCategory +
                 ", menuProducts=" + menuProducts +
+                ", meal=" + meal +
                 '}';
     }
 }

@@ -8,7 +8,9 @@ import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
+import com.lexxdigital.easyfooduserapp.cart_db.converters.MealConverter;
 import com.lexxdigital.easyfooduserapp.cart_db.converters.MenuProductConverter;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.Meal;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
 
 import java.util.List;
@@ -59,14 +61,18 @@ public class MenuProducts {
         @TypeConverters({MenuProductConverter.class})
         @SerializedName("menuProducts")
         List<MenuProduct> menuProducts;
+        @TypeConverters({MealConverter.class})
+        @SerializedName("meal")
+        List<Meal> meal;
 
         @Ignore
         public MenuProductsTable() {
         }
 
-        public MenuProductsTable(@NonNull String categoryId, List<MenuProduct> menuProducts) {
+        public MenuProductsTable(@NonNull String categoryId, List<MenuProduct> menuProducts, List<Meal> meal) {
             this.categoryId = categoryId;
             this.menuProducts = menuProducts;
+            this.meal = meal;
         }
 
         @NonNull
@@ -86,11 +92,20 @@ public class MenuProducts {
             this.menuProducts = menuProducts;
         }
 
+        public List<Meal> getMeal() {
+            return meal;
+        }
+
+        public void setMeal(List<Meal> meal) {
+            this.meal = meal;
+        }
+
         @Override
         public String toString() {
             return "MenuProductsTable{" +
-                    ", categoryId='" + categoryId + '\'' +
+                    "categoryId='" + categoryId + '\'' +
                     ", menuProducts=" + menuProducts +
+                    ", meal=" + meal +
                     '}';
         }
     }

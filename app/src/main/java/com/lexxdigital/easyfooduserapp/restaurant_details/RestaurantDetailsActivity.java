@@ -621,6 +621,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         call3.enqueue(new Callback<Rough>() {
             @Override
             public void onResponse(Call<Rough> call, Response<Rough> response) {
+
                 try {
                     dialog.dismiss();
                     if (response.body().getSuccess()) {

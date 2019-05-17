@@ -117,7 +117,6 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             Log.e("Exception", e.toString());
         }
 
-
         String strOrderStatus = dataList.getOrderStatus();
         Log.e(TAG, "onBindViewHolder: order status: " + strOrderStatus);
         // status will be 'new','pending','rejected','accepted','out_of_delivery','delivered','preparing'-------------
@@ -185,6 +184,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                 }
             }
         });
+
         holder.trackOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,10 +208,10 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 if (db.getCartData() == null) {
-                    insertData(previousOrderDetailList.get(position));
+                    //insertData(previousOrderDetailList.get(position));
                 } else {
                     db.deleteCart();
-                    insertData(previousOrderDetailList.get(position));
+                    //insertData(previousOrderDetailList.get(position));
                     Intent i = new Intent(context, RestaurantDetailsActivity.class);
                     i.putExtra("RESTAURANTID", dataList.getRestaurantId());
                     i.putExtra("RESTAURANTNAME", dataList.getRestaurantName());

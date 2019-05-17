@@ -39,6 +39,7 @@ public class SharedPreferencesClass {
     public static final String USER_PROFILE_IMAGE = "USER_PROFILE_IMAGE";
     public static final String LOGIN_VIA = "LOGIN_VIA";
     public static final String NUMBER_OF_ORDERS = "NUMBER_OF_ORDERS";
+    public static final String DELIVERY_ADDRESS_ID = "DELIVERY_ADDRESS_ID";
     public static final String DEFAULT_ADDRESS = "DEFAULT_ADDRESS";
     public static final String BILLING_ADDRESS = "BILLING_ADDRESS";
     public static final String RESTAURANT_NAME_SLUG = "RESTAURANT_NAME_SLUG";

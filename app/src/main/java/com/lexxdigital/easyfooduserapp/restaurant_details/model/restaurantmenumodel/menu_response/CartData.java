@@ -8,7 +8,7 @@ public class CartData {
     @Expose
     List<SpecialOffer> specialOffers;
     @Expose
-    List<MenuCategoryCart> menuCategoryCarts;
+    List<MenuCategoryCart> menuCategory;
     @Expose
     List<UpsellProduct> upsellProducts;
 
@@ -17,7 +17,7 @@ public class CartData {
 
     public CartData(List<SpecialOffer> specialOffers, List<MenuCategoryCart> menuCategoryCarts, List<UpsellProduct> upsellProducts) {
         this.specialOffers = specialOffers;
-        this.menuCategoryCarts = menuCategoryCarts;
+        this.menuCategory = menuCategoryCarts;
         this.upsellProducts = upsellProducts;
     }
 
@@ -30,11 +30,11 @@ public class CartData {
     }
 
     public List<MenuCategoryCart> getMenuCategoryCarts() {
-        return menuCategoryCarts;
+        return menuCategory;
     }
 
     public void setMenuCategoryCarts(List<MenuCategoryCart> menuCategoryCarts) {
-        this.menuCategoryCarts = menuCategoryCarts;
+        this.menuCategory = menuCategoryCarts;
     }
 
     public List<UpsellProduct> getUpsellProducts() {
@@ -49,7 +49,7 @@ public class CartData {
     public String toString() {
         return "CartData{" +
                 "specialOffers=" + specialOffers +
-                ", menuCategoryCarts=" + menuCategoryCarts +
+                ", menuCategoryCarts=" + menuCategory +
                 ", upsellProducts=" + upsellProducts +
                 '}';
     }

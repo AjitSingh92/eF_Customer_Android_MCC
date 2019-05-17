@@ -165,7 +165,7 @@ public class MenuFragment extends Fragment {
         mainMenu.setLayoutManager(layoutManager);
 
         mainMenu.setNestedScrollingEnabled(false);
-        mMenuAdapter = new RestaurantMenuListAdapter(mActivity,mContext, menuProductViewModel, menuItemClickListener);
+        mMenuAdapter = new RestaurantMenuListAdapter(mActivity, mContext, menuProductViewModel, menuItemClickListener);
         mainMenu.setAdapter(mMenuAdapter);
 
         if (DATA.getSpecialOffers() != null && DATA.getSpecialOffers().size() > 0) {
@@ -179,7 +179,7 @@ public class MenuFragment extends Fragment {
         }
     }
 
-    public void menuAdapterNotifyItem(int position){
+    public void menuAdapterNotifyItem(int position) {
         mMenuAdapter.notifyItemChanged(position);
     }
 

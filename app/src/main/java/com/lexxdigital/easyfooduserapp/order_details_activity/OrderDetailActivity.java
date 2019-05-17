@@ -248,10 +248,10 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.order_again:
                 if (db.getCartData() == null) {
-                    insertData(previousOrderDetailList);
+                    //insertData(previousOrderDetailList);
                 } else {
                     db.deleteCart();
-                    insertData(previousOrderDetailList);
+                    //insertData(previousOrderDetailList);
                     Intent i = new Intent(OrderDetailActivity.this, RestaurantDetailsActivity.class);
                     i.putExtra("RESTAURANTID", previousOrderDetailList.getRestaurantId());
                     i.putExtra("RESTAURANTNAME", previousOrderDetailList.getRestaurantName());

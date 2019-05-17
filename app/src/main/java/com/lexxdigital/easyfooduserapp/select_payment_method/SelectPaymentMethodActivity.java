@@ -433,7 +433,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         request.setVoucherId("");
         request.setOfferId("");
         request.setBillingAddress(address1 + ", " + address2 + ", " + addressCity + ", " + postalCode);
-        request.setDeliveryAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
+        request.setDeliveryAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_ADDRESS_ID));
         request.setOrderVia("android");
         request.setOrderNotes(notes);
         request.setStripeToken(token);

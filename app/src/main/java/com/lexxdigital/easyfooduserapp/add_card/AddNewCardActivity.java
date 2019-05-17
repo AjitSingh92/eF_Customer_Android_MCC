@@ -580,7 +580,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         request.setVoucherId("");
         request.setOfferId("");
         request.setBillingAddress(billingPost.getText().toString());
-        request.setDeliveryAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
+        request.setDeliveryAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_ADDRESS_ID));
         request.setOrderVia("android");
         request.setOrderNotes(notes);
         request.setExpMonth(Integer.parseInt(expireDate.getText().toString()));

@@ -41,6 +41,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_MODIFIER_PRODUCT = "modifier_products";
     private static final String TABLE_NAME_UPSELL_PRODUCT = "upsell_products";
 
+    private static final String TABLE_NAME_MEAL_PRODUCT = "meal_products";
+    private static final String TABLE_NAME_MEAL_CATEGORY = "meal_category";
+
+
 
     public static final String COLUMN_ID = "id";
 

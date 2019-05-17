@@ -171,40 +171,66 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
             layoutManager.setScrollEnabled(false);
             childItemView.setLayoutManager(layoutManager);
 
-            RestaurantCategoryAdapter restaurantCategoryAdapter = new RestaurantCategoryAdapter(context, getLayoutPosition(), menuItemClickListener);
-            restaurantCategoryAdapter.setHideDetail(true);
-            childItemView.setAdapter(restaurantCategoryAdapter);
-            final RestaurantCategoryAdapter mRestaurantCategoryAdapter = restaurantCategoryAdapter;
+            if (dataItem.getMenuCategoryName().equalsIgnoreCase("MEAL")) {
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    MenuProducts.MenuProductsTable menuProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(mMenuDataItem.get(mPosition).getMenuCategories().getMenuCategoryId());
-                    if (menuProducts != null) {
-                        dataItem.setMenuProducts(menuProducts.getMenuProducts());
+                RestaurantMealCategoryAdapter restaurantMealCategoryAdapter = new RestaurantMealCategoryAdapter(context, getLayoutPosition(), menuItemClickListener);
+                restaurantMealCategoryAdapter.setHideDetail(true);
+                childItemView.setAdapter(restaurantMealCategoryAdapter);
 
-                        /*----------------------------------*/
-                        if (dataItem.getMenuSubCategory() != null) {
-                            for (int i = 0; i < dataItem.getMenuSubCategory().size(); i++) {
-                                MenuProducts.MenuProductsTable menuSubCatProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(dataItem.getMenuSubCategory().get(i).getMenuCategoryId());
-                                if (menuSubCatProducts != null) {
-                                    dataItem.getMenuSubCategory().get(i).setMenuProducts(menuSubCatProducts.getMenuProducts());
+                final RestaurantMealCategoryAdapter mRestaurantMealCategoryAdapter = restaurantMealCategoryAdapter;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MenuProducts.MenuProductsTable menuProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(mMenuDataItem.get(mPosition).getMenuCategories().getMenuCategoryId());
+                        if (menuProducts != null) {
+                            dataItem.setMeal(menuProducts.getMeal());
+
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRestaurantMealCategoryAdapter.addItem(dataItem);
+                                }
+                            });
+                        }
+                    }
+                }).start();
+
+            } else {
+                RestaurantCategoryAdapter restaurantCategoryAdapter = new RestaurantCategoryAdapter(context, getLayoutPosition(), menuItemClickListener);
+                restaurantCategoryAdapter.setHideDetail(true);
+                childItemView.setAdapter(restaurantCategoryAdapter);
+                final RestaurantCategoryAdapter mRestaurantCategoryAdapter = restaurantCategoryAdapter;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MenuProducts.MenuProductsTable menuProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(mMenuDataItem.get(mPosition).getMenuCategories().getMenuCategoryId());
+                        if (menuProducts != null) {
+                            dataItem.setMenuProducts(menuProducts.getMenuProducts());
+
+                            /*----------------------------------*/
+                            if (dataItem.getMenuSubCategory() != null) {
+                                for (int i = 0; i < dataItem.getMenuSubCategory().size(); i++) {
+                                    MenuProducts.MenuProductsTable menuSubCatProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(dataItem.getMenuSubCategory().get(i).getMenuCategoryId());
+                                    if (menuSubCatProducts != null) {
+                                        dataItem.getMenuSubCategory().get(i).setMenuProducts(menuSubCatProducts.getMenuProducts());
+                                    }
                                 }
                             }
+                            /*----------------------------------*/
+
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRestaurantCategoryAdapter.addItem(dataItem);
+                                }
+                            });
                         }
-                        /*----------------------------------*/
-
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mRestaurantCategoryAdapter.addItem(dataItem);
-                            }
-                        });
                     }
-                }
-            }).start();
+                }).start();
 
-
+            }
 
            /* menuProductViewModel.getMenuProductList(mMenuDataItem.get(position).getMenuCategories().getMenuCategoryId()).observe((FragmentActivity)context, new Observer<MenuProducts.MenuProductsTable>() {
                 @Override
@@ -236,6 +262,7 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
                 }
 
             }
+
         }
 
         @Override

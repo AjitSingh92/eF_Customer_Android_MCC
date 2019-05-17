@@ -68,6 +68,7 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
             isAddressSelected = true;
             if (isDelivery) {
                 sharePre.setString(sharePre.DEFAULT_ADDRESS, address.getAddressOne() + " " + address.getAddressTwo() + "," + address.getCity() + "\n" + address.getPostCode());
+                sharePre.setString(sharePre.DELIVERY_ADDRESS_ID, address.getID());
             } else {
                 sharePre.setString(sharePre.BILLING_ADDRESS, address.getAddressOne() + " " + address.getAddressTwo() + "," + address.getCity() + "\n" + address.getPostCode());
             }
@@ -84,6 +85,8 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
         if (!isAddressSelected) {
             if (isDelivery) {
                 sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                sharePre.setString(sharePre.DELIVERY_ADDRESS_ID, null);
+
             } else {
                 sharePre.setString(sharePre.BILLING_ADDRESS, null);
 

@@ -17,7 +17,6 @@ public class CheckDeliveryPostcodeResponse {
     @Expose
     private Errors errors;
 
-
     public class Data {
         @SerializedName("is_delivering")
         @Expose

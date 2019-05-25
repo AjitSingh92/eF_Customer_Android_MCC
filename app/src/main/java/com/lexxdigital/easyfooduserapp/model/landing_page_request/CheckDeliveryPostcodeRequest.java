@@ -15,7 +15,6 @@ public class CheckDeliveryPostcodeRequest {
     @Expose
     private String longitude;
 
-
     public String getPostCode() {
         return postCode;
     }

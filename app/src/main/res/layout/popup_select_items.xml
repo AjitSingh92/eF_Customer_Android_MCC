@@ -151,11 +151,7 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/size_modifier"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp" />
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/product_modifier"

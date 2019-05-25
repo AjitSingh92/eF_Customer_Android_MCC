@@ -198,6 +198,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 1,
                                                 gson.toJson(productSizeAdapter.getSelectedItem()),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
+                                                null,
                                                 1,
                                                 Double.parseDouble(menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getMenuProductPrice()),
                                                 menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getMenuProductPrice()
@@ -219,6 +220,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 1,
                                                 gson.toJson(productSizeAdapter.getSelectedItem()),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
+                                                null,
                                                 1,
                                                 Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()),
                                                 menuCategory.getMenuProducts().get(i).getMenuProductPrice()
@@ -279,6 +281,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 1,
                                                 gson.toJson(productSizeAdapter.getSelectedItem()),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
+                                                null,
                                                 1,
                                                 Double.parseDouble(menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getMenuProductPrice()),
                                                 menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getMenuProductPrice()
@@ -305,6 +308,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 1,
                                                 gson.toJson(productSizeAdapter.getSelectedItem()),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
+                                                null,
                                                 1,
                                                 Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()),
                                                 menuCategory.getMenuProducts().get(i).getMenuProductPrice()
@@ -363,6 +367,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                     productSizeAdapter.getSelectedItem(),
                                     productModifierAdapter.getSelectedProductModifier(),
                                     /*menuCategory.getMenuProducts().get(i).getUpsells(),*/
+                                    null,
                                     menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
                                     1,
                                     1,
@@ -390,6 +395,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                         menuCategory.getMenuProducts().get(i).getMenuProductSize(),
                                         productModifierAdapter.getSelectedProductModifier(),
                                        /* menuCategory.getMenuProducts().get(i).getUpsells(),*/
+                                        null,
                                         menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
                                         1,
                                         1,

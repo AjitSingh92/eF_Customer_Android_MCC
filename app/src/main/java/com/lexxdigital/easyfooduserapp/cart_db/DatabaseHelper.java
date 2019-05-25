@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.CartData;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MealProduct;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategoryCart;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProductSize;
@@ -43,7 +44,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME_MEAL_PRODUCT = "meal_products";
     private static final String TABLE_NAME_MEAL_CATEGORY = "meal_category";
-
 
 
     public static final String COLUMN_ID = "id";
@@ -120,6 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "quantity INTEGER,"
                     + "menu_product_size TEXT,"
                     + "product_modifiers TEXT,"
+                    + "meal_products TEXT,"
                     + "originalQuantity INTEGER,"
                     + "amount TEXT,"
                     + "originalAmount1 REAL,"
@@ -389,6 +390,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return upsellProduct;
     }
 
+    public String getCategoryName(int id) {
+
+        String menuCategoryName = "";
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME_MENU_CATEGORY2 + " WHERE  id ='" + id + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Gson gson = new Gson();
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                menuCategoryName = cursor.getString(cursor.getColumnIndex("menu_category_name"));
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        return menuCategoryName;
+    }
 
     public long insertMenuCategory(String menu_category_id, String menu_category_name, String menu_sub_category, String menu_products) {
         // get writable database as we want to write data
@@ -477,6 +498,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                   int quantity,
                                   String menu_product_size,
                                   String product_modifiers,
+                                  String meal_products,
                                   Integer originalQuantity,
                                   Double originalAmount1,
                                   String amount
@@ -498,6 +520,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("quantity", quantity);
         values.put("menu_product_size", menu_product_size);
         values.put("product_modifiers", product_modifiers);
+        values.put("meal_products", meal_products);
         values.put("originalQuantity", originalQuantity);
         values.put("originalAmount1", originalAmount1);
         values.put("amount", amount);
@@ -790,6 +813,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 data.setOriginalAmount1(cursor.getDouble(cursor.getColumnIndex("originalAmount1")));
                 data.setAmount(cursor.getString(cursor.getColumnIndex("amount")));
 
+                List<MealProduct> mealProducts = gson.fromJson(cursor.getString(cursor.getColumnIndex("meal_products")), new TypeToken<List<MealProduct>>() {
+                }.getType());
+                data.setMealProducts(mealProducts);
                 List<MenuProductSize> menuProductSize = gson.fromJson(cursor.getString(cursor.getColumnIndex("menu_product_size")), new TypeToken<List<MenuProductSize>>() {
                 }.getType());
                 data.setMenuProductSize(menuProductSize);
@@ -840,6 +866,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 data.setOriginalAmount1(cursor.getDouble(cursor.getColumnIndex("originalAmount1")));
                 data.setAmount(cursor.getString(cursor.getColumnIndex("amount")));
 
+                List<MealProduct> mealProducts = gson.fromJson(cursor.getString(cursor.getColumnIndex("meal_products")), new TypeToken<List<MealProduct>>() {
+                }.getType());
+                data.setMealProducts(mealProducts);
+
                 List<MenuProductSize> menuProductSize = gson.fromJson(cursor.getString(cursor.getColumnIndex("menu_product_size")), new TypeToken<List<MenuProductSize>>() {
                 }.getType());
                 data.setMenuProductSize(menuProductSize);
@@ -889,12 +919,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 data.setOriginalAmount1(cursor.getDouble(cursor.getColumnIndex("originalAmount1")));
                 data.setAmount(cursor.getString(cursor.getColumnIndex("amount")));
 
-                List<MenuProductSize> menuProductSize = gson.fromJson(cursor.getString(cursor.getColumnIndex("menu_product_size")), new TypeToken<List<MenuProductSize>>() {
-                }.getType());
-                data.setMenuProductSize(menuProductSize);
-                List<ProductModifier> productModifiers = gson.fromJson(cursor.getString(cursor.getColumnIndex("product_modifiers")), new TypeToken<List<ProductModifier>>() {
-                }.getType());
-                data.setProductModifiers(productModifiers);
+                String catName = getCategoryName(data.getMenuId());
+
+                if (catName.equalsIgnoreCase("Meal")) {
+
+                    List<MealProduct> mealProducts = gson.fromJson(cursor.getString(cursor.getColumnIndex("meal_products")), new TypeToken<List<MealProduct>>() {
+                    }.getType());
+                    data.setMealProducts(mealProducts);
+
+                } else {
+                    List<MenuProductSize> menuProductSize = gson.fromJson(cursor.getString(cursor.getColumnIndex("menu_product_size")), new TypeToken<List<MenuProductSize>>() {
+                    }.getType());
+                    data.setMenuProductSize(menuProductSize);
+                    List<ProductModifier> productModifiers = gson.fromJson(cursor.getString(cursor.getColumnIndex("product_modifiers")), new TypeToken<List<ProductModifier>>() {
+                    }.getType());
+                    data.setProductModifiers(productModifiers);
+                }
+
+
               /*  UpSells upsells = gson.fromJson(cursor.getString(cursor.getColumnIndex("upsells")), new TypeToken<UpSells>() {
                 }.getType());
                 data.setUpsells(upsells);*/

@@ -625,6 +625,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                         menuProducts.get(j).getOriginalQuantity(),
                         gson.toJson(menuProductSize),
                         gson.toJson(productModifiers),
+                        null,
                         menuProducts.get(j).getOriginalQuantity(),
                         Double.parseDouble(menuProducts.get(j).getMenuProductPrice()),
                         menuProducts.get(j).getMenuProductPrice());

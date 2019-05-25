@@ -29,7 +29,11 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     SizeModifierAdapter sizeModifierAdapter;
     //    List<ModifierProductAdapter> productAdaptersList;
     OnProductModifierSelected onProductModifierSelected;
+    private Boolean checkedFirstItem = false;
 
+    public void setCheckedFirstItem(Boolean checked) {
+        this.checkedFirstItem = checked;
+    }
 
     public ProductSizeAdapter(Context context, OnProductModifierSelected onProductModifierSelected) {
         this.context = context;
@@ -212,9 +216,14 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             sizeModifierAdapter = new SizeModifierAdapter(context, this);
             sizeModifierList.setAdapter(sizeModifierAdapter);
 //            sizeModifierAdapter.clearData();
-            if (lastSelectedPosition != -1) {
-                Log.e("SizeModifiers", lastSelectedPosition + " >> " + mItem.get(lastSelectedPosition).getSizeModifiers());
+            if (checkedFirstItem) {
                 sizeModifierAdapter.addItem(mItem.get(lastSelectedPosition).getSizeModifiers());
+
+            } else {
+                if (lastSelectedPosition != -1) {
+                    Log.e("SizeModifiers", lastSelectedPosition + " >> " + mItem.get(lastSelectedPosition).getSizeModifiers());
+                    sizeModifierAdapter.addItem(mItem.get(lastSelectedPosition).getSizeModifiers());
+                }
             }
 
         }
@@ -252,12 +261,19 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (mItem.get(position).getSelected() != null) {
                 mItem.get(position).setSelected(false);
             }
-            if (lastSelectedPosition != -1 && lastSelectedPosition == position) {
-                mItem.get(lastSelectedPosition).setSelected(true);
+            if (checkedFirstItem && position == 0) {
+                titleLayout.setVisibility(View.GONE);
+                mItem.get(0).setSelected(true);
                 itemSelected.setChecked(true);
+                lastSelectedPosition = 0;
             } else {
-                mItem.get(getLayoutPosition()).setSelected(false);
-                itemSelected.setChecked(false);
+                if (lastSelectedPosition != -1 && lastSelectedPosition == position) {
+                    mItem.get(lastSelectedPosition).setSelected(true);
+                    itemSelected.setChecked(true);
+                } else {
+                    mItem.get(getLayoutPosition()).setSelected(false);
+                    itemSelected.setChecked(false);
+                }
             }
             itemView.setOnClickListener(this);
         }

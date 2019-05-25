@@ -2,6 +2,7 @@ package com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenum
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.lexxdigital.easyfooduserapp.cart_db.tables.ProductSizeAndModifier;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class MealCategory {
 
     public MealCategory() {
     }
+
+    ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable;
 
     public MealCategory(String categoryName, int quantity, int customizable, List<MealProduct> mealProducts) {
         this.categoryName = categoryName;

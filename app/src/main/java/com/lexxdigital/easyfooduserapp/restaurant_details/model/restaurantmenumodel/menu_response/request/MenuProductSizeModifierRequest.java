@@ -8,7 +8,12 @@ public class MenuProductSizeModifierRequest {
     @Expose
     String productId;
 
-    public MenuProductSizeModifierRequest(String productId) {
+    @SerializedName("size_id")
+    @Expose
+    String sizeId;
+
+    public MenuProductSizeModifierRequest(String productId, String sizeId) {
         this.productId = productId;
+        this.sizeId = sizeId;
     }
 }

@@ -3,6 +3,8 @@ package com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenum
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class MealProduct {
     @SerializedName("id")
     @Expose
@@ -25,6 +27,15 @@ public class MealProduct {
     @SerializedName("quantity")
     @Expose
     private int quantity;
+    @SerializedName("menuProductSize")
+    @Expose
+    private List<MenuProductSize> menuProductSize;
+    @SerializedName("productModifiers")
+    @Expose
+    private List<ProductModifier> productModifiers ;
+
+    @Expose
+    public Boolean isSelected = false;
 
     public MealProduct() {
     }
@@ -95,6 +106,30 @@ public class MealProduct {
         this.quantity = quantity;
     }
 
+    public List<MenuProductSize> getMenuProductSize() {
+        return menuProductSize;
+    }
+
+    public void setMenuProductSize(List<MenuProductSize> menuProductSize) {
+        this.menuProductSize = menuProductSize;
+    }
+
+    public List<ProductModifier> getProductModifiers() {
+        return productModifiers;
+    }
+
+    public void setProductModifiers(List<ProductModifier> productModifiers) {
+        this.productModifiers = productModifiers;
+    }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
+    }
+
     @Override
     public String toString() {
         return "MealProduct{" +
@@ -105,6 +140,9 @@ public class MealProduct {
                 ", productName='" + productName + '\'' +
                 ", productSizeName='" + productSizeName + '\'' +
                 ", quantity=" + quantity +
+                ", menuProductSize=" + menuProductSize +
+                ", productModifiers=" + productModifiers +
+                ", isSelected=" + isSelected +
                 '}';
     }
 }

@@ -132,7 +132,6 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
                 subCategoryView.setAdapter(restaurantSubCategoryAdapter);
                 restaurantSubCategoryAdapter.addItem(menuSubCategory);
             }
-//            }
         }
 
     }
@@ -203,17 +202,16 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
                         clickCount.setVisibility(View.GONE);
                     }
                     if (menuItemClickListener != null) {
-//                        List<MenuProduct> mItemNew = mItem;
-//                        menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 1, menuCategory, progressBar);
+                        List<Meal> mItemNew = mItem;
+                        menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 1, menuCategory, progressBar);
                     }
                     break;
                 default:
                     if (clickCount.getVisibility() == View.GONE) {
                         itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
                         if (menuItemClickListener != null) {
-//                            List<MenuProduct> mItemNew = mItem;
-//
-//                            menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
+                            List<Meal> mItemNew = mItem;
+                            menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
                         }
                     }
                     break;

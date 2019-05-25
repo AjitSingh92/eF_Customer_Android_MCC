@@ -51,6 +51,9 @@ public class MenuProduct {
     @SerializedName("productModifiers")
     @Expose
     private List<ProductModifier> productModifiers = null;
+    @SerializedName("meal_products")
+    @Expose
+    private List<MealProduct> mealProducts = null;
     @Expose
     private String amount;
     @Expose
@@ -63,7 +66,7 @@ public class MenuProduct {
     public MenuProduct() {
     }
 
-    public MenuProduct(String menuProductId, String productName, String description, String vegType, String menuProductPrice, String userappProductImage, String ecomProductImage, String productOverallRating, List<MenuProductSize> menuProductSize, List<ProductModifier> productModifiers, String amount, Integer quantity, Integer originalQuantity, Double originalAmount1) {
+    public MenuProduct(String menuProductId, String productName, String description, String vegType, String menuProductPrice, String userappProductImage, String ecomProductImage, String productOverallRating, List<MenuProductSize> menuProductSize, List<ProductModifier> productModifiers, List<MealProduct> mealProducts,String amount, Integer quantity, Integer originalQuantity, Double originalAmount1) {
         this.menuProductId = menuProductId;
         this.productName = productName;
         this.description = description;
@@ -74,6 +77,7 @@ public class MenuProduct {
         this.productOverallRating = productOverallRating;
         this.menuProductSize = menuProductSize;
         this.productModifiers = productModifiers;
+        this.mealProducts = mealProducts;
         this.amount = amount;
         this.quantity = quantity;
         this.originalQuantity = originalQuantity;
@@ -184,6 +188,14 @@ public class MenuProduct {
         this.productModifiers = productModifiers;
     }
 
+    public List<MealProduct> getMealProducts() {
+        return mealProducts;
+    }
+
+    public void setMealProducts(List<MealProduct> mealProducts) {
+        this.mealProducts = mealProducts;
+    }
+
     public String getAmount() {
         return amount;
     }
@@ -232,6 +244,7 @@ public class MenuProduct {
                 ", productOverallRating='" + productOverallRating + '\'' +
                 ", menuProductSize=" + menuProductSize +
                 ", productModifiers=" + productModifiers +
+                ", mealProducts=" + mealProducts +
                 ", amount='" + amount + '\'' +
                 ", quantity=" + quantity +
                 ", originalQuantity=" + originalQuantity +

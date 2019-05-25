@@ -1,9 +1,11 @@
 package com.lexxdigital.easyfooduserapp.adapters.menu_adapter;
 
+import android.app.Dialog;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.lexxdigital.easyfooduserapp.cart_db.tables.ProductSizeAndModifier;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.SpecialOffer;
 
@@ -20,5 +22,11 @@ public interface ItemClickListener {
             menuCategory, ProgressBar progressBar);
 
     void OnAddItem(int parentPosition, int childPosition, View qtyLayout, TextView itemQtyView, int itemCount, int action, MenuCategory menuCategory);
+
+    void OnMealProductClick(Dialog dialog,int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable, Boolean isSubCat);
+
+    void loadMealProductData(Dialog dialog, String productId, String productSizeId, ProgressBar progressBar, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat);
+
+    void OnMealProductModifierSelected(Boolean onDone, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat);
 
 }

@@ -73,7 +73,6 @@ public class ExpandableAdapterRecycleview extends BaseExpandableListAdapter impl
 
     WhatLikeAdapter.PositionInterface mPositionInterface2;
     TextView lblSize;
-    RecyclerView sizeModifier;
     WhatLikeAdapter mWhatLikeAdapter;
     AdapterProductModifier productModifierAdapter;
     RecyclerView productModifier;
@@ -127,7 +126,7 @@ public class ExpandableAdapterRecycleview extends BaseExpandableListAdapter impl
             RelativeLayout subCategory = (RelativeLayout) convertView.findViewById(R.id.txt_subcategory);
             TextView details = (TextView) convertView.findViewById(R.id.txt_items_detail);
             TextView suTitle = (TextView) convertView.findViewById(R.id.txt_sub_title);
-            RelativeLayout itemClick = (RelativeLayout) convertView.findViewById(R.id.click_items);
+            RelativeLayout itemClick = convertView.findViewById(R.id.click_items);
             LinearLayout itemRemove = (LinearLayout) convertView.findViewById(R.id.item_remove);
             LinearLayout itemAdd = (LinearLayout) convertView.findViewById(R.id.item_add);
             final TextView itemCount = (TextView) convertView.findViewById(R.id.item_count);
@@ -263,7 +262,7 @@ public class ExpandableAdapterRecycleview extends BaseExpandableListAdapter impl
                 TextView childItemName = (TextView) convertView.findViewById(R.id.txt_menu_title);
                 TextView childItemPrice = (TextView) convertView.findViewById(R.id.txt_price);
                 LinearLayout itemClick = (LinearLayout) convertView.findViewById(R.id.ly_item);
-                RelativeLayout lyItemClick = (RelativeLayout) convertView.findViewById(R.id.click_items);
+                RelativeLayout lyItemClick = convertView.findViewById(R.id.click_items);
                 TextView details = (TextView) convertView.findViewById(R.id.txt_items_detail);
 
                 LinearLayout itemRemove = (LinearLayout) convertView.findViewById(R.id.item_remove);
@@ -507,7 +506,6 @@ public class ExpandableAdapterRecycleview extends BaseExpandableListAdapter impl
         TextView categoryPrice = (TextView)  mDialogView.findViewById(R.id.category_price);
         popupTotalPrice = (TextView)  mDialogView.findViewById(R.id.total_price);
         RecyclerView what_type_list  = (RecyclerView) mDialogView.findViewById(R.id.what_size_type_list);
-        sizeModifier  = (RecyclerView) mDialogView.findViewById(R.id.size_modifier);
         productModifier  = (RecyclerView) mDialogView.findViewById(R.id.product_modifier);
         mPositionInterface2=this;
 
@@ -654,12 +652,12 @@ public class ExpandableAdapterRecycleview extends BaseExpandableListAdapter impl
         totalPrice2 = Double.parseDouble(qProduct.getMenuProductSize().get(pos).getProductSizePrice());
 
         if(!check.contains("1")){
-            sizeModifier.setVisibility(View.GONE);
+//            sizeModifier.setVisibility(View.GONE);
             lblSize.setVisibility(View.GONE);
             popupTotalPrice.setText("0.00");
             productModifier.setVisibility(View.GONE);
         }else{
-            sizeModifier.setVisibility(View.VISIBLE);
+//            sizeModifier.setVisibility(View.VISIBLE);
             lblSize.setVisibility(View.VISIBLE);
             productModifier.setVisibility(View.VISIBLE);
             showCartMenuProduct = new ArrayList<>();
@@ -682,8 +680,8 @@ public class ExpandableAdapterRecycleview extends BaseExpandableListAdapter impl
                 @SuppressLint("WrongConstant")
                 LinearLayoutManager horizontalLayoutManagaer2
                         = new LinearLayoutManager(_context, LinearLayoutManager.VERTICAL, false);
-                sizeModifier.setLayoutManager(horizontalLayoutManagaer2);
-                sizeModifier.setAdapter(sizeModifierAdapter);
+//                sizeModifier.setLayoutManager(horizontalLayoutManagaer2);
+//                sizeModifier.setAdapter(sizeModifierAdapter);
             }
         }else{
             lblSize.setVisibility(View.GONE);

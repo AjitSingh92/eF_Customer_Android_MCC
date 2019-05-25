@@ -386,6 +386,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                         menuProducts.get(j).getOriginalQuantity(),
                         gson.toJson(menuProductSize),
                         gson.toJson(productModifiers),
+                        null,
                         menuProducts.get(j).getOriginalQuantity(),
                         Double.parseDouble(menuProducts.get(j).getMenuProductPrice()),
                         menuProducts.get(j).getMenuProductPrice());

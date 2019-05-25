@@ -67,7 +67,6 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
 
     WhatLikeAdapter.PositionInterface mPositionInterface2;
     TextView lblSize;
-    RecyclerView sizeModifier;
     WhatLikeAdapter mWhatLikeAdapter;
     AdapterProductModifier productModifierAdapter;
     RecyclerView productModifier;
@@ -122,7 +121,7 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
         TextView title = (TextView) convertView.findViewById(R.id.txt_menu_title);
         TextView price = (TextView) convertView.findViewById(R.id.txt_price);
         TextView details = (TextView) convertView.findViewById(R.id.txt_items_detail);
-        RelativeLayout lyItemClick = (RelativeLayout) convertView.findViewById(R.id.click_items);
+        RelativeLayout lyItemClick = convertView.findViewById(R.id.click_items);
         LinearLayout itemRemove = (LinearLayout) convertView.findViewById(R.id.item_remove);
         LinearLayout itemAdd = (LinearLayout) convertView.findViewById(R.id.item_add);
         final TextView itemCount = (TextView) convertView.findViewById(R.id.item_count);
@@ -255,7 +254,6 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
         TextView categoryPrice = (TextView)  mDialogView.findViewById(R.id.category_price);
         popupTotalPrice = (TextView)  mDialogView.findViewById(R.id.total_price);
         RecyclerView what_type_list  = (RecyclerView) mDialogView.findViewById(R.id.what_size_type_list);
-        sizeModifier  = (RecyclerView) mDialogView.findViewById(R.id.size_modifier);
         productModifier  = (RecyclerView) mDialogView.findViewById(R.id.product_modifier);
         mPositionInterface2=this;
 
@@ -382,12 +380,12 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
         totalPrice2 = Double.parseDouble(qProduct.getMenuProductSize().get(pos).getProductSizePrice());
 
         if(!check.contains("1")){
-            sizeModifier.setVisibility(View.GONE);
+//            sizeModifier.setVisibility(View.GONE);
             lblSize.setVisibility(View.GONE);
             popupTotalPrice.setText("0.00");
             productModifier.setVisibility(View.GONE);
         }else{
-            sizeModifier.setVisibility(View.VISIBLE);
+//            sizeModifier.setVisibility(View.VISIBLE);
             lblSize.setVisibility(View.VISIBLE);
             productModifier.setVisibility(View.VISIBLE);
 

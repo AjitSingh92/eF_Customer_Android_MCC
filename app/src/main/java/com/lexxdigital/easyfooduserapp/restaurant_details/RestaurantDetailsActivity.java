@@ -255,11 +255,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 //                String json = gson.toJson(cartData);
 //                Log.e("menuCategory >>", json);
 
-                db.deleteCart();
+//                db.deleteCart();
 
                 SharedPreferencesClass preferencesClass = new SharedPreferencesClass(RestaurantDetailsActivity.this);
 
-               /* Gson gson2 = new Gson();
+                Gson gson2 = new Gson();
                 String json2 = gson2.toJson(val.getRestaurantDetailsResponse());
                 Log.e("CART DATA>>", gson2.toJson(db.getCartData()));
                 preferencesClass.setCartRestaurantDeatilKey(json2);
@@ -271,7 +271,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     startActivity(i);
                 } else {
 
-                }*/
+                }
             }
         });
 

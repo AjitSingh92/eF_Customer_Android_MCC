@@ -169,7 +169,6 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View v) {
             if (selectSize != -1) {
-
                 if (mItem.get(getLayoutPosition()).getSelected()) {
                     itemSelected.setChecked(false);
                     lastSelectedItem = itemSelected;

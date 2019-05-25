@@ -83,6 +83,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     Gson gson = new Gson();
     PreviousOrderDetail previousOrderDetailList;
     OrderDetails orderDetails;
+    public static String menuCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -335,6 +336,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                         tvPaidBy.setText("Paid by " + response.body().getData().getPaymentMode());
                         tvAddressType.setVisibility(View.GONE);
                         tvAddress.setVisibility(View.GONE);
+                        menuCategory = response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().get(0).getMenuCategoryName();
                        /* if (response.body().getData().getDeliveryOption().equalsIgnoreCase("delivery")) {
                             tvAddressType.setVisibility(View.VISIBLE);
                             tvAddress.setVisibility(View.VISIBLE);

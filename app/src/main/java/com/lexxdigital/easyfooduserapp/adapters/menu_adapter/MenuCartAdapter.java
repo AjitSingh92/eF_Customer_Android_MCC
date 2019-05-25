@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,7 +82,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView title, price, qty;
-        private final LinearLayout modifiers, btnRemove, btnAdd;
+        private final LinearLayout modifiers, mealModifiers, btnRemove, btnAdd;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +90,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
             title = itemView.findViewById(R.id.tv_title);
             price = itemView.findViewById(R.id.tv_price);
             modifiers = itemView.findViewById(R.id.layout_modifiers);
+            mealModifiers = itemView.findViewById(R.id.layout_meal_modifiers);
             btnRemove = itemView.findViewById(R.id.btn_remove);
             btnAdd = itemView.findViewById(R.id.btn_add);
             qty = itemView.findViewById(R.id.tv_qty);
@@ -128,80 +130,125 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
             }
             price.setText("£" + String.format("%.2f", totalPrice));
 
-            if (mItem.get(position).getMenuProductSize().size() > 0) {
+            if (mItem.get(position).getMenuProductSize() != null) {
+                if (mItem.get(position).getMenuProductSize().size() > 0) {
 
-                for (MenuProductSize menuProductSize1 : mItem.get(position).getMenuProductSize()) {
-                    if (menuProductSize1.getSelected()) {
-                        if (db.getCategoryName(mItem.get(position).getId()).equalsIgnoreCase("MEAL")) {
-                            View view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
+                    for (MenuProductSize menuProductSize1 : mItem.get(position).getMenuProductSize()) {
+                        if (menuProductSize1.getSelected()) {
+                            for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
 
-                            ((TextView) view.findViewById(R.id.tv_title)).setText(menuProductSize1.getQuantity() + "x " + menuProductSize1.getProductSizeName());
-                            ((TextView) view.findViewById(R.id.tv_price)).setText("Free");
-                            modifiers.addView(view);
+                                if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
+                                    int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
+                                    int free = 0;
+                                    for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
+                                        int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                        qty = (qty * itemQty);
 
-                        } else {
-                            {
-                                for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
-
-                                    if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
-                                        int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
-                                        int free = 0;
-                                        for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
-                                            int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
-                                            qty = (qty * itemQty);
-
-                                            View view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
+                                        View view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
 //                                    ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
 
-                                            if (free == maxAllowFree) {
-                                                ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
-                                            } else {
-                                                int qtyy = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
-                                                if (qtyy >= maxAllowFree) {
-                                                    int nQty = qtyy - maxAllowFree;
-                                                    free = maxAllowFree;
-                                                    int _qtyy = (nQty * itemQty);
+                                        if (free == maxAllowFree) {
+                                            ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
+                                        } else {
+                                            int qtyy = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                            if (qtyy >= maxAllowFree) {
+                                                int nQty = qtyy - maxAllowFree;
+                                                free = maxAllowFree;
+                                                int _qtyy = (nQty * itemQty);
 
 //                                            ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (_qtyy * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
 
-                                                    if (nQty == 0) {
-                                                        ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
-                                                        ((TextView) view.findViewById(R.id.tv_price)).setText("Free");
+                                                if (nQty == 0) {
+                                                    ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
+                                                    ((TextView) view.findViewById(R.id.tv_price)).setText("Free");
 
-                                                    } else if (nQty > 0) {
-                                                        ((TextView) view.findViewById(R.id.tv_title)).setText(_qtyy + "x " + sizeModifier.getModifier().get(i).getProductName());
-                                                        ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (_qtyy * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
+                                                } else if (nQty > 0) {
+                                                    ((TextView) view.findViewById(R.id.tv_title)).setText(_qtyy + "x " + sizeModifier.getModifier().get(i).getProductName());
+                                                    ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (_qtyy * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
 
-                                                        View viewFree = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
-                                                        ((TextView) viewFree.findViewById(R.id.tv_title)).setText(maxAllowFree + "x " + sizeModifier.getModifier().get(i).getProductName());
-                                                        ((TextView) viewFree.findViewById(R.id.tv_price)).setText("Free");
-                                                        modifiers.addView(viewFree);
+                                                    View viewFree = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
+                                                    ((TextView) viewFree.findViewById(R.id.tv_title)).setText(maxAllowFree + "x " + sizeModifier.getModifier().get(i).getProductName());
+                                                    ((TextView) viewFree.findViewById(R.id.tv_price)).setText("Free");
+                                                    modifiers.addView(viewFree);
 
-                                                    }
-
-                                                } else {
-//                                            ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
-                                                    ((TextView) view.findViewById(R.id.tv_price)).setText("free");
-                                                    free++;
                                                 }
-                                            }
-                                            modifiers.addView(view);
-                                        }
-                                    } else {
-                                        for (Modifier modifier : sizeModifier.getModifier()) {
-                                            int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                            qty = (qty * itemQty);
 
-                                            View view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
-                                            ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + modifier.getProductName());
-                                            ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
-                                            modifiers.addView(view);
+                                            } else {
+//                                            ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
+                                                ((TextView) view.findViewById(R.id.tv_price)).setText("free");
+                                                free++;
+                                            }
                                         }
+                                        modifiers.addView(view);
+                                    }
+                                } else {
+                                    for (Modifier modifier : sizeModifier.getModifier()) {
+                                        int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                        qty = (qty * itemQty);
+
+                                        View view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
+                                        ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + modifier.getProductName());
+                                        ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
+                                        modifiers.addView(view);
                                     }
                                 }
                             }
                         }
                     }
+                }
+            } else {
+                if (db.getCategoryName(mItem.get(position).getId()).equalsIgnoreCase("MEAL")) {
+                    for (int i = 0; i < mItem.get(position).getMealProducts().size(); i++) {
+                        View view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
+                        ((TextView) view.findViewById(R.id.tv_title)).setText(mItem.get(position).getMealProducts().get(i).getQuantity() + "x " + mItem.get(position).getMealProducts().get(i).getProductSizeName() + " " + mItem.get(position).getMealProducts().get(i).getProductName());
+                        ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
+
+
+                        if (mItem.get(position).getMealProducts().get(i).getMenuProductSize() != null) {
+                            for (int j = 0; j < mItem.get(position).getMealProducts().get(i).getMenuProductSize().size(); j++) {
+
+                                for (int k = 0; k < mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().size(); k++) {
+
+                                    int maxAllowFree = mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getMaxAllowedQuantity();
+                                    int free = 0;
+                                    if (mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifierType().equalsIgnoreCase("free")) {
+
+                                        for (int l = 0; l < mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().size(); l++) {
+
+                                            View view1 = LayoutInflater.from(context).inflate(R.layout.item_meal_modifier, null);
+                                            ((TextView) view1.findViewById(R.id.tv_title)).setText(mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().get(l).getOriginalQuantity() + "x " + mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().get(l).getProductName());
+
+                                            if (free == maxAllowFree) {
+
+                                                ((TextView) view1.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format(mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().get(l).getModifierProductPrice()));
+                                            } else {
+
+                                                ((TextView) view1.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
+                                                free++;
+
+                                            }
+                                            mealModifiers.addView(view1);
+
+                                        }
+                                    } else {
+
+                                        for (int l = 0; l < mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().size(); l++) {
+
+                                            View view1 = LayoutInflater.from(context).inflate(R.layout.item_meal_modifier, null);
+                                            ((TextView) view1.findViewById(R.id.tv_title)).setText(mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().get(l).getOriginalQuantity() + "x " + mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().get(l).getProductName());
+                                            ((TextView) view1.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format(mItem.get(position).getMealProducts().get(i).getMenuProductSize().get(j).getSizeModifiers().get(k).getModifier().get(l).getModifierProductPrice()));
+                                            mealModifiers.addView(view1);
+
+                                        }
+                                    }
+
+                                }
+
+                            }
+                        }
+                        modifiers.addView(view);
+                    }
+                } else {
                 }
             }
 
@@ -261,13 +308,17 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                     qty.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) + 1)));
                     mItem.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(qty.getText().toString()));
 
+                    if (!db.getCategoryName(mItem.get(getLayoutPosition()).getId()).equalsIgnoreCase("MEAL")) {
 
-                    int id = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
-                    if (onMenuCartItemClick != null) {
-                        onMenuCartItemClick.OnQuantityBtnClick();
-                    }
-                    if (id != -1) {
-                        notifyItemChanged(getLayoutPosition());
+
+                        int id = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
+
+                        if (onMenuCartItemClick != null) {
+                            onMenuCartItemClick.OnQuantityBtnClick();
+                        }
+                        if (id != -1) {
+                            notifyItemChanged(getLayoutPosition());
+                        }
                     }
                     break;
                 case R.id.btn_remove:
@@ -275,23 +326,35 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                         qty.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) - 1)));
                         mItem.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(qty.getText().toString()));
                         int id1 = -1;
-
-                        if (Integer.parseInt(qty.getText().toString()) == 0) {
-                            db.deleteItem(mItem.get(getLayoutPosition()).getId(), mItem.get(getLayoutPosition()).getId());
-                            db.deleteUpsellProductByParentId(mItem.get(getLayoutPosition()).getMenuProductId());
-                            mItem.remove(getLayoutPosition());
-                            notifyItemRemoved(getLayoutPosition());
+                        if (!db.getCategoryName(mItem.get(getLayoutPosition()).getId()).equalsIgnoreCase("MEAL")) {
+                            if (Integer.parseInt(qty.getText().toString()) == 0) {
+                                db.deleteItem(mItem.get(getLayoutPosition()).getId(), mItem.get(getLayoutPosition()).getId());
+                                db.deleteUpsellProductByParentId(mItem.get(getLayoutPosition()).getMenuProductId());
+                                mItem.remove(getLayoutPosition());
+                                notifyItemRemoved(getLayoutPosition());
+                                if (onMenuCartItemClick != null) {
+                                    onMenuCartItemClick.OnUpSellItemRemove();
+                                }
+                            } else {
+                                id1 = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
+                            }
                             if (onMenuCartItemClick != null) {
-                                onMenuCartItemClick.OnUpSellItemRemove();
+                                onMenuCartItemClick.OnQuantityBtnClick();
+                            }
+
+                            if (id1 != -1) {
+                                notifyItemChanged(getLayoutPosition());
                             }
                         } else {
-                            id1 = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
-                        }
-                        if (onMenuCartItemClick != null) {
-                            onMenuCartItemClick.OnQuantityBtnClick();
-                        }
-                        if (id1 != -1) {
-                            notifyItemChanged(getLayoutPosition());
+                            if (Integer.parseInt(qty.getText().toString()) == 0) {
+                                db.deleteItem(mItem.get(getLayoutPosition()).getId(), mItem.get(getLayoutPosition()).getId());
+                                db.deleteUpsellProductByParentId(mItem.get(getLayoutPosition()).getMenuProductId());
+                                mItem.remove(getLayoutPosition());
+                                notifyItemRemoved(getLayoutPosition());
+                                if (onMenuCartItemClick != null) {
+                                    onMenuCartItemClick.OnQuantityBtnClick();
+                                }
+                            }
                         }
                     }
                     break;

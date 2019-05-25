@@ -38,8 +38,12 @@
         android:id="@+id/sub_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"></LinearLayout>
 
-    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout.meal_modifiers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
 </LinearLayout>
 

@@ -35,6 +35,7 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
     OnMealProductItemSelect onMealProductItemSelect;
     List<MealProductAdapter> mealProductAdapters;
 
+
     public MealProductCategoryAdapter(Context context, Dialog dialog, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect) {
         this.context = context;
         inflater = LayoutInflater.from(context);

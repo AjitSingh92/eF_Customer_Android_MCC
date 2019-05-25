@@ -113,7 +113,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                     totalPrice += (itemQty * Double.parseDouble(mItem.get(position).getMenuProductSize().get(0).getProductSizePrice()));
                 }
             }*/
-            if (db.getCategoryName(mItem.get(position).getId()).equalsIgnoreCase("MEAL")) {
+            if (db.getCategoryName(mItem.get(position).getId()).equalsIgnoreCase("MEAL") || db.getCategoryName(mItem.get(position).getId()).equalsIgnoreCase("")) {
 
                 title.setText(itemQty + "x " + mItem.get(position).getProductName());
                 totalPrice += mItem.get(position).getOriginalAmount1();

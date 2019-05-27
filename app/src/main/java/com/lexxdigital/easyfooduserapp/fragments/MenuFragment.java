@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -164,9 +165,10 @@ public class MenuFragment extends Fragment {
 //        layoutManager.setScrollEnabled(false);
         mainMenu.setLayoutManager(layoutManager);
 
-        mainMenu.setNestedScrollingEnabled(false);
+        mainMenu.setNestedScrollingEnabled(true);
         mMenuAdapter = new RestaurantMenuListAdapter(mActivity, mContext, menuProductViewModel, menuItemClickListener);
         mainMenu.setAdapter(mMenuAdapter);
+
 
         if (DATA.getSpecialOffers() != null && DATA.getSpecialOffers().size() > 0) {
             mMenuAdapter.addItem(new RestaurantMenuList(DATA.getSpecialOffers(), null));

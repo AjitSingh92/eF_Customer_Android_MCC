@@ -3,7 +3,6 @@ package com.lexxdigital.easyfooduserapp.dialogs;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.adapters.AddressDialogAdapter;
 import com.lexxdigital.easyfooduserapp.adapters.RecyclerLayoutManager;
-import com.lexxdigital.easyfooduserapp.add_manual_address.AddAddressManualActivity;
 import com.lexxdigital.easyfooduserapp.api.VoucherApplyInterface;
 import com.lexxdigital.easyfooduserapp.model.AddressList;
 import com.lexxdigital.easyfooduserapp.model.restuarant_time_slot.TimeSlotRequest;
@@ -38,7 +37,10 @@ import com.lexxdigital.easyfooduserapp.utility.ApiClient;
 import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -271,9 +273,12 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                                 String data = response.body().getData().getToday().get(i);
                                 if (data != null) {
 
+                                    String dateString = data.substring(0, 10).replace("-", "/");
+
+
                                     String[] str = data.split(" ");
                                     if (str.length >= 2) {
-                                        toDayList[(i + 1)] = str[1];
+                                        toDayList[(i + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
                                     }
                                 }
                             }
@@ -291,9 +296,12 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                             for (int i = 0; i < response.body().getData().getTomorrow().size(); i++) {
                                 String data = response.body().getData().getTomorrow().get(i);
                                 if (data != null) {
+
+                                    String dateString = data.substring(0, 10).replace("-", "/");
+
                                     String[] str = data.split(" ");
                                     if (str.length >= 2) {
-                                        tomorrowList[(i + 1)] = str[1];
+                                        tomorrowList[(i + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
                                     }
                                 }
                             }

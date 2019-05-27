@@ -46,6 +46,7 @@ public class OrderStatusResponseModel implements Serializable {
         String order_number;
         int order_status;
         String delivery_date_time;
+        String order_date_time;
         String order_total;
         String restaurant_name;
         String prepare_time;
@@ -76,6 +77,14 @@ public class OrderStatusResponseModel implements Serializable {
 
         public void setDelivery_date_time(String delivery_date_time) {
             this.delivery_date_time = delivery_date_time;
+        }
+
+        public String getOrder_date_time() {
+            return order_date_time;
+        }
+
+        public void setOrder_date_time(String order_date_time) {
+            this.order_date_time = order_date_time;
         }
 
         public String getOrder_total() {
@@ -132,6 +141,7 @@ public class OrderStatusResponseModel implements Serializable {
                     "order_number='" + order_number + '\'' +
                     ", order_status=" + order_status +
                     ", delivery_date_time='" + delivery_date_time + '\'' +
+                    ", order_date_time='" + order_date_time + '\'' +
                     ", order_total='" + order_total + '\'' +
                     ", restaurant_name='" + restaurant_name + '\'' +
                     ", prepare_time='" + prepare_time + '\'' +

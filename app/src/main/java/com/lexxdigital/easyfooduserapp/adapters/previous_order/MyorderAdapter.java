@@ -334,6 +334,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                 i.putExtra("RESTAURANTID", restuarantId);
                 i.putExtra("RESTAURANTNAME", restuarantName);
                 sharePre.setString(sharePre.RESTUARANT_ID, restuarantId);
+                sharePre.setString(sharePre.RESTUARANT_NAME, restuarantName);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);

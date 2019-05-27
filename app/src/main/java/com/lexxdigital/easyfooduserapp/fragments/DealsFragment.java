@@ -325,6 +325,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 if (position == data.getRestaurants().size() - 1) {
                     int offset;
                     offset = position + 1;
+                    dialog.show();
                     getDealsLazyLoad(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
 
                 }
@@ -381,6 +382,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             }
         });
 
+
     }
 
     public void updateUi(boolean showOops) {
@@ -425,10 +427,9 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             @Override
             public void onResponse(Call<RestaurantsDealResponse> call, Response<RestaurantsDealResponse> response) {
                 try {
-                    if (swipreferesh != null)
-                        swipreferesh.setRefreshing(false);
-                    dialog.hide();
+
                     if (response.body().getSuccess()) {
+
                         data = response.body().getData();
                         Log.e(TAG, "onResponse: datasize>>> " + data.getRestaurants().size());
                         if (data.getRestaurants().size() > 0) {
@@ -469,7 +470,14 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                         mDealAdapter.notifyDataSetChanged();
                         isLoading = false;
 
+                        if (swipreferesh != null)
+                            swipreferesh.setRefreshing(false);
+                        dialog.hide();
+
                     } else {
+                        if (swipreferesh != null)
+                            swipreferesh.setRefreshing(false);
+                        dialog.hide();
                         restaurauntCount.setText("Unable to load, Swipe down to reload.");
                     }
                 } catch (Exception e) {
@@ -796,7 +804,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             @Override
             public void onResponse(Call<FilterSortResponse> call, Response<FilterSortResponse> response) {
                 try {
-                    dialog.hide();
+
                     if (response.body().getSuccess()) {
                         sortByList = response.body().getData().getSortBy();
                         filterByList = response.body().getData().getFilterBy().getOffers();
@@ -844,8 +852,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
                     }
                 } catch (Exception e) {
-                    dialog.hide();
-
                     Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
                     //    showDialog("Please try again.");
 //                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();

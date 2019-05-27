@@ -28,8 +28,10 @@ import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
@@ -195,6 +197,21 @@ public class Constants {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    public static String getDayMonth(String date) {
 
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+
+        Date readDate = null;
+        try {
+            readDate = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String dayMonth = readDate.toString().substring(0, 10);
+
+        return dayMonth;
+    }
 
 }

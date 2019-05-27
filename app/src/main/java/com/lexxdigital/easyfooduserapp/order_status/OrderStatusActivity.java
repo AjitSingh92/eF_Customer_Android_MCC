@@ -247,7 +247,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                                 if (data.getSuccess()) {
                                     mainRL_.setVisibility(View.VISIBLE);
                                     tvOrderId.setText("Order Id: " + data.getData().getOrder_number());
-                                    tvOrderTimeStamp.setText(data.getData().getDelivery_date_time());
+                                    tvOrderTimeStamp.setText(data.getData().getOrder_date_time());
                                     tvOrderAmount.setText("£" + String.format("%.2f", Double.parseDouble(data.getData().getOrder_total())));
                                     restaurant_name = data.getData().getRestaurant_name();
                                     prepared_time = data.getData().getPrepare_time();

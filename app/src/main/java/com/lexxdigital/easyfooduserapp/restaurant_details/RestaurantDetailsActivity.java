@@ -1384,10 +1384,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             for (MenuProduct menuProduct : menuProducts) {
                 int itemQty = menuProduct.getOriginalQuantity();
                 totalCartIterm += itemQty;
-                totalPrice += (menuProduct.getOriginalAmount1() * itemQty);
-                if (menuProduct.getMealProducts() != null) {
-                    for (MealProduct mealProduct : menuProduct.getMealProducts()) {
 
+                if (menuProduct.getMealProducts() != null) {
+                    totalPrice += (menuProduct.getOriginalAmount1() * itemQty);
+                    for (MealProduct mealProduct : menuProduct.getMealProducts()) {
                         if (mealProduct.getSelected()) {
                             if (mealProduct.getMenuProductSize() != null) {
                                 for (MenuProductSize menuProductSize1 : mealProduct.getMenuProductSize()) {

@@ -165,7 +165,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                 public void onClick(View v) {
                     try {
                         if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
-                            Log.e("restaurant", Constants.RESTAURANT_ID + "," + listFavourites.get(listPosition).getEntityID());
                             if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(listFavourites.get(listPosition).getEntityID())) {
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                                 i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());

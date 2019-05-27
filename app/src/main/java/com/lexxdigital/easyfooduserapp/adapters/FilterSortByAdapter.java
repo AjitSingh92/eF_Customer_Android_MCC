@@ -81,7 +81,13 @@ public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapte
         SortBy sortBy = sortByList.get(listPosition);
         ImageView rightImg = holder.rightImg;
         ImageView not_right_tv = holder.not_right_tv;
-        holder.sizeName.setText(sortBy.getLabel());
+
+        /*TODO: hide to Distance option from filter list*/
+        if (sortBy.getLabel().equalsIgnoreCase("Distance")) {
+
+        } else {
+            holder.sizeName.setText(sortBy.getLabel());
+        }
 
         if (check.get(listPosition).equals("1")) {
             totalSelectedPosition = listPosition;

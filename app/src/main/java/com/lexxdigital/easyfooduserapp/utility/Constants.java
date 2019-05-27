@@ -63,8 +63,6 @@ public class Constants {
     public static final String NOTIFICATION_ORDER_ID = "NOTIFICATION_ORDER_ID";
     public static final int NOTIFICATION_ID = 10000;
     public static final int NOTIFICATION_ID_BIG_IMAGE = 10000;
-    public static String RESTAURANT_ID;
-    public static String RESTAURANT_NAME;
     public static int ORDER_STATUS = 0;
 
 

@@ -682,8 +682,6 @@ public class AddNewCardActivity extends AppCompatActivity {
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
-                    Constants.RESTAURANT_ID = "";
-                    Constants.RESTAURANT_NAME = "";
                     Constants.ORDER_STATUS = 1;
 
                     Constants.switchActivity(AddNewCardActivity.this, OrderStatusActivity.class);

@@ -217,6 +217,10 @@ public class SharedPreferencesClass {
         editor = sharedpreferences3.edit();
         editor.clear();
         editor.apply();
+        SharedPreferences sharedpreferences4 = mContext.getSharedPreferences(RESTUARANT_NAME, mContext.MODE_PRIVATE);
+        editor = sharedpreferences4.edit();
+        editor.clear();
+        editor.apply();
         setFirstTimeLaunch(lonch);
 
     }

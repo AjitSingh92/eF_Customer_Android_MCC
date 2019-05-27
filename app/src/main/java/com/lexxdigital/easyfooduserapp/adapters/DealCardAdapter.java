@@ -149,7 +149,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
 
                     try {
                         if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("") && db.getCartData() != null) {
-                            Log.e("restaurant", Constants.RESTAURANT_ID + "," + response.get(mListPosition).getId());
+
                             if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.get(mListPosition).getId())) {
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                                 i.putExtra("RESTAURANTID", response.get(mListPosition).getId());

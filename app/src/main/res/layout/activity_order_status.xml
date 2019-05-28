@@ -97,7 +97,7 @@
 
                         <TextView
                             android:id="@+id/tv.DetailsMsg"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="65dp"
                             android:layout_below="@+id/edittextMobile"
                             android:layout_margin="@dimen/_5sdp"
@@ -359,7 +359,7 @@
                                 android:paddingTop="@dimen/_5sdp"
                                 android:paddingBottom="@dimen/_5sdp"
                                 android:text="Order Id:"
-                                android:textColor="@color/gray_light"
+                                android:textColor="@color/orange"
                                 android:textSize="@dimen/_10sdp" />
 
                             <TextView

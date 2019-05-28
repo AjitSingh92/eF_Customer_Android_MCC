@@ -137,7 +137,7 @@
                             android:fontFamily="@font/avenir_medium"
                             android:hint="Card Number (required)"
                             android:inputType="number"
-                            android:maxLength="16"
+                            android:maxLength="19"
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
                             android:textColor="@color/gray"

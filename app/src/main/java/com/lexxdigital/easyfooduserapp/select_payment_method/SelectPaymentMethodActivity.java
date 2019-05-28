@@ -395,7 +395,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
     @OnClick(R.id.back)
     public void onViewClicked() {
-        startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
+//        startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
         finish();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
@@ -403,7 +403,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
+//        startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
         finish();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         // Toast.makeText(val, "", Toast.LENGTH_SHORT).show();

@@ -360,6 +360,13 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
                                                           mDealAdapter.getFilter().filter(s.toString());
 
+                                                          if (mDealAdapter.getItemCount() > 1) {
+                                                              restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurants delivering to");
+                                                          } else {
+                                                              restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurant delivering to");
+                                                          }
+
+
 
                                                           if (s.toString().equals("")) {
                                                               clear.setVisibility(View.GONE);

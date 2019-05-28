@@ -851,7 +851,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         }*/
             checkModifierAndSizeInDb(true, menuCategory.getMenuProducts().get(childPosition).getMenuProductId(), parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
         }
-
     }
 
     private void checkModifierAndSizeInDb(final Boolean isCategory, final String productId, final int parentPosition, final int childPosition, final View qtyLayout, final TextView itemQtyView, final int itemCount, final int action, final MenuCategory menuCategory, final ProgressBar progressBar) {

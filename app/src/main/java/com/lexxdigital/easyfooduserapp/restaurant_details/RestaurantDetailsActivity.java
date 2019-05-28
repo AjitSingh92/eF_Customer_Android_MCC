@@ -771,20 +771,21 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if (mResponse.body().getSuccess()) {
-                            mResponse.body().getData().setCategoryId(categoryId);
-                            final Long id = GlobalValues.getInstance().getDb().menuProductMaster().insert(mResponse.body().getData());
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setVisibility(View.GONE);
-                                    if (id > 0) {
-                                        MenuFragment.getMenuFragment().menuAdapterNotifyItem(mParentPosition);
+                        if (mResponse.body().getSuccess() != null)
+                            if (mResponse.body().getSuccess()) {
+                                mResponse.body().getData().setCategoryId(categoryId);
+                                final Long id = GlobalValues.getInstance().getDb().menuProductMaster().insert(mResponse.body().getData());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mProgressBar.setVisibility(View.GONE);
+                                        if (id > 0) {
+                                            MenuFragment.getMenuFragment().menuAdapterNotifyItem(mParentPosition);
+                                        }
                                     }
-                                }
-                            });
+                                });
 
-                        }
+                            }
                     }
                 }).start();
 

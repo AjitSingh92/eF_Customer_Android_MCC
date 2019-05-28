@@ -733,11 +733,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             menuProductSize2.setQuantity(menuProductSize1.getQuantity());
                             menuProductSize2.setSelected(menuProductSize1.getSelected());
 
-//                            for (SizeModifier sizeModifier:menuProductSize1.getSizeModifiers()) {
-//
-//                            }
-//                            menuProductSize2.setSizeModifiers(menuProductSize1.getSizeModifiers());
-
 //----------------------------------------------------------------------
 
                             List<SizeModifier> sizeModifiers = new ArrayList<>();

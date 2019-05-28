@@ -175,7 +175,7 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
         request.setFavouriteType("restaurant");
         request.setPostCode("");
         request.setOffset(0);
-        request.setLimit(10);
+        request.setLimit(50);
 
         Call<FavouristeListRespose> call3 = apiInterface.mFavouriteList(request);
         call3.enqueue(new Callback<FavouristeListRespose>() {

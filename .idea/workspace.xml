@@ -41,7 +41,8 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/FavouritesFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/FavouritesFragment.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -195,27 +196,27 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="2" />
-          <entry key="java" value="121" />
+          <entry key="java" value="124" />
           <entry key="xml" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="2" />
-          <entry key="JAVA" value="121" />
+          <entry key="JAVA" value="124" />
           <entry key="XML" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="1188" />
+          <entry key="java" value="1533" />
           <entry key="txt" value="44" />
           <entry key="xml" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1188" />
+          <entry key="JAVA" value="1533" />
           <entry key="PLAIN_TEXT" value="44" />
           <entry key="XML" value="21" />
         </counts>
@@ -228,32 +229,23 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="285" column="30" selection-start-line="285" selection-start-column="30" selection-end-line="285" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1875">
-              <caret line="167" column="47" selection-start-line="167" selection-start-column="47" selection-end-line="167" selection-end-column="47" />
+            <state relative-caret-position="-840">
+              <caret line="104" column="13" selection-start-line="104" selection-start-column="13" selection-end-line="104" selection-end-column="13" />
               <folding>
-                <element signature="e#6867#6868#0" expanded="true" />
-                <element signature="e#6923#6924#0" expanded="true" />
+                <element signature="e#40059#40060#0" expanded="true" />
+                <element signature="e#40089#40090#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/RestaurantMenuListAdapter.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="202" column="96" selection-start-line="202" selection-start-column="96" selection-end-line="202" selection-end-column="96" />
+            <state relative-caret-position="393">
+              <caret line="310" column="33" selection-start-line="310" selection-start-column="33" selection-end-line="310" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -272,8 +264,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>size_lable</find>
-      <find>itemSelected</find>
       <find>total_price</find>
       <find>MealProductModifierDialog</find>
       <find>totalPriceView</find>
@@ -302,6 +292,8 @@
       <find>mDealAdapter</find>
       <find>sortByList</find>
       <find>menuItemClickListener</find>
+      <find>toDayDataList</find>
+      <find>toDayList</find>
     </findStrings>
     <replaceStrings>
       <replace>holder.ivBrand</replace>
@@ -2628,7 +2620,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/meal_product_modifier_row.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MealProductModifierAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/OnMealProductClickListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/popup_select_items.xml" />
@@ -2668,7 +2659,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/popup_filter.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/DealsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/DealAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/FilterSortByAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java" />
@@ -2679,6 +2669,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/FavouritesAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/utility/SharedPreferencesClass.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/FavouritesFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java" />
       </list>
     </option>
   </component>
@@ -2759,6 +2751,20 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="easyfood_userapp_android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="dialogs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="easyfood_userapp_android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="fragments" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="easyfood_userapp_android" type="1abcf292:AndroidViewProjectNode" />
@@ -2893,20 +2899,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556196141367</updated>
-    </task>
-    <task id="LOCAL-00011" summary="30 april &#10;&#10;Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
-      <created>1556602729936</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1556602729936</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
-      <created>1556603479498</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1556603479498</updated>
     </task>
     <task id="LOCAL-00013" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
       <created>1556603504526</created>
@@ -3237,7 +3229,21 @@
       <option name="project" value="LOCAL" />
       <updated>1558964318840</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Bugs and suggestion on 27-05-2019">
+      <created>1558967636372</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1558967636372</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Bugs and suggestion">
+      <created>1559018965509</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1559018965509</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3251,7 +3257,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1600" height="810" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49746192" weight="0.27155727" />
@@ -3261,16 +3266,16 @@
       <window_info id="Image Layers" order="5" />
       <window_info id="Designer" order="6" />
       <window_info id="Capture Tool" order="7" />
-      <window_info anchor="bottom" id="Run" order="0" weight="0.6485294" />
-      <window_info anchor="bottom" id="TODO" order="1" weight="0.32941177" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.31764707" />
-      <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.4993565" weight="1.0" />
-      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.5006435" side_tool="true" weight="0.2720588" />
-      <window_info anchor="bottom" id="Version Control" order="5" weight="0.32941177" />
-      <window_info anchor="bottom" id="Build" order="6" weight="0.42352942" />
-      <window_info anchor="bottom" id="Android Profiler" order="7" />
-      <window_info anchor="bottom" id="Find" order="8" weight="0.32941177" />
-      <window_info anchor="bottom" id="Logcat" order="9" weight="0.75441176" />
+      <window_info anchor="bottom" id="TODO" order="0" weight="0.32941177" />
+      <window_info anchor="bottom" id="Debug" order="1" weight="0.20294118" />
+      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.4993565" weight="1.0" />
+      <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.5006435" side_tool="true" weight="0.2720588" />
+      <window_info anchor="bottom" id="Version Control" order="4" weight="0.32941177" />
+      <window_info anchor="bottom" id="Build" order="5" weight="0.42352942" />
+      <window_info anchor="bottom" id="Android Profiler" order="6" />
+      <window_info anchor="bottom" id="Find" order="7" weight="0.32941177" />
+      <window_info anchor="bottom" id="Logcat" order="8" weight="0.75441176" />
+      <window_info anchor="bottom" id="Run" order="9" weight="0.6485294" />
       <window_info anchor="right" id="Assistant" order="0" sideWeight="0.4985294" weight="0.32947233" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Gradle" order="2" sideWeight="0.2867647" weight="0.32947233" />
@@ -3326,7 +3331,8 @@
     <MESSAGE value="Change MenuCategory keyword&#10;Delivery Address id with checkout" />
     <MESSAGE value="Meal" />
     <MESSAGE value="Bugs and suggestion on 27-05-2019" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bugs and suggestion on 27-05-2019" />
+    <MESSAGE value="Bugs and suggestion" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugs and suggestion" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3699,25 +3705,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>155</line>
+          <line>160</line>
           <properties />
           <option name="timeStamp" value="211" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>174</line>
+          <line>179</line>
           <properties />
           <option name="timeStamp" value="212" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>153</line>
+          <line>158</line>
           <properties />
           <option name="timeStamp" value="213" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>172</line>
+          <line>177</line>
           <properties />
           <option name="timeStamp" value="214" />
         </line-breakpoint>
@@ -4105,6 +4111,48 @@
           <properties />
           <option name="timeStamp" value="596" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
+          <line>272</line>
+          <properties />
+          <option name="timeStamp" value="597" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
+          <line>275</line>
+          <properties />
+          <option name="timeStamp" value="598" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
+          <line>301</line>
+          <properties />
+          <option name="timeStamp" value="599" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
+          <line>302</line>
+          <properties />
+          <option name="timeStamp" value="601" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
+          <line>375</line>
+          <properties />
+          <option name="timeStamp" value="603" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
+          <line>374</line>
+          <properties />
+          <option name="timeStamp" value="604" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
+          <line>161</line>
+          <properties />
+          <option name="timeStamp" value="606" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/AdapterCardList.java</url>
           <line>202</line>
@@ -4175,68 +4223,53 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>mItem</expression-string>
+        <expression-string>dateTimeDataList</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mItem.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(qty.getText().toString()))</expression-string>
+        <expression-string>toDayList.length-1</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mItem.get(0)</expression-string>
+        <expression-string>toDayList.length</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mItem.get(0).getMealProducts().get(1)</expression-string>
+        <expression-string>toDayList</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mItem.get(0).getMealProducts().get(0)</expression-string>
+        <expression-string>response.body().getData().getToday().size()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mItem.get(0).getMealProducts().get(1).getMenuProductSize()</expression-string>
+        <expression-string>toDayList.length+1</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mItem.get(0).getMealProducts().get(0).getMenuProductSize()</expression-string>
+        <expression-string>response.body().getData().getToday()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>new Gson().toJson(mItem)</expression-string>
+        <expression-string>response.body().getData().getTomorrow()</expression-string>
         <language-id>JAVA</language-id>
-        <custom-info>com.google.gson.Gson</custom-info>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>new Gson().toJson(mItem.toString())</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>com.google.gson.Gson</custom-info>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>mItem.toString()</expression-string>
+        <expression-string>response.body().getData().getTomorrow().size()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/sub_product_order_list.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="43" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dashboard_with_drawer.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
@@ -4442,13 +4475,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="252" column="68" selection-start-line="252" selection-start-column="68" selection-end-line="252" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/utility/SharedPreferencesClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -4505,16 +4531,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="172" selection-start-line="172" selection-end-line="172" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-584">
-          <caret line="846" selection-start-line="846" selection-end-line="846" />
-          <folding>
-            <element signature="e#40089#40090#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -4597,12 +4613,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1875">
-          <caret line="167" column="47" selection-start-line="167" selection-start-column="47" selection-end-line="167" selection-end-column="47" />
+        <state relative-caret-position="490">
+          <caret line="184" column="49" selection-start-line="184" selection-start-column="49" selection-end-line="184" selection-end-column="49" />
           <folding>
             <element signature="e#6867#6868#0" expanded="true" />
             <element signature="e#6923#6924#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/FavouritesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="37">
+          <caret line="178" selection-start-line="178" selection-end-line="178" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-840">
+          <caret line="104" column="13" selection-start-line="104" selection-start-column="13" selection-end-line="104" selection-end-column="13" />
+          <folding>
+            <element signature="e#40059#40060#0" expanded="true" />
+            <element signature="e#40089#40090#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="310" column="33" selection-start-line="310" selection-start-column="33" selection-end-line="310" selection-end-column="33" />
         </state>
       </provider>
     </entry>

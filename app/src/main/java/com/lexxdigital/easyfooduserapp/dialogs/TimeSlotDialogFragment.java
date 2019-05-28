@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.adapters.AddressDialogAdapter;
 import com.lexxdigital.easyfooduserapp.adapters.RecyclerLayoutManager;
@@ -39,7 +40,10 @@ import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -58,6 +62,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     private static String[] tomorrowList;
     private static List<String> toDayDataList;
     private static List<String> tomorrowDataList;
+    private static List<String> dateTimeDataList;
     String toDay, tomorrow;
     Spinner todaySpinner, tomorrowSpinner;
     SharedPreferencesClass sharePre;
@@ -131,7 +136,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
 
         if (toDayList == null) {
             toDayList = new String[1];
-            toDayList[0] = "Today";
+            toDayList[0] = "Select Delivery Time";
         }
         if (tomorrowList == null) {
             tomorrowList = new String[1];
@@ -153,7 +158,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 toDay = (String) parent.getItemAtPosition(position);
                 Log.e("item", toDay);
-                if (!toDay.equalsIgnoreCase("Today")) {
+                if (!toDay.equalsIgnoreCase("Select Delivery Time")) {
                     tomorrowSpinner.setSelection(0);
                 }
 
@@ -261,11 +266,59 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                 try {
                     if (response.body().getSuccess()) {
 
+                        /* Start========================================*/
+                        todaySpinner.setVisibility(View.VISIBLE);
+                        int size = 0;
+                        if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
+                            size = response.body().getData().getToday().size();
+                        }
+                        if (response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() > 0) {
+                            size += response.body().getData().getTomorrow().size();
+                        }
 
+                        toDayDataList = response.body().getData().getToday();
+                        tomorrowDataList = response.body().getData().getTomorrow();
+
+
+                        toDayList = new String[(size + 1)];
+                        toDayList[0] = "Select Delivery Time";
+
+                        int i;
+                        for (i = 0; i < response.body().getData().getToday().size(); i++) {
+                            String data = response.body().getData().getToday().get(i);
+                            if (data != null) {
+
+                                String dateString = data.substring(0, 10).replace("-", "/");
+
+
+                                String[] str = data.split(" ");
+                                if (str.length >= 2) {
+                                    toDayList[(i + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
+                                }
+                            }
+                        }
+
+
+                        for (int j = 0; j < response.body().getData().getTomorrow().size(); j++) {
+                            String data1 = response.body().getData().getTomorrow().get(j);
+                            if (data1 != null) {
+
+                                String dateString = data1.substring(0, 10).replace("-", "/");
+
+                                String[] str = data1.split(" ");
+                                if (str.length >= 2) {
+                                    toDayList[(i+j+ 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
+                                }
+                            }
+                        }
+
+                        /*End*/
+
+/*
                         if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
                             todaySpinner.setVisibility(View.VISIBLE);
                             toDayList = new String[(response.body().getData().getToday().size() + 1)];
-                            toDayList[0] = "Today";
+                            toDayList[0] = "Select Delivery Time";
 
                             toDayDataList = response.body().getData().getToday();
 
@@ -282,6 +335,8 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                                     }
                                 }
                             }
+
+
                         } else {
                             todaySpinner.setVisibility(View.GONE);
                         }
@@ -307,7 +362,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                             }
                         } else {
                             tomorrowSpinner.setVisibility(View.GONE);
-                        }
+                        }*/
 
                         if (response.body().getData().getToday() != null && response.body().getData().getToday().size() == 0 && response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() == 0) {
                             dismiss();
@@ -318,7 +373,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
 
                     }
                 } catch (Exception e) {
-                    Log.e("Exception", e.getMessage());
+                    Log.e("Exception", e.getLocalizedMessage());
 
                 }
 

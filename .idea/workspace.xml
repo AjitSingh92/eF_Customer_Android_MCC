@@ -35,14 +35,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07c28dd0-335a-471e-8305-ef4da525cdc1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/FavouritesFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/FavouritesFragment.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -209,14 +203,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="1533" />
+          <entry key="java" value="1540" />
           <entry key="txt" value="44" />
           <entry key="xml" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1533" />
+          <entry key="JAVA" value="1540" />
           <entry key="PLAIN_TEXT" value="44" />
           <entry key="XML" value="21" />
         </counts>
@@ -244,8 +238,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="310" column="33" selection-start-line="310" selection-start-column="33" selection-end-line="310" selection-end-column="33" />
+            <state relative-caret-position="123">
+              <caret line="217" column="22" selection-start-line="217" selection-start-column="22" selection-end-line="217" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -2900,13 +2894,6 @@
       <option name="presentableId" value="Default" />
       <updated>1556196141367</updated>
     </task>
-    <task id="LOCAL-00013" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
-      <created>1556603504526</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1556603504526</updated>
-    </task>
     <task id="LOCAL-00014" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
       <created>1556704593292</created>
       <option name="number" value="00014" />
@@ -3243,7 +3230,14 @@
       <option name="project" value="LOCAL" />
       <updated>1559018965509</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Bugs and suggestion">
+      <created>1559030152691</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1559030152691</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3257,6 +3251,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1600" height="810" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49746192" weight="0.27155727" />
@@ -4113,37 +4108,37 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>272</line>
+          <line>271</line>
           <properties />
           <option name="timeStamp" value="597" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>275</line>
+          <line>274</line>
           <properties />
           <option name="timeStamp" value="598" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>301</line>
+          <line>300</line>
           <properties />
           <option name="timeStamp" value="599" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>302</line>
+          <line>301</line>
           <properties />
           <option name="timeStamp" value="601" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>375</line>
+          <line>374</line>
           <properties />
           <option name="timeStamp" value="603" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java</url>
-          <line>374</line>
+          <line>373</line>
           <properties />
           <option name="timeStamp" value="604" />
         </line-breakpoint>
@@ -4642,8 +4637,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/TimeSlotDialogFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="310" column="33" selection-start-line="310" selection-start-column="33" selection-end-line="310" selection-end-column="33" />
+        <state relative-caret-position="123">
+          <caret line="217" column="22" selection-start-line="217" selection-start-column="22" selection-end-line="217" selection-end-column="22" />
         </state>
       </provider>
     </entry>

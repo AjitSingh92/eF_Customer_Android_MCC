@@ -217,7 +217,6 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
 
                 break;
 
-
         }
 
     }

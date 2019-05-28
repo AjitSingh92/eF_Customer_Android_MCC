@@ -195,28 +195,28 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="2" />
-          <entry key="java" value="143" />
+          <entry key="java" value="144" />
           <entry key="xml" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="2" />
-          <entry key="JAVA" value="143" />
+          <entry key="JAVA" value="144" />
           <entry key="XML" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="1851" />
-          <entry key="txt" value="204" />
+          <entry key="txt" value="205" />
           <entry key="xml" value="33" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="1851" />
-          <entry key="PLAIN_TEXT" value="204" />
+          <entry key="PLAIN_TEXT" value="205" />
           <entry key="XML" value="33" />
         </counts>
       </usages-collector>
@@ -2687,20 +2687,6 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="cart_db" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="easyfood_userapp_android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="fragments" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="easyfood_userapp_android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="restaurant_details" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -2868,13 +2854,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556196141367</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/workspace.xml&#10;#&#9;app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/SaveCardAdapter.java&#10;#&#9;app/src/main/res/layout/card_item_row.xml">
-      <created>1556773930801</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1556773930802</updated>
     </task>
     <task id="LOCAL-00020" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/workspace.xml&#10;#&#9;app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/SaveCardAdapter.java&#10;#&#9;app/src/main/res/layout/card_item_row.xml">
       <created>1556773967228</created>
@@ -3212,7 +3191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1559049359050</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Menu List scroll in Restaurant Details screen">
+      <created>1559051862992</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1559051862992</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3228,7 +3214,7 @@
     <frame x="0" y="25" width="1600" height="810" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49746192" weight="0.27155727" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49746192" visible="true" weight="0.27155727" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" sideWeight="0.5025381" side_tool="true" weight="0.26512226" />
       <window_info id="Build Variants" order="4" side_tool="true" weight="0.32947233" />
@@ -3237,7 +3223,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info anchor="bottom" id="TODO" order="0" weight="0.32941177" />
       <window_info anchor="bottom" id="Debug" order="1" weight="0.20294118" />
-      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.4993565" weight="1.0" />
+      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.4993565" weight="0.6691176" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.5006435" side_tool="true" weight="0.2720588" />
       <window_info anchor="bottom" id="Version Control" order="4" weight="0.32941177" />
       <window_info anchor="bottom" id="Build" order="5" weight="0.42352942" />
@@ -4668,13 +4654,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2070">
-          <caret line="264" column="67" lean-forward="true" selection-start-line="264" selection-start-column="67" selection-end-line="264" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-973">
@@ -4704,6 +4683,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="267">
           <caret line="565" lean-forward="true" selection-start-line="565" selection-end-line="565" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10788">
+          <caret line="101" column="13" selection-start-line="101" selection-start-column="13" selection-end-line="101" selection-end-column="13" />
         </state>
       </provider>
     </entry>

@@ -83,14 +83,14 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
     @Override
     public void onDismiss(DialogInterface dialog) {
         if (!isAddressSelected) {
-            if (isDelivery) {
+           /* if (isDelivery) {
                 sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                 sharePre.setString(sharePre.DELIVERY_ADDRESS_ID, null);
 
             } else {
                 sharePre.setString(sharePre.BILLING_ADDRESS, null);
 
-            }
+            }*/
         }
 
         if (onAddressDialogListener != null) {

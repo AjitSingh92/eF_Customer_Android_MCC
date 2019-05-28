@@ -196,7 +196,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if (s.length() == 16) {
+                if (s.length() == 19) {
                     expireDate.requestFocus();
                 }
                 // TODO Auto-generated method stub
@@ -380,8 +380,8 @@ public class AddNewCardActivity extends AppCompatActivity {
                     cardholderName.requestFocus();
                     cardholderName.setError("Please enter card holder name");
                     //showDialog("Please enter card holder name.");
-                } else if (cardNumber.getText().toString().trim().length() < 16) {
-                    cardNumber.setError("Please enter 16 digit card number");
+                } else if (cardNumber.getText().toString().trim().length() < 12) {
+                    cardNumber.setError("Please enter valid card number");
                     cardNumber.requestFocus();
                     //showDialog("Please enter 16 digit card number.");
 

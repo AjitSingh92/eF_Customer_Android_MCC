@@ -881,7 +881,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 }).start();
             }
         } else {
-
             new Thread(new Runnable() {
                 @Override
                 public void run() {

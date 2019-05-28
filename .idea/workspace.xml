@@ -34,7 +34,9 @@
     <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/search_post_code/SearchPostCodeActivity.java" description="public class SearchPostCodeActivity extends AppCom..." line="71" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07c28dd0-335a-471e-8305-ef4da525cdc1" name="Default Changelist" comment="" />
+    <list default="true" id="07c28dd0-335a-471e-8305-ef4da525cdc1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,26 +224,26 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="44" />
+          <entry key="java" value="45" />
           <entry key="xml" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="44" />
+          <entry key="JAVA" value="45" />
           <entry key="XML" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="664" />
+          <entry key="java" value="668" />
           <entry key="txt" value="24" />
           <entry key="xml" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="664" />
+          <entry key="JAVA" value="668" />
           <entry key="PLAIN_TEXT" value="24" />
           <entry key="XML" value="27" />
         </counts>
@@ -253,20 +255,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="858" selection-start-line="858" selection-end-line="858" />
+            <state relative-caret-position="216">
+              <caret line="970" column="81" selection-start-line="970" selection-start-column="70" selection-end-line="970" selection-end-column="81" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/RestaurantMealCategoryAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="156">
+              <caret line="205" selection-start-line="205" selection-end-line="205" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="567" column="16" selection-start-line="567" selection-start-column="16" selection-end-line="567" selection-end-column="16" />
+            <state relative-caret-position="325">
+              <caret line="570" selection-start-line="570" selection-end-line="570" />
             </state>
           </provider>
         </entry>
@@ -2757,8 +2768,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/MenuMealDialog.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MealProductAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/MenuDialogNew.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" />
       </list>
     </option>
   </component>
@@ -2968,20 +2979,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556196141367</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
-      <created>1556603479498</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1556603479498</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
-      <created>1556603504526</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1556603504526</updated>
     </task>
     <task id="LOCAL-00014" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
       <created>1556704593292</created>
@@ -3312,7 +3309,21 @@
       <option name="project" value="LOCAL" />
       <updated>1559051837772</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Meal Item update">
+      <created>1559051958579</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1559051958579</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Meal Item update">
+      <created>1559051965324</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1559051965324</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3326,7 +3337,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49746192" visible="true" weight="0.27091634" />
@@ -3339,7 +3349,7 @@
       <window_info anchor="bottom" id="Flutter Performance" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="0" weight="0.6485294" />
       <window_info anchor="bottom" id="TODO" order="1" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Debug" order="2" visible="true" weight="0.3167702" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.3167702" />
       <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.4993565" weight="1.0" />
       <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.5006435" side_tool="true" weight="0.2720588" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.32941177" />
@@ -3904,25 +3914,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1330</line>
+          <line>1337</line>
           <properties />
           <option name="timeStamp" value="376" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1348</line>
+          <line>1355</line>
           <properties />
           <option name="timeStamp" value="377" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1600</line>
+          <line>1607</line>
           <properties />
           <option name="timeStamp" value="411" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1597</line>
+          <line>1604</line>
           <properties />
           <option name="timeStamp" value="413" />
         </line-breakpoint>
@@ -3934,31 +3944,31 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1564</line>
+          <line>1571</line>
           <properties />
           <option name="timeStamp" value="516" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1216</line>
+          <line>1223</line>
           <properties />
           <option name="timeStamp" value="533" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1233</line>
+          <line>1240</line>
           <properties />
           <option name="timeStamp" value="534" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1215</line>
+          <line>1222</line>
           <properties />
           <option name="timeStamp" value="535" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1565</line>
+          <line>1572</line>
           <properties />
           <option name="timeStamp" value="540" />
         </line-breakpoint>
@@ -4078,13 +4088,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1573</line>
+          <line>1580</line>
           <properties />
           <option name="timeStamp" value="575" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1574</line>
+          <line>1581</line>
           <properties />
           <option name="timeStamp" value="576" />
         </line-breakpoint>
@@ -4114,7 +4124,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1107</line>
+          <line>1114</line>
           <properties />
           <option name="timeStamp" value="583" />
         </line-breakpoint>
@@ -4132,31 +4142,31 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1150</line>
+          <line>1157</line>
           <properties />
           <option name="timeStamp" value="587" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1141</line>
+          <line>1148</line>
           <properties />
           <option name="timeStamp" value="589" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1118</line>
+          <line>1125</line>
           <properties />
           <option name="timeStamp" value="590" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1042</line>
+          <line>1049</line>
           <properties />
           <option name="timeStamp" value="591" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>978</line>
+          <line>985</line>
           <properties />
           <option name="timeStamp" value="593" />
         </line-breakpoint>
@@ -4192,7 +4202,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1057</line>
+          <line>1064</line>
           <properties />
           <option name="timeStamp" value="599" />
         </line-breakpoint>
@@ -4258,7 +4268,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1306</line>
+          <line>1313</line>
           <properties />
           <option name="timeStamp" value="613" />
         </line-breakpoint>
@@ -4330,37 +4340,37 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1385</line>
+          <line>1392</line>
           <properties />
           <option name="timeStamp" value="629" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1409</line>
+          <line>1416</line>
           <properties />
           <option name="timeStamp" value="630" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1410</line>
+          <line>1417</line>
           <properties />
           <option name="timeStamp" value="631" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1412</line>
+          <line>1419</line>
           <properties />
           <option name="timeStamp" value="632" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1414</line>
+          <line>1421</line>
           <properties />
           <option name="timeStamp" value="633" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java</url>
-          <line>1413</line>
+          <line>1420</line>
           <properties />
           <option name="timeStamp" value="634" />
         </line-breakpoint>
@@ -4786,13 +4796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/RestaurantMealCategoryAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="213" selection-start-line="213" selection-end-line="213" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/MealProductModifierDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -4903,13 +4906,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="858" selection-start-line="858" selection-end-line="858" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/model/restaurantmenumodel/menu_response/MenuProductSize.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-30">
@@ -4919,8 +4915,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="567" column="16" selection-start-line="567" selection-start-column="16" selection-end-line="567" selection-end-column="16" />
+        <state relative-caret-position="325">
+          <caret line="570" selection-start-line="570" selection-end-line="570" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/RestaurantMealCategoryAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="205" selection-start-line="205" selection-end-line="205" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="970" column="81" selection-start-line="970" selection-start-column="70" selection-end-line="970" selection-end-column="81" />
         </state>
       </provider>
     </entry>

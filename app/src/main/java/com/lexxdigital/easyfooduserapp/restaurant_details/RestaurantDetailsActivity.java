@@ -967,9 +967,16 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
                     againFragment.show(getSupportFragmentManager(), "againDailog");
                 }else{
-                    db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
-                    itemQtyView.setText(String.valueOf(itemCount));
+                    if (itemCount == 0) {
+                        db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
+                        qtyLayout.setVisibility(View.GONE);
+                        itemQtyView.setText(String.valueOf(itemCount));
+                    } else {
+                        db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                        itemQtyView.setText(String.valueOf(itemCount));
+                    }
                     showPriceAndView(null, null, 0);
+
                 }
             } else {
                 MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);

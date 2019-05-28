@@ -559,6 +559,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         List<MenuProductSize> mMenuProductSize = null;
         List<ProductModifier> productModifiers1 = null;
+        List<MealProduct> mMealProducts = null;
+
         if (cursor.moveToFirst()) {
             do {
 
@@ -567,76 +569,77 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 List<MenuProductSize> menuProductSize = gson.fromJson(cursor.getString(cursor.getColumnIndex("menu_product_size")), new TypeToken<List<MenuProductSize>>() {
                 }.getType());
                 mMenuProductSize = new ArrayList<>();
-
-                for (MenuProductSize menuProductSize1 : menuProductSize) {
-                    MenuProductSize productSize = new MenuProductSize();
-                    productSize.setProductSizeId(menuProductSize1.getProductSizeId());
-                    productSize.setProductSizeName(menuProductSize1.getProductSizeName());
-                    productSize.setProductSizePrice(menuProductSize1.getProductSizePrice());
-                    productSize.setAmount(menuProductSize1.getAmount());
-                    productSize.setQuantity(menuProductSize1.getQuantity());
-                    productSize.setSelected(menuProductSize1.getSelected());
+                if (mMenuProductSize != null) {
+                    for (MenuProductSize menuProductSize1 : menuProductSize) {
+                        MenuProductSize productSize = new MenuProductSize();
+                        productSize.setProductSizeId(menuProductSize1.getProductSizeId());
+                        productSize.setProductSizeName(menuProductSize1.getProductSizeName());
+                        productSize.setProductSizePrice(menuProductSize1.getProductSizePrice());
+                        productSize.setAmount(menuProductSize1.getAmount());
+                        productSize.setQuantity(menuProductSize1.getQuantity());
+                        productSize.setSelected(menuProductSize1.getSelected());
 
 //                    sizeModifiers
 
-                    List<SizeModifier> sizeModifiers = new ArrayList<>();
+                        List<SizeModifier> sizeModifiers = new ArrayList<>();
 
-                    if (menuProductSize1.getSelected()) {
-                        for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
-                            SizeModifier sizeModifier1 = new SizeModifier();
-                            sizeModifier1.setModifierName(sizeModifier.getModifierName());
-                            sizeModifier1.setModifierType(sizeModifier.getModifierType());
-                            sizeModifier1.setModifierId(sizeModifier.getModifierId());
-                            sizeModifier1.setMinAllowedQuantity(sizeModifier.getMinAllowedQuantity());
-                            sizeModifier1.setMaxAllowedQuantity(sizeModifier.getMaxAllowedQuantity());
+                        if (menuProductSize1.getSelected()) {
+                            for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
+                                SizeModifier sizeModifier1 = new SizeModifier();
+                                sizeModifier1.setModifierName(sizeModifier.getModifierName());
+                                sizeModifier1.setModifierType(sizeModifier.getModifierType());
+                                sizeModifier1.setModifierId(sizeModifier.getModifierId());
+                                sizeModifier1.setMinAllowedQuantity(sizeModifier.getMinAllowedQuantity());
+                                sizeModifier1.setMaxAllowedQuantity(sizeModifier.getMaxAllowedQuantity());
 
-                            List<Modifier> modifiers = new ArrayList<>();
+                                List<Modifier> modifiers = new ArrayList<>();
 
-                            if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
-                                int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
-                                int free = 0;
-                                for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
-                                    Modifier modifier = sizeModifier.getModifier().get(i);
-                                    if (free == maxAllowFree) {
-                                        int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
-                                        qty = (qty * quantity);
-                                        modifier.setQuantity(String.valueOf(qty));
-                                        modifier.setAmount((qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice())));
-                                    } else {
-                                        modifier.setQuantity(String.valueOf((Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity()) * quantity)));
-                                        int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                        if (qty >= maxAllowFree) {
-                                            int nQty = qty - maxAllowFree;
-                                            free = maxAllowFree;
+                                if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
+                                    int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
+                                    int free = 0;
+                                    for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
+                                        Modifier modifier = sizeModifier.getModifier().get(i);
+                                        if (free == maxAllowFree) {
+                                            int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                            qty = (qty * quantity);
+                                            modifier.setQuantity(String.valueOf(qty));
+                                            modifier.setAmount((qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice())));
+                                        } else {
+                                            modifier.setQuantity(String.valueOf((Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity()) * quantity)));
+                                            int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                            if (qty >= maxAllowFree) {
+                                                int nQty = qty - maxAllowFree;
+                                                free = maxAllowFree;
 //                                            qty = (nQty * quantity);
 
-                                            modifier.setAmount((nQty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice())));
-                                        } else {
-                                            modifier.setQuantity(String.valueOf(qty));
-                                            modifier.setAmount(0d);
-                                            free++;
+                                                modifier.setAmount((nQty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice())));
+                                            } else {
+                                                modifier.setQuantity(String.valueOf(qty));
+                                                modifier.setAmount(0d);
+                                                free++;
+                                            }
                                         }
+                                        modifiers.add(modifier);
                                     }
-                                    modifiers.add(modifier);
-                                }
 
-                            } else {
-                                for (Modifier modifier : sizeModifier.getModifier()) {
-                                    int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                    qty = (qty * quantity);
-                                    modifier.setQuantity(String.valueOf(qty));
-                                    modifier.setAmount((qty * Double.parseDouble(modifier.getModifierProductPrice())));
+                                } else {
+                                    for (Modifier modifier : sizeModifier.getModifier()) {
+                                        int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                        qty = (qty * quantity);
+                                        modifier.setQuantity(String.valueOf(qty));
+                                        modifier.setAmount((qty * Double.parseDouble(modifier.getModifierProductPrice())));
 
-                                    modifiers.add(modifier);
+                                        modifiers.add(modifier);
+                                    }
                                 }
+                                sizeModifier1.setModifier(modifiers);
+                                sizeModifiers.add(sizeModifier1);
                             }
-                            sizeModifier1.setModifier(modifiers);
-                            sizeModifiers.add(sizeModifier1);
                         }
-                    }
-                    productSize.setSizeModifiers(sizeModifiers);
+                        productSize.setSizeModifiers(sizeModifiers);
 
-                    mMenuProductSize.add(productSize);
+                        mMenuProductSize.add(productSize);
+                    }
                 }
 
                 List<ProductModifier> productModifiers = gson.fromJson(cursor.getString(cursor.getColumnIndex("product_modifiers")), new TypeToken<List<ProductModifier>>() {
@@ -644,58 +647,170 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 productModifiers1 = new ArrayList<>();
 
-                for (ProductModifier productModifier : productModifiers) {
-                    ProductModifier productModifier1 = new ProductModifier();
+                if (productModifiers1 != null) {
+                    for (ProductModifier productModifier : productModifiers) {
+                        ProductModifier productModifier1 = new ProductModifier();
 
-                    productModifier1.setModifierName(productModifier.getModifierName());
-                    productModifier1.setModifierType(productModifier.getModifierType());
-                    productModifier1.setModifierId(productModifier.getModifierId());
-                    productModifier1.setMinAllowedQuantity(productModifier.getMinAllowedQuantity());
-                    productModifier1.setMaxAllowedQuantity(productModifier.getMaxAllowedQuantity());
-                    productModifier1.setAmount(productModifier.getAmount());
-                    List<Modifier> modifiers = new ArrayList<>();
-                    if (productModifier.getModifierType().equalsIgnoreCase("free")) {
+                        productModifier1.setModifierName(productModifier.getModifierName());
+                        productModifier1.setModifierType(productModifier.getModifierType());
+                        productModifier1.setModifierId(productModifier.getModifierId());
+                        productModifier1.setMinAllowedQuantity(productModifier.getMinAllowedQuantity());
+                        productModifier1.setMaxAllowedQuantity(productModifier.getMaxAllowedQuantity());
+                        productModifier1.setAmount(productModifier.getAmount());
+                        List<Modifier> modifiers = new ArrayList<>();
+                        if (productModifier.getModifierType().equalsIgnoreCase("free")) {
 
-                        int maxAllowFree = productModifier.getMaxAllowedQuantity();
-                        int free = 0;
-                        for (int i = 0; i < productModifier.getModifier().size(); i++) {
-                            Modifier modifier = productModifier.getModifier().get(i);
+                            int maxAllowFree = productModifier.getMaxAllowedQuantity();
+                            int free = 0;
+                            for (int i = 0; i < productModifier.getModifier().size(); i++) {
+                                Modifier modifier = productModifier.getModifier().get(i);
 
-                            if (free == maxAllowFree) {
-                                int qty = Integer.parseInt(productModifier.getModifier().get(i).getOriginalQuantity());
-                                qty = (qty * quantity);
-                                modifier.setQuantity(String.valueOf(qty));
-                                modifier.setAmount((qty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice())));
-                            } else {
-                                modifier.setQuantity(String.valueOf((Integer.parseInt(productModifier.getModifier().get(i).getOriginalQuantity()) * quantity)));
-                                int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                if (qty >= maxAllowFree) {
-                                    int nQty = qty - maxAllowFree;
-                                    free = maxAllowFree;
+                                if (free == maxAllowFree) {
+                                    int qty = Integer.parseInt(productModifier.getModifier().get(i).getOriginalQuantity());
+                                    qty = (qty * quantity);
+                                    modifier.setQuantity(String.valueOf(qty));
+                                    modifier.setAmount((qty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice())));
+                                } else {
+                                    modifier.setQuantity(String.valueOf((Integer.parseInt(productModifier.getModifier().get(i).getOriginalQuantity()) * quantity)));
+                                    int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                    if (qty >= maxAllowFree) {
+                                        int nQty = qty - maxAllowFree;
+                                        free = maxAllowFree;
 //                                    qty = (nQty * quantity);
 
-                                    modifier.setAmount((nQty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice())));
-                                } else {
-                                    modifier.setQuantity(String.valueOf(qty));
-                                    modifier.setAmount(0d);
-                                    free++;
+                                        modifier.setAmount((nQty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice())));
+                                    } else {
+                                        modifier.setQuantity(String.valueOf(qty));
+                                        modifier.setAmount(0d);
+                                        free++;
+                                    }
+                                }
+                                modifiers.add(modifier);
+                            }
+                        } else {
+                            for (Modifier modifier : productModifier.getModifier()) {
+                                int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                qty = (qty * quantity);
+                                modifier.setQuantity(String.valueOf(qty));
+                                modifier.setAmount((qty * Double.parseDouble(modifier.getModifierProductPrice())));
+
+                                modifiers.add(modifier);
+                            }
+                        }
+                        productModifier1.setModifier(modifiers);
+                        productModifiers1.add(productModifier1);
+                    }
+                }
+
+
+                // Aklesh working here......................
+                List<MealProduct> mealProducts = gson.fromJson(cursor.getString(cursor.getColumnIndex("meal_products")), new TypeToken<List<MealProduct>>() {
+                }.getType());
+
+                mMealProducts = new ArrayList<>();
+                if (mealProducts != null) {
+
+                    for (MealProduct mealProduct : mealProducts) {
+                        MealProduct mealProduct1 = new MealProduct();
+                        mealProduct1.setId(mealProduct.getId());
+                        mealProduct1.setMealId(mealProduct.getMealId());
+                        mealProduct1.setProductId(mealProduct.getProductId());
+                        mealProduct1.setProductSizeId(mealProduct.getProductSizeId());
+                        mealProduct1.setProductName(mealProduct.getProductName());
+                        mealProduct1.setProductSizeName(mealProduct.getProductSizeName());
+                        mealProduct1.setProductModifiers(mealProduct.getProductModifiers());
+                        mealProduct1.setQuantity(mealProduct.getQuantity());
+                        mealProduct1.setSelected(mealProduct.getSelected());
+
+
+                        List<MenuProductSize> mealMenuProductSizes = new ArrayList<>();
+                        for (MenuProductSize menuProductSize1 : mealProduct.getMenuProductSize()) {
+                            MenuProductSize menuProductSize2 = new MenuProductSize();
+                            menuProductSize2.setProductSizeId(menuProductSize1.getProductSizeId());
+                            menuProductSize2.setProductSizeName(menuProductSize1.getProductSizeName());
+                            menuProductSize2.setProductSizePrice(menuProductSize1.getProductSizePrice());
+                            menuProductSize2.setAmount(menuProductSize1.getAmount());
+                            menuProductSize2.setQuantity(menuProductSize1.getQuantity());
+                            menuProductSize2.setSelected(menuProductSize1.getSelected());
+
+//                            for (SizeModifier sizeModifier:menuProductSize1.getSizeModifiers()) {
+//
+//                            }
+//                            menuProductSize2.setSizeModifiers(menuProductSize1.getSizeModifiers());
+
+//----------------------------------------------------------------------
+
+                            List<SizeModifier> sizeModifiers = new ArrayList<>();
+                            if (menuProductSize1.getSelected()) {
+                                for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
+                                    SizeModifier sizeModifier1 = new SizeModifier();
+                                    sizeModifier1.setModifierName(sizeModifier.getModifierName());
+                                    sizeModifier1.setModifierType(sizeModifier.getModifierType());
+                                    sizeModifier1.setModifierId(sizeModifier.getModifierId());
+                                    sizeModifier1.setMinAllowedQuantity(sizeModifier.getMinAllowedQuantity());
+                                    sizeModifier1.setMaxAllowedQuantity(sizeModifier.getMaxAllowedQuantity());
+
+                                    List<Modifier> modifiers = new ArrayList<>();
+
+                                    if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
+                                        int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
+                                        int free = 0;
+                                        for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
+                                            Modifier modifier = sizeModifier.getModifier().get(i);
+                                            if (free == maxAllowFree) {
+                                                int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                                qty = (qty * quantity);
+                                                modifier.setQuantity(String.valueOf(qty));
+                                                modifier.setAmount((qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice())));
+                                            } else {
+                                                modifier.setQuantity(String.valueOf((Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity()) * quantity)));
+                                                int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                                if (qty >= maxAllowFree) {
+                                                    int nQty = qty - maxAllowFree;
+                                                    free = maxAllowFree;
+//                                            qty = (nQty * quantity);
+
+                                                    modifier.setAmount((nQty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice())));
+                                                } else {
+                                                    modifier.setQuantity(String.valueOf(qty));
+                                                    modifier.setAmount(0d);
+                                                    free++;
+                                                }
+                                            }
+                                            modifiers.add(modifier);
+                                        }
+
+                                    } else {
+                                        for (Modifier modifier : sizeModifier.getModifier()) {
+                                            int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                            qty = (qty * quantity);
+                                            modifier.setQuantity(String.valueOf(qty));
+                                            modifier.setAmount((qty * Double.parseDouble(modifier.getModifierProductPrice())));
+
+                                            modifiers.add(modifier);
+                                        }
+                                    }
+                                    sizeModifier1.setModifier(modifiers);
+                                    sizeModifiers.add(sizeModifier1);
                                 }
                             }
-                            modifiers.add(modifier);
-                        }
-                    } else {
-                        for (Modifier modifier : productModifier.getModifier()) {
-                            int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                            qty = (qty * quantity);
-                            modifier.setQuantity(String.valueOf(qty));
-                            modifier.setAmount((qty * Double.parseDouble(modifier.getModifierProductPrice())));
+                            menuProductSize2.setSizeModifiers(sizeModifiers);
 
-                            modifiers.add(modifier);
+
+
+
+//------------------------------------------------------
+
+                            mealMenuProductSizes.add(menuProductSize2);
+
                         }
+
+
+                        mealProduct1.setMenuProductSize(mealMenuProductSizes);
+                        mMealProducts.add(mealProduct1);
                     }
-                    productModifier1.setModifier(modifiers);
-                    productModifiers1.add(productModifier1);
                 }
+
 
             } while (cursor.moveToNext());
         }
@@ -709,6 +824,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (productModifiers1 != null) {
             values.put("product_modifiers", new Gson().toJson(productModifiers1));
+        }
+
+        if (mMealProducts != null) {
+            values.put("meal_products", new Gson().toJson(mMealProducts));
         }
 
         // updating row

@@ -143,7 +143,7 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
-        updatePrice();
+
 
     }
 

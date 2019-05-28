@@ -29,7 +29,7 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     List<MealProduct> mItem;
     int lastSelectedPosition = -1;
     CheckBox lastSelectedItem;
-    int selectSize;
+    int customizableQuantity = -1;
     private ItemClickListener itemClickListener;
 
     int childParentPosition;
@@ -44,12 +44,17 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     Boolean isSubCat;
     Dialog dialog;
     OnMealProductItemSelect onMealProductItemSelect;
+    OnMealProductClickListener onMealProductClickListener;
 
-    public MealProductAdapter(Context context, Dialog dialog, int selectSize, int childParentPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect) {
+    public interface OnMealProductClickListener {
+        void OnMealProductClick(int position, Boolean showMsg,String message);
+    }
+
+    public MealProductAdapter(Context context, Dialog dialog, int customizableQuantity, int childParentPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect, OnMealProductClickListener onMealProductClickListener) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         mItem = new ArrayList<>();
-        this.selectSize = selectSize;
+        this.customizableQuantity = customizableQuantity;
         this.itemClickListener = itemClickListener;
         this.dialog = dialog;
 
@@ -64,6 +69,7 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.menuCategory = menuCategory;
         this.isSubCat = isSubCat;
         this.onMealProductItemSelect = onMealProductItemSelect;
+        this.onMealProductClickListener = onMealProductClickListener;
     }
 
     public List<MealProduct> getSelectedItem() {
@@ -151,13 +157,19 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 //            itemSelected.setClickable(false);
-            if (selectSize == -1) {
+            if (customizableQuantity == -1) {
                 mItem.get(position).setSelected(true);
                 itemSelected.setChecked(true);
                 itemView.setOnClickListener(this);
+                if (onMealProductItemSelect != null) {
+                    onMealProductItemSelect.OnMealProductItemSelect(true);
+                }
             } else {
                 if (mItem.get(position).getSelected()) {
                     itemSelected.setChecked(true);
+                    if (onMealProductItemSelect != null) {
+                        onMealProductItemSelect.OnMealProductItemSelect(true);
+                    }
                 } else {
                     itemSelected.setChecked(false);
                     mItem.get(position).setSelected(false);
@@ -168,7 +180,15 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void onClick(View v) {
-            if (selectSize != -1) {
+            if (customizableQuantity != -1) {
+                if (getSelectedItem().size() == customizableQuantity && !mItem.get(getLayoutPosition()).getSelected()) {
+                    if (onMealProductClickListener != null) {
+                        onMealProductClickListener.OnMealProductClick(getLayoutPosition(), true,"You can not choose more than " + customizableQuantity);
+                    }
+                    return;
+                }
+                onMealProductClickListener.OnMealProductClick(getLayoutPosition(), false,"You can not choose more than " + customizableQuantity);
+
                 if (mItem.get(getLayoutPosition()).getSelected()) {
                     itemSelected.setChecked(false);
                     lastSelectedItem = itemSelected;

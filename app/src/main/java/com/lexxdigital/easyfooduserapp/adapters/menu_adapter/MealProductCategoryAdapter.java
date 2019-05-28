@@ -68,6 +68,7 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         this.mItem.add(mItem);
         notifyItemChanged(this.mItem.size());
     }
+
     public void addItem(List<MealCategory> mItem) {
 
         this.mItem.addAll(mItem);
@@ -95,8 +96,8 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         return mItem.size();
     }
 
-    class MealProductCategoryViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvItemTitle;
+    class MealProductCategoryViewHolder extends RecyclerView.ViewHolder implements MealProductAdapter.OnMealProductClickListener {
+        private TextView tvItemTitle, alertMsg;
         private RecyclerView listProduct;
         private MealProductAdapter mealProductAdapter;
         private RecyclerLayoutManager layoutManager;
@@ -104,6 +105,7 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         public MealProductCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             tvItemTitle = itemView.findViewById(R.id.tv_ItemTitle);
+            alertMsg = itemView.findViewById(R.id.tv_alertMsg);
             listProduct = itemView.findViewById(R.id.listProduct);
 
             layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
@@ -117,18 +119,28 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
 
             if (mItem.get(position).getCustomizable() == 1) {
                 tvItemTitle.setText("Choose any " + mItem.get(position).getQuantity() + " out of " + mItem.get(position).getMealProducts().size() + " in " + mItem.get(position).getCategoryName());
-                mealProductAdapter = new MealProductAdapter(context, dialog, mItem.get(position).getQuantity(), position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect);
+                mealProductAdapter = new MealProductAdapter(context, dialog, mItem.get(position).getQuantity(), position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
 
             } else if (mItem.get(position).getCustomizable() == 0) {
                 tvItemTitle.setText(mItem.get(position).getCategoryName());
-                mealProductAdapter = new MealProductAdapter(context, dialog, -1, position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect);
+                mealProductAdapter = new MealProductAdapter(context, dialog, -1, position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
             }
+            alertMsg.setVisibility(View.GONE);
             mealProductAdapters.add(mealProductAdapter);
             listProduct.setAdapter(mealProductAdapter);
             mealProductAdapter.addItem(mItem.get(position).getMealProducts());
 
 
+        }
 
+        @Override
+        public void OnMealProductClick(int position, Boolean showMsg, String message) {
+            if (showMsg) {
+                alertMsg.setVisibility(View.VISIBLE);
+                alertMsg.setText(message);
+            } else {
+                alertMsg.setVisibility(View.GONE);
+            }
         }
     }
 }

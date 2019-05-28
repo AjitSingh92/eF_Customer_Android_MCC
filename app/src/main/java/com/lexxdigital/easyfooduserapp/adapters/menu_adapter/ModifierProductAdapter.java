@@ -105,13 +105,14 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<ModifierProduct
             title.setText(mItem.get(position).getProductName());
             price.setText(context.getResources().getString(R.string.currency) + "" + mItem.get(position).getModifierProductPrice());
             mItem.get(position).setQuantity("0");
-          /*  if (mItem.get(position).getOriginalQuantity() != null) {
-                item_count.setText(mItem.get(position).getOriginalQuantity());
-            }*/
+
             item_count.setText("0");
             if ((Integer.parseInt(item_count.getText().toString()) < 1)) {
                 item_remove.setVisibility(View.INVISIBLE);
             }
+
+
+
         }
 
         @Override

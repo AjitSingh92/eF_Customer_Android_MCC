@@ -255,9 +255,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 //                String json = gson.toJson(cartData);
 //                Log.e("menuCategory >>", json);
 
-//                db.deleteCart();
+                db.deleteCart();
 
-                SharedPreferencesClass preferencesClass = new SharedPreferencesClass(RestaurantDetailsActivity.this);
+               /* SharedPreferencesClass preferencesClass = new SharedPreferencesClass(RestaurantDetailsActivity.this);
 
                 Gson gson2 = new Gson();
                 String json2 = gson2.toJson(val.getRestaurantDetailsResponse());
@@ -271,7 +271,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     startActivity(i);
                 } else {
 
-                }
+                }*/
             }
         });
 
@@ -837,9 +837,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     @Override
     public void OnCategoryClick(int parentPosition, int childPosition, View qtyLayout, TextView itemQtyView, int itemCount, int action, MenuCategory menuCategory, ProgressBar progressBar) {
         if (menuCategory.getMenuCategoryName().equalsIgnoreCase("MEAL")) {
+            checkModifierAndSizeInDb(true, menuCategory.getMeal().get(childPosition).getId(), parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
 
-            MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
-            menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
+//            MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
+//            menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
 
         } else {
             Log.e("OnCategoryClick >>", parentPosition + " > " + childPosition + " > " + itemCount + " > " + menuCategory.getMenuCategoryName() + " > " + menuCategory.getMenuProducts().get(childPosition).toString());
@@ -854,10 +855,37 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     }
 
     private void checkModifierAndSizeInDb(final Boolean isCategory, final String productId, final int parentPosition, final int childPosition, final View qtyLayout, final TextView itemQtyView, final int itemCount, final int action, final MenuCategory menuCategory, final ProgressBar progressBar) {
-        if (isCategory) {
-            if (menuCategory.getMenuProducts().get(childPosition).getProductModifiers() != null && menuCategory.getMenuProducts().get(childPosition).getMenuProductSize() != null) {
-                updateCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
+        if (menuCategory.getMeal().get(childPosition).getMealCategories() != null && menuCategory.getMeal().get(childPosition).getMealCategories().size() > 0) {
+            updateCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
+
+        } else {
+            if (isCategory) {
+                if (menuCategory.getMenuProducts().get(childPosition).getProductModifiers() != null && menuCategory.getMenuProducts().get(childPosition).getMenuProductSize() != null) {
+                    updateCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable = GlobalValues.getInstance().getDb().productSizeAndModifierMaster().getProductSizeAndModifierList(productId);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (productSizeAndModifierTable != null) {
+                                        menuCategory.getMenuProducts().get(childPosition).setProductModifiers(productSizeAndModifierTable.getProductModifiers());
+                                        menuCategory.getMenuProducts().get(childPosition).setMenuProductSize(productSizeAndModifierTable.getMenuProductSize());
+                                        updateCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
+
+                                    } else {
+                                        loafSizeAndModifiers(isCategory, productId, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
+                                    }
+                                }
+                            });
+
+                        }
+                    }).start();
+                }
             } else {
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -866,42 +894,20 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             @Override
                             public void run() {
                                 if (productSizeAndModifierTable != null) {
-                                    menuCategory.getMenuProducts().get(childPosition).setProductModifiers(productSizeAndModifierTable.getProductModifiers());
-                                    menuCategory.getMenuProducts().get(childPosition).setMenuProductSize(productSizeAndModifierTable.getMenuProductSize());
-                                    updateCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
+                                    menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).setProductModifiers(productSizeAndModifierTable.getProductModifiers());
+                                    menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).setMenuProductSize(productSizeAndModifierTable.getMenuProductSize());
+
+                                    updateSubCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
 
                                 } else {
                                     loafSizeAndModifiers(isCategory, productId, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
                                 }
                             }
                         });
-
                     }
                 }).start();
+
             }
-        } else {
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    final ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable = GlobalValues.getInstance().getDb().productSizeAndModifierMaster().getProductSizeAndModifierList(productId);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (productSizeAndModifierTable != null) {
-                                menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).setProductModifiers(productSizeAndModifierTable.getProductModifiers());
-                                menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).setMenuProductSize(productSizeAndModifierTable.getMenuProductSize());
-
-                                updateSubCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
-
-                            } else {
-                                loafSizeAndModifiers(isCategory, productId, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
-                            }
-                        }
-                    });
-                }
-            }).start();
-
         }
     }
 
@@ -954,60 +960,79 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     }
 
     private void updateCategoryUi(int parentPosition, int childPosition, View qtyLayout, TextView itemQtyView, int itemCount, int action, MenuCategory menuCategory) {
-        if (db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
-            List<MenuProduct> menuProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId());
-            if (menuCategory.getMenuProducts().get(childPosition).getProductModifiers().size() > 0 || menuCategory.getMenuProducts().get(childPosition).getMenuProductSize().size() > 0) {
+        if (menuCategory.getMeal() != null) {
+            if (db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId()) > 0) {
+                List<MenuProduct> menuProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId());
+                if (menuProduct.size() > 1) {
+                    AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
+                    againFragment.show(getSupportFragmentManager(), "againDailog");
+                }else{
+                    db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                    itemQtyView.setText(String.valueOf(itemCount));
+                    showPriceAndView(null, null, 0);
+                }
+            } else {
+                MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
+                menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
+            }
+        } else {
+            if (db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
+                List<MenuProduct> menuProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId());
+                if (menuCategory.getMenuProducts().get(childPosition).getProductModifiers().size() > 0 || menuCategory.getMenuProducts().get(childPosition).getMenuProductSize().size() > 0) {
 
-                if (action == 1) {
-                    if (Integer.parseInt(itemQtyView.getText().toString()) == 1) {
+                    if (action == 1) {
+                        if (Integer.parseInt(itemQtyView.getText().toString()) == 1) {
+                            db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
+                            qtyLayout.setVisibility(View.GONE);
+                            itemQtyView.setText(String.valueOf(itemCount));
+                            showPriceAndView(null, null, 0);
+                        } else {
+                            if (menuProduct.size() > 1) {
+                                AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
+                                againFragment.show(getSupportFragmentManager(), "againDailog");
+                            } else {
+                                db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                                itemQtyView.setText(String.valueOf(itemCount));
+                                showPriceAndView(null, null, 0);
+                            }
+                        }
+                    } else {
+                        if (qtyLayout.getVisibility() == View.GONE) {
+                            qtyLayout.setVisibility(View.VISIBLE);
+                            int qtyCount = 0;
+                            for (MenuProduct product : menuProduct) {
+                                qtyCount += product.getOriginalQuantity();
+                            }
+                            itemQtyView.setText(String.valueOf(qtyCount));
+                        } else {
+                            ChooseLastCustnizationDialog chooseLastCustnizationDialog = ChooseLastCustnizationDialog.newInstance(this, menuProduct, itemCount, qtyLayout, itemQtyView, parentPosition, childPosition, menuCategory, false, action, this);
+                            chooseLastCustnizationDialog.show(getSupportFragmentManager(), "chooseLastCustnizationDialog");
+                        }
+                    }
+                } else {
+                    if (itemCount == 0) {
                         db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
                         qtyLayout.setVisibility(View.GONE);
                         itemQtyView.setText(String.valueOf(itemCount));
-                        showPriceAndView(null, null, 0);
                     } else {
-                        if (menuProduct.size() > 1) {
-                            AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
-                            againFragment.show(getSupportFragmentManager(), "againDailog");
-                        } else {
-                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
-                            itemQtyView.setText(String.valueOf(itemCount));
-                            showPriceAndView(null, null, 0);
-                        }
+                        db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                        itemQtyView.setText(String.valueOf(itemCount));
                     }
-                } else {
-                    if (qtyLayout.getVisibility() == View.GONE) {
-                        qtyLayout.setVisibility(View.VISIBLE);
-                        int qtyCount = 0;
-                        for (MenuProduct product : menuProduct) {
-                            qtyCount += product.getOriginalQuantity();
-                        }
-                        itemQtyView.setText(String.valueOf(qtyCount));
-                    } else {
-                        ChooseLastCustnizationDialog chooseLastCustnizationDialog = ChooseLastCustnizationDialog.newInstance(this, menuProduct, itemCount, qtyLayout, itemQtyView, parentPosition, childPosition, menuCategory, false, action, this);
-                        chooseLastCustnizationDialog.show(getSupportFragmentManager(), "chooseLastCustnizationDialog");
-                    }
+                    showPriceAndView(null, null, 0);
                 }
+
             } else {
-                if (itemCount == 0) {
-                    db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
-                    qtyLayout.setVisibility(View.GONE);
-                    itemQtyView.setText(String.valueOf(itemCount));
+
+                if (menuCategory.getMenuProducts().get(childPosition).getProductModifiers().size() > 0 || menuCategory.getMenuProducts().get(childPosition).getMenuProductSize().size() > 0) {
+                    MenuDialogNew menuDialogNew = MenuDialogNew.newInstance(this, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
+                    menuDialogNew.show(getSupportFragmentManager(), "menuDialogNew");
                 } else {
-                    db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
-                    itemQtyView.setText(String.valueOf(itemCount));
+                    createCardData(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, false, menuCategory);
                 }
-                showPriceAndView(null, null, 0);
-            }
 
-        } else {
-            if (menuCategory.getMenuProducts().get(childPosition).getProductModifiers().size() > 0 || menuCategory.getMenuProducts().get(childPosition).getMenuProductSize().size() > 0) {
-                MenuDialogNew menuDialogNew = MenuDialogNew.newInstance(this, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
-                menuDialogNew.show(getSupportFragmentManager(), "menuDialogNew");
-            } else {
-                createCardData(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, false, menuCategory);
             }
-
         }
+
     }
 
     @Override
@@ -1029,7 +1054,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
             showPriceAndView(null, null, 0);
         } else {
-            if (menuCategory.getMenuSubCategory().size() > 0) {
+            if (menuCategory.getMenuSubCategory().size() > 0 && menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().size() > 0) {
                 if (db.getMenuProductCount(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
                     List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId());
 
@@ -1393,36 +1418,36 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                 for (MenuProductSize menuProductSize1 : mealProduct.getMenuProductSize()) {
                                     if (menuProductSize1.getSelected()) {
                                         if (menuProductSize1.getProductSizePrice() != null)
-                                            totalPrice += (itemQty * Double.parseDouble(menuProductSize1.getProductSizePrice()));
-                                        for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
-                                            if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
-                                                int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
-                                                int free = 0;
-                                                for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
-                                                    if (free == maxAllowFree) {
-                                                        int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
-                                                        qty = (qty * itemQty);
-                                                        totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
-                                                    } else {
-                                                        int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
-                                                        if (qty >= maxAllowFree) {
-                                                            int nQty = qty - maxAllowFree;
-                                                            free = maxAllowFree;
-                                                            qty = (nQty * itemQty);
+//                                            totalPrice += (itemQty * Double.parseDouble(menuProductSize1.getProductSizePrice()));
+                                            for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
+                                                if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
+                                                    int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
+                                                    int free = 0;
+                                                    for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
+                                                        if (free == maxAllowFree) {
+                                                            int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                                            qty = (qty * itemQty);
                                                             totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
                                                         } else {
-                                                            free++;
+                                                            int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                                            if (qty >= maxAllowFree) {
+                                                                int nQty = qty - maxAllowFree;
+                                                                free = maxAllowFree;
+                                                                qty = (nQty * itemQty);
+                                                                totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
+                                                            } else {
+                                                                free++;
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            } else {
-                                                for (Modifier modifier : sizeModifier.getModifier()) {
-                                                    int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                                    qty = (qty * itemQty);
-                                                    totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                } else {
+                                                    for (Modifier modifier : sizeModifier.getModifier()) {
+                                                        int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                                        qty = (qty * itemQty);
+                                                        totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                    }
                                                 }
                                             }
-                                        }
                                     }
                                 }
                             }

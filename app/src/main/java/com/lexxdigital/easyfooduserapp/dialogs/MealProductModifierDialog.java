@@ -123,7 +123,7 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
         tvAmountToPay.setText("Amount to pay\n" + context.getResources().getString(R.string.currency) + String.format("%.2f", Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice())));
 
         tvOption = view.findViewById(R.id.tv_Option);
-        tvOption.setText("Option for " + menuCategory.getMeal().get(childPosition).getMealCategories().get(childPosition).getMealProducts().get(selectedChildPosition).getProductName());
+        tvOption.setText("Option for " + menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).getProductName());
 
         tvTitle = view.findViewById(R.id.tv_title);
 
@@ -197,6 +197,7 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
+        updatePrice(false);
 //        updatePrice();
     }
 
@@ -216,8 +217,8 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
                 if (productSizeAdapter != null) {
                     if (productSizeAdapter.getItemCount() > 1) {
 
-                        if (productSizeAdapter.getSelectedItem().size() != 0) {
-                            menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).setMenuProductSize(productSizeAdapter.getSelectedItem());
+                        if (productSizeAdapter.getSelectedItem(false).size() != 0) {
+                            menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).setMenuProductSize(productSizeAdapter.getSelectedItem(false));
                             menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).getMenuProductSize().get(0).setAmount(String.valueOf(modifierPrice));
 
                         }
@@ -238,62 +239,59 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
 
     @Override
     public void OnSizeSelected() {
-        updatePrice();
+        updatePrice(false);
 
     }
 
     @Override
-    public void OnSizeModifierSelected() {
-        updatePrice();
+    public void OnSizeModifierSelected(boolean isSelect) {
+        updatePrice(isSelect);
 
     }
 
 
-    private void updatePrice() {
+    private void updatePrice(boolean isSelect) {
         List<MenuProduct> menuProducts = null;
         Double netPrice = 0d;
         Double basePrice = 0d;
         if (productSizeAdapter != null) {
             if (productSizeAdapter.getItemCount() > 1) {
-                if (productSizeAdapter.getSelectedItem().size() != 0) {
+                netPrice += Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice());
+//                int itemQty = menuCategory.getMeal().get(childPosition).getOriginalQuantity();
 
-                    netPrice += Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice());
+                List<MenuProductSize> menuProductSizes = productSizeAdapter.getSelectedItem(isSelect);
+                if (menuProductSizes.size() != 0) {
                     basePrice += Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice());
-
-                    for (int i = 0; i < productSizeAdapter.getSelectedItem().size(); i++) {
-
-
-                        for (int j = 0; j < productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().size(); j++) {
-
-
-                            if (productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().get(j).getModifierType().equalsIgnoreCase("free")) {
+                    for (int i = 0; i < menuProductSizes.size(); i++) {
+                        for (int j = 0; j < menuProductSizes.get(i).getSizeModifiers().size(); j++) {
+                            if (menuProductSizes.get(i).getSizeModifiers().get(j).getModifierType().equalsIgnoreCase("free")) {
 
                                 int allCount = 0;
-                                for (int k = 0; k < productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().get(j).getModifier().size(); k++) {
-                                    allCount = allCount + Integer.parseInt(productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().get(j).getModifier().get(k).getOriginalQuantity());
+
+                                for (int k = 0; k < menuProductSizes.get(i).getSizeModifiers().get(j).getModifier().size(); k++) {
+                                    allCount = allCount + Integer.parseInt(menuProductSizes.get(i).getSizeModifiers().get(j).getModifier().get(k).getOriginalQuantity());
                                 }
 
-                                if (allCount > productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) {
+                                if (allCount > menuProductSizes.get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) {
 
-                                    netPrice += ((allCount - productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) * Double.parseDouble(productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().get(j).getModifier().get(0).getModifierProductPrice()));
+
+
+
+                                    netPrice += ((allCount - menuProductSizes.get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) * Double.parseDouble(menuProductSizes.get(i).getSizeModifiers().get(j).getModifier().get(0).getModifierProductPrice()));
                                     modifierPrice = netPrice - basePrice;
                                 }
                             } else {
-                                for (Modifier modifier : productSizeAdapter.getSelectedItem().get(i).getSizeModifiers().get(j).getModifier()) {
+                                for (Modifier modifier : menuProductSizes.get(i).getSizeModifiers().get(j).getModifier()) {
                                     int qty = Integer.parseInt(modifier.getOriginalQuantity());
 
                                     netPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
                                     modifierPrice = netPrice - basePrice;
                                 }
                             }
-
                         }
-
                     }
-
-                    totalPriceView.setText(String.format("%.2f", netPrice));
-
                 }
+                totalPriceView.setText(String.format("%.2f", netPrice));
             } else {
                 try {
                     if (productModifierAdapter != null) {

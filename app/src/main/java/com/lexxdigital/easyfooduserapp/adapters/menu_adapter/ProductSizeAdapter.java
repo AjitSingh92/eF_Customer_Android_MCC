@@ -42,7 +42,7 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.mItem = new ArrayList<>();
     }
 
-    public List<MenuProductSize> getSelectedItem() {
+    public List<MenuProductSize> getSelectedItem(boolean isSelect) {
         List<MenuProductSize> menuProductSizeList = new ArrayList<>();
         if (lastSelectedPosition == -1) {
             return menuProductSizeList;
@@ -57,7 +57,7 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 menuProductSize.setProductSizePrice(mItem.get(i).getProductSizePrice());
                 menuProductSize.setQuantity(mItem.get(i).getQuantity());
 
-                if (sizeModifierAdapter != null) {
+                if (sizeModifierAdapter != null && !isSelect) {
                     List<SizeModifier> sizeModifiers = new ArrayList<>();
                     for (int j = 0; j < sizeModifierAdapter.getSelectedList().size(); j++) {
 
@@ -299,7 +299,7 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             if (onProductModifierSelected != null) {
-                onProductModifierSelected.OnSizeModifierSelected();
+                onProductModifierSelected.OnSizeModifierSelected(true);
             }
         }
 

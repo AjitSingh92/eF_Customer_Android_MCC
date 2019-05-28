@@ -153,7 +153,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
-        updatePrice();
+        updatePrice(false);
     }
 
     @Override
@@ -171,7 +171,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
 //                getSelectedModifier();
                 if (productSizeAdapter != null) {
                     if (productSizeAdapter.getItemCount() > 1) {
-                        if (productSizeAdapter.getSelectedItem().size() != 0) {
+                        if (productSizeAdapter.getSelectedItem(false).size() != 0) {
 
                             List<MenuProduct> menuProducts = new ArrayList<>();
                             long id = db.getMenuCategoryIfExit(menuCategory.getMenuCategoryId());
@@ -196,7 +196,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getEcomProductImage(),
                                                 menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getProductOverallRating(),
                                                 1,
-                                                gson.toJson(productSizeAdapter.getSelectedItem()),
+                                                gson.toJson(productSizeAdapter.getSelectedItem(false)),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
                                                 null,
                                                 1,
@@ -218,7 +218,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 menuCategory.getMenuProducts().get(i).getEcomProductImage(),
                                                 menuCategory.getMenuProducts().get(i).getProductOverallRating(),
                                                 1,
-                                                gson.toJson(productSizeAdapter.getSelectedItem()),
+                                                gson.toJson(productSizeAdapter.getSelectedItem(false)),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
                                                 null,
                                                 1,
@@ -279,7 +279,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getEcomProductImage(),
                                                 menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getProductOverallRating(),
                                                 1,
-                                                gson.toJson(productSizeAdapter.getSelectedItem()),
+                                                gson.toJson(productSizeAdapter.getSelectedItem(false)),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
                                                 null,
                                                 1,
@@ -306,7 +306,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 menuCategory.getMenuProducts().get(i).getEcomProductImage(),
                                                 menuCategory.getMenuProducts().get(i).getProductOverallRating(),
                                                 1,
-                                                gson.toJson(productSizeAdapter.getSelectedItem()),
+                                                gson.toJson(productSizeAdapter.getSelectedItem(false)),
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
                                                 null,
                                                 1,
@@ -338,19 +338,19 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
 
     @Override
     public void OnSizeSelected() {
-        updatePrice();
+        updatePrice(false);
     }
 
     @Override
-    public void OnSizeModifierSelected() {
-        updatePrice();
+    public void OnSizeModifierSelected(boolean isSelect) {
+        updatePrice(isSelect);
     }
 
-    private void updatePrice() {
+    private void updatePrice(boolean isSelect) {
         List<MenuProduct> menuProducts = null;
         if (productSizeAdapter != null) {
             if (productSizeAdapter.getItemCount() > 1) {
-                if (productSizeAdapter.getSelectedItem().size() != 0) {
+                if (productSizeAdapter.getSelectedItem(isSelect).size() != 0) {
                     menuProducts = new ArrayList<>();
                     for (int i = 0; i < menuCategory.getMenuProducts().size(); i++) {
                         if (i == childPosition) {
@@ -364,7 +364,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                     menuCategory.getMenuProducts().get(i).getEcomProductImage(),
                                     menuCategory.getMenuProducts().get(i).getProductOverallRating(),
 //                                            menuCategory.getMenuProducts().get(i).getMenuProductSize(),
-                                    productSizeAdapter.getSelectedItem(),
+                                    productSizeAdapter.getSelectedItem(isSelect),
                                     productModifierAdapter.getSelectedProductModifier(),
                                     /*menuCategory.getMenuProducts().get(i).getUpsells(),*/
                                     null,
@@ -392,9 +392,9 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                         menuCategory.getMenuProducts().get(i).getUserappProductImage(),
                                         menuCategory.getMenuProducts().get(i).getEcomProductImage(),
                                         menuCategory.getMenuProducts().get(i).getProductOverallRating(),
-                                        menuCategory.getMenuProducts().get(i).getMenuProductSize(),
+                                         menuCategory.getMenuProducts().get(i).getMenuProductSize(),
                                         productModifierAdapter.getSelectedProductModifier(),
-                                       /* menuCategory.getMenuProducts().get(i).getUpsells(),*/
+                                        /* menuCategory.getMenuProducts().get(i).getUpsells(),*/
                                         null,
                                         menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
                                         1,
@@ -438,7 +438,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                             qty = (qty * itemQty);
                                             totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
                                         }*/
-                                            totalPrice += ((allCount - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
+                                            totalPrice += (((allCount*itemQty) - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
                                         }
                                     } else {
                                         for (Modifier modifier : sizeModifier.getModifier()) {

@@ -42,6 +42,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_restaurant_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_restaurant_details.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -196,29 +197,29 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="2" />
-          <entry key="java" value="150" />
-          <entry key="xml" value="22" />
+          <entry key="java" value="152" />
+          <entry key="xml" value="23" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="2" />
-          <entry key="JAVA" value="150" />
-          <entry key="XML" value="22" />
+          <entry key="JAVA" value="152" />
+          <entry key="XML" value="23" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2364" />
-          <entry key="txt" value="244" />
-          <entry key="xml" value="33" />
+          <entry key="java" value="2365" />
+          <entry key="txt" value="246" />
+          <entry key="xml" value="34" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2364" />
-          <entry key="PLAIN_TEXT" value="244" />
-          <entry key="XML" value="33" />
+          <entry key="JAVA" value="2365" />
+          <entry key="PLAIN_TEXT" value="246" />
+          <entry key="XML" value="34" />
         </counts>
       </usages-collector>
     </session>
@@ -228,46 +229,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-300">
+              <caret line="191" column="49" selection-start-line="191" selection-start-column="49" selection-end-line="191" selection-end-column="49" />
+              <folding>
+                <element signature="e#14129#14130#0" expanded="true" />
+                <element signature="e#14167#14168#0" expanded="true" />
+                <element signature="e#14859#14860#0" expanded="true" />
+                <element signature="e#14922#14923#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
-              <caret line="829" column="74" selection-start-line="829" selection-start-column="74" selection-end-line="829" selection-end-column="74" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/model/restaurantmenumodel/menu_response/MenuProductSize.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="63" column="28" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="28" />
-              <folding>
-                <element signature="e#1838#1839#0" expanded="true" />
-                <element signature="e#1874#1875#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/MenuMealDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="193" column="29" selection-start-line="193" selection-start-column="29" selection-end-line="193" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/model/restaurantmenumodel/menu_response/MealProduct.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="108" column="24" selection-start-line="108" selection-start-column="24" selection-end-line="108" selection-end-column="24" />
-              <folding>
-                <element signature="e#2649#2650#0" expanded="true" />
-                <element signature="e#2687#2688#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-390">
+              <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -2642,7 +2623,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/model/restaurantmenumodel/menu_response/MealCategory.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/ExpandableAdapterRecycleview.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/NewAdapterMenuRecyclerview.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/model/restaurantmenumodel/menu_response/request/MenuProductSizeModifierRequest.java" />
@@ -2693,6 +2673,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/previous_order/MyorderAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_restaurant_details.xml" />
       </list>
     </option>
   </component>
@@ -2732,14 +2713,7 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="cart_db" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="easyfood_userapp_android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="easyfooduserapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="restaurant_details" type="462c0819:PsiDirectoryNode" />
+              <item name="fragments" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -2907,20 +2881,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556196141367</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/workspace.xml&#10;#&#9;app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/SaveCardAdapter.java&#10;#&#9;app/src/main/res/layout/card_item_row.xml">
-      <created>1556793247869</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1556793247869</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/workspace.xml&#10;#&#9;app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/SaveCardAdapter.java&#10;#&#9;app/src/main/res/layout/card_item_row.xml">
-      <created>1556793896787</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1556793896787</updated>
     </task>
     <task id="LOCAL-00024" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/workspace.xml&#10;#&#9;app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/SaveCardAdapter.java&#10;#&#9;app/src/main/res/layout/card_item_row.xml">
       <created>1556795849406</created>
@@ -3251,7 +3211,21 @@
       <option name="project" value="LOCAL" />
       <updated>1559053593475</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Database meal update">
+      <created>1559059258203</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1559059258203</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Database meal update">
+      <created>1559059362998</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1559059362998</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3267,7 +3241,7 @@
     <frame x="0" y="25" width="1600" height="810" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49746192" weight="0.27155727" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49746192" visible="true" weight="0.27155727" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" sideWeight="0.5025381" side_tool="true" weight="0.26512226" />
       <window_info id="Build Variants" order="4" side_tool="true" weight="0.32947233" />
@@ -4666,13 +4640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-618">
-          <caret line="80" column="25" selection-start-line="80" selection-start-column="17" selection-end-line="80" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dashboard/DashboardActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="146">
@@ -4705,37 +4672,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="254" column="54" selection-start-line="254" selection-start-column="54" selection-end-line="254" selection-end-column="54" />
-          <folding>
-            <element signature="e#14129#14130#0" expanded="true" />
-            <element signature="e#14167#14168#0" expanded="true" />
-            <element signature="e#14859#14860#0" expanded="true" />
-            <element signature="e#14922#14923#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_restaurant_details.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33">
-          <caret line="427" column="36" selection-start-line="427" selection-start-column="29" selection-end-line="427" selection-end-column="36" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/MenuMealDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="193" column="29" selection-start-line="193" selection-start-column="29" selection-end-line="193" selection-end-column="29" />
+        <state relative-caret-position="-2325">
+          <caret line="26" column="54" lean-forward="true" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/model/restaurantmenumodel/menu_response/MealProduct.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
+        <state relative-caret-position="1108">
           <caret line="108" column="24" selection-start-line="108" selection-start-column="24" selection-end-line="108" selection-end-column="24" />
           <folding>
             <element signature="e#2649#2650#0" expanded="true" />
@@ -4746,7 +4692,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/model/restaurantmenumodel/menu_response/MenuProductSize.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
+        <state relative-caret-position="780">
           <caret line="63" column="28" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="28" />
           <folding>
             <element signature="e#1838#1839#0" expanded="true" />
@@ -4755,10 +4701,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/cart_db/DatabaseHelper.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/MenuMealDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="829" column="74" selection-start-line="829" selection-start-column="74" selection-end-line="829" selection-end-column="74" />
+        <state relative-caret-position="-1409">
+          <caret line="115" column="106" lean-forward="true" selection-start-line="115" selection-start-column="106" selection-end-line="115" selection-end-column="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_restaurant_details.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="60" column="39" selection-start-line="60" selection-start-column="39" selection-end-line="60" selection-end-column="39" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-300">
+          <caret line="191" column="49" selection-start-line="191" selection-start-column="49" selection-end-line="191" selection-end-column="49" />
+          <folding>
+            <element signature="e#14129#14130#0" expanded="true" />
+            <element signature="e#14167#14168#0" expanded="true" />
+            <element signature="e#14859#14860#0" expanded="true" />
+            <element signature="e#14922#14923#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MenuFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-390">
+          <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
         </state>
       </provider>
     </entry>

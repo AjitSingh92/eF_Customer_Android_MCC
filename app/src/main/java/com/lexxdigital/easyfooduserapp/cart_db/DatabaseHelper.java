@@ -367,7 +367,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 upsellProduct = new UpsellProduct();
-
                 upsellProduct.setId(cursor.getString(cursor.getColumnIndex("id")));
                 upsellProduct.setGroupId(cursor.getString(cursor.getColumnIndex("groupId")));
                 upsellProduct.setProductId(cursor.getString(cursor.getColumnIndex("productId")));

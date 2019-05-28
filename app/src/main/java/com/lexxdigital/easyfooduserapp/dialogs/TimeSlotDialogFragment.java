@@ -200,9 +200,9 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
             case R.id.btn_ok:
 
                 if (todaySpinner != null && todaySpinner.getSelectedItemPosition() != 0) {
-                    if (toDayDataList != null) {
+                    if (dateTimeDataList != null) {
                         if (onDeliveryTimeSelectedListener != null) {
-                            onDeliveryTimeSelectedListener.onDeliveryTimeSelect(toDayDataList.get((todaySpinner.getSelectedItemPosition() - 1)));
+                            onDeliveryTimeSelectedListener.onDeliveryTimeSelect(dateTimeDataList.get((todaySpinner.getSelectedItemPosition() - 1)));
                         }
                     }
                 } else if (tomorrowSpinner != null && tomorrowSpinner.getSelectedItemPosition() != 0) {
@@ -278,6 +278,10 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                         toDayDataList = response.body().getData().getToday();
                         tomorrowDataList = response.body().getData().getTomorrow();
 
+                        dateTimeDataList = new ArrayList<>();
+                        dateTimeDataList.addAll(response.body().getData().getToday());
+                        dateTimeDataList.addAll(response.body().getData().getTomorrow());
+
 
                         toDayList = new String[(size + 1)];
                         toDayList[0] = "Select Delivery Time";
@@ -306,7 +310,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
 
                                 String[] str = data1.split(" ");
                                 if (str.length >= 2) {
-                                    toDayList[(i+j+ 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
+                                    toDayList[(i + j + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
                                 }
                             }
                         }

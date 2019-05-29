@@ -29,7 +29,6 @@
                 android:padding="@dimen/_10sdp">
 
                 <ImageView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_arrow_back_black_24dp"
@@ -43,9 +42,13 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/back"
                 android:layout_weight="1"
                 android:fontFamily="@font/avenir_black"
                 android:gravity="center"
+                android:lines="1"
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sdp" />
@@ -177,8 +180,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/_11sdp"
                                     android:fontFamily="@font/avenir_medium"
-                                    android:text=""
                                     android:tag="American Burgers, Chicken, Pizza"
+                                    android:text=""
                                     android:textColor="@color/item_name"
                                     android:textSize="@dimen/_10sdp" />
 

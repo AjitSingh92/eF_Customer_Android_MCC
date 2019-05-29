@@ -963,20 +963,51 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         if (menuCategory.getMeal() != null) {
             if (db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId()) > 0) {
                 List<MenuProduct> menuProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId());
-                if (menuProduct.size() > 1) {
-                    AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
-                    againFragment.show(getSupportFragmentManager(), "againDailog");
-                } else {
+
+                if (action == 1) {
                     if (itemCount == 0) {
                         db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
                         qtyLayout.setVisibility(View.GONE);
                         itemQtyView.setText(String.valueOf(itemCount));
+                        showPriceAndView(null, null, 0);
                     } else {
-                        db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
-                        itemQtyView.setText(String.valueOf(itemCount));
+                        if (menuProduct.size() > 1) {
+                            AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
+                            againFragment.show(getSupportFragmentManager(), "againDailog");
+                        } else {
+                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                            itemQtyView.setText(String.valueOf(itemCount));
+                            showPriceAndView(null, null, 0);
+                        }
                     }
-                    showPriceAndView(null, null, 0);
 
+                } else {
+                    /*if (menuProduct.size() > 1) {
+                        AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
+                        againFragment.show(getSupportFragmentManager(), "againDailog");
+                    } else {
+                        if (itemCount == 0) {
+                            db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
+                            qtyLayout.setVisibility(View.GONE);
+                            itemQtyView.setText(String.valueOf(itemCount));
+                        } else {
+                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                            itemQtyView.setText(String.valueOf(itemCount));
+                        }
+                        showPriceAndView(null, null, 0);
+                    }*/
+
+                    if (qtyLayout.getVisibility() == View.GONE) {
+                        qtyLayout.setVisibility(View.VISIBLE);
+                        int qtyCount = 0;
+                        for (MenuProduct product : menuProduct) {
+                            qtyCount += product.getOriginalQuantity();
+                        }
+                        itemQtyView.setText(String.valueOf(qtyCount));
+                    } else {
+                        ChooseLastCustnizationDialog chooseLastCustnizationDialog = ChooseLastCustnizationDialog.newInstance(this, menuProduct, itemCount, qtyLayout, itemQtyView, parentPosition, childPosition, menuCategory, false, action, this);
+                        chooseLastCustnizationDialog.show(getSupportFragmentManager(), "chooseLastCustnizationDialog");
+                    }
                 }
             } else {
                 MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, true, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
@@ -1042,14 +1073,27 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
     }
 
+    private void updateItemQty(View view, TextView qtyTextView, List<MenuProduct> mProduct) {
+        int itemQty = 0;
+        for (MenuProduct product : mProduct) {
+            itemQty += product.getOriginalQuantity();
+        }
+        if (itemQty == 0) {
+            view.setVisibility(View.GONE);
+        }
+        qtyTextView.setText(String.valueOf(itemQty));
+
+        showPriceAndView(null, null, 0);
+    }
+
     @Override
     public void onMultiTimeItemChange(int childPosition, int parentPosition, List<
             MenuProduct> menuProduct, View view, TextView qtyTextView, MenuCategory menuCategory,
                                       int itemCount, int action) {
-
-        if (db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
-            List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId());
-            int itemQty = 0;
+        if (menuCategory.getMeal() != null && db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId()) > 0) {
+            List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId());
+            updateItemQty(view, qtyTextView, mProduct);
+            /*int itemQty = 0;
             for (MenuProduct product : mProduct) {
                 itemQty += product.getOriginalQuantity();
             }
@@ -1058,55 +1102,50 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             }
             qtyTextView.setText(String.valueOf(itemQty));
 
-
-            showPriceAndView(null, null, 0);
+            showPriceAndView(null, null, 0);*/
         } else {
-            if (menuCategory.getMenuSubCategory().size() > 0 && menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().size() > 0) {
-                if (db.getMenuProductCount(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
-                    List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId());
 
-                    int itemQty = 0;
-                    for (MenuProduct product : mProduct) {
-                        itemQty += product.getOriginalQuantity();
-                    }
-                    if (itemQty == 0) {
-                        view.setVisibility(View.GONE);
-                    }
-                    qtyTextView.setText(String.valueOf(itemQty));
+            if (menuCategory.getMenuProducts() != null && menuCategory.getMenuProducts().size() > 0 && db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
+                List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId());
+                updateItemQty(view, qtyTextView, mProduct);
+                /*int itemQty = 0;
+                for (MenuProduct product : mProduct) {
+                    itemQty += product.getOriginalQuantity();
+                }
+                if (itemQty == 0) {
+                    view.setVisibility(View.GONE);
+                }
+                qtyTextView.setText(String.valueOf(itemQty));
 
-
-                    showPriceAndView(null, null, 0);
-                    /*if (menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getProductModifiers().size() > 0 || menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductSize().size() > 0) {
-                        if (action == 1) {
-                            AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, mProduct, view, qtyTextView, menuCategory, itemCount, action);
-                            againFragment.show(getSupportFragmentManager(), "againDailog");
-                        } else {
-                            ChooseLastCustnizationDialog chooseLastCustnizationDialog = ChooseLastCustnizationDialog.newInstance(this, mProduct, itemCount, view, qtyTextView, parentPosition, childPosition, menuCategory, true, action, this);
-                            chooseLastCustnizationDialog.show(getSupportFragmentManager(), "chooseLastCustnizationDialog");
+                showPriceAndView(null, null, 0);*/
+            } else {
+                if (menuCategory.getMenuSubCategory().size() > 0 && menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().size() > 0) {
+                    if (db.getMenuProductCount(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
+                        List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId());
+                        updateItemQty(view, qtyTextView, mProduct);
+                        /*int itemQty = 0;
+                        for (MenuProduct product : mProduct) {
+                            itemQty += product.getOriginalQuantity();
                         }
-                    } else {
-                        if (itemCount == 0) {
-                            db.deleteItem(mProduct.get(0).getMenuId(), mProduct.get(0).getId());
+                        if (itemQty == 0) {
                             view.setVisibility(View.GONE);
-                            qtyTextView.setText(String.valueOf(itemCount));
-                        } else {
-                            db.updateProductQuantity(mProduct.get(0).getId(), itemCount);
-                            qtyTextView.setText(String.valueOf(itemCount));
                         }
+                        qtyTextView.setText(String.valueOf(itemQty));
+
+                        showPriceAndView(null, null, 0);*/
+
+                    } else {
+                        view.setVisibility(View.GONE);
+                        qtyTextView.setText("0");
                         showPriceAndView(null, null, 0);
-                    }*/
+                    }
                 } else {
                     view.setVisibility(View.GONE);
                     qtyTextView.setText("0");
                     showPriceAndView(null, null, 0);
                 }
-            } else {
-                view.setVisibility(View.GONE);
-                qtyTextView.setText("0");
-                showPriceAndView(null, null, 0);
             }
         }
-
     }
 
     @Override
@@ -1120,8 +1159,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     }
 
     @Override
-    public void onRepeatLast(int position, int parentPosition, List<
-            MenuProduct> menuProduct, View view, TextView qtyTextView, MenuCategory menuCategory,
+    public void onRepeatLast(int position, int parentPosition,
+                             List<MenuProduct> menuProduct, View view, TextView qtyTextView, MenuCategory menuCategory,
                              int itemCount, Boolean isSubCat, int action) {
         if (menuProduct.size() > 1) {
             AgainFragment againFragment = AgainFragment.newInstance(this, position, parentPosition, menuProduct, view, qtyTextView, menuCategory, itemCount, action);
@@ -1146,9 +1185,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     public void onChooseAgain(int position, int parentPosition, List<
             MenuProduct> menuProduct, View view, TextView qtyTextView, MenuCategory menuCategory,
                               int itemCount, Boolean isSubCat, int action) {
-        MenuDialogNew menuDialogNew = MenuDialogNew.newInstance(this, parentPosition, position, view, qtyTextView, itemCount, action, menuCategory, isSubCat, this);
+
+        if (menuCategory.getMeal() != null) {
+            MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, true, -1, -1, parentPosition, position, view, qtyTextView, itemCount, action, menuCategory, false, this);
+            menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
+        } else {
+            MenuDialogNew menuDialogNew = MenuDialogNew.newInstance(this, parentPosition, position, view, qtyTextView, itemCount, action, menuCategory, isSubCat, this);
 //            FragmentTransaction ft = getFragmentManager().beginTransaction();
-        menuDialogNew.show(getSupportFragmentManager(), "menuDialogNew");
+            menuDialogNew.show(getSupportFragmentManager(), "menuDialogNew");
+        }
     }
 
     @Override

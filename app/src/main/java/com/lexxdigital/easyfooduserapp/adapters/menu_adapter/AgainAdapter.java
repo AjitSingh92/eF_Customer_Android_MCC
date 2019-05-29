@@ -115,7 +115,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
             tvQty.setText(String.valueOf(itemQty));
             llModifier.removeAllViews();
             Double itemTotalPrice = 0d;
-            if (data.get(position).getMenuProductSize().size() > 0) {
+            if (data.get(position).getMenuProductSize() != null && data.get(position).getMenuProductSize().size() > 0) {
                 for (MenuProductSize menuProductSize : data.get(position).getMenuProductSize()) {
                     itemTotalPrice += (itemQty * Double.parseDouble(menuProductSize.getProductSizePrice()));
                     View child1 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
@@ -177,60 +177,63 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
             } else {
                 itemTotalPrice += (itemQty * Double.parseDouble(data.get(position).getMenuProductPrice()));
             }
-
-            for (ProductModifier productModifier : data.get(position).getProductModifiers()) {
-                if (productModifier.getModifier().size() > 0) {
-                    View child1 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
+            if (data.get(position).getProductModifiers() != null) {
+                for (ProductModifier productModifier : data.get(position).getProductModifiers()) {
+                    if (productModifier.getModifier().size() > 0) {
+                        View child1 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
 //                int qty = (itemQty * productModifier.getQuantity());
-                    ((TextView) child1.findViewById(R.id.tv_name)).setTypeface(null, Typeface.BOLD);
-                    //((TextView) child1.findViewById(R.id.tv_name)).setText(itemQty + "x" + productModifier.getModifierName());
-                    ((TextView) child1.findViewById(R.id.tv_name)).setText(productModifier.getModifierName());
-                    ((TextView) child1.findViewById(R.id.tv_price)).setVisibility(View.GONE);
-                    llModifier.addView(child1);
+                        ((TextView) child1.findViewById(R.id.tv_name)).setTypeface(null, Typeface.BOLD);
+                        //((TextView) child1.findViewById(R.id.tv_name)).setText(itemQty + "x" + productModifier.getModifierName());
+                        ((TextView) child1.findViewById(R.id.tv_name)).setText(productModifier.getModifierName());
+                        ((TextView) child1.findViewById(R.id.tv_price)).setVisibility(View.GONE);
+                        llModifier.addView(child1);
 
-                    int maxAllowFree = productModifier.getMaxAllowedQuantity();
-                    int free = 0;
+                        int maxAllowFree = productModifier.getMaxAllowedQuantity();
+                        int free = 0;
 
-                    for (Modifier modifier : productModifier.getModifier()) {
+                        for (Modifier modifier : productModifier.getModifier()) {
 
-                        View child = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
-                        int qty = (itemQty * Integer.parseInt(modifier.getOriginalQuantity()));
-                        //((TextView) child.findViewById(R.id.tv_name)).setPadding(25, 0, 0, 0);
-                        ((TextView) child.findViewById(R.id.tv_name)).setPadding(0, 0, 0, 0);
-                        ((TextView) child.findViewById(R.id.tv_name)).setText(qty + "x" + modifier.getProductName());
+                            View child = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
+                            int qty = (itemQty * Integer.parseInt(modifier.getOriginalQuantity()));
+                            //((TextView) child.findViewById(R.id.tv_name)).setPadding(25, 0, 0, 0);
+                            ((TextView) child.findViewById(R.id.tv_name)).setPadding(0, 0, 0, 0);
+                            ((TextView) child.findViewById(R.id.tv_name)).setText(qty + "x" + modifier.getProductName());
 
-                        if (productModifier.getModifierType().equalsIgnoreCase("free")) {
+                            if (productModifier.getModifierType().equalsIgnoreCase("free")) {
 
-                            if (free == maxAllowFree) {
+                                if (free == maxAllowFree) {
+
+                                    ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
+                                    itemTotalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                } else {
+                                    int qtyy = Integer.parseInt(modifier.getOriginalQuantity());
+                                    if (qtyy > maxAllowFree) {
+                                        int nQty = qtyy - maxAllowFree;
+                                        free = maxAllowFree;
+                                        qtyy = (nQty * itemQty);
+                                        ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(modifier.getModifierProductPrice()))));
+                                        itemTotalPrice += (qtyy * Double.parseDouble(modifier.getModifierProductPrice()));
+                                    } else {
+                                        ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
+                                        free++;
+                                    }
+                                }
+
+                            } else {
 
                                 ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
                                 itemTotalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
-                            } else {
-                                int qtyy = Integer.parseInt(modifier.getOriginalQuantity());
-                                if (qtyy > maxAllowFree) {
-                                    int nQty = qtyy - maxAllowFree;
-                                    free = maxAllowFree;
-                                    qtyy = (nQty * itemQty);
-                                    ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(modifier.getModifierProductPrice()))));
-                                    itemTotalPrice += (qtyy * Double.parseDouble(modifier.getModifierProductPrice()));
-                                } else {
-                                    ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
-                                    free++;
-                                }
                             }
 
-                        } else {
 
-                            ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
-                            itemTotalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                            llModifier.addView(child);
                         }
-
-
-                        llModifier.addView(child);
                     }
                 }
             }
-            itemPrice.setText(context.getResources().getString(R.string.currency) + String.format("%.2f", itemTotalPrice));
+            itemPrice.setText(context.getResources().
+
+                    getString(R.string.currency) + String.format("%.2f", itemTotalPrice));
         }
 
         @Override

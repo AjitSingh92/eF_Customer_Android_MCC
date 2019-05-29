@@ -75,7 +75,12 @@ public class ChooseLastCustnizationDialog extends DialogFragment implements View
         if (isSubCat) {
             lastItemName.setText(menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getProductName());
         } else {
-            lastItemName.setText(menuCategory.getMenuProducts().get(childPosition).getProductName());
+            if (menuCategory.getMeal() != null) {
+                lastItemName.setText(menuCategory.getMeal().get(childPosition).getMealName());
+
+            } else {
+                lastItemName.setText(menuCategory.getMenuProducts().get(childPosition).getProductName());
+            }
         }
         view.findViewById(R.id.cross_tv).setOnClickListener(this);
         view.findViewById(R.id.repeat_last).setOnClickListener(this);

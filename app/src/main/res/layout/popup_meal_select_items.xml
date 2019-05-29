@@ -97,13 +97,25 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/tv.validationError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/helvetica_neue_medium"
+        android:gravity="center"
+        android:text=""
+        android:visibility="gone"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@+id/top"
+        android:textSize="@dimen/_12sdp" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_600sdp"
         android:layout_above="@+id/add_items"
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/tv.validationError"
         android:fillViewport="true">
 
 

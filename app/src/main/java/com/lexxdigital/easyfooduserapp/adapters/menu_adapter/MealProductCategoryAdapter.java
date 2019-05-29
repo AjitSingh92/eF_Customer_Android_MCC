@@ -35,9 +35,11 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
     OnMealProductItemSelect onMealProductItemSelect;
     List<MealProductAdapter> mealProductAdapters;
 
+    Boolean openOnClick;
 
-    public MealProductCategoryAdapter(Context context, Dialog dialog, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect) {
+    public MealProductCategoryAdapter(Context context, Boolean openOnClick, Dialog dialog, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect) {
         this.context = context;
+        this.openOnClick = openOnClick;
         inflater = LayoutInflater.from(context);
         mItem = new ArrayList<>();
         this.itemClickListener = itemClickListener;
@@ -55,8 +57,18 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public List<MealProductAdapter> getMealProductAdapters() {
-
         return mealProductAdapters;
+    }
+
+    public String getCategoryName(int position) {
+        return mItem.get(position).getCategoryName();
+    }
+
+    public int getCustomizableQuantity(int position) {
+        if (mItem.get(position).getCustomizable() == 0) {
+            return -1;
+        }
+        return mItem.get(position).getQuantity();
     }
 
     public void clearData() {
@@ -119,11 +131,11 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
 
             if (mItem.get(position).getCustomizable() == 1) {
                 tvItemTitle.setText("Choose any " + mItem.get(position).getQuantity() + " out of " + mItem.get(position).getMealProducts().size() + " in " + mItem.get(position).getCategoryName());
-                mealProductAdapter = new MealProductAdapter(context, dialog, mItem.get(position).getQuantity(), position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
+                mealProductAdapter = new MealProductAdapter(context, openOnClick, dialog, mItem.get(position).getQuantity(), position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
 
             } else if (mItem.get(position).getCustomizable() == 0) {
                 tvItemTitle.setText(mItem.get(position).getCategoryName());
-                mealProductAdapter = new MealProductAdapter(context, dialog, -1, position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
+                mealProductAdapter = new MealProductAdapter(context, openOnClick, dialog, -1, position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
             }
             alertMsg.setVisibility(View.GONE);
             mealProductAdapters.add(mealProductAdapter);
@@ -142,5 +154,7 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
                 alertMsg.setVisibility(View.GONE);
             }
         }
+
+
     }
 }

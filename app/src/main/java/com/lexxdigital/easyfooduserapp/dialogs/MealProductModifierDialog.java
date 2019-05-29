@@ -210,6 +210,7 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cross_tv:
+//                menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).setSelected(false);
                 dismiss();
                 break;
             case R.id.sign_up_btn_dialog:
@@ -273,8 +274,6 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
                                 }
 
                                 if (allCount > menuProductSizes.get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) {
-
-
 
 
                                     netPrice += ((allCount - menuProductSizes.get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) * Double.parseDouble(menuProductSizes.get(i).getSizeModifiers().get(j).getModifier().get(0).getModifierProductPrice()));

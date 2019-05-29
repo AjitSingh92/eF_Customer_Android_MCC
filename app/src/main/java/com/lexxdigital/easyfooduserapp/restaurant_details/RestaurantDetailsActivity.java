@@ -855,7 +855,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     }
 
     private void checkModifierAndSizeInDb(final Boolean isCategory, final String productId, final int parentPosition, final int childPosition, final View qtyLayout, final TextView itemQtyView, final int itemCount, final int action, final MenuCategory menuCategory, final ProgressBar progressBar) {
-        if (menuCategory.getMeal().get(childPosition).getMealCategories() != null && menuCategory.getMeal().get(childPosition).getMealCategories().size() > 0) {
+        if (menuCategory.getMeal() != null && menuCategory.getMeal().get(childPosition).getMealCategories() != null && menuCategory.getMeal().get(childPosition).getMealCategories().size() > 0) {
             updateCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
 
         } else {
@@ -966,7 +966,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 if (menuProduct.size() > 1) {
                     AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
                     againFragment.show(getSupportFragmentManager(), "againDailog");
-                }else{
+                } else {
                     if (itemCount == 0) {
                         db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
                         qtyLayout.setVisibility(View.GONE);
@@ -979,7 +979,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
                 }
             } else {
-                MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
+                MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, true, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
                 menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
             }
         } else {
@@ -1311,7 +1311,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     @Override
     public void OnMealProductModifierSelected(Boolean onDone, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat) {
         if (onDone) {
-            MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, childParentPosition, selectedChildPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, false, this);
+            MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, false, childParentPosition, selectedChildPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, false, this);
             menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
         }
     }
@@ -1319,6 +1319,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
     private void openMealProductModifierDialog(int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable, Boolean isSubCat) {
         MealProductModifierDialog mealProductModifierDialog = MealProductModifierDialog.newInstance(this, childParentPosition, selectedChildPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, true, productSizeAndModifierTable, this);
+        mealProductModifierDialog.setCancelable(false);
         mealProductModifierDialog.show(getSupportFragmentManager(), "mealProductModifierDialog");
     }
 

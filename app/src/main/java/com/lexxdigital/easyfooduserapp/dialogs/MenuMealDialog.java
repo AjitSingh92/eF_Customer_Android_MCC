@@ -57,9 +57,12 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
     int childParentPosition;
     int selectedChildPosition;
 
-    public static MenuMealDialog newInstance(Context context, int childParentPosition, int selectedChildPosition,int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener) {
+    TextView validationError;
+    Boolean openOnClick;
+    public static MenuMealDialog newInstance(Context context,Boolean openOnClick, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener) {
         MenuMealDialog c = new MenuMealDialog();
         c.context = context;
+        c.openOnClick = openOnClick;
         c.childParentPosition = childParentPosition;
         c.selectedChildPosition = selectedChildPosition;
         c.parentPosition = parentPosition;
@@ -90,7 +93,7 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        validationError = view.findViewById(R.id.tv_validationError);
         totalPriceView = view.findViewById(R.id.total_price);
         tvBasePrice = view.findViewById(R.id.tv_BasePrice);
         tvAmountToPay = view.findViewById(R.id.tv_AmountToPay);
@@ -110,7 +113,7 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
         layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
         layoutManager.setScrollEnabled(false);
         listMealProductCategory.setLayoutManager(layoutManager);
-        mealProductCategoryAdapter = new MealProductCategoryAdapter(context, getDialog(), parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, this);
+        mealProductCategoryAdapter = new MealProductCategoryAdapter(context,openOnClick, getDialog(), parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, this);
         listMealProductCategory.setAdapter(mealProductCategoryAdapter);
 
         mealProductCategoryAdapter.addItem(menuCategory.getMeal().get(childPosition).getMealCategories());
@@ -143,8 +146,6 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
-
-
     }
 
     @Override
@@ -169,7 +170,13 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
                 long subCatId = -1;
 
                 List<MealProductAdapter> mealProductAdapters = mealProductCategoryAdapter.getMealProductAdapters();
-
+                for (int i = 0; i < mealProductAdapters.size(); i++) {
+                    if (mealProductCategoryAdapter.getCustomizableQuantity(i) != -1 && mealProductCategoryAdapter.getCustomizableQuantity(i) > mealProductAdapters.get(i).getSelectedItem().size()) {
+                        validationError.setVisibility(View.VISIBLE);
+                        validationError.setText("Choose " + (mealProductCategoryAdapter.getCustomizableQuantity(i) - mealProductAdapters.get(i).getSelectedItem().size()) + " more product(s) in " + mealProductCategoryAdapter.getCategoryName(i));
+                        return;
+                    }
+                }
 
                   /*  db.insertMenuProduct(id, subCatId, menuCategory.getMenuCategoryId(),
                             menuCategory.getMeal().get(parentPosition).getMealId(),
@@ -220,6 +227,8 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
     }
 
     private void updatePrice() {
+        validationError.setVisibility(View.GONE);
+
         if (mealProductCategoryAdapter != null) {
 
             List<MealProductAdapter> mealProductAdapters = mealProductCategoryAdapter.getMealProductAdapters();

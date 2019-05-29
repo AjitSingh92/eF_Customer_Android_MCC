@@ -45,13 +45,15 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     Dialog dialog;
     OnMealProductItemSelect onMealProductItemSelect;
     OnMealProductClickListener onMealProductClickListener;
+    Boolean openOnClick;
 
     public interface OnMealProductClickListener {
-        void OnMealProductClick(int position, Boolean showMsg,String message);
+        void OnMealProductClick(int position, Boolean showMsg, String message);
     }
 
-    public MealProductAdapter(Context context, Dialog dialog, int customizableQuantity, int childParentPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect, OnMealProductClickListener onMealProductClickListener) {
+    public MealProductAdapter(Context context, Boolean openOnClick, Dialog dialog, int customizableQuantity, int childParentPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect, OnMealProductClickListener onMealProductClickListener) {
         this.context = context;
+        this.openOnClick = openOnClick;
         inflater = LayoutInflater.from(context);
         mItem = new ArrayList<>();
         this.customizableQuantity = customizableQuantity;
@@ -130,8 +132,30 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         private void bindData(int position) {
+            tvItemTitle.setText(mItem.get(position).getProductName() + " " + mItem.get(position).getProductSizeName());
 
-            if (mItem.get(position).getMenuProductSize() != null) {
+//            itemSelected.setClickable(false);
+            if (customizableQuantity == -1) {
+
+                mItem.get(position).setSelected(true);
+                itemSelected.setChecked(true);
+                itemView.setOnClickListener(this);
+                if (onMealProductItemSelect != null) {
+                    onMealProductItemSelect.OnMealProductItemSelect(true);
+                }
+            } else {
+                if (mItem.get(position).getSelected() && !openOnClick) {
+                    itemSelected.setChecked(true);
+                    if (onMealProductItemSelect != null) {
+                        onMealProductItemSelect.OnMealProductItemSelect(true);
+                    }
+                } else {
+                    itemSelected.setChecked(false);
+                    mItem.get(position).setSelected(false);
+                }
+            }
+
+            if (mItem.get(position).getMenuProductSize() != null && mItem.get(position).getSelected()) {
 
                 if (mItem.get(position).getMenuProductSize().get(0).getSizeModifiers() != null) {
 
@@ -152,30 +176,6 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 tvModifier.setText(null);
             }
-
-            tvItemTitle.setText(mItem.get(position).getProductName() + " " + mItem.get(position).getProductSizeName());
-
-
-//            itemSelected.setClickable(false);
-            if (customizableQuantity == -1) {
-                mItem.get(position).setSelected(true);
-                itemSelected.setChecked(true);
-                itemView.setOnClickListener(this);
-                if (onMealProductItemSelect != null) {
-                    onMealProductItemSelect.OnMealProductItemSelect(true);
-                }
-            } else {
-                if (mItem.get(position).getSelected()) {
-                    itemSelected.setChecked(true);
-                    if (onMealProductItemSelect != null) {
-                        onMealProductItemSelect.OnMealProductItemSelect(true);
-                    }
-                } else {
-                    itemSelected.setChecked(false);
-                    mItem.get(position).setSelected(false);
-                }
-            }
-
         }
 
         @Override
@@ -183,18 +183,18 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (customizableQuantity != -1) {
                 if (getSelectedItem().size() == customizableQuantity && !mItem.get(getLayoutPosition()).getSelected()) {
                     if (onMealProductClickListener != null) {
-                        onMealProductClickListener.OnMealProductClick(getLayoutPosition(), true,"You can not choose more than " + customizableQuantity);
+                        onMealProductClickListener.OnMealProductClick(getLayoutPosition(), true, "You can not choose more than " + customizableQuantity);
                     }
                     return;
                 }
-                onMealProductClickListener.OnMealProductClick(getLayoutPosition(), false,"You can not choose more than " + customizableQuantity);
+//                onMealProductClickListener.OnMealProductClick(getLayoutPosition(), false, "You can not choose more than " + customizableQuantity);
 
                 if (mItem.get(getLayoutPosition()).getSelected()) {
                     itemSelected.setChecked(false);
                     lastSelectedItem = itemSelected;
                     lastSelectedPosition = getLayoutPosition();
                     mItem.get(getLayoutPosition()).setSelected(false);
-
+                    tvModifier.setText(null);
                     menuCategory.getMeal().get(parentPosition).getMealCategories().get(childPosition).getMealProducts().get(getLayoutPosition()).setSelected(false);
 
                 } else {
@@ -206,6 +206,7 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     lastSelectedItem = itemSelected;
                     lastSelectedPosition = getLayoutPosition();
                     mItem.get(getLayoutPosition()).setSelected(true);
+
                 }
                 if (mItem.get(getLayoutPosition()).getSelected()) {
                     if (onMealProductItemSelect != null) {

@@ -111,6 +111,7 @@ public class AddAddressActivity extends AppCompatActivity implements
     LatLng latLng;
     CoordinatorLayout coordinatorLayout;
 
+    String addressShort = "";
     String address1 = "";
     String postalCode = "";
     String cityName = "";
@@ -135,6 +136,7 @@ public class AddAddressActivity extends AppCompatActivity implements
     String locationTag = "home";
     private int defaultStatus = 0;
     private List<PostalCodeAddRes.Datum> postalAddres = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -621,8 +623,9 @@ public class AddAddressActivity extends AppCompatActivity implements
                         if (address.getPostalCode() != null) {
 
                             Log.e("AddAddrees", "getSetAddress:address.toStr:>>>>> " + address.toString());
+                            addressShort=addresses.get(0).getAddressLine(0);
+//                            addressShort=addressShort.replace()
                             cityName = address.getLocality();
-
                             address1 = addresses.get(0).getAddressLine(0);
                             address2 = addresses.get(0).getAddressLine(1);
                             countyName = addresses.get(0).getCountryName();

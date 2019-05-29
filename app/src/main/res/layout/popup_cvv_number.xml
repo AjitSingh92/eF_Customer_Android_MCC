@@ -27,6 +27,23 @@
             android:text="Please enter expiry month and year." />
 
 
+        <TextView
+            android:id="@+id/tv.invalid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:text="Please enter valid expiry date" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

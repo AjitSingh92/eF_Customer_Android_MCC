@@ -277,7 +277,8 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView tvPhoneEnding = mDialogView.findViewById(R.id.tv_mobileEnding);
-        tvPhoneEnding.setText("Please check your mail inbox or text messages for phone number ending " + mobile.substring(mobile.length() - 4, mobile.length()) + " and enter the verification code");
+//        tvPhoneEnding.setText("Please check your mail inbox or text messages for phone number ending " + mobile.substring(mobile.length() - 4, mobile.length()) + " and enter the verification code");
+        tvPhoneEnding.setText("Please enter the verification code shared on your email and mobile");
         pin = (EditText) mDialogView.findViewById(R.id.pin_tv);
 
         SmsReceiver.bindListener(new SmsListener() {

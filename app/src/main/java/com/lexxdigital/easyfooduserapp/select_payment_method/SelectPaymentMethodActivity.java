@@ -188,7 +188,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         return cartDatRequest;
     }
 
-    public void alertDialogCVV() {
+    public void alertDialogCVV(String msg) {
         LayoutInflater factory = LayoutInflater.from(this);
         final View mDialogView = factory.inflate(R.layout.popup_cvv_number, null);
         final AlertDialog cvvDialog = new AlertDialog.Builder(this).create();
@@ -198,6 +198,15 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         final EditText exDate = (EditText) mDialogView.findViewById(R.id.expire_date);
         final EditText exYear = (EditText) mDialogView.findViewById(R.id.expire_year);
         final TextView errorTxt = (TextView) mDialogView.findViewById(R.id.txt_error);
+        final TextView textView = mDialogView.findViewById(R.id.textView);
+        final TextView errorText = mDialogView.findViewById(R.id.tv_invalid);
+        errorText.setVisibility(View.GONE);
+        if (msg != null) {
+            textView.setVisibility(View.GONE);
+            errorText.setVisibility(View.VISIBLE);
+        }
+        errorText.setText(msg);
+
         exDate.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -213,6 +222,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
             @Override
             public void afterTextChanged(Editable s) {
+                textView.setVisibility(View.VISIBLE);
+                errorText.setVisibility(View.GONE);
 
                 if (s.length() == 2) {
                     exYear.requestFocus();
@@ -301,7 +312,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             public void onClick(View v) {
                 //your business logic
                 cardDialog.dismiss();
-                alertDialogCVV();
+                alertDialogCVV(null);
 
             }
         });
@@ -488,7 +499,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                         Log.e("order id", response.body().getData().getOrder_number());
                         alertDialogOrderPlaced("Your order has been placed successfully.", true);
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
-                        alertDialogOrderPlaced(response.body().getMessage(), false);
+//                        alertDialogOrderPlaced(response.body().getMessage(), false);
+                        alertDialogCVV("Please enter valid expiry date");
                     } else {
                         alertDialogOrderPlaced("Transaction Failed\n" +
                                 "Your Order could not be processed", false);

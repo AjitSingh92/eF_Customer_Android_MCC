@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         db = new DatabaseHelper(this);
 //        db.deleteCart();
-//        FirebaseInstanceId.getInstance().getToken();
+        FirebaseInstanceId.getInstance().getToken();
         prefManager = new SharedPreferencesClass(getApplicationContext());
         Constants.setStatusBarGradiant(SplashActivity.this);
         final String islonch, islogin;

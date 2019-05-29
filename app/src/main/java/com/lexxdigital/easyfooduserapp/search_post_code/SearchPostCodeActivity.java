@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -200,7 +201,8 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                     } else {
                         dialog.hide();
                         //val.setPostCode(null);
-                        alertDialogNoRestaurant();
+
+                        errorDialog("Invalid Postcode", null);
                     }
                 } catch (Exception e) {
                     dialog.hide();
@@ -643,6 +645,49 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         allergyDialog.show();
     }
 
+    public void errorDialog(String msg1, String msg2) {
+        LayoutInflater factory = LayoutInflater.from(SearchPostCodeActivity.this);
+        final View mDialogView = factory.inflate(R.layout.no_resturent_popup, null);
+        final AlertDialog allergyDialog = new AlertDialog.Builder(SearchPostCodeActivity.this).create();
+        allergyDialog.setView(mDialogView);
+        allergyDialog.setCancelable(false);
+        allergyDialog.setCanceledOnTouchOutside(false);
+        allergyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        TextView tvMsg1, tvMsg2;
+
+        tvMsg1 = mDialogView.findViewById(R.id.tv_msg1);
+        tvMsg2 = mDialogView.findViewById(R.id.tv_msg2);
+
+        tvMsg1.setText(msg1);
+        tvMsg2.setText(msg2);
+        if (msg2 == null) {
+            tvMsg2.setVisibility(View.GONE);
+        }
+
+        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                allergyDialog.dismiss();
+                validPostcode = false;
+
+            }
+        });
+        mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                allergyDialog.dismiss();
+                validPostcode = false;
+            }
+        });
+
+        allergyDialog.show();
+    }
+
     public void alertDialogLocation() {
         LayoutInflater factory = LayoutInflater.from(SearchPostCodeActivity.this);
         final View mDialogView = factory.inflate(R.layout.custom_location_dialog, null);
@@ -730,6 +775,8 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                         startActivity(i);
                         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                         finish();
+                    } else {
+                        errorDialog("We currently are not delivering in your location", null);
                     }
                 } else {
                     dialog.hide();

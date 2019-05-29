@@ -45,6 +45,7 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         ButterKnife.bind(this);
+
         Constants.setStatusBarGradiant(LoginActivity.this);
         val = (GlobalValues) getApplicationContext();
         dialog = new Dialog(LoginActivity.this);
@@ -122,6 +124,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
+
+        if (sharedPreferencesClass.getString(sharedPreferencesClass.FB_TOKEN_ID) == null) {
+            sharedPreferencesClass.setString(sharedPreferencesClass.FB_TOKEN_ID, FirebaseInstanceId.getInstance().getToken());
+
+        }
         callFacebookLogin();
         googlePlusSignin();
 
@@ -380,14 +387,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             showDialog("Please enter password.");
             // Toast.makeText(LoginActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
             editPassword.requestFocus();
-        }
-        else if (editPassword.getText().toString().trim().length() < 6 || editPassword.getText().toString().trim().length() > 20) {
+        } else if (editPassword.getText().toString().trim().length() < 6 || editPassword.getText().toString().trim().length() > 20) {
             showDialog("Password must contain 6 to 20 characters.");
             // Toast.makeText(LoginActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
             editPassword.requestFocus();
-        }
-
-        else {
+        } else {
             dialog.show();
             if (Constants.isInternetConnectionAvailable(3000)) {
 

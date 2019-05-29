@@ -23,6 +23,7 @@
             android:paddingLeft="@dimen/_5sdp"
             android:paddingRight="@dimen/_5sdp"
             android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:text="Choose up to 2 dips"
             android:textSize="@dimen/_12sdp"
             android:visibility="visible" />

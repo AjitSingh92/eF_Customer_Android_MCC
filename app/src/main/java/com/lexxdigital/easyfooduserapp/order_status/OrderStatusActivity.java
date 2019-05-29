@@ -240,6 +240,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                     .subscribeWith(new DisposableSingleObserver<OrderStatusResponseModel>() {
                         @Override
                         public void onSuccess(OrderStatusResponseModel data) {
+
                             dialog.dismiss();
                             try {
 

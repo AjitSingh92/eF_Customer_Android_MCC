@@ -34,11 +34,10 @@
         android:background="@drawable/scooter" />
 
     <TextView
+        android:id="@+id/tv.msg1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fm"
-
-
         android:fontFamily="@font/avenir_black"
         android:gravity="center"
         android:padding="@dimen/_5sdp"
@@ -49,13 +48,12 @@
 
 
     <TextView
+        android:id="@+id/tv.msg2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:autoText="true"
         android:fontFamily="@font/avenir_medium"
         android:gravity="center"
-
         android:text="We’re expanding fast, so please check back soon "
         android:textColor="@color/descolor"
         android:textSize="@dimen/_14sdp"

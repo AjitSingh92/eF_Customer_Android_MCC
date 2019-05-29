@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,6 +71,7 @@ public class OrderStatusActivity extends AppCompatActivity {
     String payment_mode;
     BroadcastReceiver broadcastReceiver;
     String OrderId = null;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,7 @@ public class OrderStatusActivity extends AppCompatActivity {
 
         handler = new Handler();
 
+        swipeRefreshLayout = findViewById(R.id.swipreferesh);
         mainImg = findViewById(R.id.bikeimg);
         tvTitileText = findViewById(R.id.disTv);
         tvDetailsMsg = findViewById(R.id.tv_DetailsMsg);
@@ -149,6 +152,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                 } else {
                     finish();
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+
                 }
             }
         });

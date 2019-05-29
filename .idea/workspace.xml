@@ -35,16 +35,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07c28dd0-335a-471e-8305-ef4da525cdc1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/AgainAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/AgainAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/ChooseLastCustnizationDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/ChooseLastCustnizationDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/meal_product_category_row.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/meal_product_category_row.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -227,7 +218,7 @@
     <session id="-2116172835">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.8" value="1" />
@@ -248,15 +239,15 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="979" />
-          <entry key="txt" value="28" />
+          <entry key="java" value="990" />
+          <entry key="txt" value="63" />
           <entry key="xml" value="31" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="979" />
-          <entry key="PLAIN_TEXT" value="28" />
+          <entry key="JAVA" value="990" />
+          <entry key="PLAIN_TEXT" value="63" />
           <entry key="XML" value="31" />
         </counts>
       </usages-collector>
@@ -270,8 +261,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="1107" column="102" selection-start-line="1107" selection-start-column="102" selection-end-line="1107" selection-end-column="102" />
+            <state relative-caret-position="70">
+              <caret line="1105" selection-start-line="1105" selection-end-line="1105" />
             </state>
           </provider>
         </entry>
@@ -2969,13 +2960,6 @@
       <option name="presentableId" value="Default" />
       <updated>1556196141367</updated>
     </task>
-    <task id="LOCAL-00016" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/workspace.xml&#10;#&#9;app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/SaveCardAdapter.java&#10;#&#9;app/src/main/res/layout/card_item_row.xml">
-      <created>1556715139097</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1556715139097</updated>
-    </task>
     <task id="LOCAL-00017" summary="Merge branch 'ak' of https://gitlab.com/akthakur/easyfood&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/workspace.xml&#10;#&#9;app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/SaveCardAdapter.java&#10;#&#9;app/src/main/res/layout/card_item_row.xml">
       <created>1556715174014</created>
       <option name="number" value="00017" />
@@ -3312,7 +3296,14 @@
       <option name="project" value="LOCAL" />
       <updated>1559108737245</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Update Method fro user Again">
+      <created>1559116013301</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1559116013301</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3326,6 +3317,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49746192" visible="true" weight="0.27091634" />
@@ -3340,11 +3332,11 @@
       <window_info anchor="bottom" id="Debug" order="2" weight="0.3167702" />
       <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.4993565" weight="0.66925466" />
       <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.5006435" side_tool="true" weight="0.2720588" />
-      <window_info anchor="bottom" id="Version Control" order="5" weight="0.32941177" />
+      <window_info anchor="bottom" id="Version Control" order="5" weight="0.32919255" />
       <window_info anchor="bottom" id="Build" order="6" weight="0.42080745" />
       <window_info anchor="bottom" id="Android Profiler" order="7" />
       <window_info anchor="bottom" id="Find" order="8" weight="0.32919255" />
-      <window_info active="true" anchor="bottom" id="Logcat" order="9" visible="true" weight="0.4021739" />
+      <window_info anchor="bottom" id="Logcat" order="9" weight="0.4021739" />
       <window_info anchor="bottom" id="Flutter Performance" order="10" side_tool="true" />
       <window_info anchor="right" id="Assistant" order="0" sideWeight="0.4985294" weight="0.32947233" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
@@ -3405,7 +3397,8 @@
     <MESSAGE value="Bugs and suggestion on 27-05-2019" />
     <MESSAGE value="Meal Item update" />
     <MESSAGE value="Merge branch 'aklesh' of https://bitbucket.org/lexxdigital1/easyfood_userapp_android&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'aklesh' of https://bitbucket.org/lexxdigital1/easyfood_userapp_android&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml" />
+    <MESSAGE value="Update Method fro user Again" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update Method fro user Again" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -5031,8 +5024,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="1107" column="102" selection-start-line="1107" selection-start-column="102" selection-end-line="1107" selection-end-column="102" />
+        <state relative-caret-position="70">
+          <caret line="1105" selection-start-line="1105" selection-end-line="1105" />
         </state>
       </provider>
     </entry>

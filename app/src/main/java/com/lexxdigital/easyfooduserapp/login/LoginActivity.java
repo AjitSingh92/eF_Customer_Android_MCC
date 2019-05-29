@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
 
         if (sharedPreferencesClass.getString(sharedPreferencesClass.FB_TOKEN_ID) == null) {
-            FirebaseInstanceId.getInstance().getToken();
+            sharedPreferencesClass.setString(sharedPreferencesClass.FB_TOKEN_ID, FirebaseInstanceId.getInstance().getToken());
         }
         callFacebookLogin();
         googlePlusSignin();

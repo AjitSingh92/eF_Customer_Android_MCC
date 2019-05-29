@@ -202,7 +202,6 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                         ((TextView) _view.findViewById(R.id.tv_price)).setVisibility(View.GONE);
                         modifiers.addView(_view);
 
-
                         for (MenuProductSize menuProductSize1 : mItem.get(position).getMealProducts().get(p).getMenuProductSize()) {
                             if (menuProductSize1.getSelected()) {
                                 for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {

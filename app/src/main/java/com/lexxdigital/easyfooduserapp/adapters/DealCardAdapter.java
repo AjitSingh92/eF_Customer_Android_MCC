@@ -315,17 +315,16 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         GlobalValues.getInstance().getDb().menuMaster().nuke();
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                        db.deleteCart();
+                        sharePre.setString(sharePre.RESTUARANT_ID, "");
+                        sharePre.setString(sharePre.RESTUARANT_NAME, "");
+                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                        i.putExtra("RESTAURANTID", currentRestId);
+                        i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(i);
                     }
                 }).start();
-
-                db.deleteCart();
-                sharePre.setString(sharePre.RESTUARANT_ID, "");
-                sharePre.setString(sharePre.RESTUARANT_NAME, "");
-                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                i.putExtra("RESTAURANTID", currentRestId);
-                i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);
 
             }
         });

@@ -44,7 +44,14 @@ public class Meal {
     @SerializedName("mealCategories")
     @Expose
     private List<MealCategory> mealCategories = null;
-
+    @Expose
+    private String amount;
+    @Expose
+    private Integer quantity;
+    @Expose
+    private Integer originalQuantity;
+    @Expose
+    private Double originalAmount1;
     public Meal() {
     }
 
@@ -151,6 +158,38 @@ public class Meal {
         this.mealCategories = mealCategories;
     }
 
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getOriginalQuantity() {
+        return originalQuantity;
+    }
+
+    public void setOriginalQuantity(Integer originalQuantity) {
+        this.originalQuantity = originalQuantity;
+    }
+
+    public Double getOriginalAmount1() {
+        return originalAmount1;
+    }
+
+    public void setOriginalAmount1(Double originalAmount1) {
+        this.originalAmount1 = originalAmount1;
+    }
+
     @Override
     public String toString() {
         return "Meal{" +
@@ -165,6 +204,10 @@ public class Meal {
                 ", mealImage='" + mealImage + '\'' +
                 ", isMeal=" + isMeal +
                 ", mealCategories=" + mealCategories +
+                ", amount='" + amount + '\'' +
+                ", quantity=" + quantity +
+                ", originalQuantity=" + originalQuantity +
+                ", originalAmount1=" + originalAmount1 +
                 '}';
     }
 }

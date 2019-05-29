@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.api.MyAccountInterface;
 import com.lexxdigital.easyfooduserapp.change_password.ChangePasswordActivity;
@@ -80,6 +83,7 @@ public class MyAccountFragment extends Fragment {
     SharedPreferencesClass sharePre;
     private boolean isFirstTime = true;
     LinearLayout lyContainer;
+    SimpleDraweeView image;
 
     @SuppressLint("ValidFragment")
     public MyAccountFragment(Context mContext, TextView title) {
@@ -90,11 +94,15 @@ public class MyAccountFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Fresco.initialize(mContext);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         sharePre = new SharedPreferencesClass(mContext);
         lyContainer = (LinearLayout) view.findViewById(R.id.ll_container);
+        image = view.findViewById(R.id.image);
+
         val = (GlobalValues) mContext;
         dialog = new Dialog(getActivity());
         dialog.setTitle("");
@@ -205,12 +213,15 @@ public class MyAccountFragment extends Fragment {
 
                         profileImageStr = response.body().getData().getProfile().getProfilePic();
                         if (!profileImageStr.equalsIgnoreCase("http:\\/\\/35.177.163.219\\/easyfood_backend\\/public") && profileImageStr != null) {
-                            Glide.with(mContext)
-                                    .load(profileImageStr)
-                                    .placeholder(R.drawable.avatar)
-                                    .into(profileImg);
+//                            Glide.with(mContext)
+//                                    .load(profileImageStr)
+//                                    .placeholder(R.drawable.avatar)
+//                                    .into(profileImg);
+//                            Picasso.with(mContext).load(profileImageStr).placeholder(R.drawable.avatar).into(profileImg);
+                            Uri uri = Uri.parse(profileImageStr);
+                            image.setImageURI(uri);
                         }
-                        //  Picasso.with(mContext).load(profileImageStr).placeholder(R.drawable.avatar).into(profileImg);
+
 
                         sharePre.setString(sharePre.USER_PROFILE_IMAGE, profileImageStr);
 
@@ -256,10 +267,8 @@ public class MyAccountFragment extends Fragment {
             btn_change_password.setVisibility(View.GONE);
         }
         if (!isFirstTime) {
-            Glide.with(mContext)
-                    .load(sharePre.getString(sharePre.USER_PROFILE_IMAGE))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(profileImg);
+            Uri uri = Uri.parse(profileImageStr);
+            image.setImageURI(uri);
 
             name.setText(val.getUserName());
             address.setText(val.getDefaltAddress());

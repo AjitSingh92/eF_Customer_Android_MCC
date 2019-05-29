@@ -255,7 +255,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 //                String json = gson.toJson(cartData);
 //                Log.e("menuCategory >>", json);
 
-                db.deleteCart();
+//                db.deleteCart();
 
                 SharedPreferencesClass preferencesClass = new SharedPreferencesClass(RestaurantDetailsActivity.this);
 

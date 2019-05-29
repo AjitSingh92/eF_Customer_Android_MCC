@@ -17,7 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -63,7 +65,7 @@ public class MyAccountFragment extends Fragment {
     @BindView(R.id.profileImg)
     CircleImageView profileImg;
     @BindView(R.id.fm)
-    FrameLayout fm;
+    LinearLayout fm;
     @BindView(R.id.btn_edit_profile)
     Button btnEditProfile;
     @BindView(R.id.wallet_balance)
@@ -74,6 +76,8 @@ public class MyAccountFragment extends Fragment {
     TextView editPreviousPayments;
     @BindView(R.id.btn_change_password)
     Button btn_change_password;
+    @BindView(R.id.pb_imageLoader)
+    ProgressBar imageLoader;
     Unbinder unbinder;
     private GlobalValues val;
     private Dialog dialog;
@@ -219,7 +223,13 @@ public class MyAccountFragment extends Fragment {
 //                                    .into(profileImg);
 //                            Picasso.with(mContext).load(profileImageStr).placeholder(R.drawable.avatar).into(profileImg);
                             Uri uri = Uri.parse(profileImageStr);
-                            image.setImageURI(uri);
+
+                            if (uri!=null){
+                                imageLoader.setVisibility(View.GONE);
+                                image.setImageURI(uri);
+                            }
+
+
                         }
 
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.cart_db.DatabaseHelper;
+import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MealProduct;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProductSize;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.Modifier;
@@ -115,6 +116,80 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
             tvQty.setText(String.valueOf(itemQty));
             llModifier.removeAllViews();
             Double itemTotalPrice = 0d;
+
+
+            if (data.get(position).getMealProducts() != null && data.get(position).getMealProducts().size() > 0) {
+                for (MealProduct mealProduct : data.get(position).getMealProducts()) {
+
+                    if (mealProduct.getMenuProductSize() != null && mealProduct.getMenuProductSize().size() > 0) {
+
+                        for (MenuProductSize menuProductSize : mealProduct.getMenuProductSize()) {
+
+                            itemTotalPrice += (itemQty * Double.parseDouble(menuProductSize.getProductSizePrice()));
+                            View child1 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
+                            ((TextView) child1.findViewById(R.id.tv_name)).setTypeface(null, Typeface.BOLD);
+                            ((TextView) child1.findViewById(R.id.tv_name)).setText(itemQty + "x" + menuProductSize.getProductSizeName());
+                            ((TextView) child1.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (itemQty * Double.parseDouble(menuProductSize.getProductSizePrice()))));
+                            llModifier.addView(child1);
+
+                            if (menuProductSize.getSizeModifiers() != null && menuProductSize.getSizeModifiers().size() > 0) {
+
+                                for (SizeModifier sizeModifier:menuProductSize.getSizeModifiers()) {
+
+                                    if (sizeModifier.getModifier().size() > 0) {
+                                        View child2 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
+                                        ((TextView) child2.findViewById(R.id.tv_name)).setPadding(23, 0, 0, 0);
+                                        ((TextView) child2.findViewById(R.id.tv_name)).setTypeface(null, Typeface.BOLD);
+                                        //((TextView) child2.findViewById(R.id.tv_name)).setText(itemQty + "x" + ((sizeModifier.getModifierName().trim().length() == 0) ? " Modifier" : sizeModifier.getModifierName()));
+                                        ((TextView) child2.findViewById(R.id.tv_name)).setText(((sizeModifier.getModifierName().trim().length() == 0) ? "Modifier" : sizeModifier.getModifierName()));
+                                        ((TextView) child2.findViewById(R.id.tv_price)).setVisibility(View.GONE);
+//                            ((TextView) child2.findViewById(R.id.tv_price)).setText("FREE :"+sizeModifier.getMaxAllowedQuantity());
+                                        llModifier.addView(child2);
+                                        int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
+                                        int free = 0;
+                                        for (Modifier modifier : sizeModifier.getModifier()) {
+                                            View child = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
+                                            int qtyy = (itemQty * Integer.parseInt(modifier.getOriginalQuantity()));
+                                            ((TextView) child.findViewById(R.id.tv_name)).setPadding(20, 0, 0, 0);
+                                            ((TextView) child.findViewById(R.id.tv_name)).setText(qtyy + "x" + modifier.getProductName());
+
+
+                                            if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
+                                                if (free == maxAllowFree) {
+                                                    ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(modifier.getModifierProductPrice()))));
+                                                    itemTotalPrice += (qtyy * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                } else {
+                                                    int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                                    if (qty >= maxAllowFree) {
+                                                        int nQty = qty - maxAllowFree;
+                                                        free = maxAllowFree;
+                                                        qty = (nQty * itemQty);
+                                                        ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
+                                                        itemTotalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+
+                                                    } else {
+                                                        ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
+                                                        free++;
+                                                    }
+                                                }
+                                            } else {
+
+                                                ((TextView) child.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(modifier.getModifierProductPrice()))));
+                                                itemTotalPrice += (qtyy * Double.parseDouble(modifier.getModifierProductPrice()));
+                                            }
+
+                                            llModifier.addView(child);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
             if (data.get(position).getMenuProductSize() != null && data.get(position).getMenuProductSize().size() > 0) {
                 for (MenuProductSize menuProductSize : data.get(position).getMenuProductSize()) {
                     itemTotalPrice += (itemQty * Double.parseDouble(menuProductSize.getProductSizePrice()));

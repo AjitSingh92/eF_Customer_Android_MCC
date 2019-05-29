@@ -295,130 +295,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
         scroll.fullScroll(ScrollView.FOCUS_UP);
 
-//        FinalNewCartDetails cartList = gson.fromJson(sharedPreferencesClass.getCartDetailsKey(), type);
-
-
-//           val.setRestaurantDetailsResponse(res);
-
-
-       /* if (sharedPreferencesClass.getCartDetailsKey() != null || res != null || val.getRestaurantDetailsResponse() != null) {
-
-            try {
-
-                if (res.getData().getRestaurants().getRestaurantLogo() != null) {
-                    Glide.with(getActivity())
-                            .load(res.getData().getRestaurants().getRestaurantLogo())
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(logo);
-                }
-                if (res.getData().getRestaurants().getRestaurantImage() != null) {
-                    Glide.with(getActivity())
-                            .load(res.getData().getRestaurants().getRestaurantImage())
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(backImage);
-                }
-
-                restaurantName.setText(res.getData().getRestaurants().getRestaurantName());
-                tvRestaurantAdddress.setText(res.getData().getRestaurants().getAddress());
-                mlat = Double.parseDouble(res.getData().getRestaurants().getLat());
-                mlong = Double.parseDouble(res.getData().getRestaurants().getLng());
-                restaurantCuisines.setText(res.getData().getRestaurants().getRestaurantCuisines());
-                restaurantDeliveryMinOrder.setText("£" + res.getData().getRestaurants().getDeliveryCharge() + " delivery  •  £" + res.getData().getRestaurants().getMinOrderValue() + " min order");
-                if (res.getData().getRestaurants().getAvgRating() != null) {
-                    if (res.getData().getRestaurants().getAvgRating() == 0) {
-                        imRatingImage.setVisibility(View.GONE);
-                        restaurantRating.setText("New");
-
-                    } else {
-                        imRatingImage.setVisibility(View.VISIBLE);
-                        restaurantRating.setText(String.format("%.1f", res.getData().getRestaurants().getAvgRating()));
-                    }
-                } else {
-                    imRatingImage.setVisibility(View.GONE);
-                    restaurantRating.setText("New");
-
-                }
-                if (val.getRestaurantDetailsResponse() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
-                    deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
-                    restaurantPhoneNumber = res.getData().getRestaurants().getPhoneNumber();
-                    if (val.getRestaurantDetailsResponse() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
-                        deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
-                    }
-                    if (res.getData().getRestaurants().getDeliveryOptions() != null || !res.getData().getRestaurants().getDeliveryOptions().equals("")) {
-                        String[] serve_styles = res.getData().getRestaurants().getDeliveryOptions().split(",");
-
-                        int count = serve_styles.length;
-                        paths = new String[count];
-//                        paths[0] = "Please Select";
-
-                        for (int i = 0; i < (serve_styles.length); i++) {
-                            paths[i] = serve_styles[(i)].substring(0, 1).toUpperCase() + serve_styles[(i)].substring(1);
-                            if (serve_styles[i].equalsIgnoreCase("delivery")) {
-                                deliveryPosition = i;
-                            }
-                        }
-
-                        if (Arrays.asList(serve_styles).contains("collection")) {
-                            ll_collection.setVisibility(View.VISIBLE);
-                            collection.setImageDrawable(getResources().getDrawable(R.drawable.open));
-                        }
-                        if (Arrays.asList(serve_styles).contains("delivery")) {
-                            ll_delivery.setVisibility(View.VISIBLE);
-                            delivery.setImageDrawable(getResources().getDrawable(R.drawable.open));
-                        }
-                        if (Arrays.asList(serve_styles).contains("dinein")) {
-                            ll_dinein.setVisibility(View.VISIBLE);
-                            dine_in.setImageDrawable(getResources().getDrawable(R.drawable.open));
-                        }
-                    }
-                    spinnerCall(deliveryPosition);
-                    //           ShowMenuCartDetails cc;
-                    Double subTotalAmount = 0.0;
-//            int totalCC = 0;
-//            for (int i = 0; i < cartList.size(); i++) {
-//                cc = cartList.get(i);
-//                subTotalAmount = subTotalAmount + Double.parseDouble(cc.getTotalAmmount());
-//                totalCC = totalCC + Integer.parseInt(cc.getProductQty());
-//            }
-//            subTotal.setText("£" + String.format("%.2f", subTotalAmount));
-//            totalCount.setText(String.valueOf(totalCC));
-//            footerTotalCount.setText(String.valueOf(totalCC));
-//            discount.setText("£0.0");
-//
-//            deliveryFees.setText("£" + val.getRestaurantDetailsResponse().getData().getDeliveryCharge());
-//            if (val.getRestaurantDetailsResponse().getData().getDeliveryCharge().equalsIgnoreCase("")) {
-//                totalAmmount.setText("£" + String.format("%.2f", subTotalAmount + 0.0));
-//                deliveryFees.setText("£0.0");
-//                footerTotalAmount.setText("£" + String.format("%.2f", subTotalAmount  + 0.0));
-//            } else {
-//                totalAmmount.setText("£" + String.format("%.2f",subTotalAmount + Double.parseDouble(val.getRestaurantDetailsResponse().getData().getDeliveryCharge())));
-//                footerTotalAmount.setText("£" + String.format("%.2f",subTotalAmount + Double.parseDouble(val.getRestaurantDetailsResponse().getData().getDeliveryCharge())));
-//            }
-//            deliveryTime.setText(String.valueOf(val.getRestaurantDetailsResponse().getData().getAvgDeliveryTime()) + " min");
-//                    initView2(cartList, discount, subTotal, totalCount, totalAmmount, footerTotalCount, footerTotalAmount);
-//                    initView3(cartList, discount, subTotal, totalCount, totalAmmount, footerTotalCount, footerTotalAmount, Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge()), deliveryFees);
-                    initViewRoom(); // Room for More
-
-                } *//*else {
-                    lyContainer.setVisibility(View.GONE);
-                    alertDialogEmptyBasket();
-                }*//*
-
-                if (sharedPreferencesClass.getString(sharedPreferencesClass.NOTEPAD) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.NOTEPAD).equalsIgnoreCase("")) {
-                    btnaddNotePadEdit.setText("Edit");
-                    tvAddNoteData.setVisibility(View.VISIBLE);
-                    tvAddNoteData.setText(sharedPreferencesClass.getString(sharedPreferencesClass.NOTEPAD));
-
-                } else {
-                    btnaddNotePadEdit.setText("Add");
-                    tvAddNoteData.setVisibility(View.GONE);
-                }
-            } catch (NullPointerException e) {
-
-            }
-        }*/
-
-
         initViewCart();
         try {
 
@@ -1078,7 +954,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                 for (MenuProductSize menuProductSize1 : mealProduct.getMenuProductSize()) {
                                     if (menuProductSize1.getSelected()) {
                                         if (menuProductSize1.getProductSizePrice() != null)
-                                            totalPrice += (itemQty * Double.parseDouble(menuProductSize1.getProductSizePrice()));
+//                                            totalPrice += (itemQty * Double.parseDouble(menuProductSize1.getProductSizePrice()));
                                         for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
                                             if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
                                                 int maxAllowFree = sizeModifier.getMaxAllowedQuantity();

@@ -221,12 +221,6 @@ public class SharedPreferencesClass {
         editor = sharedpreferences4.edit();
         editor.clear();
         editor.apply();
-
-        SharedPreferences sharedpreferences5 = mContext.getSharedPreferences(FB_TOKEN_ID, mContext.MODE_PRIVATE);
-        editor = sharedpreferences5.edit();
-        editor.clear();
-        editor.apply();
-
         setFirstTimeLaunch(lonch);
 
     }

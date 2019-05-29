@@ -336,8 +336,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                         tvPaidBy.setText("Paid by " + response.body().getData().getPaymentMode());
                         tvAddressType.setVisibility(View.GONE);
                         tvAddress.setVisibility(View.GONE);
+
                         menuCategory = response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().get(0).getMenuCategoryName();
-                       /* if (response.body().getData().getDeliveryOption().equalsIgnoreCase("delivery")) {
+                        if (response.body().getData().getDeliveryOption().equalsIgnoreCase("delivery")) {
                             tvAddressType.setVisibility(View.VISIBLE);
                             tvAddress.setVisibility(View.VISIBLE);
                             tvAddressType.setText("Delivery Address:");
@@ -346,7 +347,10 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                                     + ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryCity()
                                     + ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryPostCode()
                                     + ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryCountry());
-                        }*/
+                        } else {
+                            tvAddressType.setVisibility(View.GONE);
+                            tvAddress.setVisibility(View.GONE);
+                        }
 
 
                         initView();

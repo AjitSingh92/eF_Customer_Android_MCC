@@ -227,6 +227,11 @@ public class SharedPreferencesClass {
         editor.clear();
         editor.apply();
 
+        SharedPreferences sharedpreferences6 = mContext.getSharedPreferences(DEFAULT_ADDRESS, mContext.MODE_PRIVATE);
+        editor = sharedpreferences6.edit();
+        editor.clear();
+        editor.apply();
+
         setFirstTimeLaunch(lonch);
 
     }

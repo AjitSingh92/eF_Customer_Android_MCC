@@ -955,35 +955,35 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                     if (menuProductSize1.getSelected()) {
                                         if (menuProductSize1.getProductSizePrice() != null)
 //                                            totalPrice += (itemQty * Double.parseDouble(menuProductSize1.getProductSizePrice()));
-                                        for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
-                                            if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
-                                                int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
-                                                int free = 0;
-                                                for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
-                                                    if (free == maxAllowFree) {
-                                                        int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
-                                                        qty = (qty * itemQty);
-                                                        totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
-                                                    } else {
-                                                        int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
-                                                        if (qty >= maxAllowFree) {
-                                                            int nQty = qty - maxAllowFree;
-                                                            free = maxAllowFree;
-                                                            qty = (nQty * itemQty);
+                                            for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
+                                                if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
+                                                    int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
+                                                    int free = 0;
+                                                    for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
+                                                        if (free == maxAllowFree) {
+                                                            int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                                            qty = (qty * itemQty);
                                                             totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
                                                         } else {
-                                                            free++;
+                                                            int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
+                                                            if (qty >= maxAllowFree) {
+                                                                int nQty = qty - maxAllowFree;
+                                                                free = maxAllowFree;
+                                                                qty = (nQty * itemQty);
+                                                                totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
+                                                            } else {
+                                                                free++;
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            } else {
-                                                for (Modifier modifier : sizeModifier.getModifier()) {
-                                                    int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                                    qty = (qty * itemQty);
-                                                    totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                } else {
+                                                    for (Modifier modifier : sizeModifier.getModifier()) {
+                                                        int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                                        qty = (qty * itemQty);
+                                                        totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                    }
                                                 }
                                             }
-                                        }
                                     }
                                 }
                             }

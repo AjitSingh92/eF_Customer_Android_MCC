@@ -257,7 +257,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
                 db.deleteCart();
 
-               /* SharedPreferencesClass preferencesClass = new SharedPreferencesClass(RestaurantDetailsActivity.this);
+                SharedPreferencesClass preferencesClass = new SharedPreferencesClass(RestaurantDetailsActivity.this);
 
                 Gson gson2 = new Gson();
                 String json2 = gson2.toJson(val.getRestaurantDetailsResponse());
@@ -271,7 +271,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     startActivity(i);
                 } else {
 
-                }*/
+                }
             }
         });
 

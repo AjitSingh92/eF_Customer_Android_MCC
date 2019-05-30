@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/scroll"
@@ -15,9 +14,10 @@
 
         <LinearLayout
             android:id="@+id/container"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/ll"
                 android:layout_width="match_parent"
@@ -26,16 +26,18 @@
                 android:background="@drawable/bg_gradient"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/_5sdp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/avenir_black"
-                    android:text="Sign into account"
                     android:gravity="center"
+                    android:text="Sign into account"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/des"
                     android:layout_width="match_parent"
@@ -61,11 +63,12 @@
                     android:layout_marginBottom="@dimen/_1sdp"
                     android:background="@drawable/bg_edit"
                     android:ems="10"
-                    android:maxLength="60"
                     android:fontFamily="@font/avenir_medium"
+                    android:hint="Email id"
                     android:inputType="text"
+                    android:maxLength="60"
                     android:padding="@dimen/_10sdp"
-                    android:text="maniacpraveen@gmail.com"
+                    android:text=""
                     android:textColor="#706f6f"
                     android:textSize="@dimen/_16sdp" />
 
@@ -93,10 +96,11 @@
                     android:background="@drawable/bg_edit"
                     android:ems="10"
                     android:fontFamily="@font/avenir_medium"
+                    android:hint="Password"
                     android:inputType="textPassword"
-                    android:padding="@dimen/_10sdp"
-                    android:text="Praveen@123"
                     android:maxLength="20"
+                    android:padding="@dimen/_10sdp"
+                    android:text=""
                     android:textColor="#706f6f"
                     android:textSize="@dimen/_16sdp" />
 
@@ -124,14 +128,15 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/forgatPassTv"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/ll"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
                 android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/btn_forgot_one"
@@ -144,6 +149,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/btn_forgot_two"
                     android:layout_width="wrap_content"
@@ -156,14 +162,15 @@
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/llview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_below="@+id/forgatPassTv"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <View
@@ -200,8 +207,8 @@
                 android:id="@+id/lll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_below="@+id/llview"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -209,13 +216,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/ll"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/rounded_rectangle"
+                    android:gravity="center_vertical"
                     android:visibility="visible">
 
                     <ImageView
@@ -235,8 +242,8 @@
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:fontFamily="@font/avenir_medium"
                         android:gravity="center"
-                        android:paddingRight="@dimen/_20sdp"
                         android:paddingEnd="@dimen/_20sdp"
+                        android:paddingRight="@dimen/_20sdp"
                         android:text="Log in with Facebook"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp"
@@ -247,16 +254,16 @@
 
                 <LinearLayout
                     android:id="@+id/btn_google_plus"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_below="@+id/ll"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/rounded_rectangle"
+                    android:gravity="center_vertical"
                     android:visibility="visible">
 
                     <ImageView
@@ -274,8 +281,8 @@
                         android:layout_marginLeft="@dimen/_16sdp"
                         android:fontFamily="@font/avenir_medium"
                         android:gravity="center"
-                        android:paddingRight="@dimen/_20sdp"
                         android:paddingEnd="@dimen/_20sdp"
+                        android:paddingRight="@dimen/_20sdp"
                         android:text="Log in with Google"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp"
@@ -284,14 +291,16 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/lll"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:layout_below="@id/lll"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/btn_create_account_one"
                     android:layout_width="wrap_content"
@@ -303,6 +312,7 @@
                     android:textColor="#646363"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/btn_create_account_two"
                     android:layout_width="wrap_content"

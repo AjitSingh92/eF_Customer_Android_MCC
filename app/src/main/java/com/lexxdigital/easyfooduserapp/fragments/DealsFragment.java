@@ -107,7 +107,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     boolean isLoading = false;
     private TextView txtToolbarTitle;
     private String postCode = "";
-    int limit = 10, offset = 0;
+    int limit = 50, offset = 0;
     String sortedByValue = "", filterOfferValue = "", strCuisineval = "all";
     List<SortBy> sortByList;
     List<LandingPageLists> listRestaurants = new ArrayList<>();
@@ -202,7 +202,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             public void onRefresh() {
                 if (mDealAdapter != null) {
                     mDealAdapter.notifyDataSetChanged();
-                    int limitref = 10;
+                    int limitref = 50;
 
                     if (Constants.isInternetConnectionAvailable(300)) {
                         swipreferesh.setRefreshing(true);
@@ -768,7 +768,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 for (int i = 0; i < arrayCuisine.size(); i++) {
                     Log.e(TAG, "onClickcising listinggggggg: " + arrayCuisine.get(i));
                 }
-                int limitfilt = 10;
+                int limitfilt = 50;
                 listRestaurants.clear();
                 mDealAdapter.notifyDataSetChanged();
                 restaurantList.removeAllViews();

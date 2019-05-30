@@ -768,7 +768,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                         val.setPostCode(postcode);
                         if (sharedPreferencesClass.getPostalCode() == null || sharedPreferencesClass.getPostalCode().equals("")) {
                             sharedPreferencesClass.setPostalCode(postcode);
-
                             updateAccountDetail(); // Update Postal code
 
                             updatePostCodeOnServer(postcode);

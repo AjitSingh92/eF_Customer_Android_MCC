@@ -741,7 +741,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 101);
                     } else {
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "+92" + restaurantPhoneNumber, null));
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", restaurantPhoneNumber, null));
                         startActivity(intent);
                     }
 

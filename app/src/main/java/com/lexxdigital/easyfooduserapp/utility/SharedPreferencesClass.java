@@ -45,7 +45,6 @@ public class SharedPreferencesClass {
     public static final String RESTAURANT_NAME_SLUG = "RESTAURANT_NAME_SLUG";
     public static final String DELIVERY_DATE_TIME = "DELIVERY_DATE_TIME";
 
-
     public SharedPreferencesClass(Context mContext) {
         this.mContext = mContext;
     }

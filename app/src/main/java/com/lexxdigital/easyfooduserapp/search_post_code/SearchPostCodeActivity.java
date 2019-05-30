@@ -789,6 +789,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                         }
 
                     } else {
+                        dialog.hide();
                         errorDialog("We currently are not delivering in your location", null);
                     }
                 } else {

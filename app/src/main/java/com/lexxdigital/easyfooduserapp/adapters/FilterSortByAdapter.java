@@ -85,6 +85,7 @@ public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapte
         /*TODO: hide to Distance option from filter list*/
         if (sortBy.getLabel().equalsIgnoreCase("Distance")) {
 
+
         } else {
             holder.sizeName.setText(sortBy.getLabel());
         }

@@ -1279,7 +1279,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         /*   *//*TODO: Voucher Apply Calculation*/
         if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
             if (totalPrice > minOrderValue) {
-                if (orderType.equalsIgnoreCase(voucherApplicableOn)) {
+                if (voucherApplicableOn.contains(orderType)) {
 
                     if (voucherType.equalsIgnoreCase("percentage")) {
                         Double voucherCal = (netAmount * voucherValue) / 100;

@@ -37,6 +37,9 @@
             android:id="@+id/image"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
+            fresco:progressBarImage="@drawable/image_loader"
+            fresco:progressBarImageScaleType="centerInside"
+            fresco:progressBarAutoRotateInterval="1000"
             android:layout_gravity="center"
             fresco:placeholderImage="@drawable/avatar"
             fresco:roundAsCircle="true" />
@@ -61,13 +64,6 @@
 
 
     </LinearLayout>
-    <ProgressBar
-        android:id="@+id/pb.imageLoader"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content" />
-
 </FrameLayout>
     <LinearLayout
         android:id="@+id/top_address"

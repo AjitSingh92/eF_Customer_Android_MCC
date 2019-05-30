@@ -76,8 +76,6 @@ public class MyAccountFragment extends Fragment {
     TextView editPreviousPayments;
     @BindView(R.id.btn_change_password)
     Button btn_change_password;
-    @BindView(R.id.pb_imageLoader)
-    ProgressBar imageLoader;
     Unbinder unbinder;
     private GlobalValues val;
     private Dialog dialog;
@@ -225,7 +223,6 @@ public class MyAccountFragment extends Fragment {
                             Uri uri = Uri.parse(profileImageStr);
 
                             if (uri!=null){
-                                imageLoader.setVisibility(View.GONE);
                                 image.setImageURI(uri);
                             }
 

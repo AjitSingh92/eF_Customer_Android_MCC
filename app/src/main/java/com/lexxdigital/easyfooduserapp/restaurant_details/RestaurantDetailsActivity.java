@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -104,7 +105,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     @BindView(R.id.tvToolbarTitle)
     TextView tvToolbarTitle;
     @BindView(R.id.toolbarhide)
-    RelativeLayout toolbarhide;
+    FrameLayout toolbarhide;
     @BindView(R.id.tabs)
     TabLayout tabs;
     @BindView(R.id.back)

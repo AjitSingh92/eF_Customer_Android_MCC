@@ -129,6 +129,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     RecyclerView sortList, sortListByOffer, sortListCousin;
     public static ArrayList<Boolean> isCheck = new ArrayList<>();
     List<String> restFilter;
+    List<String> filterRestaurantTyped = new ArrayList<>();
     RestaurantsDealResponse.Data data;
     ImageView clear;
     RecyclerLayoutManager layoutManager;
@@ -182,7 +183,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         restFilter.add("delivery");
         restFilter.add("dine_in");
         restFilter.add("collection");
-
+        filterRestaurantTyped.addAll(restFilter);
         clear = view.findViewById(R.id.clear);
         swipreferesh = view.findViewById(R.id.swipreferesh);
 
@@ -207,7 +208,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                     if (Constants.isInternetConnectionAvailable(300)) {
                         swipreferesh.setRefreshing(true);
                         editSearch.setText("");
-                        getDeals(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
+                        getDeals(val.getPostCode(), limit, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
 
 
                     } else {
@@ -215,7 +216,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                         dialogNoInternetConnection("Please check internet connection.");
                     }
 
-                    //  getDeals(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
+                    //  getDeals(val.getPostCode(), limit, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
                 }
             }
         });
@@ -233,7 +234,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 if (data!=null)
                 data.getRestaurants().clear();
                 restaurantList.removeAllViews();
-                getDeals(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
+                getDeals(val.getPostCode(), limit, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
             }
         });*/
 
@@ -254,7 +255,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 //                        int offset;
 //                        offset = linearLayoutManager.findLastCompletelyVisibleItemPosition() + 1;
 //                    //    Log.e("OFFSET","//"+linearLayoutManager.findLastCompletelyVisibleItemPosition());
-//                        getDealsLazyLoad(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
+//                        getDealsLazyLoad(val.getPostCode(), limit, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
 //                        isLoading = true;
 //                    }
 //                }
@@ -265,7 +266,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             if (val.getPostCode() != null) {
                 if (Constants.isInternetConnectionAvailable(300)) {
                     dialog.show();
-                    getDeals(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
+                    getDeals(val.getPostCode(), limit, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
                     getFilters(val.getPostCode());
 
                 } else {
@@ -326,7 +327,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                     int offset;
                     offset = position + 1;
                     dialog.show();
-                    getDealsLazyLoad(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
+                    getDealsLazyLoad(val.getPostCode(), limit, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
 
                 }
 
@@ -704,7 +705,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             @Override
             public void onClick(View v) {
 
-
                 if (!llcollection.getTag().equals("enable") && !lldelivery.getTag().equals("enable")) {
                     //Nothing will change
                 } else {
@@ -746,15 +746,15 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 mDealAdapter.notifyDataSetChanged();
                 restaurantList.removeAllViews();
 
-                List<String> temp = new ArrayList<>();
+                filterRestaurantTyped.clear();
                 for (int i = 0; i < restFilter.size(); i++) {
                     if (filter[i])
-                        temp.add(restFilter.get(i));
+                        filterRestaurantTyped.add(restFilter.get(i));
                 }
 
                 if (Constants.isInternetConnectionAvailable(300)) {
                     dialog.show();
-                    getDeals(val.getPostCode(), limit, offset, temp, sortedByValue, filterOfferValue);
+                    getDeals(val.getPostCode(), limit, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
                     filterDialog.dismiss();
                 } else {
                     filterDialog.dismiss();
@@ -944,7 +944,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         Log.e(TAG, "run: list size:  " + listRestaurants.size());
         mDealAdapter.notifyDataSetChanged();
         int limitref = 2;
-        getDeals(val.getPostCode(), limitref, offset, restFilter, sortedByValue, filterOfferValue);
+        getDeals(val.getPostCode(), limitref, offset, filterRestaurantTyped, sortedByValue, filterOfferValue);
     }*/
 
     public void dialogNoInternetConnection(String message) {

@@ -58,8 +58,6 @@ public class SharedPreferencesClass {
         sharedpreferences = mContext.getSharedPreferences(introSlideHideKEY, mContext.MODE_PRIVATE);
         sharedpreferences = mContext.getSharedPreferences(loginKEY, mContext.MODE_PRIVATE);
         sharedpreferences = mContext.getSharedPreferences(OrderIDKey, mContext.MODE_PRIVATE);
-
-
     }
 
     private static SharedPreferences getUserSharedPreferences(Context context) {

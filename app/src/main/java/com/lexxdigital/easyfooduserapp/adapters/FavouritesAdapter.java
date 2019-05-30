@@ -233,17 +233,17 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                         GlobalValues.getInstance().getDb().menuMaster().nuke();
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                        db.deleteCart();
+                        sharePre.setString(sharePre.RESTUARANT_ID, "");
+                        sharePre.setString(sharePre.RESTUARANT_NAME, "");
+                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                        i.putExtra("RESTAURANTID", currentRestId);
+                        i.putExtra("RESTAURANTNAME", currentRestuarant);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(i);
                     }
                 }).start();
 
-                db.deleteCart();
-                sharePre.setString(sharePre.RESTUARANT_ID, "");
-                sharePre.setString(sharePre.RESTUARANT_NAME, "");
-                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                i.putExtra("RESTAURANTID", currentRestId);
-                i.putExtra("RESTAURANTNAME", fav.getRestaurantName());
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);
 
             }
         });

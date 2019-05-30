@@ -31,6 +31,7 @@ import com.lexxdigital.easyfooduserapp.api.CancelInterface;
 import com.lexxdigital.easyfooduserapp.api.OrderDetailsInterface;
 import com.lexxdigital.easyfooduserapp.cart_db.DatabaseHelper;
 import com.lexxdigital.easyfooduserapp.customer_review.CustomerReviewProcess;
+import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
 import com.lexxdigital.easyfooduserapp.model.cancelorder.CancelOrderResponse;
 import com.lexxdigital.easyfooduserapp.model.cancelorder.CancelRequest;
 import com.lexxdigital.easyfooduserapp.model.myorder.OrderDetails;
@@ -65,7 +66,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     OrderDetailsMenuProductAdapter orderDetailsAdapter;
     OrderDetailsSpecialOfferProductAdapter specialOfferProductAdapter;
     OrderDetailsUpsellProductAdapter upsellProductAdapter;
-
+    List<MenuProduct> menuProducts = new ArrayList<>();
     TextView restName, addReview, orderAgain, orderNo, orderDate, ivToolBarTitle, addressTextview, subtotal, dicsRate, delivRate, totalPrice, note, orderStatus, tvPaidBy, tvAddressType, tvAddress;
     ImageView restImage, ivToolBarbackTv;
     LinearLayout llTrack, llReview, llCacelOrder;
@@ -84,6 +85,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     PreviousOrderDetail previousOrderDetailList;
     OrderDetails orderDetails;
     public static String menuCategory;
+    private List<MenuCategoryCart> orderDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,7 +254,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                     //insertData(previousOrderDetailList);
                 } else {
                     db.deleteCart();
-                    //insertData(previousOrderDetailList);
+                    /*//insertData(previousOrderDetailList);
                     Intent i = new Intent(OrderDetailActivity.this, RestaurantDetailsActivity.class);
                     i.putExtra("RESTAURANTID", previousOrderDetailList.getRestaurantId());
                     i.putExtra("RESTAURANTNAME", previousOrderDetailList.getRestaurantName());
@@ -262,6 +264,8 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 //                    alertDailogConfirm("Alert message", dataList.getRestaurantId(), dataList.getRestaurantName(), position);
+*/
+                    addOrderOnCart(previousOrderDetailList.getRestaurantId(), previousOrderDetailList.getRestaurantName());
                 }
                 break;
             case R.id.ll_cancel:
@@ -354,8 +358,8 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
 
                         initView();
-                        List<MenuProduct> menuProducts = new ArrayList<>();
 
+                        orderDetail = response.body().getData().getOrderDetails().getData().getMenuCategoryCarts();
                         for (int i = 0; i < response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().size(); i++) {
                             for (int j = 0; j < response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuProducts().size(); j++) {
 
@@ -676,4 +680,116 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
+
+    void addOrderOnCart(String restaurantId, String restaurantName) {
+        Log.e("ANAND >>> ", orderDetails.toString());
+
+//        PreviousOrderDetail orderDetail = previousOrderDetailList.get(listPosition);
+        long id = -1;
+        long subCatId = -1;
+        for (int i = 0; i < orderDetail.size(); i++) {
+            id = db.getMenuCategoryIfExit(orderDetail.get(i).getMenuCategoryId());
+            if (id == -1) {
+                id = db.insertMenuCategory(orderDetail.get(i).getMenuCategoryId(), orderDetail.get(i).getMenuCategoryName(), "", "");
+            }
+            if (orderDetail.get(i).getMenuSubCategory() != null && orderDetail.get(i).getMenuSubCategory().size() > 0) {
+                for (int j = 0; j < orderDetail.get(i).getMenuSubCategory().size(); j++) {
+                    subCatId = db.getMenuSubCategoryIfExit(orderDetail.get(i).getMenuSubCategory().get(j).getMenuCategoryId());
+                    if (subCatId == -1) {
+                        subCatId = db.insertMenuSubCategory(id,
+                                orderDetail.get(i).getMenuCategoryId(),
+                                orderDetail.get(i).getMenuSubCategory().get(j).getMenuCategoryId(),
+                                orderDetail.get(i).getMenuSubCategory().get(j).getMenuCategoryName());
+                    }
+
+                    for (int k = 0; k < orderDetail.get(i).getMenuSubCategory().get(j).getMenuProducts().size(); k++) {
+                        MenuProduct product = orderDetail.get(i).getMenuSubCategory().get(j).getMenuProducts().get(k);
+                        db.insertMenuProduct(id, subCatId, orderDetail.get(i).getMenuSubCategory().get(j).getMenuCategoryId(),
+                                product.getMenuProductId(),
+                                product.getProductName(),
+                                product.getVegType(),
+                                product.getMenuProductPrice(),
+                                product.getUserappProductImage(),
+                                product.getEcomProductImage(),
+                                product.getProductOverallRating(),
+                                product.getQuantity(),
+                                gson.toJson(product.getMenuProductSize()),
+                                gson.toJson(product.getProductModifiers()),
+                                gson.toJson(product.getMealProducts()),
+                                product.getOriginalQuantity(),
+                                product.getOriginalAmount1(),
+                                product.getAmount()
+                                /*gson.toJson(menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getUpsells())*/);
+
+                    }
+                }
+
+            }
+            if (orderDetail.get(i).getMenuProducts() != null && orderDetail.get(i).getMenuProducts().size() > 0) {
+                List<MenuProduct> products = orderDetail.get(i).getMenuProducts();
+                for (MenuProduct product : products) {
+
+                    if (product.getMealProducts() != null && product.getMealProducts().size() > 0) {
+
+                        db.insertMenuProduct(id, subCatId, orderDetail.get(i).getMenuCategoryId(),
+                                product.getMenuProductId(),
+                                product.getProductName(),
+                                product.getVegType(),
+                                product.getMenuProductPrice(),
+                                "",
+                                "",
+                                "",
+                                product.getQuantity(),
+                                null,
+                                null,
+                                gson.toJson(product.getMealProducts()),
+                                product.getQuantity(),
+                                product.getOriginalAmount1(),
+                                product.getAmount());
+                            /*for (MealProduct mealProduct : product.getMealProducts()) {
+                                Log.e("ANAND >>>", mealProduct.toString());
+
+
+                            }*/
+                    } else {
+                        db.insertMenuProduct(id, subCatId, orderDetail.get(i).getMenuCategoryId(),
+                                product.getMenuProductId(),
+                                product.getProductName(),
+                                product.getVegType(),
+                                product.getMenuProductPrice(),
+                                product.getUserappProductImage(),
+                                product.getEcomProductImage(),
+                                product.getProductOverallRating(),
+                                product.getQuantity(),
+                                gson.toJson(product.getMenuProductSize()),
+                                gson.toJson(product.getProductModifiers()),
+                                gson.toJson(product.getMealProducts()),
+                                product.getOriginalQuantity(),
+                                product.getOriginalAmount1(),
+                                product.getAmount());
+                    }
+                }
+            }
+
+
+        }
+
+       /* Intent i = new Intent(context, RestaurantDetailsActivity.class);
+        i.putExtra("RESTAURANTID", restaurantId);
+        i.putExtra("RESTAURANTNAME", restaurantName);
+        sharePre.setString(sharePre.RESTUARANT_ID, restaurantId);
+        sharePre.setString(sharePre.RESTUARANT_NAME, restaurantName);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
+
+        Intent i = new Intent(this, DashboardActivity.class);
+        i.putExtra("FROMMENU", "YES");
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setAction("custom");
+        sharePre.setString(sharePre.RESTUARANT_ID, restaurantId);
+        sharePre.setString(sharePre.RESTUARANT_NAME, restaurantName);
+        startActivity(i);
+    }
+
 }

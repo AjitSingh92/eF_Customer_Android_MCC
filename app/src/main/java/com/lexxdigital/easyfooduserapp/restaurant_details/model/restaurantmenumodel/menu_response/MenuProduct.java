@@ -204,9 +204,9 @@ public class MenuProduct {
         this.amount = amount;
     }
 
-   /* public Integer getQuantity() {
+    public Integer getQuantity() {
         return quantity;
-    }*/
+    }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;

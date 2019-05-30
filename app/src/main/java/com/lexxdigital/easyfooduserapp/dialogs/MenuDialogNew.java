@@ -213,7 +213,8 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 menuCategory.getMenuProducts().get(i).getMenuProductId(),
                                                 menuCategory.getMenuProducts().get(i).getProductName(),
                                                 menuCategory.getMenuProducts().get(i).getVegType(),
-                                                menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
+//                                                menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
+                                                selectedSizePrice,
                                                 menuCategory.getMenuProducts().get(i).getUserappProductImage(),
                                                 menuCategory.getMenuProducts().get(i).getEcomProductImage(),
                                                 menuCategory.getMenuProducts().get(i).getProductOverallRating(),
@@ -222,7 +223,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 gson.toJson(productModifierAdapter.getSelectedProductModifier()),
                                                 null,
                                                 1,
-                                                Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()),
+                                                Double.parseDouble(selectedSizePrice),
                                                 menuCategory.getMenuProducts().get(i).getMenuProductPrice()
                                                 /*gson.toJson(menuCategory.getMenuProducts().get(i).getUpsells())*/);
 
@@ -346,6 +347,8 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
         updatePrice(isSelect);
     }
 
+    String selectedSizePrice = "0";
+
     private void updatePrice(boolean isSelect) {
         List<MenuProduct> menuProducts = null;
         if (productSizeAdapter != null) {
@@ -354,6 +357,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                     menuProducts = new ArrayList<>();
                     for (int i = 0; i < menuCategory.getMenuProducts().size(); i++) {
                         if (i == childPosition) {
+
                             MenuProduct product = new MenuProduct(
                                     menuCategory.getMenuProducts().get(i).getMenuProductId(),
                                     menuCategory.getMenuProducts().get(i).getProductName(),
@@ -392,7 +396,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                         menuCategory.getMenuProducts().get(i).getUserappProductImage(),
                                         menuCategory.getMenuProducts().get(i).getEcomProductImage(),
                                         menuCategory.getMenuProducts().get(i).getProductOverallRating(),
-                                         menuCategory.getMenuProducts().get(i).getMenuProductSize(),
+                                        menuCategory.getMenuProducts().get(i).getMenuProductSize(),
                                         productModifierAdapter.getSelectedProductModifier(),
                                         /* menuCategory.getMenuProducts().get(i).getUpsells(),*/
                                         null,
@@ -422,6 +426,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
 
                     for (MenuProductSize menuProductSize1 : menuProduct.getMenuProductSize()) {
                         if (menuProductSize1.getSelected()) {
+                            selectedSizePrice = menuProductSize1.getProductSizePrice();
                             totalPrice += Double.parseDouble(menuProductSize1.getProductSizePrice());
                             if (menuProductSize1.getSizeModifiers() != null) {
                                 for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
@@ -438,7 +443,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                             qty = (qty * itemQty);
                                             totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
                                         }*/
-                                            totalPrice += (((allCount*itemQty) - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
+                                            totalPrice += (((allCount * itemQty) - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
                                         }
                                     } else {
                                         for (Modifier modifier : sizeModifier.getModifier()) {

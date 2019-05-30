@@ -146,6 +146,8 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
 
                                         if (free == maxAllowFree) {
                                             ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
+                                            ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
+
                                         } else {
                                             int qtyy = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
                                             if (qtyy >= maxAllowFree) {
@@ -171,7 +173,8 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                                                 }
 
                                             } else {
-//                                            ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
+                                                ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
+
                                                 ((TextView) view.findViewById(R.id.tv_price)).setText("free");
                                                 free++;
                                             }

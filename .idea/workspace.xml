@@ -40,28 +40,28 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="314" />
-          <entry key="txt" value="80" />
+          <entry key="java" value="315" />
+          <entry key="txt" value="83" />
           <entry key="xml" value="165" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="314" />
-          <entry key="PLAIN_TEXT" value="80" />
+          <entry key="JAVA" value="315" />
+          <entry key="PLAIN_TEXT" value="83" />
           <entry key="XML" value="165" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="29" />
+          <entry key="java" value="30" />
           <entry key="properties" value="2" />
           <entry key="xml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="29" />
+          <entry key="JAVA" value="30" />
           <entry key="Properties" value="2" />
           <entry key="XML" value="18" />
         </counts>
@@ -73,29 +73,19 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="516">
-              <caret line="743" column="92" selection-start-line="743" selection-start-column="92" selection-end-line="743" selection-end-column="92" />
+            <state relative-caret-position="45">
+              <caret line="239" column="9" selection-start-line="239" selection-start-column="9" selection-end-line="239" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/DealsFragment.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MenuCartAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="576" column="61" selection-start-line="576" selection-start-column="61" selection-end-line="576" selection-end-column="61" />
+            <state relative-caret-position="273">
+              <caret line="332" lean-forward="true" selection-start-line="332" selection-end-line="332" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/popup_filter.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="76" column="45" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="45" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2" />
         </entry>
       </file>
     </leaf>
@@ -340,7 +330,14 @@
       <option name="project" value="LOCAL" />
       <updated>1559212007152</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="On filter duplicate restaurant bug fixed">
+      <created>1559212522081</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1559212522081</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -357,11 +354,11 @@
       <window_info anchor="bottom" id="Run" order="0" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Android Profiler" order="2" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.32919255" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.32919255" />
       <window_info anchor="bottom" id="Terminal" order="4" weight="0.32919255" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Flutter Performance" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="7" visible="true" weight="0.32919255" />
       <window_info anchor="bottom" id="Build" order="8" weight="0.32817337" />
       <window_info anchor="bottom" id="Logcat" order="9" weight="0.53571427" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -700,11 +697,55 @@
           <properties />
           <option name="timeStamp" value="62" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MenuCartAdapter.java</url>
+          <line>336</line>
+          <properties />
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MenuCartAdapter.java</url>
+          <line>339</line>
+          <properties />
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MenuCartAdapter.java</url>
+          <line>331</line>
+          <properties />
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MenuCartAdapter.java</url>
+          <line>347</line>
+          <properties />
+          <option name="timeStamp" value="66" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>mItem.get(getLayoutPosition()).getId()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>!db.getCategoryName(mItem.get(getLayoutPosition()).getId()).equalsIgnoreCase(&quot;MEAL&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>db.getCategoryName(mItem.get(getLayoutPosition()).getId()).equalsIgnoreCase(&quot;MEAL&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>sortByList</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>response.body().getData().getProfile().getProfilePic()</expression-string>
         <language-id>JAVA</language-id>
@@ -727,26 +768,6 @@
       </expression>
       <expression>
         <expression-string>getItemCount()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>responseDeals.size()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>restaurants.size()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>data.getRestaurants().size()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>responseDeals.get(listPosition).getStatus()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -797,13 +818,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MenuCartAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2985">
-          <caret line="222" selection-start-line="222" selection-end-line="222" />
         </state>
       </provider>
     </entry>
@@ -938,17 +952,24 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
-          <caret line="743" column="92" selection-start-line="743" selection-start-column="92" selection-end-line="743" selection-end-column="92" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/DealsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
-          <caret line="576" column="61" selection-start-line="576" selection-start-column="61" selection-end-line="576" selection-end-column="61" />
+          <caret line="576" column="68" selection-start-line="576" selection-start-column="61" selection-end-line="576" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="239" column="9" selection-start-line="239" selection-start-column="9" selection-end-line="239" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/menu_adapter/MenuCartAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="332" lean-forward="true" selection-start-line="332" selection-end-line="332" />
         </state>
       </provider>
     </entry>

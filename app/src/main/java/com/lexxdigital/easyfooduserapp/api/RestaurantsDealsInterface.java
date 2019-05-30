@@ -1,5 +1,7 @@
 package com.lexxdigital.easyfooduserapp.api;
 
+import com.lexxdigital.easyfooduserapp.model.UpdateCustomerPostcodeRequest;
+import com.lexxdigital.easyfooduserapp.model.UpdateCustomerPostcodeResponse;
 import com.lexxdigital.easyfooduserapp.model.landing_page_request.CheckDeliveryPostcodeRequest;
 import com.lexxdigital.easyfooduserapp.model.landing_page_request.RestaurantsDealRequest;
 import com.lexxdigital.easyfooduserapp.model.landing_page_response.CheckDeliveryPostcodeResponse;
@@ -19,6 +21,11 @@ public interface RestaurantsDealsInterface {
     @Headers("Content-Type: application/json")
     @POST("check_delivery_in_postcode")
     Call<CheckDeliveryPostcodeResponse> getCheckDeliveryPostcode(@Body CheckDeliveryPostcodeRequest request);
+
+
+    @Headers("Content-Type: application/json")
+    @POST("update_customer_postcode")
+    Call<UpdateCustomerPostcodeResponse> updateCustomerPostcode(@Body UpdateCustomerPostcodeRequest request);
 
 
 }

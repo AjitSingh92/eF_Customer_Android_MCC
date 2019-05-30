@@ -574,6 +574,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         final ImageView not_collectionl = mDialogView.findViewById(R.id.not_collection);
         final LinearLayout restautantType = mDialogView.findViewById(R.id.ll_restaurantType);
 
+
         sortAdapter = new FilterSortByAdapter(getActivity(), sortByList, checksort, positionSortInterface);
         @SuppressLint("WrongConstant")
         LinearLayoutManager linearLayoutManager
@@ -786,7 +787,17 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 try {
 
                     if (response.body().getSuccess()) {
-                        sortByList = response.body().getData().getSortBy();
+                        /* Todo: Start remove distace */
+                        for (int i = 0; i < response.body().getData().getSortBy().size(); i++) {
+                            if (response.body().getData().getSortBy().get(i).getLabel().equalsIgnoreCase("Distance")) {
+
+                            } else {
+                                sortByList.add(response.body().getData().getSortBy().get(i));
+                            }
+                        }
+                        /* Todo: End remove distance*/
+
+//                        sortByList = response.body().getData().getSortBy();
                         filterByList = response.body().getData().getFilterBy().getOffers();
                         cuisineList = response.body().getData().getFilterBy().getCuisine();
                         for (int i = 0; i < response.body().getData().getSortBy().size(); i++) {

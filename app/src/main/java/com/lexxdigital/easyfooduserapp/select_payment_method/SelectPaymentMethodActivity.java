@@ -785,20 +785,25 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.tv_PayByCard).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SelectPaymentMethodActivity.this, AddNewCardActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("ORDER_TOTAL", totalAmount);
-                i.putExtra("ORDER_SUB_TOTAL", subTotalAmount);
-                i.putExtra("deliveryCharge", deliveryFee);
-                i.putExtra("orderType", orderType);
-                i.putExtra("voucherDiscount", voucherDiscount);
-                i.putExtra("notes", notes);
-                i.putExtra("appliedVoucherCode", voucherCode);
-                i.putExtra("appliedVoucherAmount", voucherAmount);
-                i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
-                startActivity(i);
-                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-                cardDialog.dismiss();
+                if (dataList != null && dataList.size() > 0) {
+                    cardDialog.dismiss();
+                } else {
+                    Intent i = new Intent(SelectPaymentMethodActivity.this, AddNewCardActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("ORDER_TOTAL", totalAmount);
+                    i.putExtra("ORDER_SUB_TOTAL", subTotalAmount);
+                    i.putExtra("deliveryCharge", deliveryFee);
+                    i.putExtra("orderType", orderType);
+                    i.putExtra("voucherDiscount", voucherDiscount);
+                    i.putExtra("notes", notes);
+                    i.putExtra("appliedVoucherCode", voucherCode);
+                    i.putExtra("appliedVoucherAmount", voucherAmount);
+                    i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                    cardDialog.dismiss();
+                }
+
             }
         });
         mDialogView.findViewById(R.id.tv_Cancel).setOnClickListener(new View.OnClickListener() {

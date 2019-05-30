@@ -384,7 +384,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         final String resID = rId;
         RestaurantDetailsInterface apiInterface = ApiClient.getClient(this).create(RestaurantDetailsInterface.class);
         RestaurantDetailsRequest request = new RestaurantDetailsRequest();
-//        request.setUserId(val.getLoginResponse().getData().getUserId());
         request.setUserId(sharePre.getString(sharePre.USER_ID));
         request.setPostCode(sharePre.getPostalCode());
         request.setRestaurantId(resID);
@@ -427,7 +426,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             tvStatus.setVisibility(View.GONE);
                         }
                         itemCuisines.setText(response.body().getData().getRestaurants().getRestaurantCuisines());
-                        deliveryMinorder.setText("£" + String.valueOf(response.body().getData().getRestaurants().getAvgDeliveryTime()) + " delivery");
+                        deliveryMinorder.setText("£" + String.valueOf(response.body().getData().getRestaurants().getDeliveryCharge()) + " delivery");
                         deliveryVal.setText("£" + String.valueOf(response.body().getData().getRestaurants().getMinOrderValue()) + " min order");
                         txtMinutes.setText(response.body().getData().getRestaurants().getAvgDeliveryTime() + " min");
                         restaurantPhoneNumber = response.body().getData().getRestaurants().getPhoneNumber();
@@ -449,15 +448,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             }
                         }
 
-                       /* name.setText(response.body().getData().getRestaurantName());
-                        tvToolbarTitle.setText(response.body().getData().getRestaurantName());
-                        txtxRating.setText(String.format("%.1f", Double.parseDouble(response.body().getData().getAvgRating())));
-                        itemCuisines.setText(response.body().getData().getRestaurantCuisines());
-                        deliveryMinorder.setText("£" + String.valueOf(response.body().getData().getAvgDeliveryTime()) + " delivery");
-                        deliveryVal.setText("£" + String.valueOf(response.body().getData().getMinOrderValue()) + " min order");
-                        txtMinutes.setText(response.body().getData().getAvgDeliveryTime() + " min");
-                        */
-                        //     Log.e("LOGO>>", "" + response.body().getData().getRestaurantLogo() + "//" + response.body().getData().getRestaurantImage());
                         Glide.with(RestaurantDetailsActivity.this)
                                 .load(response.body().getData().getRestaurants().getRestaurantLogo())
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -531,72 +521,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
         alertDialog.show();
     }
-/*
-    public void mGetRestaurantMenu(String resID, final NewRestaurantsDetailsResponse data) {
-        dialog.show();
-        RestaurantDetailsInterface apiInterface = ApiClient.getClient(this).create(RestaurantDetailsInterface.class);
-        RestaurantDetailsRequest request = new RestaurantDetailsRequest();
-        request.setUserId(val.getLoginResponse().getData().getUserId());
-        request.setPostCode(val.getPostCode());
-        request.setRestaurantId(resID);
-
-        Call<Rough> call3 = apiInterface.mGetRestaurantMenu(request);
-        call3.enqueue(new Callback<Rough>() {
-            @Override
-            public void onResponse(Call<Rough> call, Response<Rough> response) {
-                try {
-                    dialog.dismiss();
-                    if (response.body().getSuccess()) {
-                        setupViewPager(pager, response.body().getData().getMenu(), data, footerDetails);
-
-                        *//*val.setRestaurantDetailsResponse(response.body());
-                        setupViewPager(pager, response.body(), footerDetails);
-                        name.setText(response.body().getData().getRestaurantName());
-                        tvToolbarTitle.setText(response.body().getData().getRestaurantName());
-                        txtxRating.setText(response.body().getData().getAvgRating());
-                        itemCuisines.setText(response.body().getData().getRestaurantCuisines());
-                        deliveryMinorder.setText("£" + String.valueOf(response.body().getData().getAvgDeliveryTime()) + " delivery");
-                        deliveryVal.setText("£" + String.valueOf(response.body().getData().getMinOrderValue()) + " min order");
-                        txtMinutes.setText(response.body().getData().getAvgDeliveryTime() + " min");
-
-                        Log.e("LOGO>>", "" + response.body().getData().getRestaurantLogo() + "//" + response.body().getData().getRestaurantImage());
-                        Glide.with(RestaurantDetailsActivity.this)
-                                .load(response.body().getData().getRestaurantLogo())
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(logo);
-                        Glide.with(RestaurantDetailsActivity.this)
-                                .load(response.body().getData().getRestaurantImage())
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-
-                                .into(backImage);
-                        llbotom.setVisibility(View.VISIBLE);
-                        containerRestaurantsDetails.setVisibility(View.VISIBLE);*//*
-
-                    } else {
-                        dialog.dismiss();
-                        llbotom.setVisibility(View.GONE);
-                        containerRestaurantsDetails.setVisibility(View.GONE);
-                        Toast.makeText(RestaurantDetailsActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    dialog.dismiss();
-                    Log.e("ERROR 1>>", e.getMessage());
-                    llbotom.setVisibility(View.GONE);
-                    containerRestaurantsDetails.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Rough> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
-                dialog.dismiss();
-                llbotom.setVisibility(View.GONE);
-                containerRestaurantsDetails.setVisibility(View.GONE);
-            }
-        });
-    }
-    */
-
 
     public void mGetRestaurantMenu(final String resID, final NewRestaurantsDetailsResponse data) {
 

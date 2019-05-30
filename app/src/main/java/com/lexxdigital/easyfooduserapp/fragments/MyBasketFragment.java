@@ -1279,7 +1279,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         /*   *//*TODO: Voucher Apply Calculation*/
         if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
             if (totalPrice > minOrderValue) {
-                if (voucherApplicableOn.contains(orderType)) {
+                if (voucherApplicableOn.contains(orderType.toLowerCase())) {
 
                     if (voucherType.equalsIgnoreCase("percentage")) {
                         Double voucherCal = (netAmount * voucherValue) / 100;
@@ -1349,7 +1349,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         btnApplyVoucherCode.setTag("remove");
                         btnApplyVoucherCode.setText("Remove");
                         if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
-                            if (orderType.equalsIgnoreCase(voucherApplicableOn)) {
+                            if (voucherApplicableOn.contains(orderType.toLowerCase())) {
                                 /*Todo: "percentage" */
                                 if (voucherType.equalsIgnoreCase("percentage")) {
                                     Double voucherCal = (netAmount * voucherValue) / 100;

@@ -65,22 +65,34 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
     Activity activity;
     SharedPreferencesClass sharePre;
     DatabaseHelper db;
-    int mListPosition=0;
+    int mListPosition = 0;
+
 
     public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
 
         this.onBottomReachedListener = onBottomReachedListener;
     }
 
-    public DealAdapter(Context mContext, PositionInterface mPositionInterface, List<RestaurantsDealResponse.Data.Restaurant> res, String userid, Activity activity) {
+    public DealAdapter(Context mContext, PositionInterface mPositionInterface, String userid, Activity activity) {
 
         this.mContext = mContext;
         this.mPositionInterface = mPositionInterface;
-        this.responseDeals = res;
-        this.respNameFilter = res;
-        Log.e("Adapter data ", res.toString());
+        this.responseDeals = new ArrayList<>();
+        this.respNameFilter = new ArrayList<>();
         this.userID = userid;
         this.activity = activity;
+    }
+
+    public void clearItems() {
+        this.responseDeals.clear();
+        this.respNameFilter.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addItem(List<RestaurantsDealResponse.Data.Restaurant> restaurants) {
+        this.responseDeals = restaurants;
+        this.respNameFilter = restaurants;
+        notifyItemInserted(this.respNameFilter.size());
     }
 
     public interface PositionInterface {
@@ -194,7 +206,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         }
 //        holder.cuisines.setText(respNameFilter.get(listPosition).getCuisines());
 
-        Log.e("rating", respNameFilter.get(listPosition).getOverallRating());
         if (respNameFilter.get(listPosition).getOverallRating() != null) {
             if (respNameFilter.get(listPosition).getOverallRating().equalsIgnoreCase("0")) {
                 holder.rating.setText("New");
@@ -208,19 +219,18 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             holder.imRatingImage.setVisibility(View.GONE);
         }
 
-        String status = responseDeals.get(listPosition).getStatus();
+        String status = respNameFilter.get(listPosition).getStatus();
         try {
             if (status.trim().equalsIgnoreCase("closed")) {
                 holder.llClosed.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.llClosed.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             Log.e("DealAdapter", "onBindViewHolder<<Exception>>: " + e.getMessage());
         }
-        Log.e("deal Adapter", "onBindViewHolder:status " + status);
-        if (responseDeals.get(listPosition).getServe_style() != null || !responseDeals.get(listPosition).getServe_style().equals("")) {
-            String[] serve_styles = responseDeals.get(listPosition).getServe_style().split(",");
+        if (respNameFilter.get(listPosition).getServe_style() != null || !respNameFilter.get(listPosition).getServe_style().equals("")) {
+            String[] serve_styles = respNameFilter.get(listPosition).getServe_style().split(",");
 
             if (Arrays.asList(serve_styles).contains("collection")) {
                 holder.llCollection.setVisibility(View.VISIBLE);
@@ -252,11 +262,11 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 im_cross = view.findViewById(R.id.cross_tv);
 
                 String startDelTime, endDelTime, startCollTime, endCollTime;
-                startDelTime = responseDeals.get(mListPosition).getRestaurantTiming().get(0).getDeliveryStartTime();
-                endDelTime = responseDeals.get(mListPosition).getRestaurantTiming().get(0).getDeliveryEndTime();
-                startCollTime = responseDeals.get(mListPosition).getRestaurantTiming().get(0).getCollectionStartTime();
-                endCollTime = responseDeals.get(mListPosition).getRestaurantTiming().get(0).getCollectionEndTime();
-                Log.e("DealAdapter", "onClick: preorder popup " + startDelTime + "//>" + endDelTime + "//>" + startCollTime + "///>" + endCollTime);
+                startDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryStartTime();
+                endDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryEndTime();
+                startCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getCollectionStartTime();
+                endCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getCollectionEndTime();
+
                 deliveryTime.setText(startDelTime + " - " + endDelTime);
                 collectionTime.setText(startCollTime + " - " + endCollTime);
                 minOrderForDelivery.setText("£" + respNameFilter.get(mListPosition).getMin_order_value() + " min order");
@@ -272,24 +282,23 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                     public void onClick(View v) {
                         try {
                             dialog.dismiss();
-                            Log.e("data>>>", responseDeals.get(mListPosition).getRestaurantTiming().toString());
                             if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
 
-                                if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(responseDeals.get(mListPosition).getId())) {
+                                if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(respNameFilter.get(mListPosition).getId())) {
                                     Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                                    i.putExtra("RESTAURANTID", responseDeals.get(mListPosition).getId());
-                                    i.putExtra("RESTAURANTNAME", responseDeals.get(mListPosition).getRestaurantName());
+                                    i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
+                                    i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     mContext.startActivity(i);
                                     activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                                 } else {
                                     String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
-                                    alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), responseDeals.get(mListPosition).getRestaurantName(), responseDeals.get(mListPosition).getId());
+                                    alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
                                 }
                             } else {
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                                i.putExtra("RESTAURANTID", responseDeals.get(mListPosition).getId());
-                                i.putExtra("RESTAURANTNAME", responseDeals.get(mListPosition).getRestaurantName());
+                                i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
+                                i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(i);
                             }
@@ -297,8 +306,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                         } catch (Exception e) {
 
                             Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                            i.putExtra("RESTAURANTID", responseDeals.get(mListPosition).getId());
-                            i.putExtra("RESTAURANTNAME", responseDeals.get(mListPosition).getRestaurantName());
+                            i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
+                            i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
                             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             mContext.startActivity(i);
                         }
@@ -344,7 +353,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
 
     public void addLazyLoadedData(List<RestaurantsDealResponse.Data.Restaurant> res, int offset) {
         for (int i = 0; i < res.size(); i++) {
-            this.responseDeals.add(res.get(i));
+            this.respNameFilter.add(res.get(i));
         }
         this.notifyItemRangeInserted(offset, res.size());
     }

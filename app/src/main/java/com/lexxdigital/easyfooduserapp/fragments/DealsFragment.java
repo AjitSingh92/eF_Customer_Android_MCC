@@ -196,18 +196,18 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         arrayCuisine.add("all");
 
-
+        initView();
         swipreferesh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (mDealAdapter != null) {
                     mDealAdapter.notifyDataSetChanged();
-                    int limitref = 50;
+
 
                     if (Constants.isInternetConnectionAvailable(300)) {
                         swipreferesh.setRefreshing(true);
                         editSearch.setText("");
-                        getDeals(val.getPostCode(), limitref, offset, restFilter, sortedByValue, filterOfferValue);
+                        getDeals(val.getPostCode(), limit, offset, restFilter, sortedByValue, filterOfferValue);
 
 
                     } else {
@@ -312,7 +312,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         layoutManager.setScrollEnabled(false);
         restaurantList.setLayoutManager(layoutManager);
         restaurantList.setNestedScrollingEnabled(false);
-        mDealAdapter = new DealAdapter(getContext(), mPositionInterface, data.getRestaurants(), val.getLoginResponse().getData().getUserId(), (DashboardActivity) getActivity());
+        mDealAdapter = new DealAdapter(getContext(), mPositionInterface, val.getLoginResponse().getData().getUserId(), (DashboardActivity) getActivity());
         restaurantList.setAdapter(mDealAdapter);
         mDealAdapter.notifyDataSetChanged();
 
@@ -333,13 +333,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             }
         });
 
-        if (data.getTotalRecords() == 1) {
-            restaurauntCount.setText(data.getTotalRecords() + " Restaurant delivering to");
-        } else if (data.getTotalRecords() > 1) {
-            restaurauntCount.setText(data.getTotalRecords() + " Restaurants delivering to");
-        }
-
-
         editSearch.addTextChangedListener(new
 
                                                   TextWatcher() {
@@ -357,7 +350,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                                                       @Override
                                                       public void afterTextChanged(Editable s) {
 
-
                                                           mDealAdapter.getFilter().filter(s.toString());
 
                                                           if (mDealAdapter.getItemCount() > 1) {
@@ -365,8 +357,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                                                           } else {
                                                               restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurant delivering to");
                                                           }
-
-
 
                                                           if (s.toString().equals("")) {
                                                               clear.setVisibility(View.GONE);
@@ -422,11 +412,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         request.setFilterByOffer(offerVal);
         request.setFilterByServeStyle(restFilter);
         request.setFilterByCuisine(arrayCuisine);
-        //Gson gson = new Gson();
-//        String json = gson.toJson(request); //convert
-//        //   System.out.println(json);
-//        Log.e("JSON 2244>>", "" + json);
-        //logLargeString(json);
 
         Call<RestaurantsDealResponse> call3 = apiInterface.mLogin(request);
 
@@ -438,43 +423,30 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                     if (response.body().getSuccess()) {
 
                         data = response.body().getData();
-                        Log.e(TAG, "onResponse: datasize>>> " + data.getRestaurants().size());
+                        Log.e(TAG, "onResponse: ANAND >>> " + data.getRestaurants().size());
                         if (data.getRestaurants().size() > 0) {
-                            initView();
+//                            initView();
+                            mDealAdapter.clearItems();
+                            mDealAdapter.addItem(data.getRestaurants());
                             oopsLayout.setVisibility(View.GONE);
                             restaurantList.setVisibility(View.VISIBLE);
+                            if (data.getTotalRecords() == 1) {
+                                restaurauntCount.setText(data.getTotalRecords() + " Restaurant delivering to");
+                            } else if (data.getTotalRecords() > 1) {
+                                restaurauntCount.setText(data.getTotalRecords() + " Restaurants delivering to");
+                            }
+
                         } else {
                             oopsLayout.setVisibility(View.VISIBLE);
                             restaurantList.setVisibility(View.GONE);
                         }
-
-
-
-
-                       /* for (int i = 0; i < response.body().getData().getRestaurants().size(); i++) {
-                            restaurantDeliveryCharge = new ArrayList<>();
-                            restaurantsGallery = new ArrayList<>();
-                            discountOffers = new ArrayList<>();
-                            restaurantTiming = new ArrayList<>();
-                            for (int j = 0; j < response.body().getData().getRestaurants().get(i).getRestaurantsGallery().size(); j++) {
-                                restaurantsGallery.add(new RestaurantsGallery(response.body().getData().getRestaurants().get(i).getRestaurantsGallery().get(j).getFilePath(), response.body().getData().getRestaurants().get(i).getRestaurantsGallery().get(j).getFileName(), response.body().getData().getRestaurants().get(i).getRestaurantsGallery().get(j).getRestaurantId()));
-                            }
-                            for (int k = 0; k < response.body().getData().getRestaurants().get(i).getDiscountOffers().size(); k++) {
-                                discountOffers.add(new DiscountOffer(response.body().getData().getRestaurants().get(i).getDiscountOffers().get(k).getOfferId(), response.body().getData().getRestaurants().get(i).getDiscountOffers().get(k).getRestaurantId(), response.body().getData().getRestaurants().get(i).getDiscountOffers().get(k).getOfferType(), response.body().getData().getRestaurants().get(i).getDiscountOffers().get(k).getOfferTitle(), response.body().getData().getRestaurants().get(i).getDiscountOffers().get(k).getDetail(), response.body().getData().getRestaurants().get(i).getDiscountOffers().get(k).getOfferPrice()));
-                            }
-                            for (int l = 0; l < response.body().getData().getRestaurants().get(i).getRestaurantTiming().size(); l++) {
-                                restaurantTiming.add(new RestaurantTiming(response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getId(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getRestaurantId(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getDay(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getOpeningStartTime(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getOpeningEndTime(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getCollectionStartTime(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getCollectionEndTime(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getDeliveryStartTime(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getDeliveryEndTime(), response.body().getData().getRestaurants().get(i).getRestaurantTiming().get(l).getStatus()));
-                            }
-                            listRestaurants.add(new LandingPageLists(response.body().getData().getRestaurants().get(i).getId(), response.body().getData().getRestaurants().get(i).getRestaurantName(), response.body().getData().getRestaurants().get(i).getLogo(), response.body().getData().getRestaurants().get(i).getRestaurantName(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getCuisines(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getMin_order_value(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getDelivery_charge(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getAvgDeliveryTime(), response.body().getData().getRestaurants().get(i).getOverallRating(), response.body().getData().getRestaurants().get(i).getFavourite(), restaurantsGallery, restaurantDeliveryCharge, discountOffers, restaurantTiming));
-                        }*/
-
                         if (response.body().getData().getTotalRecords() == 1) {
                             restaurauntCount.setText(response.body().getData().getTotalRecords() + " Restaurant delivering to");
                         } else if (response.body().getData().getTotalRecords() > 1) {
                             restaurauntCount.setText(response.body().getData().getTotalRecords() + " Restaurants delivering to");
                         }
 
-                        mDealAdapter.notifyDataSetChanged();
+//                        mDealAdapter.notifyDataSetChanged();
                         isLoading = false;
 
                         if (swipreferesh != null)
@@ -768,7 +740,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 for (int i = 0; i < arrayCuisine.size(); i++) {
                     Log.e(TAG, "onClickcising listinggggggg: " + arrayCuisine.get(i));
                 }
-                int limitfilt = 50;
+
                 listRestaurants.clear();
                 mDealAdapter.notifyDataSetChanged();
                 restaurantList.removeAllViews();
@@ -780,7 +752,8 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 }
 
                 if (Constants.isInternetConnectionAvailable(300)) {
-                    getDeals(val.getPostCode(), limitfilt, offset, temp, sortedByValue, filterOfferValue);
+                    dialog.show();
+                    getDeals(val.getPostCode(), limit, offset, temp, sortedByValue, filterOfferValue);
                     filterDialog.dismiss();
                 } else {
                     filterDialog.dismiss();

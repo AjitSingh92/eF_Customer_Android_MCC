@@ -38,8 +38,8 @@
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             fresco:progressBarImage="@drawable/image_loader"
-            fresco:progressBarImageScaleType="centerInside"
-            fresco:progressBarAutoRotateInterval="1000"
+            fresco:progressBarImageScaleType="center"
+            fresco:progressBarAutoRotateInterval="5000"
             android:layout_gravity="center"
             fresco:placeholderImage="@drawable/avatar"
             fresco:roundAsCircle="true" />

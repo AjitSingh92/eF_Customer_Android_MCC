@@ -330,18 +330,15 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                 case R.id.btn_add:
                     qty.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) + 1)));
                     mItem.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(qty.getText().toString()));
+//                    if (mItem.get(getLayoutPosition()).getMealProducts() != null)
 
-                    if (!db.getCategoryName(mItem.get(getLayoutPosition()).getId()).equalsIgnoreCase("MEAL")) {
+                    int id = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
 
-
-                        int id = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
-
-                        if (onMenuCartItemClick != null) {
-                            onMenuCartItemClick.OnQuantityBtnClick();
-                        }
-                        if (id != -1) {
-                            notifyItemChanged(getLayoutPosition());
-                        }
+                    if (onMenuCartItemClick != null) {
+                        onMenuCartItemClick.OnQuantityBtnClick();
+                    }
+                    if (id != -1) {
+                        notifyItemChanged(getLayoutPosition());
                     }
                     break;
                 case R.id.btn_remove:
@@ -349,37 +346,29 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                         qty.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) - 1)));
                         mItem.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(qty.getText().toString()));
                         int id1 = -1;
-                        if (!db.getCategoryName(mItem.get(getLayoutPosition()).getId()).equalsIgnoreCase("MEAL")) {
-                            if (Integer.parseInt(qty.getText().toString()) == 0) {
-                                db.deleteItem(mItem.get(getLayoutPosition()).getId(), mItem.get(getLayoutPosition()).getId());
-                                db.deleteUpsellProductByParentId(mItem.get(getLayoutPosition()).getMenuProductId());
-                                mItem.remove(getLayoutPosition());
-                                notifyItemRemoved(getLayoutPosition());
-                                if (onMenuCartItemClick != null) {
-                                    onMenuCartItemClick.OnUpSellItemRemove();
-                                }
-                            } else {
-                                id1 = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
-                            }
-                            if (onMenuCartItemClick != null) {
-                                onMenuCartItemClick.OnQuantityBtnClick();
-                            }
 
-                            if (id1 != -1) {
-                                notifyItemChanged(getLayoutPosition());
+                        if (Integer.parseInt(qty.getText().toString()) == 0) {
+                            db.deleteItem(mItem.get(getLayoutPosition()).getId(), mItem.get(getLayoutPosition()).getId());
+                            if (mItem.get(getLayoutPosition()).getMealProducts() != null) {
+                            } else {
+                                db.deleteUpsellProductByParentId(mItem.get(getLayoutPosition()).getMenuProductId());
+                            }
+                            mItem.remove(getLayoutPosition());
+                            notifyItemRemoved(getLayoutPosition());
+                            if (onMenuCartItemClick != null) {
+                                onMenuCartItemClick.OnUpSellItemRemove();
                             }
                         } else {
-                            if (Integer.parseInt(qty.getText().toString()) == 0) {
-                                db.deleteItem(mItem.get(getLayoutPosition()).getId(), mItem.get(getLayoutPosition()).getId());
-                                db.deleteUpsellProductByParentId(mItem.get(getLayoutPosition()).getMenuProductId());
-                                mItem.remove(getLayoutPosition());
-                                notifyItemRemoved(getLayoutPosition());
-                                if (onMenuCartItemClick != null) {
-                                    onMenuCartItemClick.OnQuantityBtnClick();
-                                }
-                            }
+                            id1 = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()));
+                        }
+                        if (onMenuCartItemClick != null) {
+                            onMenuCartItemClick.OnQuantityBtnClick();
+                        }
+                        if (id1 != -1) {
+                            notifyItemChanged(getLayoutPosition());
                         }
                     }
+
                     break;
                 default:
 

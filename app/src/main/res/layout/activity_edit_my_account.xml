@@ -228,7 +228,6 @@
                     android:layout_marginBottom="@dimen/_40sdp"
                     android:background="@drawable/bg_edit_two"
                     android:ems="10"
-                    android:focusable="false"
                     android:fontFamily="@font/avenir_medium"
                     android:hint="Phone *"
                     android:inputType="phone"

@@ -780,7 +780,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         sharePre.setString(sharePre.RESTUARANT_ID, restaurantId);
         sharePre.setString(sharePre.RESTUARANT_NAME, restaurantName);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+        context.startActivity(i); i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
 
         Intent i = new Intent(this, DashboardActivity.class);

@@ -146,39 +146,68 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             holder.clickRestaurant.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                        if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.get(mListPosition).getId())) {
+                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                            sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                            sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
 
-                    try {
-                        if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("") && db.getCartData() != null) {
+                            i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
+                            i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(i);
+                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                        } else {
+                            if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                                String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
+                                alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
 
-                            if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.get(mListPosition).getId())) {
+                            } else {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+
+                                        db.getCartData();
+                                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                        sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                                        sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+
+                                        i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
+                                        i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        mContext.startActivity(i);
+                                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                                    }
+                                }).start();
+                            }
+                        }
+                    } else {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+
+                                db.getCartData();
+
+                                sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                                sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                                 i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
                                 i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(i);
-                                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                            } else {
-                                String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
-                                alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
                             }
-                        } else {
-                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                            i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
-                            i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(i);
-                        }
-
-                    } catch (Exception e) {
-
-                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                        i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
-                        i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(i);
+                        }).start();
                     }
                 }
-
             });
 
         } else if (listPosition > 0 && listPosition <= mSize) {
@@ -198,35 +227,66 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             holder.btnSeeMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
-                            Log.e("restaurant", response.get(mListPosition).getRestaurantName() + "," + response.get(mListPosition).getId());
-                            if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.get(mListPosition).getId())) {
+                    if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                        if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.get(mListPosition).getId())) {
+                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                            sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                            sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+
+                            i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
+                            i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(i);
+                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                        } else {
+                            if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                                String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
+                                alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
+
+                            } else {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+
+                                        db.getCartData();
+                                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                        sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                                        sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+
+                                        i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
+                                        i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        mContext.startActivity(i);
+                                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                                    }
+                                }).start();
+                            }
+                        }
+                    } else {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+
+                                db.getCartData();
+
+                                sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                                sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                                 i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
                                 i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(i);
-                                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                            } else {
-                                String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
-                                alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
                             }
-                        } else {
-                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                            i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
-                            i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(i);
-                        }
-
-                    } catch (Exception e) {
-
-                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                        i.putExtra("RESTAURANTID", response.get(mListPosition).getId());
-                        i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(i);
+                        }).start();
                     }
 
                 }
@@ -300,6 +360,9 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                 i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
                 i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
+                sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(i);
                 dialog.dismiss();
@@ -316,8 +379,10 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                         db.deleteCart();
-                        sharePre.setString(sharePre.RESTUARANT_ID, "");
-                        sharePre.setString(sharePre.RESTUARANT_NAME, "");
+                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                        sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                        sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+
                         Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                         i.putExtra("RESTAURANTID", currentRestId);
                         i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());

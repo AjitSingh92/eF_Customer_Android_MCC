@@ -618,16 +618,16 @@ public class AddAddressActivity extends AppCompatActivity implements
                 if (addresses != null && addresses.size() > 0) {
 
 
+
                     for (int i = 0; i < addresses.size(); i++) {
                         address = addresses.get(i);
                         if (address.getPostalCode() != null) {
-
                             Log.e("AddAddrees", "getSetAddress:address.toStr:>>>>> " + address.toString());
-                            addressShort = addresses.get(0).getAddressLine(0);
-                            addressShort = addressShort.replace(address.getLocality() + ", ", "").replace(addresses.get(0).getAdminArea(), "").replace(addresses.get(0).getPostalCode() + ", ", "").replace(addresses.get(0).getCountryName(), "");
+//                            addressShort = addresses.get(0).getAddressLine(0);
+//                            addressShort = addressShort.replace(address.getLocality() + ", ", "").replace(addresses.get(0).getAdminArea(), "").replace(addresses.get(0).getPostalCode() + ", ", "").replace(addresses.get(0).getCountryName(), "");
                             Log.e("Address", addressShort);
                             cityName = address.getLocality();
-                            address1 = addressShort;
+                            address1 = addresses.get(0).getFeatureName()+", "+addresses.get(0).getSubLocality();
                             address2 = addresses.get(0).getAddressLine(1);
                             countyName = addresses.get(0).getCountryName();
                             //searchAddress.setText(address.getAddressLine(i));

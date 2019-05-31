@@ -1090,138 +1090,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
     }
 
-//
-//    private void showPriceAndView() {
-//        totalPrice = 0.0d;
-//        List<MenuProduct> menuProducts = db.getMenuProduct();
-//        List<SpecialOffer> specialOffers = db.getSpecialOffer();
-//
-//
-//        //  sharePre.setCartDetailsKey(json);
-//        if (menuProducts != null) {
-//            Log.e("ANAND >>", menuProducts.toString());
-//
-//            for (MenuProduct menuProduct : menuProducts) {
-//                int itemQty = menuProduct.getQuantity();
-//
-//                if (menuProduct.getMenuProductSize().size() == 0 && menuProduct.getProductModifiers().size() == 0) {
-//                    totalPrice += (itemQty * Double.parseDouble(menuProduct.getMenuProductPrice()));
-//                } else {
-//                    if (menuProduct.getMenuProductSize().size() > 0) {
-//
-//                        for (MenuProductSize menuProductSize1 : menuProduct.getMenuProductSize()) {
-//                            if (menuProductSize1.getSelected()) {
-//                                totalPrice += (itemQty * Double.parseDouble(menuProductSize1.getProductSizePrice()));
-//
-//                                for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
-//                                    if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
-//
-//                                        int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
-//                                        int free = 0;
-//                                        for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
-//                                            if (free == maxAllowFree) {
-//                                                int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getQuantity());
-//                                                qty = (qty * itemQty);
-//                                                totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
-//                                            } else {
-//                                                int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getQuantity());
-//                                                if (qty >= maxAllowFree) {
-//                                                    int nQty = qty - maxAllowFree;
-//                                                    free = maxAllowFree;
-//                                                    qty = (nQty * itemQty);
-//                                                    totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
-//                                                } else {
-//                                                    free++;
-//                                                }
-//                                            }
-//                                        }
-//
-//                                        /*Todo : Quantity wise price calculation*//*
-//                                        int allCount = 0;
-//                                        for (int j = 0; j < sizeModifier.getModifier().size(); j++) {
-//
-//                                            allCount = allCount + Integer.parseInt(sizeModifier.getModifier().get(j).getQuantity());
-//                                        }
-//
-//                                        if (allCount > sizeModifier.getMaxAllowedQuantity()) {
-//
-//                                           *//* for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
-//                                                int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getQuantity());
-//                                                qty = (qty * itemQty);
-//                                                totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
-//                                            }*//*
-//                                            totalPrice += ((allCount - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
-//
-//                                        }*/
-//                                    } else {
-//                                        for (Modifier modifier : sizeModifier.getModifier()) {
-//                                            int qty = Integer.parseInt(modifier.getQuantity());
-//                                            qty = (qty * itemQty);
-//                                            totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
-//
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    for (ProductModifier productModifier : menuProduct.getProductModifiers()) {
-//                        if (productModifier.getModifierType().equalsIgnoreCase("free")) {
-//                            int maxAllowFree = productModifier.getMaxAllowedQuantity();
-//                            int free = 0;
-//                            for (int i = 0; i < productModifier.getModifier().size(); i++) {
-//                                if (free == maxAllowFree) {
-//                                    int qty = Integer.parseInt(productModifier.getModifier().get(i).getQuantity());
-//                                    qty = (qty * itemQty);
-//                                    totalPrice += (qty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice()));
-//                                } else {
-//                                    int qty = Integer.parseInt(productModifier.getModifier().get(i).getQuantity());
-//                                    if (qty > maxAllowFree) {
-//                                        int nQty = qty - maxAllowFree;
-//                                        free = maxAllowFree;
-//                                        qty = (nQty * itemQty);
-//                                        totalPrice += (qty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice()));
-//                                    } else {
-//                                        free++;
-//                                    }
-//                                }
-//                            }
-//                            /*int allCount = 0;
-//                            for (int j = 0; j < productModifier.getModifier().size(); j++) {
-//                                allCount = allCount + Integer.parseInt(productModifier.getModifier().get(j).getQuantity());
-//                            }
-//                            if (allCount > productModifier.getMaxAllowedQuantity()) {
-//                               *//* for (int i = 0; i < productModifier.getModifier().size(); i++) {
-//                                    int qty = Integer.parseInt(productModifier.getModifier().get(i).getQuantity());
-//                                    qty = (qty * itemQty);
-//                                    totalPrice += (qty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice()));
-//                                }*//*
-//                                totalPrice += ((allCount - productModifier.getMaxAllowedQuantity()) * Double.parseDouble(productModifier.getModifier().get(0).getModifierProductPrice()));
-//
-//                            }*/
-//                        } else {
-//                            for (Modifier modifier : productModifier.getModifier()) {
-//                                int qty = Integer.parseInt(modifier.getQuantity());
-//                                qty = (qty * itemQty);
-//                                totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
-//
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            /*TODO: Price calculation*/
-//            for (SpecialOffer item : specialOffers) {
-//                totalPrice += ((item.getQuantity() * Double.parseDouble(item.getOfferPrice())));
-//            }
-//            totalCartIterm = 0;
-//            totalCartIterm = specialOffers.size() + menuProducts.size();
-//            setPriceCalculation(totalCartIterm);
-//
-//        }
-//    }
-
     public void setPriceCalculation(int totalCartIterm) {
         subTotal.setText(String.format("%.2f", totalPrice));
         numberOfQty = mAdapter.getItemCount();
@@ -1278,27 +1146,39 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
         /*   *//*TODO: Voucher Apply Calculation*/
         if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
-            if (totalPrice > minOrderValue) {
+            Log.e("-------------,", "---------------");
+            if (voucherApplicableOn != null && voucherApplicableOn.contains(orderType.toLowerCase())) {
                 if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-
                     if (voucherType.equalsIgnoreCase("percentage")) {
-                        Double voucherCal = (netAmount * voucherValue) / 100;
-                        appliedVoucherAmount = voucherCal;
-                        netAmount = netAmount - voucherCal;
-                        appliedVoucherCode = voucherCode;
-                        appliedVoucherPaymentType = voucherValidOn;
+                        if (totalPrice > minOrderValue) {
+                            Double voucherCal = (netAmount * voucherValue) / 100;
+                            appliedVoucherAmount = voucherCal;
+                            netAmount = netAmount - voucherCal;
+                            appliedVoucherCode = voucherCode;
+                            appliedVoucherPaymentType = voucherValidOn;
 //                         alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                        tvVoucherStatus.setVisibility(View.VISIBLE);
-                        tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                        } else {
+//                alertDailogVoucher("Validate voucher", "Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+
+                        }
                     } else if (voucherType.equalsIgnoreCase("flat")) {
-                        Double voucherCal = netAmount - voucherValue;
-                        appliedVoucherAmount = voucherCal;
-                        appliedVoucherCode = voucherCode;
-                        appliedVoucherPaymentType = voucherValidOn;
-                        netAmount = voucherCal;
+                        if (totalPrice >= voucherValue) {
+                            Double voucherCal = netAmount - voucherValue;
+                            appliedVoucherAmount = voucherCal;
+                            appliedVoucherCode = voucherCode;
+                            appliedVoucherPaymentType = voucherValidOn;
+                            netAmount = voucherCal;
 //                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                        tvVoucherStatus.setVisibility(View.VISIBLE);
-                        tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
+                        } else {
+                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setText("Voucher applicable on " + getString(R.string.currency) + " " + voucherValue);
+                        }
                     }
                 } else {
 //                    alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
@@ -1306,11 +1186,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
                 }
             } else {
-//                alertDailogVoucher("Validate voucher", "Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+//                    alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
                 tvVoucherStatus.setVisibility(View.VISIBLE);
-                tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
-
+                tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
             }
+
         } else {
             tvVoucherStatus.setVisibility(View.GONE);
         }
@@ -1351,26 +1231,46 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
                             if (voucherApplicableOn.contains(orderType.toLowerCase())) {
                                 /*Todo: "percentage" */
-                                if (voucherType.equalsIgnoreCase("percentage")) {
-                                    Double voucherCal = (netAmount * voucherValue) / 100;
-                                    appliedVoucherAmount = voucherCal;
-                                    netAmount = netAmount - voucherCal;
-                                    appliedVoucherCode = voucherCode;
-                                    appliedVoucherPaymentType = voucherValidOn;
-                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
+                                if (voucherApplicableOn.contains(orderType.toLowerCase())) {
+                                    if (voucherType.equalsIgnoreCase("percentage")) {
+                                        if (totalPrice > minOrderValue) {
+                                            Double voucherCal = (netAmount * voucherValue) / 100;
+                                            appliedVoucherAmount = voucherCal;
+                                            netAmount = netAmount - voucherCal;
+                                            appliedVoucherCode = voucherCode;
+                                            appliedVoucherPaymentType = voucherValidOn;
+                                            alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
+                                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                            voucherCodeUsed = voucher_code;
+                                        } else {
+                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is apply only Amount of\n" + getString(R.string.currency) + " " + minOrderValue + " OR grater");
+                                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                                            tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+
+                                        }
+                                    } else if (voucherType.equalsIgnoreCase("flat")) {
+
+                                        if (totalPrice >= voucherValue) {
+                                            Double voucherCal = netAmount - voucherValue;
+                                            appliedVoucherAmount = voucherCal;
+                                            appliedVoucherCode = voucherCode;
+                                            appliedVoucherPaymentType = voucherValidOn;
+                                            netAmount = voucherCal;
+                                            alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
+                                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                            voucherCodeUsed = voucher_code;
+
+                                        } else {
+                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is apply only Amount of\n" + getString(R.string.currency) + " " + voucherValue + " OR grater");
+                                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                                            tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                                        }
+                                    }
+                                } else {
                                     tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                                    voucherCodeUsed = voucher_code;
-                                } else if (voucherType.equalsIgnoreCase("flat")) {
-                                    Double voucherCal = netAmount - voucherValue;
-                                    appliedVoucherAmount = voucherCal;
-                                    appliedVoucherCode = voucherCode;
-                                    appliedVoucherPaymentType = voucherValidOn;
-                                    netAmount = voucherCal;
-                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                                    voucherCodeUsed = voucher_code;
+                                    tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
                                 }
                             } else {
 //                    alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
@@ -1383,7 +1283,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
 
                         }
-
+                        setPriceCalculation(totalCartIterm);
 //                        tvVoucherStatus.setText();
                         /*if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
                             alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", netAmount) + " has been applied to your order.");

@@ -131,8 +131,6 @@ public class MyAccountFragment extends Fragment {
         }
 
 
-        dialog.show();
-        getUserdDetail();
 
         return view;
     }
@@ -263,7 +261,6 @@ public class MyAccountFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
         try {
             if (sharePre.getString(sharePre.LOGIN_VIA).equalsIgnoreCase(Constants.LOGIN_WITH_OTHER)) {
                 btn_change_password.setVisibility(View.VISIBLE);
@@ -281,5 +278,9 @@ public class MyAccountFragment extends Fragment {
             address.setText(val.getDefaltAddress());
             telephone.setText(val.getMobileNo());
         }
+
+        dialog.show();
+        getUserdDetail();
+
     }
 }

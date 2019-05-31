@@ -625,8 +625,6 @@ public class DashboardActivity extends AppCompatActivity {
         final AlertDialog mDialog = new AlertDialog.Builder(this).create();
         mDialog.setView(mDialogView);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final TextView faqDesc = mDialogView.findViewById(R.id.faqs_desc);
-        final TextView faq = mDialogView.findViewById(R.id.faq);
         final WebView webView = mDialogView.findViewById(R.id.web_faqs);
         prDialog = mDialogView.findViewById(R.id.progressBar);
         //  webView.loadUrl("http://13.233.171.105/easyfood_backend_api/public/api/v1/restaurant_faq");

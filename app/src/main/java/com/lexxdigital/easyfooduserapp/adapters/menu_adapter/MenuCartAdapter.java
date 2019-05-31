@@ -67,7 +67,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CategoryViewHolder pdqListingViewHolder, int position) {
+    public void onBindViewHolder(@NonNull CategoryViewHolder pdqListingViewHolder, int position) {
         pdqListingViewHolder.bindData(position);
 
     }
@@ -99,7 +99,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
             btnRemove.setOnClickListener(this);
         }
 
-        private void bindData(final int position) {
+        private void bindData(int position) {
 
             int itemQty = mItem.get(position).getOriginalQuantity();
             qty.setText(String.valueOf(itemQty));
@@ -127,8 +127,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
             }
             price.setText("£" + String.format("%.2f", totalPrice));
 
-            if (mItem.get(position).getMenuProductSize() != null) {
-                if (mItem.get(position).getMenuProductSize().size() > 0) {
+            if (mItem.get(position).getMenuProductSize() != null && mItem.get(position).getMenuProductSize().size() > 0) {
 
                     for (MenuProductSize menuProductSize1 : mItem.get(position).getMenuProductSize()) {
                         if (menuProductSize1.getSelected()) {
@@ -195,7 +194,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                             }
                         }
                     }
-                }
+
             } else {
 
                 if (mItem.get(position).getMealProducts() != null) {

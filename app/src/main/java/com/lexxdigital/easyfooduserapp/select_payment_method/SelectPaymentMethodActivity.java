@@ -709,7 +709,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
-                    sharedPreferencesClass.setString(sharedPreferencesClass.DEFAULT_ADDRESS, "");
+                    sharedPreferencesClass.setString(sharedPreferencesClass.DEFAULT_ADDRESS, null);
+
                     Constants.ORDER_STATUS = 1;
 
                     Constants.switchActivity(SelectPaymentMethodActivity.this, OrderStatusActivity.class);

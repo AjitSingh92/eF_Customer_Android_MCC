@@ -545,7 +545,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         if (orderType.equalsIgnoreCase("Delivery")) {
                             if (totalPrice >= Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())) {
                                 if (!isPreOrder) {
-                                    if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null) {
+                                    if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).equals("")) {
 //                                    if (sharedPreferencesClass.getString(sharedPreferencesClass.BILLING_ADDRESS) != null) {
                                         Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1279,7 +1279,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         /*   *//*TODO: Voucher Apply Calculation*/
         if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
             if (totalPrice > minOrderValue) {
-                if (voucherApplicableOn.contains(orderType)) {
+                if (voucherApplicableOn.contains(orderType.toLowerCase())) {
 
                     if (voucherType.equalsIgnoreCase("percentage")) {
                         Double voucherCal = (netAmount * voucherValue) / 100;
@@ -1349,7 +1349,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         btnApplyVoucherCode.setTag("remove");
                         btnApplyVoucherCode.setText("Remove");
                         if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
-                            if (orderType.equalsIgnoreCase(voucherApplicableOn)) {
+                            if (voucherApplicableOn.contains(orderType.toLowerCase())) {
                                 /*Todo: "percentage" */
                                 if (voucherType.equalsIgnoreCase("percentage")) {
                                     Double voucherCal = (netAmount * voucherValue) / 100;

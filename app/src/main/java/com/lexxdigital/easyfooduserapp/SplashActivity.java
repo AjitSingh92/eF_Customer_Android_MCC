@@ -1,5 +1,6 @@
 package com.lexxdigital.easyfooduserapp;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
 import com.lexxdigital.easyfooduserapp.inrodution_slide.IntroActivity;
 import com.lexxdigital.easyfooduserapp.inrodution_slide.PrefManager;
 import com.lexxdigital.easyfooduserapp.login.LoginActivity;
+import com.lexxdigital.easyfooduserapp.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapp.utility.Constants;
+import com.lexxdigital.easyfooduserapp.utility.GlobalValues;
 import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
 public class SplashActivity extends AppCompatActivity {
@@ -24,6 +27,16 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         db = new DatabaseHelper(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GlobalValues.getInstance().getDb().menuMaster().nuke();
+                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+//                db.deleteCart();
+
+            }
+        }).start();
 //        db.deleteCart();
         FirebaseInstanceId.getInstance().getToken();
         prefManager = new SharedPreferencesClass(getApplicationContext());

@@ -1279,31 +1279,33 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         /*   *//*TODO: Voucher Apply Calculation*/
         if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
             if (totalPrice > minOrderValue) {
-                if (voucherApplicableOn.contains(orderType.toLowerCase())) {
+                if (orderType != null && voucherApplicableOn != null) {
+                    if (voucherApplicableOn.contains(orderType.toLowerCase())) {
 
-                    if (voucherType.equalsIgnoreCase("percentage")) {
-                        Double voucherCal = (netAmount * voucherValue) / 100;
-                        appliedVoucherAmount = voucherCal;
-                        netAmount = netAmount - voucherCal;
-                        appliedVoucherCode = voucherCode;
-                        appliedVoucherPaymentType = voucherValidOn;
+                        if (voucherType.equalsIgnoreCase("percentage")) {
+                            Double voucherCal = (netAmount * voucherValue) / 100;
+                            appliedVoucherAmount = voucherCal;
+                            netAmount = netAmount - voucherCal;
+                            appliedVoucherCode = voucherCode;
+                            appliedVoucherPaymentType = voucherValidOn;
 //                         alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                        tvVoucherStatus.setVisibility(View.VISIBLE);
-                        tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                    } else if (voucherType.equalsIgnoreCase("flat")) {
-                        Double voucherCal = netAmount - voucherValue;
-                        appliedVoucherAmount = voucherCal;
-                        appliedVoucherCode = voucherCode;
-                        appliedVoucherPaymentType = voucherValidOn;
-                        netAmount = voucherCal;
+                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                        } else if (voucherType.equalsIgnoreCase("flat")) {
+                            Double voucherCal = netAmount - voucherValue;
+                            appliedVoucherAmount = voucherCal;
+                            appliedVoucherCode = voucherCode;
+                            appliedVoucherPaymentType = voucherValidOn;
+                            netAmount = voucherCal;
 //                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                        tvVoucherStatus.setVisibility(View.VISIBLE);
-                        tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                    }
-                } else {
+                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                        }
+                    } else {
 //                    alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
-                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                    tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                        tvVoucherStatus.setVisibility(View.VISIBLE);
+                        tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                    }
                 }
             } else {
 //                alertDailogVoucher("Validate voucher", "Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));

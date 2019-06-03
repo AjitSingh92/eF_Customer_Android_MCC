@@ -143,7 +143,14 @@ public class AdapterCardList extends RecyclerView.Adapter<AdapterCardList.MyView
         } else {
             holder.tvBillingAddress.setVisibility(View.GONE);
         }*/
-        strBillingAddress = address1 +" "+ address2+" "+city+" "+postal;
+        if (address2 != null && address2.trim().length() > 0) {
+
+            strBillingAddress = address1 + ", " + address2 + (city.equals("") ? "" : ", ") + city + (postal.equals("") ? "" : ", ") + postal;
+        } else {
+            strBillingAddress = address1 + (city.equals("") ? "" : ", ") + city + (postal.equals("") ? "" : ", ") + postal;
+        }
+
+
         if (!strBillingAddress.trim().equalsIgnoreCase("")) {
 
             holder.tvBillingAddress.setText(strBillingAddress);
@@ -151,8 +158,8 @@ public class AdapterCardList extends RecyclerView.Adapter<AdapterCardList.MyView
         } else {
             holder.tvBillingAddress.setVisibility(View.GONE);
         }
-        Log.e(TAG, "onBindViewHolder: Address:"+address1+"//>"+address2+"//>"
-                +city+"//>"+postal+"?strBillingAddress//>"+strBillingAddress );
+        Log.e(TAG, "onBindViewHolder: Address:" + address1 + "//>" + address2 + "//>"
+                + city + "//>" + postal + "?strBillingAddress//>" + strBillingAddress);
 
         setBrand(holder, strBrand);
         id = cardlist.getCardId();

@@ -103,7 +103,13 @@ public class BillingAddressDialogAdapter extends RecyclerView.Adapter<BillingAdd
             holder.txtAddreddType.setText(addressType);
 
         }
-        String address = add.getAddressOne() + " " + add.getAddressTwo() + "," + add.getCity() + "\n" + add.getPostCode();
+        String address = "";
+        if (add.getAddressTwo() != null && add.getAddressTwo().trim().length() > 0) {
+
+            address = add.getAddressOne() + ", " + add.getAddressTwo() + ", " + add.getCity() + "\n" + add.getPostCode();
+        } else {
+            address = add.getAddressOne() + ", " + add.getCity() + "\n" + add.getPostCode();
+        }
         holder.txtAddress.setText(address);
         Log.e(TAG, "onBindViewHolder: address id: " + add.getID());
 

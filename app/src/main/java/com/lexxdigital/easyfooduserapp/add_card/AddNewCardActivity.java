@@ -125,7 +125,7 @@ public class AddNewCardActivity extends AppCompatActivity {
     private String voucherCode;
     private Double voucherAmount = 0.0d;
     private String voucherPaymentType;
-    private String address1 = "", address2 = "", city = "", postalcode = "";
+    private String address1 = "", address2 = "", city = "", postalcode = "", country = "";
     String isSaveCard = "off";
     String billingAddress = "";
     boolean isFromCheckout = false;
@@ -224,8 +224,7 @@ public class AddNewCardActivity extends AppCompatActivity {
                         if (s.length() == 2) {
                             expireYear.requestFocus();
                         }
-                    }
-                    else {
+                    } else {
                         expireDate.requestFocus();
                         expireDate.setError("Please enter valid expiry month(1 to 12)");
 
@@ -385,9 +384,7 @@ public class AddNewCardActivity extends AppCompatActivity {
                     cardNumber.requestFocus();
                     //showDialog("Please enter 16 digit card number.");
 
-                }
-
-                else if (strExpDate.length() <= 0) {
+                } else if (strExpDate.length() <= 0) {
                     expireDate.requestFocus();
                     expireDate.setError("Please enter card expiry month");
                     //showDialog("Please enter card expiry month.");
@@ -444,8 +441,22 @@ public class AddNewCardActivity extends AppCompatActivity {
                         address2 = val.getAddress2();
                         city = val.getCity();
                         postalcode = val.getPostalCode();
-                        billingAddress = address1 + " " + address2 + " " + city + " " + postalcode;
-                        billingPost.setText(billingAddress);
+
+
+                        if (address2 != null && address2.trim().length() > 0) {
+
+                            billingAddress = address1 + ", " + address2 + ", " + city + ", " + postalcode;
+                        } else {
+                            billingAddress = address1 + ", " + city + ", " + postalcode;
+                        }
+
+                        if (address1 != null && address1.trim().length() > 0) {
+                            billingPost.setText(billingAddress);
+                        } else {
+                            billingAddress = "";
+                            billingPost.setText(billingAddress);
+                        }
+
                         // billingPost.setText(sharedPreferencesClass.getString(sharedPreferencesClass.BILLING_ADDRESS));
                     }
                 });

@@ -11,7 +11,7 @@ public class AddressRequestModel {
     @SerializedName("address_1")
     String address_1;
     @Expose
-    @SerializedName("address_2 ")
+    @SerializedName("address_2")
     String address_2;
     @Expose
     @SerializedName("city")

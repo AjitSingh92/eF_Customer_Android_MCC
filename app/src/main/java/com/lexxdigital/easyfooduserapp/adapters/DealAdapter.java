@@ -280,36 +280,67 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 preOrderForLetter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        try {
-                            dialog.dismiss();
-                            if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                        dialog.dismiss();
+                        if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                            if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(respNameFilter.get(mListPosition).getId())) {
+                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
+                                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
 
-                                if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(respNameFilter.get(mListPosition).getId())) {
+                                i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
+                                i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(i);
+                                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                            } else {
+                                if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                                    String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
+                                    alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
+
+                                } else {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                            GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                            GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                            sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+
+                                            db.getCartData();
+                                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                            sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
+                                            sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
+
+                                            i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
+                                            i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
+                                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            mContext.startActivity(i);
+                                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                                        }
+                                    }).start();
+                                }
+                            }
+                        } else {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                    GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                    GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                    sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+
+                                    db.getCartData();
+
+                                    sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
+                                    sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
+
                                     Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                                     i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
                                     i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     mContext.startActivity(i);
-                                    activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                                } else {
-                                    String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
-                                    alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
                                 }
-                            } else {
-                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                                i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
-                                i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(i);
-                            }
-
-                        } catch (Exception e) {
-
-                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                            i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
-                            i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(i);
+                            }).start();
                         }
                     }
                 });
@@ -367,6 +398,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
+                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
+
                 i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
                 i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -386,10 +420,10 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                     }
                 }).start();
-
+                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
+                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
+                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                 db.deleteCart();
-                sharePre.setString(sharePre.RESTUARANT_ID, "");
-                sharePre.setString(sharePre.RESTUARANT_NAME, "");
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                 i.putExtra("RESTAURANTID", currentRestId);
                 i.putExtra("RESTAURANTNAME", currentRestuarant);

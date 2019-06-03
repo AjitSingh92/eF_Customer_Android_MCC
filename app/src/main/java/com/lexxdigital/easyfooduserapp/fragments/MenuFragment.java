@@ -163,10 +163,9 @@ public class MenuFragment extends Fragment {
 
     private void initMenu() {
         layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
-//        layoutManager.setScrollEnabled(false);
+        layoutManager.setScrollEnabled(false);
         mainMenu.setLayoutManager(layoutManager);
-
-        mainMenu.setNestedScrollingEnabled(true);
+        mainMenu.setNestedScrollingEnabled(false);
         mMenuAdapter = new RestaurantMenuListAdapter(mActivity, mContext, menuProductViewModel, menuItemClickListener);
         mainMenu.setAdapter(mMenuAdapter);
 

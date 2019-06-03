@@ -44,7 +44,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class OrderStatusActivity extends AppCompatActivity {
-
+    static OrderStatusActivity orderStatusActivity;
     boolean isFirstTime = true;
     GlobalValues val;
     Handler handler;
@@ -66,12 +66,19 @@ public class OrderStatusActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver;
     String OrderId = null;
     SwipeRefreshLayout swipeRefreshLayout;
+    ProgressDialog dialog;
+
+    public static OrderStatusActivity getActivity() {
+        return orderStatusActivity;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status);
+        orderStatusActivity = this;
         val = (GlobalValues) getApplication();
+        dialog = new ProgressDialog(this);
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -80,6 +87,11 @@ public class OrderStatusActivity extends AppCompatActivity {
                     if (intent.getStringExtra("order_id") != null && OrderId != null && (intent.getStringExtra("order_id").equals(OrderId))) {
                         setUi(Integer.parseInt(intent.getStringExtra("status")));
 //                    getStatus(intent.getStringExtra("number"));
+                    } else {
+                        if (intent.getStringExtra("order_id") != null) {
+                            OrderId = intent.getStringExtra("order_id");
+                            getStatus(OrderId);
+                        }
                     }
                 }
             }
@@ -243,11 +255,11 @@ public class OrderStatusActivity extends AppCompatActivity {
 
     //TODO:  Methode to call an api.....
     public void getStatus(String orderIDKey) {
-        final ProgressDialog dialog = new ProgressDialog(this);
+
         if (isFirstTime) {
             dialog.setMessage("Updating status...");
             dialog.show();
-            // isFirstTime = false;
+             isFirstTime = false;
         }
         try {
             OrderStatusRequestModel requestModel = new OrderStatusRequestModel();
@@ -318,10 +330,12 @@ public class OrderStatusActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("status");
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+
     }
 
     @Override
     protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
 
     }
@@ -519,5 +533,16 @@ public class OrderStatusActivity extends AppCompatActivity {
         });
 
         noteDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        orderStatusActivity = null;
+        super.onDestroy();
     }
 }

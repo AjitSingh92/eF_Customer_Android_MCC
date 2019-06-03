@@ -1539,18 +1539,18 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 footerCount.setText(String.valueOf(totalCartIterm));
                 Log.e(">>>>>>>>>>", totalCartIterm + "" + totalPrice);
                 footerDetails.setText(String.format("%.2f", totalPrice));
-                if (extras != null) {
-                    sharePre.setString(sharePre.RESTUARANT_ID, extras.getString("RESTAURANTID"));
-                    sharePre.setString(sharePre.RESTUARANT_NAME, extras.getString("RESTAURANTNAME"));
-                }
+//                if (extras != null) {
+//                    sharePre.setString(sharePre.RESTUARANT_ID, extras.getString("RESTAURANTID"));
+//                    sharePre.setString(sharePre.RESTUARANT_NAME, extras.getString("RESTAURANTNAME"));
+//                }
 
             } else {
                 llbotom.setBackground(getResources().getDrawable(R.color.gray_light));
                 txtEmptyBasket.setText(getString(R.string.your_basket_is_empty));
                 footerCount.setText("0");
                 footerDetails.setText("0.00");
-                sharePre.setString(sharePre.RESTUARANT_ID, "");
-                sharePre.setString(sharePre.RESTUARANT_NAME, "");
+//                sharePre.setString(sharePre.RESTUARANT_ID, "");
+//                sharePre.setString(sharePre.RESTUARANT_NAME, "");
             }
 
         }

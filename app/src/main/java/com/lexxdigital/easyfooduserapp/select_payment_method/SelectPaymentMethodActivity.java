@@ -413,11 +413,12 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-//        startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
+        return;
+       /* super.onBackPressed();
+        //startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
         finish();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-        // Toast.makeText(val, "", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(val, "", Toast.LENGTH_SHORT).show();*/
     }
 
     public void callAPI(String token, String paymentType, String exDate, String exYear) {
@@ -694,6 +695,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         TextView txtMsg = mDialogView.findViewById(R.id.txt_msg);
         txtMsg.setText(msg);
         cardDialog.setView(mDialogView);
+        cardDialog.setCancelable(false);
         cardDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -706,6 +708,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                         getSupportFragmentManager().popBackStack();
                     }
                     db.deleteCart();
+
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");

@@ -50,20 +50,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     sharePre.setOrderIDKey(order_id);
 
                 Intent resultIntent = null;
+                if (OrderStatusActivity.getActivity() == null) {
+                    resultIntent = new Intent(this, OrderStatusActivity.class);
+                    resultIntent.putExtra(Constants.NOTIFICATION_TYPE, notif_type);
+                    resultIntent.putExtra(Constants.NOTIFICATION_ORDER_ID, order_id);
+                    resultIntent.putExtra("message", message);
+                    showNotificationMessage(this, title, message, timestamp, resultIntent);
 
-
-                resultIntent = new Intent(this, OrderStatusActivity.class);
-                resultIntent.putExtra(Constants.NOTIFICATION_TYPE, notif_type);
-                resultIntent.putExtra(Constants.NOTIFICATION_ORDER_ID, order_id);
-
-                resultIntent.putExtra("message", message);
-                showNotificationMessage(this, title, message, timestamp, resultIntent);
-
-                Intent pushNotification = new Intent("status");
-                pushNotification.putExtra("status", notif_type);
-                pushNotification.putExtra("order_id", order_id);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-
+                    Intent pushNotification = new Intent("status");
+                    pushNotification.putExtra("status", notif_type);
+                    pushNotification.putExtra("order_id", order_id);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                } else {
+                    Intent pushNotification = new Intent("status");
+                    pushNotification.putExtra("status", notif_type);
+                    pushNotification.putExtra("order_id", order_id);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                }
             } catch (Exception ex) {
                 Log.e("Exception in mess : ", ex.toString());
             }

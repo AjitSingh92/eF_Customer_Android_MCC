@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         db = new DatabaseHelper(this);
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 GlobalValues.getInstance().getDb().menuMaster().nuke();
@@ -36,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
 //                db.deleteCart();
 
             }
-        }).start();
+        }).start();*/
 //        db.deleteCart();
         FirebaseInstanceId.getInstance().getToken();
         prefManager = new SharedPreferencesClass(getApplicationContext());

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -84,7 +85,19 @@
                             android:layout_height="@dimen/_100sdp"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
+                            android:visibility="gone"
                             android:src="@drawable/avatar" />
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/image"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_gravity="center"
+                            fresco:placeholderImage="@drawable/avatar"
+                            fresco:progressBarAutoRotateInterval="5000"
+                            fresco:progressBarImage="@drawable/image_loader"
+                            fresco:progressBarImageScaleType="center"
+                            fresco:roundAsCircle="true" />
 
                         <LinearLayout
                             android:id="@+id/add_image"
@@ -174,11 +187,11 @@
                     android:fontFamily="@font/avenir_medium"
                     android:hint="First Name *"
                     android:inputType="text"
-                    android:singleLine="true"
                     android:maxLength="60"
+                    android:maxLines="1"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingLeft="@dimen/_10sdp"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="#706f6f"
                     android:textSize="@dimen/_16sdp" />
 
@@ -193,13 +206,13 @@
                     android:background="@drawable/bg_edit_two"
                     android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                     android:fontFamily="@font/avenir_medium"
-                    android:singleLine="true"
-                    android:imeOptions="actionNext"
                     android:hint="Last Name *"
+                    android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:maxLines="1"
                     android:maxLength="60"
+                    android:maxLines="1"
                     android:paddingStart="@dimen/_10sdp"
+                    android:singleLine="true"
                     android:textColor="#706f6f"
                     android:textSize="@dimen/_16sdp" />
 
@@ -209,17 +222,17 @@
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:singleLine="true"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_1sdp"
                     android:background="@drawable/bg_edit_two"
                     android:fontFamily="@font/avenir_medium"
                     android:gravity="center_vertical"
                     android:hint="Email *"
-                    android:maxLines="1"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
+                    android:maxLines="1"
                     android:paddingStart="@dimen/_10sdp"
+                    android:singleLine="true"
                     android:textColor="#706f6f"
                     android:textSize="@dimen/_16sdp"
                     android:visibility="visible" />
@@ -233,12 +246,12 @@
                     android:layout_marginRight="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_40sdp"
                     android:background="@drawable/bg_edit_two"
-                    android:maxLines="1"
                     android:fontFamily="@font/avenir_medium"
                     android:hint="Phone *"
-                    android:inputType="phone"
                     android:imeOptions="actionDone"
+                    android:inputType="phone"
                     android:maxLength="14"
+                    android:maxLines="1"
                     android:paddingStart="@dimen/_10sdp"
                     android:textColor="#706f6f"
                     android:textSize="@dimen/_16sdp" />

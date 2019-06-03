@@ -537,6 +537,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 break;
             case R.id.btn_checkout:
                 try {
+
                     if (orderType == null || orderType.equalsIgnoreCase("Please Select")) {
                         scroll.fullScroll(ScrollView.FOCUS_UP);
                         spinner.performClick();
@@ -1257,13 +1258,13 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                             appliedVoucherCode = voucherCode;
                                             appliedVoucherPaymentType = voucherValidOn;
                                             netAmount = voucherCal;
-                                            alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
+                                            alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
                                             tvVoucherStatus.setVisibility(View.VISIBLE);
                                             tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
                                             voucherCodeUsed = voucher_code;
 
                                         } else {
-                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is apply only Amount of\n" + getString(R.string.currency) + " " + voucherValue + " OR grater");
+                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue );
                                             tvVoucherStatus.setVisibility(View.VISIBLE);
                                             tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
                                         }
@@ -1559,7 +1560,9 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
         if (!time.equalsIgnoreCase("")) {
             deliveryDate.setVisibility(View.VISIBLE);
-            deliveryDate.setText(time.substring(0, 10));
+            String date = time.substring(0, 10);
+            String formatData = Constants.changeStringDateFormat(date, "yyyy-MM-dd", "dd-MM-yyyy");
+            deliveryDate.setText((formatData != null) ? formatData : date);
             deliveryTime.setText(time.substring(11, time.length()));
             sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, deliveryDate.getText().toString() + " " + deliveryTime.getText().toString().substring(7) + ":00");
             isPreOrder = false;

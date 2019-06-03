@@ -284,8 +284,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                         if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
                             if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(respNameFilter.get(mListPosition).getId())) {
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
-                                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
+//                                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
+//                                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
 
                                 i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
                                 i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
@@ -398,8 +398,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
-                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
+//                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
+//                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
 
                 i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
                 i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));

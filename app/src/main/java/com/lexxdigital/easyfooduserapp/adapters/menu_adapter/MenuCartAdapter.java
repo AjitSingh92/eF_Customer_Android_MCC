@@ -112,7 +112,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                     totalPrice += (itemQty * Double.parseDouble(mItem.get(position).getMenuProductSize().get(0).getProductSizePrice()));
                 }
             }*/
-            if (db.getCategoryName(mItem.get(position).getId()).equalsIgnoreCase("MEAL") || db.getCategoryName(mItem.get(position).getId()).equalsIgnoreCase("")) {
+            if (mItem.get(position).getMealProducts()!=null && mItem.get(position).getMealProducts().size()>0) {
                 title.setText(itemQty + "x " + mItem.get(position).getProductName());
                 totalPrice += mItem.get(position).getOriginalAmount1();
             } else {
@@ -275,9 +275,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                 }
             }
 
-            if (mItem.get(position).
-
-                    getProductModifiers() != null) {
+            if (mItem.get(position).getProductModifiers() != null) {
                 if (mItem.get(position).getProductModifiers().size() > 0) {
                     for (ProductModifier productModifier : mItem.get(position).getProductModifiers()) {
                         if (productModifier.getModifierType().equalsIgnoreCase("free")) {

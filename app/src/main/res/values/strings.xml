@@ -158,5 +158,21 @@ ou will be sent a varification code to your mobile </string>
     <string name="first_time_payment_msg">For your security we require all new customers to place their first easyFood order by debit or credit card. \n\nThis is only required for your first order and all  furture orders may be paid with cash.</string>
     <string name="order_rejected_msg">We’re sorry the restaurant has rejected your order, this may be due the restuarant recieving a high volume of orders. \n\nThere are many restaurants in your area accepting orders. \n\nAgain, we apologise for this inconvenience. Please click below to find an alternative restaurant.</string>
 
+    <string name="no_geocoder_available">No geocoder available</string>
+
+    <string name="fetch_address">Fetch address</string>
+
+    <string name="address_found">Address found</string>
+
+    <string name="no_address_found">Sorry, no address found</string>
+    <string name="no_location_data_provided">No location data provided</string>
+    <string name="service_not_available">Sorry, the service is not available</string>
+    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
+
+
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="settings">Settings</string>
 
 </resources>

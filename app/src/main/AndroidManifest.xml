@@ -265,6 +265,9 @@
             android:value="false" />
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
+        <service
+            android:name=".services.FetchAddressIntentService"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -35,6 +35,7 @@
                     android:gravity="center"
                     android:text="Sign into account"
                     android:textColor="@color/white"
+                    android:id="@+id/tv.headline"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 

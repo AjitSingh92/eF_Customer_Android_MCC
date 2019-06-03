@@ -194,7 +194,23 @@ public class Constants {
 
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+    public static String changeStringDateFormat(String input, String formatFrom, String formatTo) {
+        String strDate = null;
+        SimpleDateFormat mFormatFrom = new SimpleDateFormat(formatFrom);
+        SimpleDateFormat mFormatTo = new SimpleDateFormat(formatTo);
+        if (null == input) {
+            return null;
+        }
+        try {
+            Date date = mFormatFrom.parse(input);
+            strDate = mFormatTo.format(date);
+        } catch (ParseException e) {
+//                Log.e("Date Parse Exception", "Shhh.. try other formats");
+        }
 
+
+        return strDate;
+    }
     public static String getDayMonth(String date) {
 
 

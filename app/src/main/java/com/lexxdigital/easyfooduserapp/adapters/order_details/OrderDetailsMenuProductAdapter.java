@@ -94,8 +94,8 @@ public class OrderDetailsMenuProductAdapter extends RecyclerView.Adapter<OrderDe
         }
         holder.subProductPrice.setText("£" + String.format("%.2f", totalPrice));
 
-        if (mItem.get(position).getMenuProductSize() != null) {
-            if (mItem.get(position).getMenuProductSize().size() > 0) {
+
+            if (mItem.get(position).getMenuProductSize() != null && mItem.get(position).getMenuProductSize().size() > 0) {
 
                 for (MenuProductSize menuProductSize1 : mItem.get(position).getMenuProductSize()) {
                     if (menuProductSize1.getSelected()) {
@@ -163,7 +163,7 @@ public class OrderDetailsMenuProductAdapter extends RecyclerView.Adapter<OrderDe
                     }
                 }
             }
-        } else {
+         else {
 
             if (mItem.get(position).getMealProducts() != null) {
                 for (int p = 0; p < mItem.get(position).getMealProducts().size(); p++) {

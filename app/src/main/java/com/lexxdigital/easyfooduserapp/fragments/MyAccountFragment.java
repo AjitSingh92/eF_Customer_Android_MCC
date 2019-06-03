@@ -30,6 +30,7 @@ import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.api.MyAccountInterface;
 import com.lexxdigital.easyfooduserapp.change_password.ChangePasswordActivity;
 import com.lexxdigital.easyfooduserapp.edit_my_account.EditMyAccountActivity;
+import com.lexxdigital.easyfooduserapp.edit_my_account.EditMyAccountActivity_ViewBinding;
 import com.lexxdigital.easyfooduserapp.manage_address.ManageAddressActivity;
 import com.lexxdigital.easyfooduserapp.model.my_account_request.MyAccountRequest;
 import com.lexxdigital.easyfooduserapp.model.my_account_response.MyAccountResponse;

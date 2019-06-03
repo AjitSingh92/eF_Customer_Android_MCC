@@ -74,7 +74,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     @BindView(R.id.edit_email)
     EditText editEmail;
     @BindView(R.id.edit_password)
@@ -107,6 +108,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final int RC_SIGN_IN = 101;
     String userName = "";
 
+    int count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,9 +127,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
+        findViewById(R.id.tv_headline).setOnClickListener(this);
 
-//       editEmail.setText("maniacpraveen@gmail.com");
-//        editPassword.setText("Praveen@123");
 
         if (sharedPreferencesClass.getString(sharedPreferencesClass.FB_TOKEN_ID) == null) {
             sharedPreferencesClass.setString(sharedPreferencesClass.FB_TOKEN_ID, FirebaseInstanceId.getInstance().getToken());
@@ -767,4 +769,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_headline:
+                if (count == 7) {
+                    editEmail.setText("maniacpraveen@gmail.com");
+                    editPassword.setText("Praveen@123");
+                } else {
+                    count++;
+                }
+                break;
+        }
+    }
 }

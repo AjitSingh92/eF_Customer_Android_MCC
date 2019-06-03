@@ -8,13 +8,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +39,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.api.EditProfileInterface;
 import com.lexxdigital.easyfooduserapp.api.RestaurantsDealsInterface;
@@ -54,6 +61,8 @@ import com.lexxdigital.easyfooduserapp.model.landing_page_response.CheckDelivery
 import com.lexxdigital.easyfooduserapp.search_post_code.api.SearchPostCodeInterface;
 import com.lexxdigital.easyfooduserapp.search_post_code.model.search_request.SearchPostCodeRequest;
 import com.lexxdigital.easyfooduserapp.search_post_code.model.search_response.SearchPostCodeResponse;
+import com.lexxdigital.easyfooduserapp.services.AppLocationService;
+import com.lexxdigital.easyfooduserapp.services.FetchAddressIntentService;
 import com.lexxdigital.easyfooduserapp.utility.ApiClient;
 import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.GlobalValues;
@@ -90,7 +99,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
     SharedPreferencesClass sharedPreferencesClass;
     String postalCode;
     boolean validPostcode = true;
-
+    AppLocationService appLocationService;
     // LogCat tag
     private static final String TAG = SearchPostCodeActivity.class.getSimpleName();
 
@@ -119,6 +128,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_post_code);
         ButterKnife.bind(this);
+        appLocationService = new AppLocationService(SearchPostCodeActivity.this);
         val = (GlobalValues) getApplicationContext();
         dialog = new Dialog(SearchPostCodeActivity.this);
         dialog.setTitle("");
@@ -609,7 +619,15 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                     getAddress();
 
                 } else {
-                    Toast.makeText(this, "Please enable to high location from mobile setting or enable to GPS", Toast.LENGTH_SHORT).show();
+                    mLastLocation = appLocationService.getLocation(LocationManager.NETWORK_PROVIDER);
+
+                    if (checkPlayServices()) {
+
+                        // Building the GoogleApi client
+                        buildGoogleApiClient();
+                    }
+
+//                    Toast.makeText(this, "Please enable to high location from mobile setting or enable to GPS", Toast.LENGTH_SHORT).show();
 //                    alertDialogLocation();
                     // showToast("Couldn't get the location. Make sure location is enabled on the device");
                 }
@@ -768,6 +786,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                         val.setPostCode(postcode);
                         if (sharedPreferencesClass.getPostalCode() == null || sharedPreferencesClass.getPostalCode().equals("")) {
                             sharedPreferencesClass.setPostalCode(postcode);
+
                             updateAccountDetail(); // Update Postal code
 
                             updatePostCodeOnServer(postcode);
@@ -788,7 +807,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                         }
 
                     } else {
-                        dialog.hide();
                         errorDialog("We currently are not delivering in your location", null);
                     }
                 } else {

@@ -375,7 +375,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             }
 
                         } else {
-                            alertVoucherApply("", "cash", "", "");
+                            alertVoucherApply("", voucherPaymentType, "", "");
                         }
 
                     } else {

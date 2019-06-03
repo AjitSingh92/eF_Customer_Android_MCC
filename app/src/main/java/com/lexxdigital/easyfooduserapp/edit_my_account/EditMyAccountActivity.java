@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lexxdigital.easyfooduserapp.R;
 import com.lexxdigital.easyfooduserapp.api.EditProfileInterface;
 import com.lexxdigital.easyfooduserapp.inrodution_slide.IntroActivity;
@@ -89,6 +90,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
     @BindView(R.id.user_name)
     TextView userName;
 
+    SimpleDraweeView image;
     @BindView(R.id.user_phone)
     TextView userPhone;
     @BindView(R.id.user_address)
@@ -110,7 +112,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Constants.setStatusBarGradiant(EditMyAccountActivity.this);
-
+        image = findViewById(R.id.image);
         sharePre = new SharedPreferencesClass(EditMyAccountActivity.this);
         val = (GlobalValues) getApplicationContext();
         dialog = new Dialog(EditMyAccountActivity.this);
@@ -139,6 +141,16 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         editFirstName.setText(val.getFirstName());
         editLastName.setText(val.getLastName());
         editMobile.setText(val.getMobileNo());
+
+
+        String profileImageStr = val.getProfileImage();
+        if (!profileImageStr.equalsIgnoreCase("http:\\/\\/35.177.163.219\\/easyfood_backend\\/public") && profileImageStr != null) {
+            Uri uri = Uri.parse(profileImageStr);
+
+            if (uri!=null){
+                image.setImageURI(uri);
+            }
+        }
 
         if (Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
             String[] perms = {
@@ -344,87 +356,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         }
     }
 
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_CAMERA) {
-            try {
-                if (requestCode == 101) {
-//                    imgFile = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-//                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
-//                    //bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
-//                    profileImg.setImageBitmap(bitmap);
-//
-//                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-//                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    imgFile = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
-                    //bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-
-                    profileImg.setImageBitmap(bitmap);
-
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    profileImageString = "data:image/png;base64," + Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-                    //  Log.e("Base64 ",""+profileImageString);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        } else if (requestCode == PICK_IMAGE_GALLERY) {
-
-            try {
-                if (requestCode == 102) {
-//                    Uri imageUri = data.getData();
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-//                    profileImg.setImageBitmap(bitmap);
-//                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-//                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    Uri imageUri = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    profileImg.setImageBitmap(bitmap);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    profileImageString = "data:image/png;base64," + Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    //   Log.e("Base64 ",""+profileImageString);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
-
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        EasyPermissions.requestPermissions(this, "All permissions are required to run this application", requestCode, permissions);
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> list) {
-        // Some permissions have been granted
-        // ...
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> list) {
-        // Some permissions have been denied
-        // ...
-    }*/
 
     @Override
     @SuppressLint("NewApi")
@@ -450,7 +381,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 try {
-                    profileImg.setImageURI(result.getUri());
+                    image.setImageURI(result.getUri());
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
                     profileImg.setImageBitmap(bitmap);
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

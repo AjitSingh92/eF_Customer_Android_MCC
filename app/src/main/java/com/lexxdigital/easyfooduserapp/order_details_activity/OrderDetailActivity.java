@@ -347,7 +347,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                             tvAddress.setVisibility(View.VISIBLE);
                             tvAddressType.setText("Delivery Address:");
                             tvAddress.setText(response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryAddress1()
-                                    + ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryAddress2()
+                                    + ((response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryAddress2().trim().length() > 0) ? ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryAddress2() : "")
                                     + ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryCity()
                                     + ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryPostCode()
                                     + ", " + response.body().getData().getCustomerDeliveryAddress().getCustomerDeliveryCountry());

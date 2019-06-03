@@ -118,7 +118,7 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
         if (add.getIsDefault() == 1) {
             holder.tvDefault.setVisibility(View.VISIBLE);
             holder.tvDefault.setText("Default");
-            sharePre.setString(sharePre.DEFAULT_ADDRESS, address);
+//            sharePre.setString(sharePre.DEFAULT_ADDRESS, address);
         } else {
             holder.tvDefault.setVisibility(View.GONE);
         }
@@ -136,14 +136,14 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
             edit_details_tv.setText("Delivery to this");
         }
 
-        holder.edit_details_tv.setOnClickListener(new View.OnClickListener() {
+       /* holder.edit_details_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (addressList.get(listPosition).getIsDelivered() == 1) {
                     onAddressSelected.onAddressSelect(listPosition, addressList.get(listPosition));
                 }
             }
-        });
+        });*/
 
     }
 

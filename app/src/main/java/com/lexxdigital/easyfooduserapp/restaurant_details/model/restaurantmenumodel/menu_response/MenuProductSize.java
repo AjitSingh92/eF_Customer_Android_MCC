@@ -22,19 +22,30 @@ public class MenuProductSize {
     private String amount;
     @Expose
     private Integer quantity;
+
+    @Expose
+    private String originalQuantity = null;
+    @Expose
+    private Double originalAmount1 = null;
+    @Expose
+    private Double originalAmount = null;
+
     @Expose
     public Boolean isSelected = false;
 
     public MenuProductSize() {
     }
 
-    public MenuProductSize(String productSizeId, String productSizeName, String productSizePrice, String amount, Integer quantity, List<SizeModifier> sizeModifiers) {
+    public MenuProductSize(String productSizeId, String productSizeName, String productSizePrice, String amount, Integer quantity, List<SizeModifier> sizeModifiers,String originalQuantity,Double originalAmount,Double originalAmount11) {
         this.productSizeId = productSizeId;
         this.productSizeName = productSizeName;
         this.productSizePrice = productSizePrice;
         this.amount = amount;
         this.quantity = quantity;
         this.sizeModifiers = sizeModifiers;
+        this.originalQuantity = originalQuantity;
+        this.originalAmount = originalAmount;
+        this.originalAmount1 = originalAmount1;
     }
 
     public String getProductSizeId() {
@@ -93,6 +104,30 @@ public class MenuProductSize {
         isSelected = selected;
     }
 
+    public String getOriginalQuantity() {
+        return originalQuantity;
+    }
+
+    public void setOriginalQuantity(String originalQuantity) {
+        this.originalQuantity = originalQuantity;
+    }
+
+    public Double getOriginalAmount1() {
+        return originalAmount1;
+    }
+
+    public void setOriginalAmount1(Double originalAmount1) {
+        this.originalAmount1 = originalAmount1;
+    }
+
+    public Double getOriginalAmount() {
+        return originalAmount;
+    }
+
+    public void setOriginalAmount(Double originalAmount) {
+        this.originalAmount = originalAmount;
+    }
+
     @Override
     public String toString() {
         return "MenuProductSize{" +
@@ -102,6 +137,9 @@ public class MenuProductSize {
                 ", sizeModifiers=" + sizeModifiers +
                 ", amount='" + amount + '\'' +
                 ", quantity=" + quantity +
+                ", originalQuantity='" + originalQuantity + '\'' +
+                ", originalAmount1=" + originalAmount1 +
+                ", originalAmount=" + originalAmount +
                 ", isSelected=" + isSelected +
                 '}';
     }

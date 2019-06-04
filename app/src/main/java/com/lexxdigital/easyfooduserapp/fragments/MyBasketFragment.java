@@ -343,6 +343,26 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 Log.e("item", (String) parent.getItemAtPosition(position));
 
                 setPriceCalculation(totalCartIterm);
+                if (voucherApplicableOn != null) {
+                    if (voucherApplicableOn.contains(orderType.toLowerCase())) {
+                        if (voucherType.equalsIgnoreCase("percentage")) {
+                            if (totalPrice >= minOrderValue) {
+                                Double voucherCal = (netAmount * voucherValue) / 100;
+                                alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", netAmount) + " has been applied to your order.");
+                            } else {
+                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
+                            }
+                        } else if (voucherType.equalsIgnoreCase("flat")) {
+                            if (totalPrice >= voucherValue) {
+                                alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
+                            } else {
+                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
+                            }
+                        }
+                    } else {
+                        alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
+                    }
+                }
 
             }
 
@@ -630,6 +650,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     tvVoucherStatus.setVisibility(View.GONE);
                     tvdiscount.setText(mContext.getResources().getString(R.string.currency) + "0.00");
                     voucherDiscount = 0.d;
+                    voucherApplicableOn = null;
                     setPriceCalculation(totalCartIterm);
                 }
                 break;
@@ -1153,7 +1174,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             if (voucherApplicableOn != null && voucherApplicableOn.contains(orderType.toLowerCase())) {
                 if (voucherApplicableOn.contains(orderType.toLowerCase())) {
                     if (voucherType.equalsIgnoreCase("percentage")) {
-                        if (totalPrice > minOrderValue) {
+                        if (totalPrice >= minOrderValue) {
                             Double voucherCal = (netAmount * voucherValue) / 100;
                             appliedVoucherAmount = voucherCal;
                             netAmount = netAmount - voucherCal;
@@ -1184,7 +1205,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             voucherDiscount = voucherValue;
                         } else {
                             tvVoucherStatus.setVisibility(View.VISIBLE);
-                            tvVoucherStatus.setText("Voucher applicable on " + getString(R.string.currency) + " " + voucherValue);
+                            tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
                         }
                     }
                 } else {
@@ -1231,108 +1252,56 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         btnApplyVoucherCode.setTag("remove");
                         btnApplyVoucherCode.setText("Remove");
 
-
-                        if (voucherData.getVoucher_applicable_on().contains(orderType.toLowerCase())) {
-                            if (voucherData.getVoucher_type().equalsIgnoreCase("percentage")) {
-                                if (totalPrice >= Double.parseDouble(voucherData.getMinimum_order_value())) {
-                                    Double voucherCal = (totalPrice * Double.parseDouble(voucherData.getVoucher_value())) / 100;
-                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                                } else {
-                                    // call when minimum order value is greater
-                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is apply only Amount of\n" + getString(R.string.currency) + " " + String.format("%.2f", Double.parseDouble(voucherData.getMinimum_order_value())) + " OR grater");
-                                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
-                                }
-                            } else if (voucherData.getVoucher_type().equalsIgnoreCase("flat")) {
-                                if (totalPrice >= Double.parseDouble(voucherData.getVoucher_value())) {
-                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
-                                }else {
-                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
-                                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
-                                }
-                            } else {
-                                //call when voucher type no match
-                                tvVoucherStatus.setVisibility(View.VISIBLE);
-                                tvVoucherStatus.setText("Voucher Type Not Match");
-
-                            }
-                        } else {
-                            //call when Voucher applicable on
-                            tvVoucherStatus.setVisibility(View.VISIBLE);
-                            tvVoucherStatus.setText("Voucher applicable on " + voucherData.getVoucher_applicable_on());
-                        }
-
-
                         minOrderValue = Double.parseDouble(response.body().getData().getMinimum_order_value());
                         voucherApplicableOn = response.body().getData().getVoucher_applicable_on();
                         voucherType = response.body().getData().getVoucher_type();
                         voucherValue = Double.parseDouble(response.body().getData().getVoucher_value());
                         voucherCode = voucher_code;
                         voucherValidOn = response.body().getData().getVoucher_valid_on();
-//                        setPriceCalculation(totalCartIterm);
 
-
-                        /*if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
-                            if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-                                *//*Todo: "percentage" *//*
-                                if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-                                    if (voucherType.equalsIgnoreCase("percentage")) {
-                                        if (totalPrice > minOrderValue) {
-                                            Double voucherCal = (netAmount * voucherValue) / 100;
-                                            appliedVoucherAmount = voucherCal;
-                                            netAmount = netAmount - voucherCal;
-                                            appliedVoucherCode = voucherCode;
-                                            appliedVoucherPaymentType = voucherValidOn;
-                                            alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                                            tvVoucherStatus.setVisibility(View.VISIBLE);
-                                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                                            voucherCodeUsed = voucher_code;
-                                        } else {
-                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is apply only Amount of\n" + getString(R.string.currency) + " " + minOrderValue + " OR grater");
-                                            tvVoucherStatus.setVisibility(View.VISIBLE);
-                                            tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
-
-                                        }
-                                    } else if (voucherType.equalsIgnoreCase("flat")) {
-
-                                        if (totalPrice >= voucherValue) {
-                                            Double voucherCal = netAmount - voucherValue;
-                                            appliedVoucherAmount = voucherCal;
-                                            appliedVoucherCode = voucherCode;
-                                            appliedVoucherPaymentType = voucherValidOn;
-                                            netAmount = voucherCal;
-                                            alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
-                                            tvVoucherStatus.setVisibility(View.VISIBLE);
-                                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                                            voucherCodeUsed = voucher_code;
-
-                                        } else {
-                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
-                                            tvVoucherStatus.setVisibility(View.VISIBLE);
-                                            tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
-                                        }
-                                    }
-                                } else {
+                        if (voucherApplicableOn.contains(orderType.toLowerCase())) {
+                            if (voucherType.equalsIgnoreCase("percentage")) {
+                                if (totalPrice >= minOrderValue) {
+                                    Double voucherCal = (netAmount * voucherValue) / 100;
+                                    appliedVoucherAmount = voucherCal;
+                                    netAmount = netAmount - voucherCal;
+                                    appliedVoucherCode = voucherCode;
+                                    appliedVoucherPaymentType = voucherValidOn;
+                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                                     tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                    voucherCodeUsed = voucher_code;
+                                } else {
+                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
+                                    tvVoucherStatus.setVisibility(View.VISIBLE);
+                                    tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
                                 }
-                            } else {
-//                    alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
-                                tvVoucherStatus.setVisibility(View.VISIBLE);
-                                tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                            } else if (voucherType.equalsIgnoreCase("flat")) {
+
+                                if (totalPrice >= voucherValue) {
+                                    Double voucherCal = netAmount - voucherValue;
+                                    appliedVoucherAmount = voucherCal;
+                                    appliedVoucherCode = voucherCode;
+                                    appliedVoucherPaymentType = voucherValidOn;
+                                    netAmount = voucherCal;
+                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
+                                    tvVoucherStatus.setVisibility(View.VISIBLE);
+                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                    voucherCodeUsed = voucher_code;
+
+                                } else {
+                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
+                                    tvVoucherStatus.setVisibility(View.VISIBLE);
+                                    tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + voucherApplicableOn);
+                                }
                             }
                         } else {
-//                alertDailogVoucher("Validate voucher", "Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+                            alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
                             tvVoucherStatus.setVisibility(View.VISIBLE);
-                            tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+                            tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                        }
 
-                        }*/
                         setPriceCalculation(totalCartIterm);
-//                        tvVoucherStatus.setText();
-                        /*if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
-                            alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", netAmount) + " has been applied to your order.");
-                        }*/
                     } else {
                         dialog.hide();
                         alertDailogVoucher(response.body().getMessage(), "Unfortunately " + voucher_code + " is invalid. Please try again with a valid code.");

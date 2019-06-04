@@ -1232,7 +1232,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         btnApplyVoucherCode.setText("Remove");
 
 
-                        /*if (voucherData.getVoucher_applicable_on().contains(orderType.toLowerCase())) {
+                        if (voucherData.getVoucher_applicable_on().contains(orderType.toLowerCase())) {
                             if (voucherData.getVoucher_type().equalsIgnoreCase("percentage")) {
                                 if (totalPrice >= Double.parseDouble(voucherData.getMinimum_order_value())) {
                                     Double voucherCal = (totalPrice * Double.parseDouble(voucherData.getVoucher_value())) / 100;
@@ -1244,7 +1244,13 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                     tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
                                 }
                             } else if (voucherData.getVoucher_type().equalsIgnoreCase("flat")) {
-
+                                if (totalPrice >= Double.parseDouble(voucherData.getVoucher_value())) {
+                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
+                                }else {
+                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
+                                    tvVoucherStatus.setVisibility(View.VISIBLE);
+                                    tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                                }
                             } else {
                                 //call when voucher type no match
                                 tvVoucherStatus.setVisibility(View.VISIBLE);
@@ -1255,7 +1261,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             //call when Voucher applicable on
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher applicable on " + voucherData.getVoucher_applicable_on());
-                        }*/
+                        }
 
 
                         minOrderValue = Double.parseDouble(response.body().getData().getMinimum_order_value());
@@ -1267,9 +1273,9 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 //                        setPriceCalculation(totalCartIterm);
 
 
-                        if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
+                        /*if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {
                             if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-                                /*Todo: "percentage" */
+                                *//*Todo: "percentage" *//*
                                 if (voucherApplicableOn.contains(orderType.toLowerCase())) {
                                     if (voucherType.equalsIgnoreCase("percentage")) {
                                         if (totalPrice > minOrderValue) {
@@ -1321,7 +1327,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
 
-                        }
+                        }*/
                         setPriceCalculation(totalCartIterm);
 //                        tvVoucherStatus.setText();
                         /*if (Double.parseDouble(subTotal.getText().toString()) > minOrderValue) {

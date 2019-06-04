@@ -55,7 +55,10 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 menuProductSize.setProductSizeId(mItem.get(i).getProductSizeId());
                 menuProductSize.setProductSizeName(mItem.get(i).getProductSizeName());
                 menuProductSize.setProductSizePrice(mItem.get(i).getProductSizePrice());
-                menuProductSize.setQuantity(mItem.get(i).getQuantity());
+                menuProductSize.setQuantity(1);
+                menuProductSize.setOriginalQuantity("1");
+                menuProductSize.setOriginalAmount(Double.parseDouble(mItem.get(i).getProductSizePrice()));
+                menuProductSize.setOriginalAmount1(Double.parseDouble(mItem.get(i).getProductSizePrice()));
 
                 if (sizeModifierAdapter != null && !isSelect) {
                     List<SizeModifier> sizeModifiers = new ArrayList<>();
@@ -284,6 +287,15 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 lastSelectedItem.setChecked(false);
                 itemSelected.setChecked(true);
                 mItem.get(lastSelectedPosition).setSelected(false);
+
+
+                mItem.get(lastSelectedPosition).setAmount(mItem.get(lastSelectedPosition).getProductSizePrice());
+                mItem.get(lastSelectedPosition).setOriginalAmount(Double.parseDouble(mItem.get(lastSelectedPosition).getProductSizePrice()));
+                mItem.get(lastSelectedPosition).setOriginalAmount1(Double.parseDouble(mItem.get(lastSelectedPosition).getProductSizePrice()));
+                mItem.get(lastSelectedPosition).setOriginalQuantity("0");
+                mItem.get(lastSelectedPosition).setQuantity(0);
+
+
                 lastSelectedItem = itemSelected;
                 lastSelectedPosition = getLayoutPosition();
                 mItem.get(getLayoutPosition()).setSelected(true);
@@ -294,6 +306,13 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 lastSelectedItem = itemSelected;
                 lastSelectedPosition = getLayoutPosition();
                 mItem.get(getLayoutPosition()).setSelected(true);
+
+                mItem.get(lastSelectedPosition).setAmount(mItem.get(lastSelectedPosition).getProductSizePrice());
+                mItem.get(lastSelectedPosition).setOriginalAmount(Double.parseDouble(mItem.get(lastSelectedPosition).getProductSizePrice()));
+                mItem.get(lastSelectedPosition).setOriginalAmount1(Double.parseDouble(mItem.get(lastSelectedPosition).getProductSizePrice()));
+                mItem.get(lastSelectedPosition).setOriginalQuantity("1");
+                mItem.get(lastSelectedPosition).setQuantity(1);
+
 //                sizeModifierAdapter =null;
                 notifyDataSetChanged();
             }

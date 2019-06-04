@@ -581,9 +581,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         productSize.setProductSizeId(menuProductSize1.getProductSizeId());
                         productSize.setProductSizeName(menuProductSize1.getProductSizeName());
                         productSize.setProductSizePrice(menuProductSize1.getProductSizePrice());
-                        productSize.setAmount(menuProductSize1.getAmount());
-                        productSize.setQuantity(menuProductSize1.getQuantity());
+                        productSize.setAmount(String.format("%.2f", (quantity * Double.parseDouble(menuProductSize1.getProductSizePrice()))));
+                        productSize.setQuantity(quantity);
                         productSize.setSelected(menuProductSize1.getSelected());
+                        productSize.setOriginalAmount((quantity * Double.parseDouble(menuProductSize1.getProductSizePrice())));
+                        productSize.setOriginalAmount1(Double.parseDouble(menuProductSize1.getProductSizePrice()));
+                        productSize.setOriginalQuantity(menuProductSize1.getOriginalQuantity());
 
 //                    sizeModifiers
 

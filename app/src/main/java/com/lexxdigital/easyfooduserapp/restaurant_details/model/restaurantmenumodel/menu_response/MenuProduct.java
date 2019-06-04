@@ -61,12 +61,14 @@ public class MenuProduct {
     @Expose
     private Integer originalQuantity;
     @Expose
+    private Double originalAmount;
+    @Expose
     private Double originalAmount1;
 
     public MenuProduct() {
     }
 
-    public MenuProduct(String menuProductId, String productName, String description, String vegType, String menuProductPrice, String userappProductImage, String ecomProductImage, String productOverallRating, List<MenuProductSize> menuProductSize, List<ProductModifier> productModifiers, List<MealProduct> mealProducts,String amount, Integer quantity, Integer originalQuantity, Double originalAmount1) {
+    public MenuProduct(String menuProductId, String productName, String description, String vegType, String menuProductPrice, String userappProductImage, String ecomProductImage, String productOverallRating, List<MenuProductSize> menuProductSize, List<ProductModifier> productModifiers, List<MealProduct> mealProducts,String amount, Integer quantity, Integer originalQuantity, Double originalAmount, Double originalAmount1) {
         this.menuProductId = menuProductId;
         this.productName = productName;
         this.description = description;
@@ -81,6 +83,7 @@ public class MenuProduct {
         this.amount = amount;
         this.quantity = quantity;
         this.originalQuantity = originalQuantity;
+        this.originalAmount = originalAmount;
         this.originalAmount1 = originalAmount1;
     }
 
@@ -228,6 +231,14 @@ public class MenuProduct {
         this.originalAmount1 = originalAmount1;
     }
 
+    public Double getOriginalAmount() {
+        return originalAmount;
+    }
+
+    public void setOriginalAmount(Double originalAmount) {
+        this.originalAmount = originalAmount;
+    }
+
     @Override
     public String toString() {
         return "MenuProduct{" +
@@ -248,6 +259,7 @@ public class MenuProduct {
                 ", amount='" + amount + '\'' +
                 ", quantity=" + quantity +
                 ", originalQuantity=" + originalQuantity +
+                ", originalAmount=" + originalAmount +
                 ", originalAmount1=" + originalAmount1 +
                 '}';
     }

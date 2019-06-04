@@ -43,6 +43,7 @@ import com.lexxdigital.easyfooduserapp.order_details_activity.OrderDetailActivit
 import com.lexxdigital.easyfooduserapp.utility.ApiClient;
 import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.GlobalValues;
+import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     private List<PreviousOrderDetail> previousOrderDetails = new ArrayList<>();
     boolean isLoading = false;
     OrderPositionListner orderPositionListner;
+    SharedPreferencesClass sharePre;
     //private List<PreviousOrderResponse.Data.PreviousOrderDetail> previousOrderDetailList=new ArrayList<>();
     // private List<DataList> previousOrderDetails = new ArrayList<DataList>();
 
@@ -108,6 +110,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         super.onViewCreated(view, savedInstanceState);
 
         //getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+        sharePre = new SharedPreferencesClass(mContext);
         val = (GlobalValues) mContext;
         orderPositionListner = this;
         dialog = new Dialog(getActivity());
@@ -218,6 +221,9 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                             previousOrderDetails = response.body().getData().getPreviousOrderDetails();
                         }
                         Log.e(TAG, "onResponse:list sizeeeeeeee: " + previousOrderDetails.size());
+                        if (response.body().getData().getTotalRecords() > 0) {
+                            sharePre.setInt(sharePre.NUMBER_OF_ORDERS, response.body().getData().getTotalRecords());
+                        }
                         //mPreviousAdapter.notifyDataSetChanged();
                         initView(previousOrderDetails);
                         emptyScreen();

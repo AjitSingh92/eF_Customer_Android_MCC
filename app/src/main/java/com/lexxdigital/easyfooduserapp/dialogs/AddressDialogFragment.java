@@ -67,13 +67,22 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
         if (address.getIsDelivered() == 1) {
 
             if (isDelivery) {
-                sharePre.setString(sharePre.DEFAULT_ADDRESS, address.getAddressOne() + " " + address.getAddressTwo() + "," + address.getCity() + "\n" + address.getPostCode());
+                if (address.getAddressTwo() != null && address.getAddressTwo().trim().length() > 0) {
+                    sharePre.setString(sharePre.DEFAULT_ADDRESS, address.getAddressOne() + ", " + address.getAddressTwo() + ", " + address.getCity() + "\n" + address.getPostCode());
+                } else {
+                    sharePre.setString(sharePre.DEFAULT_ADDRESS, address.getAddressOne() + ", " + address.getCity() + "\n" + address.getPostCode());
+                }
                 sharePre.setString(sharePre.DELIVERY_ADDRESS_ID, address.getID());
                 if (onAddressDialogListener != null) {
                     onAddressDialogListener.onAddressDialogDismiss(true);
                 }
             } else {
-                sharePre.setString(sharePre.BILLING_ADDRESS, address.getAddressOne() + " " + address.getAddressTwo() + "," + address.getCity() + "\n" + address.getPostCode());
+                if (address.getAddressTwo() != null && address.getAddressTwo().trim().length() > 0) {
+                    sharePre.setString(sharePre.BILLING_ADDRESS, address.getAddressOne() + ", " + address.getAddressTwo() + ", " + address.getCity() + "\n" + address.getPostCode());
+                } else {
+                    sharePre.setString(sharePre.BILLING_ADDRESS, address.getAddressOne() + ", " + address.getCity() + "\n" + address.getPostCode());
+                }
+
             }
         }
         dismiss();

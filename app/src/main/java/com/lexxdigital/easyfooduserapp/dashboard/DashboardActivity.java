@@ -351,6 +351,7 @@ public class DashboardActivity extends AppCompatActivity {
                     drawer.openDrawer(Gravity.RIGHT);
                 }
                 Glide.with(this).load(val.getProfileImage()).placeholder(R.drawable.avatar).into(drawer_profile_pic);
+                myAccount.setText(val.getFirstName() + " " + val.getLastName());
                 break;
             case R.id.my_account:
 

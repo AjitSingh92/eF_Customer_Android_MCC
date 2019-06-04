@@ -108,7 +108,16 @@ public class AddressSaveAdapter extends RecyclerView.Adapter<AddressSaveAdapter.
             holder.txtAddreddType.setText(addressType);
 
         }
-        String address = add.getAddressOne() + " " + add.getAddressTwo() + "," + add.getCity() + "\n" + add.getPostCode()+", "+add.getCountry();
+        String address;
+        if (add.getAddressTwo() != null && add.getAddressTwo().trim().length() > 0) {
+
+            address = add.getAddressOne() + ", " + add.getAddressTwo() + ", " + add.getCity() + "\n" + add.getPostCode() + ", " + add.getCountry();
+
+        } else {
+            address = add.getAddressOne() + ", " + add.getCity() + "\n" + add.getPostCode() + ", " + add.getCountry();
+        }
+
+
         holder.txtAddress.setText(address);
         Log.e(TAG, "onBindViewHolder: address id: " + add.getID());
 

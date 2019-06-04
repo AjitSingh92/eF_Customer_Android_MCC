@@ -853,7 +853,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
                             againFragment.show(getSupportFragmentManager(), "againDailog");
                         } else {
-                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                            Double price = -1d;
+                            if (menuProduct.get(0).getMenuProductSize() != null && menuProduct.get(0).getMenuProductSize().size() > 0) {
+                                for (MenuProductSize item : menuProduct.get(0).getMenuProductSize()) {
+                                    if (item.isSelected) {
+                                        price = Double.parseDouble(item.getProductSizePrice());
+                                    }
+                                }
+                            }else{
+                                price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
+                            }
+                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
                             itemQtyView.setText(String.valueOf(itemCount));
                             showPriceAndView(null, null, 0);
                         }
@@ -869,7 +879,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     qtyLayout.setVisibility(View.GONE);
                     itemQtyView.setText(String.valueOf(itemCount));
                 } else {
-                    db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                    Double price = -1d;
+                    if (menuProduct.get(0).getMenuProductSize() != null && menuProduct.get(0).getMenuProductSize().size() > 0) {
+                        for (MenuProductSize item : menuProduct.get(0).getMenuProductSize()) {
+                            if (item.isSelected) {
+                                price = Double.parseDouble(item.getProductSizePrice());
+                            }
+                        }
+                    }else{
+                        price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
+                    }
+                    db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
                     itemQtyView.setText(String.valueOf(itemCount));
                 }
                 showPriceAndView(null, null, 0);
@@ -900,7 +920,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
                             againFragment.show(getSupportFragmentManager(), "againDailog");
                         } else {
-                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                            Double price = -1d;
+                            if (menuProduct.get(0).getMenuProductSize() != null && menuProduct.get(0).getMenuProductSize().size() > 0) {
+                                for (MenuProductSize item : menuProduct.get(0).getMenuProductSize()) {
+                                    if (item.isSelected) {
+                                        price = Double.parseDouble(item.getProductSizePrice());
+                                    }
+                                }
+                            }else{
+                                price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
+                            }
+                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
                             itemQtyView.setText(String.valueOf(itemCount));
                             showPriceAndView(null, null, 0);
                         }
@@ -954,7 +984,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                 AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
                                 againFragment.show(getSupportFragmentManager(), "againDailog");
                             } else {
-                                db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                                Double price = -1d;
+                                if (menuProduct.get(0).getMenuProductSize() != null && menuProduct.get(0).getMenuProductSize().size() > 0) {
+                                    for (MenuProductSize item : menuProduct.get(0).getMenuProductSize()) {
+                                        if (item.isSelected) {
+                                            price = Double.parseDouble(item.getProductSizePrice());
+                                        }
+                                    }
+                                }else{
+                                    price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
+                                }
+                                db.updateProductQuantity(menuProduct.get(0).getId(), itemCount,price);
                                 itemQtyView.setText(String.valueOf(itemCount));
                                 showPriceAndView(null, null, 0);
                             }
@@ -978,7 +1018,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                         qtyLayout.setVisibility(View.GONE);
                         itemQtyView.setText(String.valueOf(itemCount));
                     } else {
-                        db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
+                        Double price = -1d;
+                        if (menuProduct.get(0).getMenuProductSize() != null && menuProduct.get(0).getMenuProductSize().size() > 0) {
+                            for (MenuProductSize item : menuProduct.get(0).getMenuProductSize()) {
+                                if (item.isSelected) {
+                                    price = Double.parseDouble(item.getProductSizePrice());
+                                }
+                            }
+                        }else{
+                            price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
+                        }
+                        db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
                         itemQtyView.setText(String.valueOf(itemCount));
                     }
                     showPriceAndView(null, null, 0);
@@ -1093,13 +1143,33 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         } else {
             if (action == 2) {
                 int qty = (Integer.parseInt(qtyTextView.getText().toString()) + 1);
-                db.updateProductQuantity(menuProduct.get(0).getId(), qty);
+                Double price = -1d;
+                if (menuProduct.get(0).getMenuProductSize() != null && menuProduct.get(0).getMenuProductSize().size() > 0) {
+                    for (MenuProductSize item : menuProduct.get(0).getMenuProductSize()) {
+                        if (item.isSelected) {
+                            price = Double.parseDouble(item.getProductSizePrice());
+                        }
+                    }
+                }else{
+                    price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
+                }
+                db.updateProductQuantity(menuProduct.get(0).getId(), qty, price);
             } else {
+                Double price = -1d;
+                if (menuProduct.get(0).getMenuProductSize() != null && menuProduct.get(0).getMenuProductSize().size() > 0) {
+                    for (MenuProductSize item : menuProduct.get(0).getMenuProductSize()) {
+                        if (item.isSelected) {
+                            price = Double.parseDouble(item.getProductSizePrice());
+                        }
+                    }
+                }else{
+                    price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
+                }
                 int qty = (Integer.parseInt(qtyTextView.getText().toString()) - 1);
                 if (qty == 0) {
                     db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
                 } else {
-                    db.updateProductQuantity(menuProduct.get(0).getId(), qty);
+                    db.updateProductQuantity(menuProduct.get(0).getId(), qty, price);
                 }
             }
             showPriceAndView(view, qtyTextView, itemCount);

@@ -172,9 +172,9 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             cartDatRequest.setRestaurantName(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantName());
             cartDatRequest.setPostCode(val.getRestaurantDetailsResponse().getData().getRestaurants().getPostCode());
             cartDatRequest.setTotalCartPrice(totalAmount);
-            cartDatRequest.setOrderType(orderType);
+            cartDatRequest.setOrderType(orderType.toLowerCase());
             cartDatRequest.setDeliveryCharge(deliveryFee);
-            cartDatRequest.setMaxLength("");
+            cartDatRequest.setMaxLength(String.valueOf(Constants.MAX_LENGTH));
             cartDatRequest.setVoucherDiscount(voucherDiscount);
             cartDatRequest.setVoucherCode(voucherCode);
             cartDatRequest.setRestaurantSlug(sharedPreferencesClass.getString(sharedPreferencesClass.RESTAURANT_NAME_SLUG));
@@ -271,7 +271,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             }
 
                         } else {
-                            alertVoucherApply("", "card", exDate.getText().toString(), exYear.getText().toString());
+                            alertVoucherApply("", "card", exDate.getText().toString(), exYear.getText().toString(), "card");
                         }
                     } else {
                         Intent intent = new Intent(SelectPaymentMethodActivity.this, AddAddressManualActivity.class);
@@ -375,7 +375,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             }
 
                         } else {
-                            alertVoucherApply("", voucherPaymentType, "", "");
+                            alertVoucherApply("", voucherPaymentType, "", "", "cash");
                         }
 
                     } else {
@@ -498,7 +498,10 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     if (response.code() == 200 && response.body().getSuccess()) {
                         sharedPreferencesClass.setOrderIDKey(response.body().getData().getOrder_number());
                         Log.e("order id", response.body().getData().getOrder_number());
+                        sharedPreferencesClass.setInt(sharedPreferencesClass.NUMBER_OF_ORDERS, (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) + 1));
+                        Constants.MAX_LENGTH = 0;
                         alertDialogOrderPlaced("Your order has been placed successfully.", true);
+
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
 //                        alertDialogOrderPlaced(response.body().getMessage(), false);
                         alertDialogCVV("Please enter valid expiry date");
@@ -639,11 +642,11 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
                         if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAddress() != null) {
                             if (voucherPaymentType.equalsIgnoreCase("card")) {
-                                alertVoucherApply("", "card", "", "");
+                                alertVoucherApply("", "card", "", "", "card");
                             } else if (voucherPaymentType.equalsIgnoreCase("")) {
-                                alertVoucherApply("", "card", "", "");
+                                alertVoucherApply("", "card", "", "", "card");
                             } else {
-                                alertVoucherApply(token.getId(), "card", "", "");
+                                alertVoucherApply(token.getId(), "card", "", "", "card");
                             }
                         } else {
                             Intent intent = new Intent(SelectPaymentMethodActivity.this, AddAddressManualActivity.class);
@@ -732,7 +735,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         cardDialog.show();
     }
 
-    public void alertVoucherApply(final String token, final String paymentType, final String exDate, final String exYear) {
+    public void alertVoucherApply(final String token, final String paymentType, final String exDate, final String exYear, final String clickby) {
         LayoutInflater factory = LayoutInflater.from(this);
         final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
         final AlertDialog noteDialog = new AlertDialog.Builder(this).create();
@@ -753,15 +756,28 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//
+//                if (!voucherCode.equalsIgnoreCase(paymentType)) {
+//                    totalAmount = totalAmount + voucherAmount;
+//                }
 
-                if (!voucherCode.equalsIgnoreCase(paymentType)) {
-                    totalAmount = totalAmount + voucherAmount;
-                }
-                if (Constants.isInternetConnectionAvailable(300)) {
-                    callAPI(token, paymentType, exDate, exYear);
+                if (paymentType.equalsIgnoreCase("cash")) {
+
+                    noteDialog.dismiss();
                 } else {
-                    dialogNoInternetConnection("Please check internet connection.", 0);
+                    totalAmount = totalAmount + voucherDiscount;
+                    voucherDiscount = 0.d;
+                    voucherAmount = 0.d;
+                    voucherCode = "";
+
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        callAPI("", "cash", "", "");
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.", 0);
+                    }
+
                 }
+
 
                 noteDialog.dismiss();
             }

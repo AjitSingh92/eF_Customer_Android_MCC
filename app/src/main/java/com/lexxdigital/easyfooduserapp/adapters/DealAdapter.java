@@ -65,7 +65,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
     Activity activity;
     SharedPreferencesClass sharePre;
     DatabaseHelper db;
-    int mListPosition = 0;
 
 
     public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
@@ -101,9 +100,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
+        LinearLayout btnPreOrder;
         RecyclerView dealcard_list_id;
-        TextView name, cuisines, rating, deliveryMin, deliveryVal, deliveryTime, preOrder;
+        TextView name, cuisines, rating, deliveryMin, deliveryVal, deliveryTime, preOrder, tvPreOrderMsg;
         ImageView delivery, dine_in, collection;
         LinearLayout llMain, llClosed;
         LinearLayout llDelivery, llDinein, llCollection;
@@ -113,6 +112,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            this.tvPreOrderMsg = (TextView) itemView.findViewById(R.id.tv_PreOrderMsg);
+            this.btnPreOrder = (LinearLayout) itemView.findViewById(R.id.layout_btnPreOrder);
             this.dealcard_list_id = (RecyclerView) itemView.findViewById(R.id.dealcard_list_id);
             this.name = (TextView) itemView.findViewById(R.id.restaurant_name);
             this.cuisines = (TextView) itemView.findViewById(R.id.restaurant_cuisines);
@@ -193,7 +194,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, int listPosition) {
         sharePre = new SharedPreferencesClass(mContext);
         db = new DatabaseHelper(mContext);
-        mListPosition = listPosition;
+        final int mListPosition = listPosition;
         if (listPosition == respNameFilter.size() - 1) {
             onBottomReachedListener.onBottomReached(listPosition);
         }
@@ -223,6 +224,13 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         try {
             if (status.trim().equalsIgnoreCase("closed")) {
                 holder.llClosed.setVisibility(View.VISIBLE);
+                holder.preOrder.setVisibility(View.VISIBLE);
+                holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed));
+
+            } else if (status.trim().equalsIgnoreCase("not_serving")) {
+                holder.preOrder.setVisibility(View.GONE);
+                holder.llClosed.setVisibility(View.VISIBLE);
+                holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed2));
             } else {
                 holder.llClosed.setVisibility(View.GONE);
             }
@@ -280,6 +288,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 preOrderForLetter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (respNameFilter.get(mListPosition).getStatus().equalsIgnoreCase("not_serving")) {
+                            return;
+                        }
                         dialog.dismiss();
                         if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
                             if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(respNameFilter.get(mListPosition).getId())) {
@@ -420,8 +431,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                     }
                 }).start();
-                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
-                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
+                sharePre.setString(sharePre.RESTUARANT_ID, currentRestId);
+                sharePre.setString(sharePre.RESTUARANT_NAME, currentRestuarant);
                 sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                 db.deleteCart();
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);

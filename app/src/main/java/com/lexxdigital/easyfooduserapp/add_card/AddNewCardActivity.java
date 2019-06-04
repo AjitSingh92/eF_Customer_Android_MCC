@@ -561,9 +561,9 @@ public class AddNewCardActivity extends AppCompatActivity {
             cartDatRequest.setRestaurantName(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantName());
             cartDatRequest.setPostCode(val.getRestaurantDetailsResponse().getData().getRestaurants().getPostCode());
             cartDatRequest.setTotalCartPrice(totalAmount);
-            cartDatRequest.setOrderType(orderType);
+            cartDatRequest.setOrderType(orderType.toLowerCase());
             cartDatRequest.setDeliveryCharge(deliveryFee);
-            cartDatRequest.setMaxLength("");
+            cartDatRequest.setMaxLength(String.valueOf(Constants.MAX_LENGTH));
             cartDatRequest.setVoucherDiscount(voucherDiscount);
             cartDatRequest.setVoucherCode(voucherCode);
 

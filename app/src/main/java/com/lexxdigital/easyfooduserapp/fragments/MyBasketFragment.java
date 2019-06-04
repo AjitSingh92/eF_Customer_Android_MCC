@@ -153,7 +153,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     @BindView(R.id.total_ammount)
     TextView totalAmmount;
     @BindView(R.id.discount)
-    TextView discount;
+    TextView tvdiscount;
     @BindView(R.id.total_count)
     TextView totalCount;
     @BindView(R.id.footer_total_count)
@@ -628,6 +628,8 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     btnApplyVoucherCode.setTag("apply");
                     btnApplyVoucherCode.setText("Apply");
                     tvVoucherStatus.setVisibility(View.GONE);
+                    tvdiscount.setText(mContext.getResources().getString(R.string.currency) + "0.00");
+                    voucherDiscount = 0.d;
                     setPriceCalculation(totalCartIterm);
                 }
                 break;
@@ -1160,6 +1162,8 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 //                         alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                            voucherDiscount = voucherCal;
                         } else {
 //                alertDailogVoucher("Validate voucher", "Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
                             tvVoucherStatus.setVisibility(View.VISIBLE);
@@ -1176,6 +1180,8 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 //                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
+                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
+                            voucherDiscount = voucherValue;
                         } else {
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher applicable on " + getString(R.string.currency) + " " + voucherValue);
@@ -1195,6 +1201,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         } else {
             tvVoucherStatus.setVisibility(View.GONE);
         }
+        Constants.MAX_LENGTH = totalCartIterm;
         totalCount.setText(String.valueOf(totalCartIterm));
         footerTotalCount.setText(String.valueOf(totalCartIterm));
         totalAmmount.setText(String.format("%.2f", netAmount));
@@ -1264,7 +1271,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                             voucherCodeUsed = voucher_code;
 
                                         } else {
-                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue );
+                                            alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
                                             tvVoucherStatus.setVisibility(View.VISIBLE);
                                             tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
                                         }
@@ -1498,8 +1505,10 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         if (val.getRestaurantDetailsResponse() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
                             deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
                             restaurantPhoneNumber = res.getData().getRestaurants().getPhoneNumber();
-                            if (val.getRestaurantDetailsResponse() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
+                            if (val.getRestaurantDetailsResponse() != null && val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
                                 deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
+                            } else {
+                                deliveryTime.setText("0 min");
                             }
                             if (res.getData().getRestaurants().getDeliveryOptions() != null || !res.getData().getRestaurants().getDeliveryOptions().equals("")) {
                                 String[] serve_styles = res.getData().getRestaurants().getDeliveryOptions().split(",");

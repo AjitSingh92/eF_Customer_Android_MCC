@@ -142,6 +142,7 @@ ou will be sent a varification code to your mobile </string>
     <string name="order_title_3">Your order is on the way.</string>
     <string name="order_title_4">Your order has been delivered.</string>
     <string name="restaurent_closed">This restaurant is currently closed </string>
+    <string name="restaurent_closed2">This restaurant is closed </string>
     <string name="pre_order_for_later"> Pre-order for later </string>
 
     <string name="order_title_Details_0">Thank you for placing the order, we will inform you once</string>

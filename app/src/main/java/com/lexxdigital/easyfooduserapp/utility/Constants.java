@@ -64,6 +64,7 @@ public class Constants {
     public static final int NOTIFICATION_ID = 10000;
     public static final int NOTIFICATION_ID_BIG_IMAGE = 10000;
     public static int ORDER_STATUS = 0;
+    public static int MAX_LENGTH = 0;
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -194,6 +195,7 @@ public class Constants {
 
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
     public static String changeStringDateFormat(String input, String formatFrom, String formatTo) {
         String strDate = null;
         SimpleDateFormat mFormatFrom = new SimpleDateFormat(formatFrom);
@@ -211,6 +213,7 @@ public class Constants {
 
         return strDate;
     }
+
     public static String getDayMonth(String date) {
 
 

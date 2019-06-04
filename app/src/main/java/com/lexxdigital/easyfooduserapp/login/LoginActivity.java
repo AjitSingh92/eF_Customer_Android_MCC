@@ -129,8 +129,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
         findViewById(R.id.tv_headline).setOnClickListener(this);
 
-        editEmail.setText("maniacpraveen@gmail.com");
-        editPassword.setText("Praveen@123");
+//        editEmail.setText("maniacpraveen@gmail.com");
+//        editPassword.setText("Praveen@123");
 
         if (sharedPreferencesClass.getString(sharedPreferencesClass.FB_TOKEN_ID) == null) {
             sharedPreferencesClass.setString(sharedPreferencesClass.FB_TOKEN_ID, FirebaseInstanceId.getInstance().getToken());

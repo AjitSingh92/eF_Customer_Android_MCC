@@ -313,13 +313,22 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
 
         @Override
         public void onClick(View v) {
-
+            Double price = -1d;
             switch (v.getId()) {
                 case R.id.item_add:
                     tvQty.setText(String.valueOf((Integer.parseInt(tvQty.getText().toString()) + 1)));
                     data.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(tvQty.getText().toString()));
 
-                    db.updateProductQuantity(data.get(getLayoutPosition()).getId(), Integer.parseInt(tvQty.getText().toString()));
+                    if (data.get(getLayoutPosition()).getMenuProductSize() != null && data.get(getLayoutPosition()).getMenuProductSize().size() > 0) {
+                        for (MenuProductSize item : data.get(getLayoutPosition()).getMenuProductSize()) {
+                            if (item.isSelected) {
+                                price = Double.parseDouble(item.getProductSizePrice());
+                            }
+                        }
+                    }else{
+                        price = Double.parseDouble(data.get(getLayoutPosition()).getMenuProductPrice());
+                    }
+                    db.updateProductQuantity(data.get(getLayoutPosition()).getId(), Integer.parseInt(tvQty.getText().toString()),price);
                     notifyItemChanged(getLayoutPosition());
                     break;
                 case R.id.item_remove:
@@ -328,7 +337,16 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                         data.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(tvQty.getText().toString()));
                         notifyItemChanged(getLayoutPosition());
 
-                        db.updateProductQuantity(data.get(getLayoutPosition()).getId(), Integer.parseInt(tvQty.getText().toString()));
+                        if (data.get(getLayoutPosition()).getMenuProductSize() != null && data.get(getLayoutPosition()).getMenuProductSize().size() > 0) {
+                            for (MenuProductSize item : data.get(getLayoutPosition()).getMenuProductSize()) {
+                                if (item.isSelected) {
+                                    price = Double.parseDouble(item.getProductSizePrice());
+                                }
+                            }
+                        }else{
+                            price = Double.parseDouble(data.get(getLayoutPosition()).getMenuProductPrice());
+                        }
+                        db.updateProductQuantity(data.get(getLayoutPosition()).getId(), Integer.parseInt(tvQty.getText().toString()),price);
                     } else {
                         db.deleteItem(data.get(getLayoutPosition()).getMenuId(), data.get(getLayoutPosition()).getId());
                         data.remove(getLayoutPosition());

@@ -123,6 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "meal_products TEXT,"
                     + "originalQuantity INTEGER,"
                     + "amount TEXT,"
+                    + "originalAmount REAL,"
                     + "originalAmount1 REAL,"
                     + "upsells TEXT"
                     + ")";
@@ -499,7 +500,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                   String product_modifiers,
                                   String meal_products,
                                   Integer originalQuantity,
-                                  Double originalAmount1,
+                                  Double originalAmount,
                                   String amount
             /*  String upsells*/) {
         // get writable database as we want to write data
@@ -521,7 +522,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("product_modifiers", product_modifiers);
         values.put("meal_products", meal_products);
         values.put("originalQuantity", originalQuantity);
-        values.put("originalAmount1", originalAmount1);
+        values.put("originalAmount", originalAmount);
+        values.put("originalAmount1", originalAmount);
         values.put("amount", amount);
 //        values.put("upsells", upsells);
 //        values.put("menu_products", menu_products);
@@ -533,12 +535,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public int updateProductQuantity(int columnId, int quantity) {
+    public int updateProductQuantity(int columnId, int quantity, Double price) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("originalQuantity", quantity);
+        values.put("quantity", quantity);
 
+        if (price != -1) {
+            values.put("amount", (quantity * price));
+            values.put("originalAmount", (quantity * price));
+        }
         updateMenuProductSizeQuantity(columnId, quantity);
         // updating row
         int id = db.update(TABLE_NAME_MENU_PRODUCT, values, COLUMN_ID + " = ?",
@@ -976,6 +983,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 data.setProductOverallRating(cursor.getString(cursor.getColumnIndex("product_overall_rating")));
                 data.setQuantity(cursor.getInt(cursor.getColumnIndex("quantity")));
                 data.setOriginalQuantity(cursor.getInt(cursor.getColumnIndex("originalQuantity")));
+                data.setOriginalAmount(cursor.getDouble(cursor.getColumnIndex("originalAmount")));
                 data.setOriginalAmount1(cursor.getDouble(cursor.getColumnIndex("originalAmount1")));
                 data.setAmount(cursor.getString(cursor.getColumnIndex("amount")));
 

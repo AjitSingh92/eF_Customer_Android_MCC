@@ -375,6 +375,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                     menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
                                     1,
                                     1,
+                                    Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()),
                                     Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()));
 //                                            menuCategory.getMenuProducts().get(i).getQuantity());
                             menuProducts.add(product);
@@ -403,6 +404,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                         menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
                                         1,
                                         1,
+                                        Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()),
                                         Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()));
 //                                product.setQuantity(1);
 //                                product.setOriginalQuantity(1);

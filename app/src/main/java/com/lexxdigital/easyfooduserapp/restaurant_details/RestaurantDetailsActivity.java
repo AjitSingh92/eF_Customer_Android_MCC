@@ -161,6 +161,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     ImageView dine_in;
     @BindView(R.id.collection)
     ImageView collection;
+    @BindView(R.id.layout_deliveryPrice)
+    LinearLayout layoutDeliveryPrice;
+    @BindView(R.id.layout_deliveryTime)
+    LinearLayout layoutDeliveryTime;
     //    @BindView(R.id.container_restaurants_details)
 //    ScrollView containerRestaurantsDetails;
 //    @BindView(R.id.observable_scrollview)
@@ -445,6 +449,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             if (Arrays.asList(serve_styles).contains("dinein")) {
                                 ll_dinein.setVisibility(View.VISIBLE);
                                 dine_in.setImageDrawable(getResources().getDrawable(R.drawable.open));
+                            }
+
+                            if (!Arrays.asList(serve_styles).contains("delivery")) {
+                                layoutDeliveryPrice.setVisibility(View.GONE);
+                                layoutDeliveryTime.setVisibility(View.GONE);
+                            } else {
+                                layoutDeliveryPrice.setVisibility(View.VISIBLE);
+                                layoutDeliveryTime.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -860,7 +872,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                         price = Double.parseDouble(item.getProductSizePrice());
                                     }
                                 }
-                            }else{
+                            } else {
                                 price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
                             }
                             db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
@@ -886,7 +898,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                 price = Double.parseDouble(item.getProductSizePrice());
                             }
                         }
-                    }else{
+                    } else {
                         price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
                     }
                     db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
@@ -927,7 +939,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                         price = Double.parseDouble(item.getProductSizePrice());
                                     }
                                 }
-                            }else{
+                            } else {
                                 price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
                             }
                             db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
@@ -991,10 +1003,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                             price = Double.parseDouble(item.getProductSizePrice());
                                         }
                                     }
-                                }else{
+                                } else {
                                     price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
                                 }
-                                db.updateProductQuantity(menuProduct.get(0).getId(), itemCount,price);
+                                db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
                                 itemQtyView.setText(String.valueOf(itemCount));
                                 showPriceAndView(null, null, 0);
                             }
@@ -1025,7 +1037,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                     price = Double.parseDouble(item.getProductSizePrice());
                                 }
                             }
-                        }else{
+                        } else {
                             price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
                         }
                         db.updateProductQuantity(menuProduct.get(0).getId(), itemCount, price);
@@ -1150,7 +1162,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             price = Double.parseDouble(item.getProductSizePrice());
                         }
                     }
-                }else{
+                } else {
                     price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
                 }
                 db.updateProductQuantity(menuProduct.get(0).getId(), qty, price);
@@ -1162,7 +1174,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             price = Double.parseDouble(item.getProductSizePrice());
                         }
                     }
-                }else{
+                } else {
                     price = Double.parseDouble(menuProduct.get(0).getMenuProductPrice());
                 }
                 int qty = (Integer.parseInt(qtyTextView.getText().toString()) - 1);

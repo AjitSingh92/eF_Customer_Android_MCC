@@ -366,6 +366,11 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                                 menuProducts.add(response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuProducts().get(j));
                             }
 
+                            for (int j = 0; j < response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuSubCategory().size(); j++) {
+                                for (int k = 0; k < response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuSubCategory().get(j).getMenuProducts().size(); k++) {
+                                    menuProducts.add(response.body().getData().getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuSubCategory().get(j).getMenuProducts().get(k));
+                                }
+                            }
                         }
 
                         if (menuProducts.size() > 0) {

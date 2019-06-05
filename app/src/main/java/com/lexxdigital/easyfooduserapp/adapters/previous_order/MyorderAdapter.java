@@ -153,6 +153,12 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             holder.cancelOrder.setVisibility(View.GONE);
             holder.layoutTrackOrder.setVisibility(View.GONE);
             holder.layoutReapetOrder.setVisibility(View.VISIBLE);
+
+            /*if (dataList.getR) {
+                holder.reasonForCancel.setVisibility(View.GONE);
+            } else {
+                holder.reasonForCancel.setVisibility(View.VISIBLE);
+            }*/
         } else {
             String ordStatus = strOrderStatus;
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
@@ -369,7 +375,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView restImage;
         CircleImageView restLogo;
-        TextView restName, orderNo, orderDate, total, trackOrder, orderItemDetails, detailsArrow, orderStatus;
+        TextView restName, orderNo, orderDate, total, trackOrder, orderItemDetails, detailsArrow, orderStatus, reasonForCancel;
         TextView repeatOrder;
         RecyclerView subProductRecycler;
         SubProductListAdapter subProductListAdapter;
@@ -390,6 +396,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             this.orderStatus = (TextView) itemView.findViewById(R.id.order_status);
             this.layoutTrackOrder = itemView.findViewById(R.id.layout_track_order);
             this.layoutReapetOrder = itemView.findViewById(R.id.layout_repeat_order);
+            this.reasonForCancel = itemView.findViewById(R.id.tv_reasonForCancel);
             this.llMain = itemView.findViewById(R.id.ll_main);
             this.cancelOrder = itemView.findViewById(R.id.cancel_order);
 

@@ -1322,11 +1322,12 @@
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginRight="@dimen/_10sdp"
                             android:layout_weight=".75"
-                            android:fontFamily="@font/avenir_medium"
+                            android:fontFamily="@font/avenir_black"
                             android:gravity="left"
-                            android:text="@string/add_a_note_to_the_restaurant"
-                            android:textColor="@color/orange"
-                            android:textSize="@dimen/_14sdp" />
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_14sdp"
+                            android:textColor="@color/descolor"
+                            android:text="@string/add_a_note_to_the_restaurant" />
 
                         <TextView
                             android:id="@+id/btn_addNoteEdit"

@@ -350,13 +350,13 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                 Double voucherCal = (netAmount * voucherValue) / 100;
                                 alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", netAmount) + " has been applied to your order.");
                             } else {
-                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
+                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + String.format("%.2f",minOrderValue));
                             }
                         } else if (voucherType.equalsIgnoreCase("flat")) {
-                            if (totalPrice >= voucherValue) {
+                            if (totalPrice >= minOrderValue) {
                                 alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
                             } else {
-                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
+                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + String.format("%.2f",minOrderValue));
                             }
                         }
                     } else {
@@ -1193,7 +1193,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
                         }
                     } else if (voucherType.equalsIgnoreCase("flat")) {
-                        if (totalPrice >= voucherValue) {
+                        if (totalPrice >= minOrderValue) {
                             Double voucherCal = netAmount - voucherValue;
                             appliedVoucherAmount = voucherCal;
                             appliedVoucherCode = voucherCode;
@@ -1207,7 +1207,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         } else {
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
                             tvVoucherStatus.setVisibility(View.VISIBLE);
-                            tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
+                            tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
                         }
                     }
                 } else {
@@ -1276,11 +1276,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                 } else {
                                     alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
                                     tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+                                    tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", String.format("%.2f",minOrderValue)));
                                 }
                             } else if (voucherType.equalsIgnoreCase("flat")) {
 
-                                if (totalPrice >= voucherValue) {
+                                if (totalPrice >= minOrderValue) {
                                     Double voucherCal = netAmount - voucherValue;
                                     appliedVoucherAmount = voucherCal;
                                     appliedVoucherCode = voucherCode;
@@ -1288,11 +1288,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                     netAmount = voucherCal;
                                     alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
                                     tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
                                     voucherCodeUsed = voucher_code;
 
                                 } else {
-                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
+                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + String.format("%.2f",minOrderValue));
                                     tvVoucherStatus.setVisibility(View.VISIBLE);
                                     tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + voucherApplicableOn);
                                 }

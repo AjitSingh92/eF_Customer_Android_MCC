@@ -67,7 +67,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             } else {
                 if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                    String msg = "You have items in your basket from " + sharePre.getString(sharePre.RESTUARANT_NAME) + " would you like to disregard and move to " + response.get(mListPosition).getRestaurantName();
+                    String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + response.get(mListPosition).getRestaurantName()+"\"";
                     alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
 
                 } else {
@@ -242,7 +242,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                             activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                         } else {
                             if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                String msg = "You have items in your basket from " + sharePre.getString(sharePre.RESTUARANT_NAME) + " would you like to disregard and move to " + response.get(mListPosition).getRestaurantName();
+                                String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + response.get(mListPosition).getRestaurantName()+"\"";
                                 alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
 
                             } else {
@@ -356,18 +356,19 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setCancelable(true);
 
-        alertDialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                /*Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
-                i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);*/
-                dialog.dismiss();
-            }
-        });
-        alertDialogBuilder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("Continue with " + oldRest
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                        i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
+                        i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(i);
+                        dialog.dismiss();
+                    }
+                });
+        alertDialogBuilder.setNegativeButton("Start new order with " + currentRestuarant, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

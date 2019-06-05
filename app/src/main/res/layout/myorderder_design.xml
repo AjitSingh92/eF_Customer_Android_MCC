@@ -121,13 +121,22 @@
                     android:background="@drawable/ic_chevron_right_black_24dp"
                     android:backgroundTint="@color/black"
                     android:fontFamily="@font/avenir_roman"
-                    android:textColor="@color/price_color"
-
-                    />
+                    android:textColor="@color/price_color" />
             </LinearLayout>
 
-
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv.reasonForCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:fontFamily="@font/avenir_roman"
+            android:textColor="@color/gray"
+            android:visibility="gone"
+            android:textSize="@dimen/_12sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"

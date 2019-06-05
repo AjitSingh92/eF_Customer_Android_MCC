@@ -166,6 +166,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             storeCard.setVisibility(View.GONE);
             isFromCheckout = false;
         }
+        billingPost.setLongClickable(false);
 
         storeCard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 

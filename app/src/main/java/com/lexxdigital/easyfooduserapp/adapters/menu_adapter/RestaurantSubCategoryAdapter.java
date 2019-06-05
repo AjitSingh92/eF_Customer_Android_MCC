@@ -111,7 +111,7 @@ public class RestaurantSubCategoryAdapter extends RecyclerView.Adapter<Restauran
             if (menuItemClickListener != null) {
                 menuItemClickListener.LoadMenuProduct(parentPosition, mItem.get(getLayoutPosition()).getMenuCategoryId(), progressBar);
             }
-            Toast.makeText(context, "" + mItem.get(getLayoutPosition()).getMenuCategoryName(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "" + mItem.get(getLayoutPosition()).getMenuCategoryName(), Toast.LENGTH_SHORT).show();
         }
     }
 }

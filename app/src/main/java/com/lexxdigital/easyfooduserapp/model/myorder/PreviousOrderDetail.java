@@ -82,6 +82,9 @@ public class PreviousOrderDetail {
     @SerializedName("order_notes")
     @Expose
     private String orderNotes;
+    /*@SerializedName("reason_cancel")
+    @Expose
+    private String reasonCancel;*/
     @SerializedName("order_details")
     @Expose
     private OrderDetails orderDetails;

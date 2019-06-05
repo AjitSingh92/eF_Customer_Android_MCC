@@ -256,14 +256,14 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 //                    callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
 
                     if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAddress() != null) {
-                        if (voucherPaymentType.equalsIgnoreCase("card")) {
+                        if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("card")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
                                 callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
                             } else {
                                 dialogNoInternetConnection("Please check internet connection.", 0);
                             }
 
-                        } else if (voucherPaymentType.equalsIgnoreCase("")) {
+                        } else if (voucherPaymentType == null && voucherPaymentType.equalsIgnoreCase("")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
                                 callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
                             } else {
@@ -271,7 +271,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             }
 
                         } else {
-                            alertVoucherApply("", "card", exDate.getText().toString(), exYear.getText().toString(), "card");
+                            alertVoucherApply(voucherPaymentType,false);
                         }
                     } else {
                         Intent intent = new Intent(SelectPaymentMethodActivity.this, AddAddressManualActivity.class);
@@ -331,19 +331,39 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.add_new_card:
-                Intent i = new Intent(this, AddNewCardActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("ORDER_TOTAL", totalAmount);
-                i.putExtra("ORDER_SUB_TOTAL", subTotalAmount);
-                i.putExtra("deliveryCharge", deliveryFee);
-                i.putExtra("orderType", orderType);
-                i.putExtra("voucherDiscount", voucherDiscount);
-                i.putExtra("notes", notes);
-                i.putExtra("appliedVoucherCode", voucherCode);
-                i.putExtra("appliedVoucherAmount", voucherAmount);
-                i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
-                startActivity(i);
-                this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+
+                if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("card")) {
+                    Intent i = new Intent(this, AddNewCardActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("ORDER_TOTAL", totalAmount);
+                    i.putExtra("ORDER_SUB_TOTAL", subTotalAmount);
+                    i.putExtra("deliveryCharge", deliveryFee);
+                    i.putExtra("orderType", orderType);
+                    i.putExtra("voucherDiscount", voucherDiscount);
+                    i.putExtra("notes", notes);
+                    i.putExtra("appliedVoucherCode", voucherCode);
+                    i.putExtra("appliedVoucherAmount", voucherAmount);
+                    i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
+                    startActivity(i);
+                    this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                } else if (voucherPaymentType == null && voucherPaymentType.equalsIgnoreCase("")) {
+                    Intent i = new Intent(this, AddNewCardActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("ORDER_TOTAL", totalAmount);
+                    i.putExtra("ORDER_SUB_TOTAL", subTotalAmount);
+                    i.putExtra("deliveryCharge", deliveryFee);
+                    i.putExtra("orderType", orderType);
+                    i.putExtra("voucherDiscount", voucherDiscount);
+                    i.putExtra("notes", notes);
+                    i.putExtra("appliedVoucherCode", voucherCode);
+                    i.putExtra("appliedVoucherAmount", voucherAmount);
+                    i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
+                    startActivity(i);
+                    this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                } else {
+                    alertVoucherApply(voucherPaymentType, true);
+                }
+
                 break;
             case R.id.paywith_card_tv:
 //                if(isCardSelected) {
@@ -359,32 +379,27 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                 try {
 //                    callAPI("", "cash", "", "");
                     if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
-
-                        if (voucherPaymentType.equalsIgnoreCase("cash")) {
+                        if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("cash")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
                                 callAPI("", "cash", "", "");
                             } else {
                                 dialogNoInternetConnection("Please check internet connection.", 0);
                             }
-
-                        } else if (voucherPaymentType.equalsIgnoreCase("")) {
+                        } else if (voucherPaymentType == null && voucherPaymentType.equalsIgnoreCase("")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
                                 callAPI("", "cash", "", "");
                             } else {
                                 dialogNoInternetConnection("Please check internet connection.", 0);
                             }
-
                         } else {
-                            alertVoucherApply("", voucherPaymentType, "", "", "cash");
+                            alertVoucherApply(voucherPaymentType,false);
                         }
-
                     } else {
                         alertMessage();
                     }
                 } catch (Exception e) {
                     Toast.makeText(SelectPaymentMethodActivity.this, "Server Error.", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
         }
     }
@@ -620,9 +635,10 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             mProgressDialog.setMessage("Please wait");
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.show();
-            paymentProcess();
+            /* paymentProcess();*/
         }
     }
+/*
 
     public void paymentProcess() {
 
@@ -668,6 +684,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
 
     }
+*/
 
     @Override
     public void onClickPos(int pos, ArrayList<String> check, List<Card> dataList) {
@@ -735,7 +752,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         cardDialog.show();
     }
 
-    public void alertVoucherApply(final String token, final String paymentType, final String exDate, final String exYear, final String clickby) {
+    public void alertVoucherApply(String paymentType, final Boolean addCard) {
         LayoutInflater factory = LayoutInflater.from(this);
         final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
         final AlertDialog noteDialog = new AlertDialog.Builder(this).create();
@@ -761,7 +778,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 //                    totalAmount = totalAmount + voucherAmount;
 //                }
 
-                if (paymentType.equalsIgnoreCase("cash")) {
+                /*if (paymentType.equalsIgnoreCase("cash")) {
 
                     noteDialog.dismiss();
                 } else {
@@ -776,8 +793,32 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                         dialogNoInternetConnection("Please check internet connection.", 0);
                     }
 
+                }*/
+                totalAmount = subTotalAmount;
+                voucherDiscount = 0.d;
+                voucherAmount = 0.d;
+                voucherCode = "";
+                if (addCard) {
+                    Intent i = new Intent(SelectPaymentMethodActivity.this, AddNewCardActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("ORDER_TOTAL", totalAmount);
+                    i.putExtra("ORDER_SUB_TOTAL", subTotalAmount);
+                    i.putExtra("deliveryCharge", deliveryFee);
+                    i.putExtra("orderType", orderType);
+                    i.putExtra("voucherDiscount", voucherDiscount);
+                    i.putExtra("notes", notes);
+                    i.putExtra("appliedVoucherCode", voucherCode);
+                    i.putExtra("appliedVoucherAmount", voucherAmount);
+                    i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
+                    startActivity(i);
+                    SelectPaymentMethodActivity.this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                } else {
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        callAPI("", "cash", "", "");
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.", 0);
+                    }
                 }
-
 
                 noteDialog.dismiss();
             }

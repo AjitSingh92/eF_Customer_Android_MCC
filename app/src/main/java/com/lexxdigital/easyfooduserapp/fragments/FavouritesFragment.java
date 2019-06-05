@@ -175,7 +175,7 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
         request.setFavouriteType("restaurant");
         request.setPostCode("");
         request.setOffset(0);
-        request.setLimit(50);
+        request.setLimit(100);
 
         Call<FavouristeListRespose> call3 = apiInterface.mFavouriteList(request);
         call3.enqueue(new Callback<FavouristeListRespose>() {
@@ -185,7 +185,7 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
                     dialog.hide();
                     if (response.body().getSuccess()) {
                         for (int i = 0; i < response.body().getData().getFavourites().size(); i++) {
-                            listFavourites.add(new FavouriteList(response.body().getData().getFavourites().get(i).getEntityId(), response.body().getData().getFavourites().get(i).getRestaurantName(), response.body().getData().getFavourites().get(i).getLogo(), response.body().getData().getFavourites().get(i).getBackgroundImage(), response.body().getData().getFavourites().get(i).getCuisines(), response.body().getData().getFavourites().get(i).getMinOderValue(), response.body().getData().getFavourites().get(i).getDeliveryCharge(), response.body().getData().getFavourites().get(i).getOverallRating()));
+                            listFavourites.add(new FavouriteList(response.body().getData().getFavourites().get(i).getEntityId(), response.body().getData().getFavourites().get(i).getRestaurantName(), response.body().getData().getFavourites().get(i).getLogo(), response.body().getData().getFavourites().get(i).getBackgroundImage(), response.body().getData().getFavourites().get(i).getCuisines(), response.body().getData().getFavourites().get(i).getMinOderValue(), response.body().getData().getFavourites().get(i).getDeliveryCharge(), response.body().getData().getFavourites().get(i).getOverallRating(), response.body().getData().getFavourites().get(i).getRestaurantStatus()));
                         }
                         Log.e("fav", "onResponse:listFavourites size " + listFavourites.size());
                         //  mFavouritesAdapter.notifyDataSetChanged();

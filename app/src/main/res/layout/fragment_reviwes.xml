@@ -18,11 +18,7 @@ android:background="@color/background_color">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-
-        android:gravity="center"
-
-
-        >
+        android:gravity="center">
 
         <TextView
             android:id="@+id/overall_rating"

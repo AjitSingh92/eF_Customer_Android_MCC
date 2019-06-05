@@ -41,12 +41,13 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView restaurantName, cuisines, minOrder, restaurantFavRemove, rating;
+        TextView restaurantName, cuisines, minOrder, restaurantFavRemove, rating, preOrder, tvPreOrderMsg;
         ImageView restaurantImage, logo;
         LinearLayout llDelivery, llDinein, llCollection, lyClick;
         ImageView delivery, dine_in, collection;
         ImageView imRatingImage;
         ImageView favIcon;
+        LinearLayout llClosed, btnPreOrder;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +70,11 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             this.dine_in = itemView.findViewById(R.id.dine_in);
             this.llCollection = itemView.findViewById(R.id.ll_collection);
             this.collection = itemView.findViewById(R.id.collection);
+
+            this.preOrder = (TextView) itemView.findViewById(R.id.pre_order);
+            this.btnPreOrder = (LinearLayout) itemView.findViewById(R.id.layout_btnPreOrder);
+            this.tvPreOrderMsg = (TextView) itemView.findViewById(R.id.tv_PreOrderMsg);
+            this.llClosed = (LinearLayout) itemView.findViewById(R.id.closed_design);
 
         }
     }
@@ -117,6 +123,24 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             } else {
                 holder.rating.setText("New");
                 holder.imRatingImage.setVisibility(View.GONE);
+            }
+
+            String status = listFavourites.get(listPosition).getRestaurantStatus();
+            try {
+                if (status.trim().equalsIgnoreCase("closed")) {
+                    holder.llClosed.setVisibility(View.VISIBLE);
+                    holder.preOrder.setVisibility(View.VISIBLE);
+                    holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed));
+
+                } else if (status.trim().equalsIgnoreCase("not_serving")) {
+                    holder.preOrder.setVisibility(View.GONE);
+                    holder.llClosed.setVisibility(View.VISIBLE);
+                    holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed3));
+                } else {
+                    holder.llClosed.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
+                Log.e("DealAdapter", "onBindViewHolder<<Exception>>: " + e.getMessage());
             }
 
 //            holder.rating.setText(String.format("%.1f", fav.getOverallRating()));

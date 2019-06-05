@@ -2,6 +2,8 @@ package com.lexxdigital.easyfooduserapp.restaurant_details.api;
 
 import com.lexxdigital.easyfooduserapp.cart_db.tables.MenuProducts;
 import com.lexxdigital.easyfooduserapp.cart_db.tables.ProductSizeAndModifier;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainRequest;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainResponse;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.request.RestaurantDetailsRequest;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.Rough;
@@ -39,5 +41,9 @@ public interface RestaurantDetailsInterface {
     @Headers("Content-Type: application/json")
     @POST("get_menu_product_upsell")
     Call<UpSells> getUpsellProducts(@Body UpSellsRequest request);
+
+    @Headers("Content-Type: application/json")
+    @POST("order_again")
+    Call<OrderAgainResponse> getOrderAgain(@Body OrderAgainRequest request);
 
 }

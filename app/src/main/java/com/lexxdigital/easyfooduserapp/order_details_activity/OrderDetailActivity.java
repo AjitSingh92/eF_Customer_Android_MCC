@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,11 +37,14 @@ import com.lexxdigital.easyfooduserapp.model.cancelorder.CancelOrderResponse;
 import com.lexxdigital.easyfooduserapp.model.cancelorder.CancelRequest;
 import com.lexxdigital.easyfooduserapp.model.myorder.OrderDetails;
 import com.lexxdigital.easyfooduserapp.model.myorder.PreviousOrderDetail;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainRequest;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainResponse;
 import com.lexxdigital.easyfooduserapp.model.order_details.Data;
 import com.lexxdigital.easyfooduserapp.model.order_details.OrderDetailsRequest;
 import com.lexxdigital.easyfooduserapp.model.order_details.OrderDetailsResponse;
 import com.lexxdigital.easyfooduserapp.order_status.OrderStatusActivity;
 import com.lexxdigital.easyfooduserapp.restaurant_details.RestaurantDetailsActivity;
+import com.lexxdigital.easyfooduserapp.restaurant_details.api.RestaurantDetailsInterface;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.CartData;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategoryCart;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
@@ -250,10 +254,13 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.order_again:
-                if (db.getCartData() == null) {
+
+                getOrderAgain(previousOrderDetailList.getOrderNum());
+
+              /*  if (db.getCartData() == null) {
                     //insertData(previousOrderDetailList);
                 } else {
-                    db.deleteCart();
+                    db.deleteCart();*/
                     /*//insertData(previousOrderDetailList);
                     Intent i = new Intent(OrderDetailActivity.this, RestaurantDetailsActivity.class);
                     i.putExtra("RESTAURANTID", previousOrderDetailList.getRestaurantId());
@@ -265,8 +272,8 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 //                    alertDailogConfirm("Alert message", dataList.getRestaurantId(), dataList.getRestaurantName(), position);
 */
-                    addOrderOnCart(previousOrderDetailList.getRestaurantId(), previousOrderDetailList.getRestaurantName());
-                }
+                   /* addOrderOnCart(previousOrderDetailList.getRestaurantId(), previousOrderDetailList.getRestaurantName());
+                }*/
                 break;
             case R.id.ll_cancel:
                 showDialog("Are you sure Cancel order!");
@@ -795,6 +802,80 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         sharePre.setString(sharePre.RESTUARANT_ID, restaurantId);
         sharePre.setString(sharePre.RESTUARANT_NAME, restaurantName);
         startActivity(i);
+    }
+
+
+    public void getOrderAgain(final String orderNumber) {
+
+        dialog.show();
+        RestaurantDetailsInterface apiInterface = ApiClient.getClient(this).create(RestaurantDetailsInterface.class);
+        OrderAgainRequest request = new OrderAgainRequest();
+        request.setOrderNumber(orderNumber);
+
+        Call<OrderAgainResponse> call3 = apiInterface.getOrderAgain(request);
+        call3.enqueue(new Callback<OrderAgainResponse>() {
+            @Override
+            public void onResponse(Call<OrderAgainResponse> call, Response<OrderAgainResponse> response) {
+                try {
+                    dialog.dismiss();
+                    if (response.body().getSuccess()) {
+
+                        String status = response.body().getData().getRestaurantStatus();
+
+                        if (status != null && status.trim().length() > 0) {
+
+                            if (status.equalsIgnoreCase("open")) {
+
+                                Toast.makeText(OrderDetailActivity.this, status, Toast.LENGTH_SHORT).show();
+
+                            } else if (status.equalsIgnoreCase("closed")) {
+                                Toast.makeText(OrderDetailActivity.this, status, Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                getOrderAgainDailog(status, "message");
+                            }
+                        }else {
+
+                        }
+                    }
+                } catch (Exception e) {
+                    dialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderAgainResponse> call, Throwable t) {
+                dialog.dismiss();
+            }
+        });
+
+
+    }
+
+    public void getOrderAgainDailog(String status, String message) {
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+
     }
 
 }

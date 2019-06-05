@@ -60,6 +60,8 @@ import com.lexxdigital.easyfooduserapp.dialogs.MenuMealDialog;
 import com.lexxdigital.easyfooduserapp.fragments.InfoFragment;
 import com.lexxdigital.easyfooduserapp.fragments.MenuFragment;
 import com.lexxdigital.easyfooduserapp.fragments.ReviwesFragment;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainRequest;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainResponse;
 import com.lexxdigital.easyfooduserapp.restaurant_details.api.RestaurantDetailsInterface;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.request.RestaurantDetailsRequest;
@@ -495,6 +497,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
 
     }
+
 
     public void alertDialogAllergy() {
         LayoutInflater factory = LayoutInflater.from(RestaurantDetailsActivity.this);

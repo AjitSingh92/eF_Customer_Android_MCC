@@ -36,6 +36,9 @@ public class Favourite {
     @SerializedName("background_image")
     @Expose
     private String backgroundImage;
+    @SerializedName("restaurant_status")
+    @Expose
+    private String restaurantStatus;
 
     public String getUserId() {
         return userId;
@@ -117,4 +120,11 @@ public class Favourite {
         this.backgroundImage = backgroundImage;
     }
 
+    public String getRestaurantStatus() {
+        return restaurantStatus;
+    }
+
+    public void setRestaurantStatus(String restaurantStatus) {
+        this.restaurantStatus = restaurantStatus;
+    }
 }

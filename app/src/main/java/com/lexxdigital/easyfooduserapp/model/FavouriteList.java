@@ -1,24 +1,26 @@
 package com.lexxdigital.easyfooduserapp.model;
 
 public class FavouriteList {
-    protected String EntityID;
-    protected String RestaurantName;
-    protected String Logo;
-    protected String BackImane;
-    protected String Cuisines;
-    protected String MinOrderValue;
-    protected String DeliveryCharge;
-    protected Double OverallRating;
+    private String EntityID;
+    private String RestaurantName;
+    private String Logo;
+    private String BackImane;
+    private String Cuisines;
+    private String MinOrderValue;
+    private String DeliveryCharge;
+    private Double OverallRating;
+    private String restaurantStatus;
 
-    public FavouriteList(String entityID, String restaurantName, String logo, String backImane, String cuisines, String minOrderValue, String deliveryCharge, Double overallRating) {
-        EntityID = entityID;
-        RestaurantName = restaurantName;
-        Logo = logo;
-        Cuisines = cuisines;
-        MinOrderValue = minOrderValue;
-        DeliveryCharge = deliveryCharge;
-        OverallRating = overallRating;
-        BackImane = backImane;
+    public FavouriteList(String entityID, String restaurantName, String logo, String backImane, String cuisines, String minOrderValue, String deliveryCharge, Double overallRating, String restaurantStatus) {
+        this.EntityID = entityID;
+        this.RestaurantName = restaurantName;
+        this.Logo = logo;
+        this.Cuisines = cuisines;
+        this.MinOrderValue = minOrderValue;
+        this.DeliveryCharge = deliveryCharge;
+        this.OverallRating = overallRating;
+        this.BackImane = backImane;
+        this.restaurantStatus = restaurantStatus;
     }
 
     public String getEntityID() {
@@ -83,5 +85,13 @@ public class FavouriteList {
 
     public void setBackImane(String backImane) {
         BackImane = backImane;
+    }
+
+    public String getRestaurantStatus() {
+        return restaurantStatus;
+    }
+
+    public void setRestaurantStatus(String restaurantStatus) {
+        this.restaurantStatus = restaurantStatus;
     }
 }

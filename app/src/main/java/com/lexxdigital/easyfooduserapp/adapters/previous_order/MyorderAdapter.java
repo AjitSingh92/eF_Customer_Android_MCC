@@ -124,6 +124,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         // status will be 'new','pending','rejected','accepted','out_of_delivery','delivered','preparing'-------------
         if (strOrderStatus.equalsIgnoreCase("new") || strOrderStatus.equalsIgnoreCase("pending")) {
             holder.orderStatus.setText("Pending");
+            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.price_color));
             holder.cancelOrder.setVisibility(View.GONE);
             holder.layoutTrackOrder.setVisibility(View.GONE);
             holder.layoutReapetOrder.setVisibility(View.GONE);
@@ -131,6 +132,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             String ordStatus = strOrderStatus;
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
             holder.orderStatus.setText(status);
+            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.price_color));
             holder.layoutTrackOrder.setVisibility(View.VISIBLE);
             holder.layoutReapetOrder.setVisibility(View.GONE);
             holder.cancelOrder.setVisibility(View.GONE);
@@ -139,7 +141,6 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
             holder.orderStatus.setText(status);
             holder.orderStatus.setTextColor(Color.GREEN);
-
             holder.cancelOrder.setVisibility(View.GONE);
             holder.layoutTrackOrder.setVisibility(View.GONE);
             holder.layoutReapetOrder.setVisibility(View.VISIBLE);

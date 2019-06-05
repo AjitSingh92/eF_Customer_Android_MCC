@@ -100,7 +100,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout btnPreOrder;
+        LinearLayout btnPreOrder, layoutDeliveryPrice, layoutDeliveryTime;
         RecyclerView dealcard_list_id;
         TextView name, cuisines, rating, deliveryMin, deliveryVal, deliveryTime, preOrder, tvPreOrderMsg;
         ImageView delivery, dine_in, collection;
@@ -114,6 +114,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
 
             this.tvPreOrderMsg = (TextView) itemView.findViewById(R.id.tv_PreOrderMsg);
             this.btnPreOrder = (LinearLayout) itemView.findViewById(R.id.layout_btnPreOrder);
+            this.layoutDeliveryPrice = (LinearLayout) itemView.findViewById(R.id.layout_deliveryPrice);
+            this.layoutDeliveryTime = (LinearLayout) itemView.findViewById(R.id.layout_deliveryTime);
+
             this.dealcard_list_id = (RecyclerView) itemView.findViewById(R.id.dealcard_list_id);
             this.name = (TextView) itemView.findViewById(R.id.restaurant_name);
             this.cuisines = (TextView) itemView.findViewById(R.id.restaurant_cuisines);
@@ -183,8 +186,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                            int viewType) {
 
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dealrecycleviewitem, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dealrecycleviewitem, parent, false);
 
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
@@ -251,6 +253,14 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             if (Arrays.asList(serve_styles).contains("dine_in")) {
                 holder.llDinein.setVisibility(View.VISIBLE);
                 holder.dine_in.setImageDrawable(mContext.getResources().getDrawable(R.drawable.open));
+            }
+
+            if (!Arrays.asList(serve_styles).contains("delivery")) {
+                holder.layoutDeliveryPrice.setVisibility(View.GONE);
+                holder.layoutDeliveryTime.setVisibility(View.GONE);
+            } else {
+                holder.layoutDeliveryPrice.setVisibility(View.VISIBLE);
+                holder.layoutDeliveryTime.setVisibility(View.VISIBLE);
             }
         }
         holder.preOrder.setOnClickListener(new View.OnClickListener() {

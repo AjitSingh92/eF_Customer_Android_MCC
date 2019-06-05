@@ -116,6 +116,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <LinearLayout
+                        android:id="@+id/layout.deliveryPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -238,7 +239,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-
+                    android:id="@+id/layout.deliveryTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -328,7 +329,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/layout.btnPreOrder"

@@ -1180,13 +1180,14 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             netAmount = netAmount - voucherCal;
                             appliedVoucherCode = voucherCode;
                             appliedVoucherPaymentType = voucherValidOn;
-//                         alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
+//                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
                             voucherDiscount = voucherCal;
                         } else {
 //                alertDailogVoucher("Validate voucher", "Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
 
@@ -1204,6 +1205,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
                             voucherDiscount = voucherValue;
                         } else {
+                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + voucherValue);
                         }

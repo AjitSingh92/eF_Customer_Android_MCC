@@ -150,7 +150,7 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                         showDialog("Account details changed successfully.");
                     } else {
 
-                        showDialog(response.body().getErrors().getPhoneNumber().get(0));
+                        showDialog(response.body().getErrors().getPhoneNumber());
                     }
                 } catch (Exception e) {
                     dialog.hide();

@@ -4,8 +4,6 @@ package com.lexxdigital.easyfooduserapp.model.edit_account_response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class EditAccountResponse {
 
     @SerializedName("success")
@@ -56,13 +54,13 @@ public class EditAccountResponse {
     public static class Errors {
         @SerializedName("phone_number")
         @Expose
-        private List<String> phoneNumber;
+        private String phoneNumber;
 
-        public List<String> getPhoneNumber() {
+        public String getPhoneNumber() {
             return phoneNumber;
         }
 
-        public void setPhoneNumber(List<String> phoneNumber) {
+        public void setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
         }
     }

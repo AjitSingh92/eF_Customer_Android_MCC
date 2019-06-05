@@ -232,7 +232,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             } else if (status.trim().equalsIgnoreCase("not_serving")) {
                 holder.preOrder.setVisibility(View.GONE);
                 holder.llClosed.setVisibility(View.VISIBLE);
-                holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed2));
+                holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed3));
             } else {
                 holder.llClosed.setVisibility(View.GONE);
             }
@@ -315,7 +315,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             } else {
                                 if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                    String msg = "You are already placing an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
+                                    String msg = "You have items in your basket from " + sharePre.getString(sharePre.RESTUARANT_NAME) + " would you like to disregard and move to "+respNameFilter.get(mListPosition).getRestaurantName();
                                     alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
 
                                 } else {
@@ -415,21 +415,21 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setCancelable(true);
 
-        alertDialogBuilder.setPositiveButton("GO TO " + oldRest, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
 //                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
 //                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
 
-                i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
-                i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);
+//                i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
+//                i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
+//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                mContext.startActivity(i);
                 dialog.dismiss();
             }
         });
-        alertDialogBuilder.setNegativeButton("GO TO " + currentRestuarant, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Yes" + currentRestuarant, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

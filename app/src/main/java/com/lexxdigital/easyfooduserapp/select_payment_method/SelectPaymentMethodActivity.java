@@ -263,7 +263,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                                 dialogNoInternetConnection("Please check internet connection.", 0);
                             }
 
-                        } else if (voucherPaymentType == null && voucherPaymentType.equalsIgnoreCase("")) {
+                        } else if (voucherPaymentType == null || voucherPaymentType.equalsIgnoreCase("")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
                                 callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
                             } else {
@@ -346,7 +346,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
                     startActivity(i);
                     this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-                } else if (voucherPaymentType == null && voucherPaymentType.equalsIgnoreCase("")) {
+                } else if (voucherPaymentType == null || voucherPaymentType.equalsIgnoreCase("")) {
                     Intent i = new Intent(this, AddNewCardActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("ORDER_TOTAL", totalAmount);
@@ -385,7 +385,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             } else {
                                 dialogNoInternetConnection("Please check internet connection.", 0);
                             }
-                        } else if (voucherPaymentType == null && voucherPaymentType.equalsIgnoreCase("")) {
+                        } else if (voucherPaymentType == null || voucherPaymentType.equalsIgnoreCase("")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
                                 callAPI("", "cash", "", "");
                             } else {

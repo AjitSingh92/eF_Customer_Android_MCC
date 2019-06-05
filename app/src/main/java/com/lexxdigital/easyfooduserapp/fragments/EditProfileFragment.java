@@ -55,7 +55,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 @SuppressLint("ValidFragment")
-public class EditProfileFragment extends Fragment implements EasyPermissions.PermissionCallbacks{
+public class EditProfileFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.top_address)
     LinearLayout topAddress;
@@ -77,14 +77,17 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
     private GlobalValues val;
     private Dialog dialog;
     private Context mContext;
-    private String profileImage="";
+    private String profileImage = "";
+
     @SuppressLint("ValidFragment")
     public EditProfileFragment(Context mContext) {
         this.mContext = mContext;
     }
-    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_NETWORK_STATE};
-    private final int PICK_IMAGE_CAMERA = 101,PICK_IMAGE_GALLERY = 102;
+
+    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE};
+    private final int PICK_IMAGE_CAMERA = 101, PICK_IMAGE_GALLERY = 102;
     private File imgFile;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -114,13 +117,13 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                 selectImage();
                 break;
             case R.id.btn_confirm:
-                if(editFirstName.getText().toString().trim().length() <= 0){
+                if (editFirstName.getText().toString().trim().length() <= 0) {
 
-                }else if(editLastName.getText().toString().trim().length() <= 0){
+                } else if (editLastName.getText().toString().trim().length() <= 0) {
 
-                }else if(editMobile.getText().toString().trim().length() <= 0){
+                } else if (editMobile.getText().toString().trim().length() <= 0) {
 
-                }else {
+                } else {
                     updateAccountDetail();
                 }
                 break;
@@ -146,7 +149,8 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                     if (response.body().getSuccess()) {
                         showDialog("Account details changed successfully.");
                     } else {
-                        showDialog("Failed to change account details. Please try again.");
+
+                        showDialog(response.body().getErrors().getPhoneNumber().get(0));
                     }
                 } catch (Exception e) {
                     dialog.hide();
@@ -241,7 +245,7 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(mContext, "Camera Permission error"+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Camera Permission error" + e.getMessage(), Toast.LENGTH_SHORT).show();
             if (Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
                 String[] perms = {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -266,36 +270,36 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_CAMERA) {
             try {
-                if(requestCode == 101) {
+                if (requestCode == 101) {
                     imgFile = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
                     BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(),bmOptions);
+                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
                     //bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
                     profileImg.setImageBitmap(bitmap);
 
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream .toByteArray();
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
                     profileImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         } else if (requestCode == PICK_IMAGE_GALLERY) {
 
-            try{
-                if(requestCode == 102) {
+            try {
+                if (requestCode == 102) {
                     Uri imageUri = data.getData();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), imageUri);
                     profileImg.setImageBitmap(bitmap);
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream .toByteArray();
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
                     profileImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

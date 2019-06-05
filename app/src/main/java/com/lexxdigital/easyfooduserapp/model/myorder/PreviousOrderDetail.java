@@ -82,9 +82,9 @@ public class PreviousOrderDetail {
     @SerializedName("order_notes")
     @Expose
     private String orderNotes;
-    /*@SerializedName("reason_cancel")
+    @SerializedName("order_reject_note")
     @Expose
-    private String reasonCancel;*/
+    private String orderRejectNote;
     @SerializedName("order_details")
     @Expose
     private OrderDetails orderDetails;
@@ -95,7 +95,7 @@ public class PreviousOrderDetail {
     public PreviousOrderDetail() {
     }
 
-    public PreviousOrderDetail(String orderId, String restaurantId, String restaurantName, String restaurantLogo, String restaurantImage, String avgRating, String customerId, String cartId, String orderNum, String orderTotal, String orderDateTime, Integer isPaid, String paymentMode, String paymentStatus, Integer isDelivered, String deliveryTime, String deliveryOption, String deliveryDateTime, String deliveryCharge, String discountAmount, String orderSubtotal, String voucherId, String offerId, String orderStatus, String orderNotes, OrderDetails orderDetails, Integer total) {
+    public PreviousOrderDetail(String orderId, String restaurantId, String restaurantName, String restaurantLogo, String restaurantImage, String avgRating, String customerId, String cartId, String orderNum, String orderTotal, String orderDateTime, Integer isPaid, String paymentMode, String paymentStatus, Integer isDelivered, String deliveryTime, String deliveryOption, String deliveryDateTime, String deliveryCharge, String discountAmount, String orderSubtotal, String voucherId, String offerId, String orderStatus, String orderNotes,String orderRejectNote, OrderDetails orderDetails, Integer total) {
         this.orderId = orderId;
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
@@ -121,6 +121,7 @@ public class PreviousOrderDetail {
         this.offerId = offerId;
         this.orderStatus = orderStatus;
         this.orderNotes = orderNotes;
+        this.orderRejectNote = orderRejectNote;
         this.orderDetails = orderDetails;
         this.total = total;
     }
@@ -315,6 +316,14 @@ public class PreviousOrderDetail {
 
     public void setOrderNotes(String orderNotes) {
         this.orderNotes = orderNotes;
+    }
+
+    public String getOrderRejectNote() {
+        return orderRejectNote;
+    }
+
+    public void setOrderRejectNote(String orderRejectNote) {
+        this.orderRejectNote = orderRejectNote;
     }
 
     public OrderDetails getOrderDetails() {

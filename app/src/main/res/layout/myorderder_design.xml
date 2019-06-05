@@ -134,8 +134,9 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:paddingBottom="@dimen/_10sdp"
             android:fontFamily="@font/avenir_roman"
-            android:textColor="@color/gray"
+            android:textColor="@android:color/holo_red_dark"
             android:visibility="gone"
+            android:text="asdasd"
             android:textSize="@dimen/_12sdp" />
 
         <LinearLayout

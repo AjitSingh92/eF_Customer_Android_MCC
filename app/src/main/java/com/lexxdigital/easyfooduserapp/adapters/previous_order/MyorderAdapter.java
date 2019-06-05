@@ -154,11 +154,12 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             holder.layoutTrackOrder.setVisibility(View.GONE);
             holder.layoutReapetOrder.setVisibility(View.VISIBLE);
 
-            /*if (dataList.getR) {
-                holder.reasonForCancel.setVisibility(View.GONE);
-            } else {
+            if (dataList.getOrderRejectNote()!=null && !dataList.getOrderRejectNote().equalsIgnoreCase("")) {
                 holder.reasonForCancel.setVisibility(View.VISIBLE);
-            }*/
+                holder.reasonForCancel.setText(dataList.getOrderRejectNote());
+            } else {
+                holder.reasonForCancel.setVisibility(View.GONE);
+            }
         } else {
             String ordStatus = strOrderStatus;
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);

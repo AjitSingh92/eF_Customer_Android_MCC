@@ -219,6 +219,48 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
 
                 }
             });
+
+
+            holder.preOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listFavourites.get(listPosition).getRestaurantStatus().equalsIgnoreCase("not_serving")) {
+                        return;
+                    }
+                    try {
+                        if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                            if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(listFavourites.get(listPosition).getEntityID())) {
+                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
+                                i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(i);
+                                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                            } else {
+                                String msg = "You have already placed an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
+                                alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), listFavourites.get(listPosition).getRestaurantName(), listFavourites.get(listPosition).getEntityID());
+                            }
+                        } else {
+                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                            i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
+                            i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(i);
+                        }
+
+                    } catch (Exception e) {
+
+                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                        i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
+                        i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(i);
+                    }
+                }
+
+            });
+
         } catch (Exception e) {
 
         }

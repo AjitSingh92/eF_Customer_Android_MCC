@@ -119,6 +119,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             Log.e("Exception", e.toString());
         }
 
+        holder.reasonForCancel.setVisibility(View.GONE);
         String strOrderStatus = dataList.getOrderStatus();
         Log.e(TAG, "onBindViewHolder: order status: " + strOrderStatus);
         // status will be 'new','pending','rejected','accepted','out_of_delivery','delivered','preparing'-------------
@@ -136,6 +137,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             holder.layoutTrackOrder.setVisibility(View.VISIBLE);
             holder.layoutReapetOrder.setVisibility(View.GONE);
             holder.cancelOrder.setVisibility(View.GONE);
+
         } else if (strOrderStatus.equalsIgnoreCase("delivered")) {
             String ordStatus = strOrderStatus;
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
@@ -154,7 +156,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             holder.layoutTrackOrder.setVisibility(View.GONE);
             holder.layoutReapetOrder.setVisibility(View.VISIBLE);
 
-            if (dataList.getOrderRejectNote()!=null && !dataList.getOrderRejectNote().equalsIgnoreCase("")) {
+            if (dataList.getOrderRejectNote() != null && !dataList.getOrderRejectNote().equalsIgnoreCase("")) {
                 holder.reasonForCancel.setVisibility(View.VISIBLE);
                 holder.reasonForCancel.setText(dataList.getOrderRejectNote());
             } else {

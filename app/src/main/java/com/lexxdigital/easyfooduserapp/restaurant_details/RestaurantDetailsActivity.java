@@ -62,6 +62,8 @@ import com.lexxdigital.easyfooduserapp.fragments.MenuFragment;
 import com.lexxdigital.easyfooduserapp.fragments.ReviwesFragment;
 import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainRequest;
 import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainResponse;
+import com.lexxdigital.easyfooduserapp.model.restaurant_offers.RestaurantOffersRequest;
+import com.lexxdigital.easyfooduserapp.model.restaurant_offers.RestaurantOffersResponse;
 import com.lexxdigital.easyfooduserapp.restaurant_details.api.RestaurantDetailsInterface;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.request.RestaurantDetailsRequest;
@@ -473,6 +475,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                 .into(backImage);
                         llbotom.setVisibility(View.VISIBLE);
                         containerRestaurantsDetails.setVisibility(View.VISIBLE);
+
+
                     } else {
                         dialog.dismiss();
                         llbotom.setVisibility(View.GONE);
@@ -744,6 +748,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

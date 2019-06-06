@@ -57,11 +57,15 @@ import com.lexxdigital.easyfooduserapp.cart_db.DatabaseHelper;
 import com.lexxdigital.easyfooduserapp.cart_model.final_cart.FinalNewCartDetails;
 import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
 import com.lexxdigital.easyfooduserapp.dialogs.AddressDialogFragment;
+import com.lexxdigital.easyfooduserapp.dialogs.RestaurantOffersDialogFragment;
 import com.lexxdigital.easyfooduserapp.dialogs.TimeSlotDialogFragment;
 import com.lexxdigital.easyfooduserapp.model.VoucherApplyRequest;
 import com.lexxdigital.easyfooduserapp.model.VoucherApplyResponse;
 import com.lexxdigital.easyfooduserapp.model.address_list_request.AddressListRequest;
 import com.lexxdigital.easyfooduserapp.model.address_list_response.AddressListResponse;
+import com.lexxdigital.easyfooduserapp.model.restaurant_offers.RestaurantOffersRequest;
+import com.lexxdigital.easyfooduserapp.model.restaurant_offers.RestaurantOffersResponse;
+import com.lexxdigital.easyfooduserapp.model.restaurant_offers.RestaurantSpecialOffers;
 import com.lexxdigital.easyfooduserapp.model.restuarant_time_slot.TimeSlotRequest;
 import com.lexxdigital.easyfooduserapp.model.restuarant_time_slot.TimeSlotResponse;
 import com.lexxdigital.easyfooduserapp.restaurant_details.RestaurantDetailsActivity;
@@ -224,6 +228,8 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     TextView tvChangeBillingAddress;
     @BindView(R.id.ch_billAddress)
     CheckBox chDeliverySameBilling;
+    @BindView(R.id.tv_SeeOffers)
+    TextView tvSeeOffers;
 
     NewRestaurantsDetailsResponse res;
     private AdapterBasketOrderItems oAdapter;
@@ -273,8 +279,10 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     Double updateSubTotal = 0.0d;
     private List<String> productIdForUpsell;
     TimeSlotDialogFragment timeSlotDialogFragment;
+    RestaurantOffersDialogFragment offersDialogFragment;
     Boolean isPreOrder = false;
     String restuarantOpenStatus;
+    List<RestaurantSpecialOffers> restaurantSpecialOffers = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -528,7 +536,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     @OnClick({R.id.allergy_click, R.id.click_delivery_time_change, R.id.add_note,
             R.id.btn_addNoteEdit, R.id.add_more_item, R.id.btn_checkout, R.id.tv_viewMap,
             R.id.btn_ApplyVoucherCode, R.id.tv_ChangeAddress, R.id.tv_ChangeBillingAddress,
-            R.id.ch_billAddress, R.id.ll_DeliveryTimeSlot})
+            R.id.ch_billAddress, R.id.ll_DeliveryTimeSlot, R.id.tv_SeeOffers})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.allergy_click:
@@ -707,6 +715,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             case R.id.ll_DeliveryTimeSlot:
                 timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this);
                 timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
+
+                break;
+
+            case R.id.tv_SeeOffers:
+                offersDialogFragment = RestaurantOffersDialogFragment.newInstance(mContext, restaurantSpecialOffers);
+                offersDialogFragment.show(getFragmentManager(), "offers");
 
                 break;
         }
@@ -1558,6 +1572,8 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                 tvAddNoteData.setVisibility(View.GONE);
                             }
                         }
+                        /* Todo: Restaurant Offers API Call*/
+                        getRestaurantOffers(rId);
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
@@ -1627,5 +1643,31 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         alertDialog.show();
     }
 
+
+    private void getRestaurantOffers(String restaurantId) {
+
+        RestaurantDetailsInterface apiInterface = ApiClient.getClient(mContext).create(RestaurantDetailsInterface.class);
+        RestaurantOffersRequest request = new RestaurantOffersRequest(restaurantId);
+
+
+        Call<RestaurantOffersResponse> call3 = apiInterface.getRestaurantOffers(request);
+        call3.enqueue(new Callback<RestaurantOffersResponse>() {
+            @Override
+            public void onResponse(Call<RestaurantOffersResponse> call, Response<RestaurantOffersResponse> response) {
+                if (response.body().getSuccess()) {
+
+                    restaurantSpecialOffers = response.body().getData().getRestaurantSpecialOffers();
+                    Log.e("Data>>>", response.body().getData().toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RestaurantOffersResponse> call, Throwable t) {
+                Log.e("ERROR 2>>", t.getMessage());
+
+            }
+        });
+    }
 
 }

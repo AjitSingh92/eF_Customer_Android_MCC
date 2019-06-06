@@ -319,9 +319,9 @@
 
                                 <LinearLayout
                                     android:layout_width="0dp"
-                                    android:layout_weight="1"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_weight="1"
                                     android:gravity="center"
                                     android:orientation="vertical">
 
@@ -331,8 +331,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:gravity="center"
-                                        android:singleLine="true"
                                         android:padding="0dp"
+                                        android:singleLine="true"
                                         android:textColor="@color/black"
                                         android:textSize="@dimen/_12sdp"
                                         android:visibility="gone" />
@@ -343,8 +343,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:gravity="center"
-                                        android:singleLine="true"
                                         android:padding="0dp"
+                                        android:singleLine="true"
                                         android:text="0 min"
                                         android:textColor="@color/black"
                                         android:textSize="@dimen/_12sdp" />
@@ -1314,6 +1314,23 @@
                                  />
 
                          </LinearLayout>-->
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp">
+
+                        <TextView
+                            android:id="@+id/tv.SeeOffers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:gravity="center_vertical"
+                            android:text="See Offers"
+                            android:textColor="@color/orange"
+                            android:textSize="@dimen/_14sdp" />
+
                     </LinearLayout>
 
                     <LinearLayout

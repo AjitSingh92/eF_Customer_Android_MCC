@@ -197,7 +197,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                                 mContext.startActivity(i);
                                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             } else {
-                                String msg = "You have already placed an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
+                                String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + listFavourites.get(listPosition).getRestaurantName() + "\"";
                                 alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), listFavourites.get(listPosition).getRestaurantName(), listFavourites.get(listPosition).getEntityID());
                             }
                         } else {
@@ -238,7 +238,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                                 mContext.startActivity(i);
                                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             } else {
-                                String msg = "You have already placed an order with \" " + sharePre.getString(sharePre.RESTUARANT_NAME) + "\". \nDo you want to? ";
+                                String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + listFavourites.get(listPosition).getRestaurantName() + "\"";
                                 alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), listFavourites.get(listPosition).getRestaurantName(), listFavourites.get(listPosition).getEntityID());
                             }
                         } else {
@@ -278,7 +278,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setCancelable(true);
 
-        alertDialogBuilder.setPositiveButton("GO TO " + oldRest, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("Continue with " + oldRest, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
@@ -289,7 +289,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                 dialog.dismiss();
             }
         });
-        alertDialogBuilder.setNegativeButton("GO TO " + currentRestuarant, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Start new order with" + currentRestuarant, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

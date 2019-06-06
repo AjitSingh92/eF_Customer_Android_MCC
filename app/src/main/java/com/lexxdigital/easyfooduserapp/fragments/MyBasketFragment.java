@@ -1149,7 +1149,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 tvChange.setText("Change Address");
                 tvDeliveryAddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
             } else {
-                tvChange.setText("Add Address");
+                tvChange.setText("Select Address");
             }
             if (chDeliverySameBilling.isChecked()) {
                 tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));

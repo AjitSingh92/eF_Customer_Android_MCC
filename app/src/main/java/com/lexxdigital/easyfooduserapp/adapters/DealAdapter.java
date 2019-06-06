@@ -326,6 +326,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                                            sharePre.setString(sharePre.NOTEPAD, "");
 
                                             db.getCartData();
                                             Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
@@ -349,6 +350,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                     GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                                     GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                                     sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                                    sharePre.setString(sharePre.NOTEPAD, "");
 
                                     db.getCartData();
 
@@ -444,6 +446,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 sharePre.setString(sharePre.RESTUARANT_ID, currentRestId);
                 sharePre.setString(sharePre.RESTUARANT_NAME, currentRestuarant);
                 sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                sharePre.setString(sharePre.NOTEPAD, "");
                 db.deleteCart();
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                 i.putExtra("RESTAURANTID", currentRestId);

@@ -22,31 +22,7 @@
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4bd6081e-c652-4423-9ee2-7e49917dc1cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/RestaurantOffersAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/dialogs/RestaurantOffersDialogFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/model/restaurant_offers/ComboOfferDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/model/restaurant_offers/RestaurantOffersRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/model/restaurant_offers/RestaurantOffersResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/model/restaurant_offers/RestaurantSpecialOffers.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/model/restaurant_offers/SpendxGetProductOfferDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/restaurant_offers_layout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/restaurant_offers_row.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/FavouritesAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/FavouritesAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/previous_order/MyorderAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/previous_order/MyorderAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/fragments/MyBasketFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/RestaurantDetailsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/api/RestaurantDetailsInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/restaurant_details/api/RestaurantDetailsInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_basket.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_basket.xml" afterDir="false" />
-    </list>
+    <list default="true" id="4bd6081e-c652-4423-9ee2-7e49917dc1cf" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,14 +120,14 @@
         <counts>
           <entry key="dummy" value="10" />
           <entry key="java" value="3365" />
-          <entry key="txt" value="273" />
+          <entry key="txt" value="274" />
           <entry key="xml" value="510" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="3365" />
-          <entry key="PLAIN_TEXT" value="283" />
+          <entry key="PLAIN_TEXT" value="284" />
           <entry key="XML" value="510" />
         </counts>
       </usages-collector>
@@ -183,7 +159,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/FavouritesAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="716">
+            <state relative-caret-position="1481">
               <caret line="258" column="21" selection-start-line="258" selection-start-column="21" selection-end-line="258" selection-end-column="21" />
               <folding>
                 <element signature="e#8612#11042#0" expanded="true" />
@@ -3074,11 +3050,19 @@
       <option name="project" value="LOCAL" />
       <updated>1559804306940</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Merge branch 'ak9615' of https://bitbucket.org/lexxdigital1/easyfood_userapp_android&#10;&#10;# Conflicts:&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.bin&#10;#&#9;.gradle/4.10.1/fileHashes/fileHashes.lock&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.bin&#10;#&#9;.gradle/4.10.1/taskHistory/taskHistory.lock&#10;#&#9;.gradle/buildOutputCleanup/buildOutputCleanup.lock&#10;#&#9;.idea/workspace.xml">
+      <created>1559830012730</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1559830012730</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1600" height="810" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49671772" weight="0.2889318" />
@@ -4519,7 +4503,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lexxdigital/easyfooduserapp/adapters/FavouritesAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="716">
+        <state relative-caret-position="1481">
           <caret line="258" column="21" selection-start-line="258" selection-start-column="21" selection-end-line="258" selection-end-column="21" />
           <folding>
             <element signature="e#8612#11042#0" expanded="true" />

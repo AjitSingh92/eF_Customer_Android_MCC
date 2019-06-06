@@ -90,7 +90,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     OrderDetails orderDetails;
     public static String menuCategory;
     private List<MenuCategoryCart> orderDetail;
-
+TextView reasonForCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +125,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         llCacelOrder.setOnClickListener(this);
         tvAddressType = findViewById(R.id.tv_AddressType);
         tvAddress = findViewById(R.id.tv_Address);
+        reasonForCancel = findViewById(R.id.tv_reasonForCancel);
 
         Bundle b = new Bundle();
         b = getIntent().getExtras();
@@ -323,7 +324,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                                 response.body().getData().getVoucherId(),
                                 response.body().getData().getOfferId(),
                                 response.body().getData().getOrderStatus(),
-                                response.body().getData().getOrderNotes(), orderDetails, response.body().getData().getTotal());
+                                response.body().getData().getOrderNotes(),
+                                response.body().getData().getOrderRejectNote(), orderDetails, response.body().getData().getTotal());
+
 
                         dataList = response.body().getData().getOrderDetails().getData();
                         orderId = response.body().getData().getOrderId();
@@ -438,7 +441,12 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                             llReview.setVisibility(View.VISIBLE);
                             addReview.setVisibility(View.GONE);
                             orderAgain.setVisibility(View.VISIBLE);
-
+                            if (response.body().getData().getOrderRejectNote()!=null && !response.body().getData().getOrderRejectNote().equalsIgnoreCase("")) {
+                                reasonForCancel.setVisibility(View.VISIBLE);
+                                reasonForCancel.setText(response.body().getData().getOrderRejectNote());
+                            } else {
+                                reasonForCancel.setVisibility(View.GONE);
+                            }
                             /*if (fltRating > 0) {
                                 llReview.setVisibility(View.VISIBLE);
                                 addReview.setVisibility(View.GONE);

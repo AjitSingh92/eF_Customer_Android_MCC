@@ -81,6 +81,9 @@ public class Data {
     @SerializedName("order_notes")
     @Expose
     private String orderNotes;
+    @SerializedName("order_reject_note")
+    @Expose
+    private String orderRejectNote;
     @SerializedName("order_details")
     @Expose
     private OrderDetails orderDetails;
@@ -295,6 +298,14 @@ public class Data {
 
     public void setOrderNotes(String orderNotes) {
         this.orderNotes = orderNotes;
+    }
+
+    public String getOrderRejectNote() {
+        return orderRejectNote;
+    }
+
+    public void setOrderRejectNote(String orderRejectNote) {
+        this.orderRejectNote = orderRejectNote;
     }
 
     public OrderDetails getOrderDetails() {

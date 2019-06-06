@@ -154,6 +154,24 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
 //        initView(dataList);
 
+
+        findViewById(R.id.btn_backToMenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent i = new Intent(SelectPaymentMethodActivity.this, RestaurantDetailsActivity.class);
+                    if (val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId() != null && !val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId().equalsIgnoreCase("")) {
+                        i.putExtra("RESTAURANTID", val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                    }
+                } catch (NullPointerException e) {
+                    Log.e("NullPointerException", e.getLocalizedMessage());
+
+                }
+            }
+        });
     }
 
     private CartDatRequest makeData() {

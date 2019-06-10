@@ -272,7 +272,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         holder.preOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView deliveryTime, minOrderForDelivery, collectionTime, preOrderForLetter;
+                TextView deliveryTime, minOrderForDelivery, collectionTime, preOrderForLetter, tvDay;
                 ImageView im_cross;
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 final View view = inflater.inflate(R.layout.popup_preorder, null);
@@ -284,16 +284,32 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 minOrderForDelivery = view.findViewById(R.id.min_order_for_delivery);
                 preOrderForLetter = view.findViewById(R.id.tv_pre_order_for_later);
                 im_cross = view.findViewById(R.id.cross_tv);
+                tvDay = view.findViewById(R.id.tv_day);
 
-                String startDelTime, endDelTime, startCollTime, endCollTime;
+                String startDelTime = "", endDelTime = "", startCollTime = "", endCollTime = "";
+
+                String todayDay = Constants.getTodayDay();
+
+                tvDay.setText(respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDay());
                 startDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryStartTime();
                 endDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryEndTime();
                 startCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getCollectionStartTime();
                 endCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getCollectionEndTime();
 
+               /* for (int i = 0; i < respNameFilter.get(mListPosition).getRestaurantTiming().size(); i++) {
+
+                    if (todayDay.equalsIgnoreCase(respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getDay())) {
+                        startDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getDeliveryStartTime();
+                        endDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getDeliveryEndTime();
+                        startCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getCollectionStartTime();
+                        endCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getCollectionEndTime();
+                    }
+
+                }*/
+
                 deliveryTime.setText(startDelTime + " - " + endDelTime);
                 collectionTime.setText(startCollTime + " - " + endCollTime);
-                minOrderForDelivery.setText("£" + respNameFilter.get(mListPosition).getMin_order_value() + " min order");
+                minOrderForDelivery.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(mListPosition).getMin_order_value() + " min order");
                 im_cross.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -381,8 +397,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
 
         // if (respNameFilter.get(listPosition).getRestaurantDeliveryCharge().size() > 0)
         //  holder.deliveryMin.setText("£" + respNameFilter.get(listPosition).getRestaurantDeliveryCharge().get(0).getDeliveryCharge() + " delivery  •  £" + respNameFilter.get(listPosition).getRestaurantDeliveryCharge().get(0).getMinOrderValue() + " min order");
-        holder.deliveryMin.setText("£" + respNameFilter.get(listPosition).getDelivery_charge() + " delivery ");
-        holder.deliveryVal.setText("£" + respNameFilter.get(listPosition).getMin_order_value() + " min order");
+        holder.deliveryMin.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getDelivery_charge() + " delivery ");
+        holder.deliveryVal.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getMin_order_value() + " min order");
         holder.deliveryTime.setText(respNameFilter.get(listPosition).getAvgDeliveryTime() + " min");
 
         mDealCardAdapter = new DealCardAdapter(mContext, respNameFilter, respNameFilter.get(listPosition).getDiscountOffers().size(), listPosition, userID, activity);

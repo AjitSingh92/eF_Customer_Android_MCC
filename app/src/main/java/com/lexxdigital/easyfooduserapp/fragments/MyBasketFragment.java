@@ -1528,6 +1528,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         }
                         if (val.getRestaurantDetailsResponse() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
                             deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
+                            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, "");
                             restaurantPhoneNumber = res.getData().getRestaurants().getPhoneNumber();
                             if (val.getRestaurantDetailsResponse() != null && val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
                                 deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");

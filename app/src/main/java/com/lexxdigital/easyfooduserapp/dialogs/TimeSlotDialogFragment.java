@@ -199,7 +199,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                 break;
             case R.id.btn_ok:
 
-                if (!toDay.equalsIgnoreCase("Select Delivery Time")) {
+                if (toDay != null && !toDay.equalsIgnoreCase("Select Delivery Time")) {
                     if (todaySpinner != null && todaySpinner.getSelectedItemPosition() != 0) {
                         if (dateTimeDataList != null) {
                             if (onDeliveryTimeSelectedListener != null) {

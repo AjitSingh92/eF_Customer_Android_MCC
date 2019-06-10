@@ -1,5 +1,10 @@
 package com.lexxdigital.easyfooduserapp.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class FavouriteList {
     private String EntityID;
     private String RestaurantName;
@@ -10,17 +15,126 @@ public class FavouriteList {
     private String DeliveryCharge;
     private Double OverallRating;
     private String restaurantStatus;
+    private List<RestaurantTimingList> restaurantTimingLists;
 
-    public FavouriteList(String entityID, String restaurantName, String logo, String backImane, String cuisines, String minOrderValue, String deliveryCharge, Double overallRating, String restaurantStatus) {
-        this.EntityID = entityID;
-        this.RestaurantName = restaurantName;
-        this.Logo = logo;
-        this.Cuisines = cuisines;
-        this.MinOrderValue = minOrderValue;
-        this.DeliveryCharge = deliveryCharge;
-        this.OverallRating = overallRating;
-        this.BackImane = backImane;
+    public FavouriteList(String entityID, String restaurantName, String logo, String backImane, String cuisines, String minOrderValue, String deliveryCharge, Double overallRating, String restaurantStatus, List<RestaurantTimingList> restaurantTimingLists) {
+        EntityID = entityID;
+        RestaurantName = restaurantName;
+        Logo = logo;
+        BackImane = backImane;
+        Cuisines = cuisines;
+        MinOrderValue = minOrderValue;
+        DeliveryCharge = deliveryCharge;
+        OverallRating = overallRating;
         this.restaurantStatus = restaurantStatus;
+        this.restaurantTimingLists = restaurantTimingLists;
+    }
+
+    public static class RestaurantTimingList {
+
+        private String id;
+        private String restaurant_id;
+        private String day;
+        private String opening_start_time;
+        private String opening_end_time;
+        private String collection_start_time;
+        private String collection_end_time;
+        private String delivery_start_time;
+        private String delivery_end_time;
+        private String status;
+
+        public RestaurantTimingList(String id, String restaurant_id, String day, String opening_start_time, String opening_end_time, String collection_start_time, String collection_end_time, String delivery_start_time, String delivery_end_time, String status) {
+            this.id = id;
+            this.restaurant_id = restaurant_id;
+            this.day = day;
+            this.opening_start_time = opening_start_time;
+            this.opening_end_time = opening_end_time;
+            this.collection_start_time = collection_start_time;
+            this.collection_end_time = collection_end_time;
+            this.delivery_start_time = delivery_start_time;
+            this.delivery_end_time = delivery_end_time;
+            this.status = status;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getRestaurant_id() {
+            return restaurant_id;
+        }
+
+        public void setRestaurant_id(String restaurant_id) {
+            this.restaurant_id = restaurant_id;
+        }
+
+        public String getDay() {
+            return day;
+        }
+
+        public void setDay(String day) {
+            this.day = day;
+        }
+
+        public String getOpening_start_time() {
+            return opening_start_time;
+        }
+
+        public void setOpening_start_time(String opening_start_time) {
+            this.opening_start_time = opening_start_time;
+        }
+
+        public String getOpening_end_time() {
+            return opening_end_time;
+        }
+
+        public void setOpening_end_time(String opening_end_time) {
+            this.opening_end_time = opening_end_time;
+        }
+
+        public String getCollection_start_time() {
+            return collection_start_time;
+        }
+
+        public void setCollection_start_time(String collection_start_time) {
+            this.collection_start_time = collection_start_time;
+        }
+
+        public String getCollection_end_time() {
+            return collection_end_time;
+        }
+
+        public void setCollection_end_time(String collection_end_time) {
+            this.collection_end_time = collection_end_time;
+        }
+
+        public String getDelivery_start_time() {
+            return delivery_start_time;
+        }
+
+        public void setDelivery_start_time(String delivery_start_time) {
+            this.delivery_start_time = delivery_start_time;
+        }
+
+        public String getDelivery_end_time() {
+            return delivery_end_time;
+        }
+
+        public void setDelivery_end_time(String delivery_end_time) {
+            this.delivery_end_time = delivery_end_time;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
     }
 
     public String getEntityID() {
@@ -93,5 +207,13 @@ public class FavouriteList {
 
     public void setRestaurantStatus(String restaurantStatus) {
         this.restaurantStatus = restaurantStatus;
+    }
+
+    public List<RestaurantTimingList> getRestaurantTimingLists() {
+        return restaurantTimingLists;
+    }
+
+    public void setRestaurantTimingLists(List<RestaurantTimingList> restaurantTimingLists) {
+        this.restaurantTimingLists = restaurantTimingLists;
     }
 }

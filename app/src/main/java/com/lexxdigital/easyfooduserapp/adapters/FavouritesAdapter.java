@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,7 +112,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             fav = listFavourites.get(listPosition);
             holder.restaurantName.setText(fav.getRestaurantName());
             holder.cuisines.setText(fav.getCuisines());
-            holder.minOrder.setText("£" + fav.getDeliveryCharge() + " delivery  •  £" + fav.getMinOrderValue() + " min order");
+            holder.minOrder.setText(mContext.getResources().getString(R.string.currency) + fav.getDeliveryCharge() + " delivery  •  " + mContext.getResources().getString(R.string.currency) + fav.getMinOrderValue() + " min order");
 
             if (fav.getOverallRating() != null) {
                 if (fav.getOverallRating() == 0) {
@@ -225,38 +227,94 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                 @Override
                 public void onClick(View v) {
 
-                    if (listFavourites.get(listPosition).getRestaurantStatus().equalsIgnoreCase("not_serving")) {
-                        return;
-                    }
-                    try {
-                        if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
-                            if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(listFavourites.get(listPosition).getEntityID())) {
+                    /*Start*/
+                    TextView deliveryTime, minOrderForDelivery, collectionTime, preOrderForLetter, tvDay;
+                    ImageView im_cross;
+                    LayoutInflater inflater = LayoutInflater.from(mContext);
+                    final View view = inflater.inflate(R.layout.popup_preorder, null);
+                    final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+                    dialog.setView(view);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    deliveryTime = view.findViewById(R.id.delivery_time);
+                    collectionTime = view.findViewById(R.id.collection_time);
+                    minOrderForDelivery = view.findViewById(R.id.min_order_for_delivery);
+                    preOrderForLetter = view.findViewById(R.id.tv_pre_order_for_later);
+                    im_cross = view.findViewById(R.id.cross_tv);
+                    tvDay = view.findViewById(R.id.tv_day);
+
+                    String startDelTime = "", endDelTime = "", startCollTime = "", endCollTime = "";
+                    String todayDay = Constants.getTodayDay();
+
+                    tvDay.setText(listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDay());
+                    startDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDelivery_start_time();
+                    endDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDelivery_end_time();
+                    startCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getCollection_start_time();
+                    endCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getCollection_end_time();
+
+                   /* for (int i = 0; i < listFavourites.get(listPosition).getRestaurantTimingLists().size(); i++) {
+
+                        if (todayDay.equalsIgnoreCase(listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getDay())) {
+                            startDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getDelivery_start_time();
+                            endDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getDelivery_end_time();
+                            startCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getCollection_start_time();
+                            endCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getCollection_end_time();
+                        }
+
+                    }*/
+
+                    deliveryTime.setText(startDelTime + " - " + endDelTime);
+                    collectionTime.setText(startCollTime + " - " + endCollTime);
+
+                    minOrderForDelivery.setText(mContext.getResources().getString(R.string.currency) + listFavourites.get(listPosition).getMinOrderValue() + " min order");
+                    im_cross.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    preOrderForLetter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (listFavourites.get(listPosition).getRestaurantStatus().equalsIgnoreCase("not_serving")) {
+                                return;
+                            }
+                            try {
+                                if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                                    if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(listFavourites.get(listPosition).getEntityID())) {
+                                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                        i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
+                                        i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        mContext.startActivity(i);
+                                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                                    } else {
+                                        String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + listFavourites.get(listPosition).getRestaurantName() + "\"";
+                                        alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), listFavourites.get(listPosition).getRestaurantName(), listFavourites.get(listPosition).getEntityID());
+                                    }
+                                } else {
+                                    Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                    i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
+                                    i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    mContext.startActivity(i);
+                                }
+
+                            } catch (Exception e) {
+
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                                 i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
                                 i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(i);
-                                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                            } else {
-                                String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + listFavourites.get(listPosition).getRestaurantName() + "\"";
-                                alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), listFavourites.get(listPosition).getRestaurantName(), listFavourites.get(listPosition).getEntityID());
                             }
-                        } else {
-                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                            i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
-                            i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(i);
+                            dialog.dismiss();
                         }
 
-                    } catch (Exception e) {
+                    });
 
-                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                        i.putExtra("RESTAURANTID", listFavourites.get(listPosition).getEntityID());
-                        i.putExtra("RESTAURANTNAME", listFavourites.get(listPosition).getRestaurantName());
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(i);
-                    }
+                    dialog.show();
+                    /*End*/
                 }
 
             });

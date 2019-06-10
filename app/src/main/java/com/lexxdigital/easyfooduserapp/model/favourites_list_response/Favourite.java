@@ -4,6 +4,8 @@ package com.lexxdigital.easyfooduserapp.model.favourites_list_response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Favourite {
 
     @SerializedName("user_id")
@@ -39,6 +41,164 @@ public class Favourite {
     @SerializedName("restaurant_status")
     @Expose
     private String restaurantStatus;
+    @SerializedName("restaurant_timing")
+    @Expose
+    private List<RestaurantTiming> restaurantTiming = null;
+
+
+    public static class RestaurantTiming {
+        @SerializedName("id")
+        @Expose
+        private String id;
+
+        @SerializedName("restaurant_id")
+        @Expose
+        private String restaurant_id;
+
+        @SerializedName("day")
+        @Expose
+        private String day;
+
+        @SerializedName("opening_start_time")
+        @Expose
+        private String opening_start_time;
+
+        @SerializedName("opening_end_time")
+        @Expose
+        private String opening_end_time;
+
+        @SerializedName("collection_start_time")
+        @Expose
+        private String collection_start_time;
+
+        @SerializedName("collection_end_time")
+        @Expose
+        private String collection_end_time;
+
+        @SerializedName("delivery_start_time")
+        @Expose
+        private String delivery_start_time;
+
+        @SerializedName("delivery_end_time")
+        @Expose
+        private String delivery_end_time;
+
+        @SerializedName("status")
+        @Expose
+        private String status;
+
+        public RestaurantTiming() {
+        }
+
+        public RestaurantTiming(String id, String restaurant_id, String day, String opening_start_time, String opening_end_time, String collection_start_time, String collection_end_time, String delivery_start_time, String delivery_end_time, String status) {
+            this.id = id;
+            this.restaurant_id = restaurant_id;
+            this.day = day;
+            this.opening_start_time = opening_start_time;
+            this.opening_end_time = opening_end_time;
+            this.collection_start_time = collection_start_time;
+            this.collection_end_time = collection_end_time;
+            this.delivery_start_time = delivery_start_time;
+            this.delivery_end_time = delivery_end_time;
+            this.status = status;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getRestaurant_id() {
+            return restaurant_id;
+        }
+
+        public void setRestaurant_id(String restaurant_id) {
+            this.restaurant_id = restaurant_id;
+        }
+
+        public String getDay() {
+            return day;
+        }
+
+        public void setDay(String day) {
+            this.day = day;
+        }
+
+        public String getOpening_start_time() {
+            return opening_start_time;
+        }
+
+        public void setOpening_start_time(String opening_start_time) {
+            this.opening_start_time = opening_start_time;
+        }
+
+        public String getOpening_end_time() {
+            return opening_end_time;
+        }
+
+        public void setOpening_end_time(String opening_end_time) {
+            this.opening_end_time = opening_end_time;
+        }
+
+        public String getCollection_start_time() {
+            return collection_start_time;
+        }
+
+        public void setCollection_start_time(String collection_start_time) {
+            this.collection_start_time = collection_start_time;
+        }
+
+        public String getCollection_end_time() {
+            return collection_end_time;
+        }
+
+        public void setCollection_end_time(String collection_end_time) {
+            this.collection_end_time = collection_end_time;
+        }
+
+        public String getDelivery_start_time() {
+            return delivery_start_time;
+        }
+
+        public void setDelivery_start_time(String delivery_start_time) {
+            this.delivery_start_time = delivery_start_time;
+        }
+
+        public String getDelivery_end_time() {
+            return delivery_end_time;
+        }
+
+        public void setDelivery_end_time(String delivery_end_time) {
+            this.delivery_end_time = delivery_end_time;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        @Override
+        public String toString() {
+            return "RestaurantTiming{" +
+                    "id='" + id + '\'' +
+                    ", restaurant_id='" + restaurant_id + '\'' +
+                    ", day='" + day + '\'' +
+                    ", opening_start_time='" + opening_start_time + '\'' +
+                    ", opening_end_time='" + opening_end_time + '\'' +
+                    ", collection_start_time='" + collection_start_time + '\'' +
+                    ", collection_end_time='" + collection_end_time + '\'' +
+                    ", delivery_start_time='" + delivery_start_time + '\'' +
+                    ", delivery_end_time='" + delivery_end_time + '\'' +
+                    ", status='" + status + '\'' +
+                    '}';
+        }
+    }
 
     public String getUserId() {
         return userId;
@@ -126,5 +286,31 @@ public class Favourite {
 
     public void setRestaurantStatus(String restaurantStatus) {
         this.restaurantStatus = restaurantStatus;
+    }
+
+    public List<RestaurantTiming> getRestaurantTiming() {
+        return restaurantTiming;
+    }
+
+    public void setRestaurantTiming(List<RestaurantTiming> restaurantTiming) {
+        this.restaurantTiming = restaurantTiming;
+    }
+
+    @Override
+    public String toString() {
+        return "Favourite{" +
+                "userId='" + userId + '\'' +
+                ", entityId='" + entityId + '\'' +
+                ", entityType='" + entityType + '\'' +
+                ", restaurantName='" + restaurantName + '\'' +
+                ", logo='" + logo + '\'' +
+                ", cuisines='" + cuisines + '\'' +
+                ", minOderValue='" + minOderValue + '\'' +
+                ", deliveryCharge='" + deliveryCharge + '\'' +
+                ", overallRating=" + overallRating +
+                ", backgroundImage='" + backgroundImage + '\'' +
+                ", restaurantStatus='" + restaurantStatus + '\'' +
+                ", restaurantTiming=" + restaurantTiming +
+                '}';
     }
 }

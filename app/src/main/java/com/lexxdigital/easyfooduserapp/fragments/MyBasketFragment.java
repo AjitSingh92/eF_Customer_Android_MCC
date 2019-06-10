@@ -1599,7 +1599,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             String formatData = Constants.changeStringDateFormat(date, "yyyy-MM-dd", "dd-MM-yyyy");
             deliveryDate.setText((formatData != null) ? formatData : date);
             deliveryTime.setText(time.substring(11, time.length()));
-            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, deliveryDate.getText().toString() + " " + deliveryTime.getText().toString().substring(7) + ":00");
+            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, deliveryDate.getText().toString() + " " + deliveryTime.getText().toString().substring(6) + ":00");
             isPreOrder = false;
         } else {
             sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, "");

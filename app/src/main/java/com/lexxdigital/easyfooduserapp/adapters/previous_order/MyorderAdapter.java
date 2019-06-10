@@ -2,6 +2,7 @@ package com.lexxdigital.easyfooduserapp.adapters.previous_order;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -27,9 +28,12 @@ import com.lexxdigital.easyfooduserapp.dashboard.DashboardActivity;
 import com.lexxdigital.easyfooduserapp.model.myorder.OrderDetails;
 import com.lexxdigital.easyfooduserapp.model.myorder.PreviousOrderDetail;
 import com.lexxdigital.easyfooduserapp.model.myorder.PreviousOrderResponse;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainRequest;
+import com.lexxdigital.easyfooduserapp.model.order_again.OrderAgainResponse;
 import com.lexxdigital.easyfooduserapp.order_details_activity.OrderDetailActivity;
 import com.lexxdigital.easyfooduserapp.order_status.OrderStatusActivity;
 import com.lexxdigital.easyfooduserapp.restaurant_details.RestaurantDetailsActivity;
+import com.lexxdigital.easyfooduserapp.restaurant_details.api.RestaurantDetailsInterface;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MealProduct;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategoryCart;
@@ -38,12 +42,16 @@ import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumo
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.ProductModifier;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.SpecialOffer;
 import com.lexxdigital.easyfooduserapp.restaurant_details.model.restaurantmenumodel.menu_response.UpsellProduct;
+import com.lexxdigital.easyfooduserapp.utility.ApiClient;
 import com.lexxdigital.easyfooduserapp.utility.Constants;
 import com.lexxdigital.easyfooduserapp.utility.SharedPreferencesClass;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.facebook.AccessTokenManager.TAG;
 
@@ -59,6 +67,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
     OrderPositionListner orderPositionListner;
     private DatabaseHelper db;
     Gson gson = new Gson();
+    private Dialog dialog;
 
     public MyorderAdapter(List<PreviousOrderDetail> previousOrderDetailList, Context context, Activity activity, OrderPositionListner orderPositionListner) {
         this.previousOrderDetailList = previousOrderDetailList;
@@ -66,6 +75,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         this.activity = activity;
         this.orderPositionListner = orderPositionListner;
         db = new DatabaseHelper(context);
+        dialog = new Dialog(this.activity);
         // this.previousOrder = previousOrder;
     }
 
@@ -83,6 +93,12 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         final int listPosition = position;
         final PreviousOrderDetail dataList = previousOrderDetailList.get(listPosition);
         sharePre = new SharedPreferencesClass(context);
+        dialog.setTitle("");
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
         holder.restName.setText(dataList.getRestaurantName());
         holder.orderNo.setText("Order No." + dataList.getOrderNum());
         holder.orderDate.setText(dataList.getOrderDateTime());
@@ -222,12 +238,9 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         holder.repeatOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (db.getCartData() == null) {
-                    //insertData(previousOrderDetailList.get(position));
-                } else {
-                    db.deleteCart();
-                    addOrderOnCart(listPosition, dataList.getRestaurantId(), dataList.getRestaurantName());
-                }
+
+                getOrderAgain(dataList.getOrderNum(), listPosition, dataList.getRestaurantId(), dataList.getRestaurantName());
+
             }
         });
         holder.cancelOrder.setOnClickListener(new View.OnClickListener() {
@@ -577,5 +590,109 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         });
 
         alertDialog.show();
+    }
+
+
+    public void getOrderAgain(final String orderNumber, final int position, final String restaurantId, final String restaurantName) {
+        dialog.show();
+        RestaurantDetailsInterface apiInterface = ApiClient.getClient(context).create(RestaurantDetailsInterface.class);
+        OrderAgainRequest request = new OrderAgainRequest();
+        request.setOrderNumber(orderNumber);
+
+        Call<OrderAgainResponse> call3 = apiInterface.getOrderAgain(request);
+        call3.enqueue(new Callback<OrderAgainResponse>() {
+            @Override
+            public void onResponse(Call<OrderAgainResponse> call, Response<OrderAgainResponse> response) {
+                try {
+                    dialog.dismiss();
+                    String status = response.body().getData().getRestaurantStatus();
+                    if (response.body().getSuccess()) {
+
+                        if (status != null && status.trim().length() > 0) {
+
+                            if (status.equalsIgnoreCase("open") || status.equalsIgnoreCase("closed")) {
+
+
+                                if (db.getCartData() == null) {
+                                    //insertData(previousOrderDetailList.get(position));
+                                } else {
+                                    db.deleteCart();
+                                    addOrderOnCart(position, restaurantId, restaurantName);
+                                }
+
+                            } else {
+                                getOrderAgainDailog(status, response.body().getMessage());
+                            }
+                        } else {
+
+                        }
+                        dialog.dismiss();
+                    } else {
+                        getOrderAgainDailog(status, response.body().getMessage());
+                        dialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    dialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderAgainResponse> call, Throwable t) {
+                dialog.dismiss();
+            }
+        });
+
+
+    }
+
+    public void getOrderAgainDailog(String status, String message) {
+
+        LayoutInflater factory = LayoutInflater.from(this.activity);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this.activity).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+
+    }
+
+    public void getOpenCloseDailog(String status, String message) {
+
+        LayoutInflater factory = LayoutInflater.from(this.activity);
+        final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this.activity).create();
+        alertDialog.setView(mDialogView);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+
+        TextView tvMessage = mDialogView.findViewById(R.id.message);
+        tvMessage.setText(message);
+
+        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+
     }
 }

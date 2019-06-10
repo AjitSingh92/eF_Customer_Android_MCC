@@ -199,16 +199,18 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                 break;
             case R.id.btn_ok:
 
-                if (todaySpinner != null && todaySpinner.getSelectedItemPosition() != 0) {
-                    if (dateTimeDataList != null) {
-                        if (onDeliveryTimeSelectedListener != null) {
-                            onDeliveryTimeSelectedListener.onDeliveryTimeSelect(dateTimeDataList.get((todaySpinner.getSelectedItemPosition() - 1)));
+                if (!toDay.equalsIgnoreCase("Select Delivery Time")) {
+                    if (todaySpinner != null && todaySpinner.getSelectedItemPosition() != 0) {
+                        if (dateTimeDataList != null) {
+                            if (onDeliveryTimeSelectedListener != null) {
+                                onDeliveryTimeSelectedListener.onDeliveryTimeSelect(dateTimeDataList.get((todaySpinner.getSelectedItemPosition() - 1)));
+                            }
                         }
-                    }
-                } else if (tomorrowSpinner != null && tomorrowSpinner.getSelectedItemPosition() != 0) {
-                    if (tomorrowList != null) {
-                        if (onDeliveryTimeSelectedListener != null) {
-                            onDeliveryTimeSelectedListener.onDeliveryTimeSelect(tomorrowDataList.get((tomorrowSpinner.getSelectedItemPosition() - 1)));
+                    } else if (tomorrowSpinner != null && tomorrowSpinner.getSelectedItemPosition() != 0) {
+                        if (tomorrowList != null) {
+                            if (onDeliveryTimeSelectedListener != null) {
+                                onDeliveryTimeSelectedListener.onDeliveryTimeSelect(tomorrowDataList.get((tomorrowSpinner.getSelectedItemPosition() - 1)));
+                            }
                         }
                     }
                 }

@@ -1680,13 +1680,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_10sdp">
+                android:layout_margin="5dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:background="@drawable/rectangle_white_border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/avenir_medium"
+                    android:text="Continue \nShopping"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_add_to_cart" />
+                    android:src="@drawable/ic_add_to_cart"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -1694,7 +1710,7 @@
                 android:id="@+id/btn_checkout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/_15sdp">

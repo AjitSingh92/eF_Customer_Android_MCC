@@ -289,7 +289,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             }
 
                         } else {
-                            alertVoucherApply(voucherPaymentType,false);
+                            alertVoucherApply(voucherPaymentType, false);
                         }
                     } else {
                         Intent intent = new Intent(SelectPaymentMethodActivity.this, AddAddressManualActivity.class);
@@ -410,7 +410,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                                 dialogNoInternetConnection("Please check internet connection.", 0);
                             }
                         } else {
-                            alertVoucherApply(voucherPaymentType,false);
+                            alertVoucherApply(voucherPaymentType, false);
                         }
                     } else {
                         alertMessage();
@@ -864,9 +864,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.tv_PayByCard).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dataList != null && dataList.size() > 0) {
-                    cardDialog.dismiss();
-                } else {
+
+                if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("card")) {
                     Intent i = new Intent(SelectPaymentMethodActivity.this, AddNewCardActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("ORDER_TOTAL", totalAmount);
@@ -881,8 +880,25 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     cardDialog.dismiss();
-                }
 
+                } else if (voucherPaymentType == null || voucherPaymentType.equalsIgnoreCase("")) {
+                    Intent i = new Intent(SelectPaymentMethodActivity.this, AddNewCardActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("ORDER_TOTAL", totalAmount);
+                    i.putExtra("ORDER_SUB_TOTAL", subTotalAmount);
+                    i.putExtra("deliveryCharge", deliveryFee);
+                    i.putExtra("orderType", orderType);
+                    i.putExtra("voucherDiscount", voucherDiscount);
+                    i.putExtra("notes", notes);
+                    i.putExtra("appliedVoucherCode", voucherCode);
+                    i.putExtra("appliedVoucherAmount", voucherAmount);
+                    i.putExtra("appliedVoucherPaymentType", voucherPaymentType);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                    cardDialog.dismiss();
+                } else {
+                    alertVoucherApply(voucherPaymentType, true);
+                }
             }
         });
         mDialogView.findViewById(R.id.tv_Cancel).setOnClickListener(new View.OnClickListener() {

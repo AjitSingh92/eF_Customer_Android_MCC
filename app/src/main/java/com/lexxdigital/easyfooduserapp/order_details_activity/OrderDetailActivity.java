@@ -90,7 +90,8 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     OrderDetails orderDetails;
     public static String menuCategory;
     private List<MenuCategoryCart> orderDetail;
-TextView reasonForCancel;
+    TextView reasonForCancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -441,7 +442,7 @@ TextView reasonForCancel;
                             llReview.setVisibility(View.VISIBLE);
                             addReview.setVisibility(View.GONE);
                             orderAgain.setVisibility(View.VISIBLE);
-                            if (response.body().getData().getOrderRejectNote()!=null && !response.body().getData().getOrderRejectNote().equalsIgnoreCase("")) {
+                            if (response.body().getData().getOrderRejectNote() != null && !response.body().getData().getOrderRejectNote().equalsIgnoreCase("")) {
                                 reasonForCancel.setVisibility(View.VISIBLE);
                                 reasonForCancel.setText(response.body().getData().getOrderRejectNote());
                             } else {
@@ -826,25 +827,28 @@ TextView reasonForCancel;
             public void onResponse(Call<OrderAgainResponse> call, Response<OrderAgainResponse> response) {
                 try {
                     dialog.dismiss();
+                    String status = response.body().getData().getRestaurantStatus();
                     if (response.body().getSuccess()) {
-
-                        String status = response.body().getData().getRestaurantStatus();
 
                         if (status != null && status.trim().length() > 0) {
 
-                            if (status.equalsIgnoreCase("open")) {
+                            if (status.equalsIgnoreCase("open") || status.equalsIgnoreCase("closed")) {
 
-                                Toast.makeText(OrderDetailActivity.this, status, Toast.LENGTH_SHORT).show();
-
-                            } else if (status.equalsIgnoreCase("closed")) {
-                                Toast.makeText(OrderDetailActivity.this, status, Toast.LENGTH_SHORT).show();
+                                if (db.getCartData() == null) {
+                                    //insertData(previousOrderDetailList.get(position));
+                                } else {
+                                    db.deleteCart();
+                                    addOrderOnCart(previousOrderDetailList.getRestaurantId(), previousOrderDetailList.getRestaurantName());
+                                }
 
                             } else {
-                                getOrderAgainDailog(status, "message");
+                                getOrderAgainDailog(status, response.body().getMessage());
                             }
-                        }else {
+                        } else {
 
                         }
+                    } else {
+                        getOrderAgainDailog(status, response.body().getMessage());
                     }
                 } catch (Exception e) {
                     dialog.dismiss();

@@ -79,6 +79,8 @@ import retrofit2.Response;
 public class DashboardActivity extends AppCompatActivity {
     @BindView(R.id.tvToolbarTitle)
     TextView tvToolbarTitle;
+    @BindView(R.id.imtitileIcone)
+    ImageView imTitileImage;
     @BindView(R.id.menuId)
     ImageView menuId;
     @BindView(R.id.toolbarhide)
@@ -214,9 +216,10 @@ public class DashboardActivity extends AppCompatActivity {
         Constants.setStatusBarGradiant(DashboardActivity.this);
         Bundle extras = getIntent().getExtras();
         Log.e("EXTRA>>>", "//" + extras);
+        imTitileImage.setVisibility(View.GONE);
         if (extras != null) {
-
             if (extras.getString("FROMMENU").equalsIgnoreCase("YES")) {
+                imTitileImage.setVisibility(View.VISIBLE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
                 //  transaction.commit();
@@ -317,6 +320,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     @OnClick({R.id.top_track_order, R.id.txt_trackorder, R.id.menuId, R.id.my_account, R.id.top_ac, R.id.manageAddressId, R.id.list_of_address, R.id.home, R.id.add_new_address, R.id.new_address, R.id.payments, R.id.paymentId, R.id.my_credit_debit_card, R.id.creditCardId, R.id.add_credit_debit_card, R.id.new_card, R.id.my_basket, R.id.my_basket_id, R.id.my_orders, R.id.my_orderId, R.id.favourites, R.id.myfevId, R.id.privacy_policy, R.id.privacyId, R.id.faq, R.id.fapId, R.id.help, R.id.helpId, R.id.profileId, R.id.logout, R.id.menuIdRl})
     public void onViewClicked(View view) {
+        imTitileImage.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.top_track_order:
                 startActivity(new Intent(DashboardActivity.this, OrderStatusActivity.class));
@@ -457,6 +461,7 @@ public class DashboardActivity extends AppCompatActivity {
                 break;
             case R.id.my_basket:
                 tvToolbarTitle.setText("My Basket");
+                imTitileImage.setVisibility(View.VISIBLE);
                 Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -466,6 +471,7 @@ public class DashboardActivity extends AppCompatActivity {
                 break;
             case R.id.my_basket_id:
                 tvToolbarTitle.setText("My Basket");
+                imTitileImage.setVisibility(View.VISIBLE);
                 Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -712,9 +718,11 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        imTitileImage.setVisibility(View.GONE);
         if (intent.getAction() != null) {
             if (intent.getAction().equals("custom")) {
                 tvToolbarTitle.setText("My Basket");
+                imTitileImage.setVisibility(View.VISIBLE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
                 //  transaction.commit();

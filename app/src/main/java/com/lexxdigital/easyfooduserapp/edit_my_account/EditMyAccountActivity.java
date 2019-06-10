@@ -147,7 +147,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         if (!profileImageStr.equalsIgnoreCase("http:\\/\\/35.177.163.219\\/easyfood_backend\\/public") && profileImageStr != null) {
             Uri uri = Uri.parse(profileImageStr);
 
-            if (uri!=null){
+            if (uri != null) {
                 image.setImageURI(uri);
             }
         }
@@ -208,7 +208,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
 
     public void updateAccountDetail() {
         EditProfileInterface apiInterface = ApiClient.getClient(this).create(EditProfileInterface.class);
-        EditAccountRequest request = new EditAccountRequest();
+        final EditAccountRequest request = new EditAccountRequest();
         request.setCustomerId(val.getLoginResponse().getData().getUserId());
         request.setFirstName(editFirstName.getText().toString());
         request.setLastName(editLastName.getText().toString());
@@ -240,7 +240,8 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
 //                                .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                                .into(profileImg);
                     } else {
-                        showDialog("Failed to change account details. Please try again.");
+
+                        showDialog(response.body().getErrors().getPhoneNumber().get(0));
                     }
                 } catch (Exception e) {
                     dialog.hide();

@@ -125,7 +125,7 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
         Log.e(TAG, "onBindViewHolder: address id: " + add.getID());
 
         if (add.getIsDefault() == 1) {
-            holder.tvDefault.setVisibility(View.VISIBLE);
+            holder.tvDefault.setVisibility(View.GONE); // Hide to default address
             holder.tvDefault.setText("Default");
 //            sharePre.setString(sharePre.DEFAULT_ADDRESS, address);
         } else {

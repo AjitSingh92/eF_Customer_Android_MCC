@@ -223,6 +223,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         }
 
         String status = respNameFilter.get(listPosition).getStatus();
+
         try {
             if (status.trim().equalsIgnoreCase("closed")) {
                 holder.llClosed.setVisibility(View.VISIBLE);
@@ -239,6 +240,11 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         } catch (Exception e) {
             Log.e("DealAdapter", "onBindViewHolder<<Exception>>: " + e.getMessage());
         }
+
+        holder.llCollection.setVisibility(View.GONE);
+        holder.llDelivery.setVisibility(View.GONE);
+        holder.llDinein.setVisibility(View.GONE);
+
         if (respNameFilter.get(listPosition).getServe_style() != null || !respNameFilter.get(listPosition).getServe_style().equals("")) {
             String[] serve_styles = respNameFilter.get(listPosition).getServe_style().split(",");
 
@@ -315,7 +321,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             } else {
                                 if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                    String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \""+respNameFilter.get(mListPosition).getRestaurantName()+"\"";
+                                    String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + respNameFilter.get(mListPosition).getRestaurantName() + "\"";
                                     alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
 
                                 } else {
@@ -417,7 +423,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setCancelable(true);
 
-        alertDialogBuilder.setPositiveButton("Continue with "+oldRest, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("Continue with " + oldRest, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
@@ -431,7 +437,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 dialog.dismiss();
             }
         });
-        alertDialogBuilder.setNegativeButton("Start new order with" + currentRestuarant, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Start new order with " + currentRestuarant, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

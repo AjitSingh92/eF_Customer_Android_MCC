@@ -259,7 +259,7 @@ public class OrderStatusActivity extends AppCompatActivity {
         if (isFirstTime) {
             dialog.setMessage("Updating status...");
             dialog.show();
-             isFirstTime = false;
+            isFirstTime = false;
         }
         try {
             OrderStatusRequestModel requestModel = new OrderStatusRequestModel();
@@ -433,7 +433,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                 break;
             case 3:
                 mainImg.setImageResource(R.drawable.ic_order_status_3);
-                tvTitileText.setText(getResources().getString(R.string.order_title_2));
+                tvTitileText.setText(getResources().getString(R.string.order_title_3));
                 tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_1) + " " + average_delivery_time + " min " + "to delivery.");
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
 
@@ -460,7 +460,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                 break;
             case 4:
                 mainImg.setImageResource(R.drawable.bike);
-                tvTitileText.setText(getResources().getString(R.string.order_title_2));
+                tvTitileText.setText(getResources().getString(R.string.order_title_4));
                 tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_4));
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
 

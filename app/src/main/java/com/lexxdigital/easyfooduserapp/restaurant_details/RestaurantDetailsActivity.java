@@ -306,9 +306,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
     @Override
     public void onBackPressed() {
-        // Constants.switchActivity(RestaurantDetailsActivity.this, DashboardActivity.class);
-        finish();
-        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+         Constants.switchActivity(RestaurantDetailsActivity.this, DashboardActivity.class);
+//        finish();
+//        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 
     }
 

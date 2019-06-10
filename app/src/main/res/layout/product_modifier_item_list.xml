@@ -7,18 +7,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/tv.title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="5dp"
-            android:textSize="@dimen/_12sdp"
-            android:textColor="@color/black"
             android:fontFamily="@font/avenir_medium"
-            android:text="Title" />
+            android:gravity="center_vertical"
+            android:text="Title"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/tv.note"
@@ -27,18 +27,19 @@
             android:layout_weight="1"
             android:fontFamily="@font/avenir_roman"
             android:padding="5dp"
-            android:textSize="@dimen/_10sdp"
-            android:text="Title" />
+            android:text="Title"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@color/gray"/>
+        android:background="@color/gray"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list.modifierList"
@@ -49,6 +50,6 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="helvetica_neue_medium" />
+        android:text="helvetica_neue_medium"
+        android:visibility="gone" />
 </LinearLayout>

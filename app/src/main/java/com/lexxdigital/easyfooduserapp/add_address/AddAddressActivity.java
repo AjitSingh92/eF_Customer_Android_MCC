@@ -618,7 +618,6 @@ public class AddAddressActivity extends AppCompatActivity implements
                 if (addresses != null && addresses.size() > 0) {
 
 
-
                     for (int i = 0; i < addresses.size(); i++) {
                         address = addresses.get(i);
                         if (address.getPostalCode() != null) {
@@ -627,7 +626,7 @@ public class AddAddressActivity extends AppCompatActivity implements
 //                            addressShort = addressShort.replace(address.getLocality() + ", ", "").replace(addresses.get(0).getAdminArea(), "").replace(addresses.get(0).getPostalCode() + ", ", "").replace(addresses.get(0).getCountryName(), "");
                             Log.e("Address", addressShort);
                             cityName = address.getLocality();
-                            address1 = addresses.get(0).getFeatureName()+", "+addresses.get(0).getSubLocality();
+                            address1 = addresses.get(0).getFeatureName() + "" + ((addresses.get(0).getSubLocality() != null) ? ", " + addresses.get(0).getSubLocality() : "") + "" + ((addresses.get(0).getThoroughfare() != null) ? ", " + addresses.get(0).getThoroughfare() : "");
                             address2 = addresses.get(0).getAddressLine(1);
                             countyName = addresses.get(0).getCountryName();
                             //searchAddress.setText(address.getAddressLine(i));
@@ -648,7 +647,7 @@ public class AddAddressActivity extends AppCompatActivity implements
                             //Todo: Placing a marker on the touched position
                             mMap.addMarker(markerOptions);
 
-                            strTtlAddress = address1 + " " + cityName + " " + postalCode + " " + countyName;
+                            strTtlAddress = address1 + "" + ((cityName != null) ? ", " + cityName : "") + "" + ((postalCode != null) ? ", " + postalCode : "") + ", " + countyName;
 
                             Log.e("Postal code", "Postal code: " + address.getPostalCode()
                                     + " address1:" + address1 + "// city:" + cityName + "//postalCode:" + postalCode + "//countyName:" + countyName

@@ -50,6 +50,7 @@ public class ReviwesFragment extends Fragment {
     TextView onBased;
     private GlobalValues val;
     private Dialog dialog;
+
     public ReviwesFragment() {
     }
 
@@ -75,13 +76,17 @@ public class ReviwesFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         try {
             overallRating.setText(String.format("%.1f", val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgRating()));
-            onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
+            if (val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount() > 1) {
+                onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
+            } else {
+                onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Review");
+            }
 
         } catch (Exception e) {
 
         }
         saveCardDetail(0);
-       // initView();
+        // initView();
         return view;
 
     }

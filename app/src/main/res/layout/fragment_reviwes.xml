@@ -1,67 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:nestedScrollingEnabled="true"
-android:orientation="vertical"
-android:background="@color/background_color">
-
-<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/_10sdp"
-    android:layout_marginRight="@dimen/_10sdp"
-    android:background="@color/tab_header_color"
+    android:background="@color/background_color"
+    android:nestedScrollingEnabled="true"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@color/tab_header_color"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/overall_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_black"
+                android:gravity="center"
+                android:text="5.0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+
+            <ImageView
+                android:id="@+id/rat_5"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:background="@drawable/rating_star"
+                android:padding="@dimen/_10sdp" />
+
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/overall_rating"
+            android:id="@+id/on_based"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:fontFamily="@font/avenir_black"
-            android:gravity="center"
-            android:text="5.0"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:fontFamily="@font/avenir_medium"
+            android:text="Based On 524 Reviews"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp" />
-
-
-        <ImageView
-            android:id="@+id/rat_5"
-            android:layout_width="@dimen/_18sdp"
-            android:layout_height="@dimen/_18sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:background="@drawable/rating_star"
-            android:padding="@dimen/_10sdp" />
-
+            android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/on_based"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reviewList"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:fontFamily="@font/avenir_medium"
-        android:text="Based On 524 Reviews"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_12sdp" />
-
-</LinearLayout>
-
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/reviewList"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/_10sdp"
-    android:layout_marginRight="@dimen/_10sdp"
-    android:background="@color/white"
-    android:focusable="false" />
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@color/white"
+        android:focusable="false" />
 </LinearLayout>

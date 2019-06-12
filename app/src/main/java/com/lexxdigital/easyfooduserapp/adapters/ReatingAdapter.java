@@ -82,7 +82,8 @@ public class ReatingAdapter extends RecyclerView.Adapter<ReatingAdapter.MyViewHo
             } else {
                 num = (int) (Float.parseFloat(response.getData().getReviews().get(listPosition).getOverallRating()) - 0.5);
             }
-            holder.ratingBar.setNumStars(num);
+//             holder.ratingBar.setNumStars(num);
+            holder.ratingBar.setNumStars(5);
             holder.ratingBar.setRating(Float.parseFloat(response.getData().getReviews().get(listPosition).getOverallRating()));
 
 

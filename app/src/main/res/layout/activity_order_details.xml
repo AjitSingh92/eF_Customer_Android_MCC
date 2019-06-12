@@ -136,6 +136,35 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/avenir_roman"
+                    android:text="Order Number"
+                    android:textColor="@color/orange" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/avenir_roman"
+                    android:gravity="center"
+                    android:text="Order Time "
+                    android:textColor="@color/orange" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -144,7 +173,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/avenir_roman"
@@ -157,13 +185,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:fontFamily="@font/avenir_roman"
                     android:text=""
                     android:textColor="@color/price_color" />
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/tv.reasonForCancel"
                 android:layout_width="match_parent"
@@ -171,10 +199,11 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:fontFamily="@font/avenir_roman"
-                android:textColor="@android:color/holo_red_dark"
-                android:visibility="gone"
                 android:text="asdasd"
-                android:textSize="@dimen/_12sdp" />
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="gone" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"

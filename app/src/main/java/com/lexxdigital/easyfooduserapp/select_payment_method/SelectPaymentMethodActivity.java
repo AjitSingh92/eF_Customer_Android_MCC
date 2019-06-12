@@ -477,7 +477,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         request.setOrderSubtotal(subTotalAmount);
         request.setVoucherId("");
         request.setOfferId("");
-        request.setBillingAddress(address1 + ", " + address2 + ", " + addressCity + ", " + postalCode);
+        request.setBillingAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_ADDRESS_ID));
         request.setDeliveryAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_ADDRESS_ID));
         request.setOrderVia("android");
         request.setOrderNotes(notes);

@@ -591,7 +591,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         request.setOrderSubtotal(subTotalAmount);
         request.setVoucherId("");
         request.setOfferId("");
-        request.setBillingAddress(billingPost.getText().toString());
+        request.setBillingAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_ADDRESS_ID));
         request.setDeliveryAddress(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_ADDRESS_ID));
         request.setOrderVia("android");
         request.setOrderNotes(notes);

@@ -223,6 +223,7 @@ public class MyAccountFragment extends Fragment {
 
                             if (uri!=null){
                                 image.setImageURI(uri);
+
                             }
 
 

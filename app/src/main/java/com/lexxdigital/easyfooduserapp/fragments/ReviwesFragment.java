@@ -48,6 +48,9 @@ public class ReviwesFragment extends Fragment {
     TextView overallRating;
     @BindView(R.id.on_based)
     TextView onBased;
+    @BindView(R.id.tv_noRating)
+    TextView tvnoRating;
+
     private GlobalValues val;
     private Dialog dialog;
 
@@ -96,14 +99,23 @@ public class ReviwesFragment extends Fragment {
 
         reviewList.setVisibility(View.VISIBLE);
         if (val.getRestaurantDetailsResponse() != null) {
-            mReatingAdapter = new ReatingAdapter(mContext, res);
 
-            @SuppressLint("WrongConstant")
-            LinearLayoutManager horizontalLayoutManagaer
-                    = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            reviewList.setLayoutManager(horizontalLayoutManagaer);
-            reviewList.setNestedScrollingEnabled(false);
-            reviewList.setAdapter(mReatingAdapter);
+            if (res.getData().getReviews() != null && res.getData().getReviews().size() > 0) {
+                reviewList.setVisibility(View.VISIBLE);
+                tvnoRating.setVisibility(View.GONE);
+
+                mReatingAdapter = new ReatingAdapter(mContext, res);
+
+                @SuppressLint("WrongConstant")
+                LinearLayoutManager horizontalLayoutManagaer
+                        = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                reviewList.setLayoutManager(horizontalLayoutManagaer);
+                reviewList.setNestedScrollingEnabled(false);
+                reviewList.setAdapter(mReatingAdapter);
+            } else {
+                reviewList.setVisibility(View.GONE);
+                tvnoRating.setVisibility(View.VISIBLE);
+            }
         }
 
 

@@ -78,12 +78,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         sharePre = new SharedPreferencesClass(ChangePasswordActivity.this);
 
-       // name = sharePre.getString(sharePre.USER_NAME);
+        // name = sharePre.getString(sharePre.USER_NAME);
         pic = sharePre.getString(sharePre.USER_PROFILE_IMAGE);
-        String strname = sharePre.getString(sharePre.USER_NAME);;
+        String strname = sharePre.getString(sharePre.USER_NAME);
+        ;
         String strAddress = val.getDefaltAddress();
         String strMobile = val.getMobileNo();
-
 
 
         if (strname != null && !strname.equals("")) {
@@ -110,7 +110,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             Glide.with(ChangePasswordActivity.this)
                     .load(sharePre.getString(sharePre.USER_PROFILE_IMAGE))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.avatar)
+                    .placeholder(R.mipmap.avatar_profile)
                     .into(profileImg);
 //            Picasso.with(ChangePasswordActivity.this).load(pic).placeholder(R.drawable.avatar).into(profileImg2);
         }
@@ -147,12 +147,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         } else if (editConfPassword.getText().toString().trim().length() < 6 || editConfPassword.getText().toString().trim().length() > 20) {
             editConfPassword.setError("Confirm Password must contain 6 to 20  characters.");
             editConfPassword.requestFocus();
-        }
-        else if (!editNewPassword.getText().toString().trim().equals(editConfPassword.getText().toString().trim())) {
+        } else if (!editNewPassword.getText().toString().trim().equals(editConfPassword.getText().toString().trim())) {
             editConfPassword.setError("Password mismatch.");
             editConfPassword.requestFocus();
-        }
-        else {
+        } else {
             if (ApiClient.isConnected(getApplicationContext())) {
                 dialog.show();
                 callAPI(editCurrentPassword.getText().toString(), editNewPassword.getText().toString(), editConfPassword.getText().toString());
@@ -243,9 +241,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                         Glide.with(ChangePasswordActivity.this)
                                 .load(response.body().getData().getProfile().getProfilePic())
-                                .placeholder(R.drawable.avatar)
+                                .placeholder(R.mipmap.avatar_profile)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .error(R.drawable.avatar)
+                                .error(R.mipmap.avatar_profile)
                                 .into(profileImg2);
                         Log.e("image url", "onResponse: " + response.body().getData().getProfile().getProfilePic());
                     } else {
@@ -289,7 +287,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onResume();
 
         userName.setText(val.getUserName());
-        Picasso.with(ChangePasswordActivity.this).load(val.getProfileImage()).placeholder(R.drawable.avatar).into(profileImg2);
+        Picasso.with(ChangePasswordActivity.this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(profileImg2);
     }
 
     @Override

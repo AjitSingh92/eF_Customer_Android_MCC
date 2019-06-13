@@ -53,6 +53,8 @@ public class OrderStatusResponseModel implements Serializable {
         String average_delivery_time;
         String phone_number;
         String payment_mode;
+        String order_type;
+        String order_delivery_collection_time;
 
 
         public String getOrder_number() {
@@ -135,6 +137,22 @@ public class OrderStatusResponseModel implements Serializable {
             this.payment_mode = payment_mode;
         }
 
+        public String getOrder_type() {
+            return order_type;
+        }
+
+        public void setOrder_type(String order_type) {
+            this.order_type = order_type;
+        }
+
+        public String getOrder_delivery_collection_time() {
+            return order_delivery_collection_time;
+        }
+
+        public void setOrder_delivery_collection_time(String order_delivery_collection_time) {
+            this.order_delivery_collection_time = order_delivery_collection_time;
+        }
+
         @Override
         public String toString() {
             return "Data{" +
@@ -148,6 +166,8 @@ public class OrderStatusResponseModel implements Serializable {
                     ", average_delivery_time='" + average_delivery_time + '\'' +
                     ", phone_number='" + phone_number + '\'' +
                     ", payment_mode='" + payment_mode + '\'' +
+                    ", order_type='" + order_type + '\'' +
+                    ", order_delivery_collection_time='" + order_delivery_collection_time + '\'' +
                     '}';
         }
     }

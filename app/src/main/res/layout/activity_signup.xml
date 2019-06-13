@@ -100,7 +100,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="6dp"
                 android:layout_marginLeft="6dp"
-                android:src="@drawable/avatar" />
+                android:src="@mipmap/avatar_profile" />
 
             <LinearLayout
                 android:id="@+id/add_image"

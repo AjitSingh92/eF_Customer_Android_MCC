@@ -273,7 +273,7 @@ public class DashboardActivity extends AppCompatActivity {
         myAccount.setText(val.getFirstName() + " " + val.getLastName());
         String imgUrl = val.getProfileImage();
         System.out.println("imgUrl: " + imgUrl);
-        Glide.with(this).load(val.getProfileImage()).placeholder(R.drawable.avatar).into(drawer_profile_pic);
+        Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
 
         if (val.getPostCode() == null) {
             val.setIsFromDealPage(true);
@@ -354,7 +354,7 @@ public class DashboardActivity extends AppCompatActivity {
                 } else {
                     drawer.openDrawer(Gravity.RIGHT);
                 }
-                Glide.with(this).load(val.getProfileImage()).placeholder(R.drawable.avatar).into(drawer_profile_pic);
+                Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
                 myAccount.setText(val.getFirstName() + " " + val.getLastName());
                 break;
             case R.id.my_account:
@@ -740,7 +740,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        Glide.with(this).load(val.getProfileImage()).placeholder(R.drawable.avatar).into(drawer_profile_pic);
+        Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
         if (db.getCartData() == null) {
             sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
             sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");

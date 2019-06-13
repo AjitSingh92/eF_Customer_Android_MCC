@@ -36,13 +36,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         else {
 
             try {
-
+                Log.e("Notification", remoteMessage.getData().toString());
                 String title = remoteMessage.getData().get("title");
                 String message = remoteMessage.getData().get("message");
                 String timestamp = remoteMessage.getData().get("timestamp");
                 String notif_type = remoteMessage.getData().get("type");
                 String order_id = remoteMessage.getData().get("order_number");
-
+                Log.e("Message", message);
                 if (!notif_type.equalsIgnoreCase(""))
                     sharePre.setInt(sharePre.NOTIFICATION_TYPE, Integer.parseInt(notif_type));
 

@@ -350,6 +350,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 orderType = (String) parent.getItemAtPosition(position);
+                sharedPreferencesClass.setString(sharedPreferencesClass.ORDER_TYPE, orderType.toLowerCase());
                 Log.e("item", (String) parent.getItemAtPosition(position));
 
                 setPriceCalculation(totalCartIterm);
@@ -1144,7 +1145,16 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             llCollectionFromRestaurant.setVisibility(View.GONE);
             llDeliveryAddress.setVisibility(View.VISIBLE);
             llBillingAddress.setVisibility(View.GONE);
+
             llDeliveryTimeSlot.setEnabled(true);
+            deliveryDate.setVisibility(View.GONE);
+
+            if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() != null && val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() > 0) {
+                deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
+            } else {
+                deliveryTime.setText("0 min");
+            }
+
             if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).isEmpty()) {
                 tvChange.setText("Change Address");
                 tvDeliveryAddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
@@ -1170,7 +1180,15 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             llCollectionFromRestaurant.setVisibility(View.VISIBLE);
             llDeliveryAddress.setVisibility(View.GONE);
             llBillingAddress.setVisibility(View.GONE);
-            llDeliveryTimeSlot.setEnabled(false);
+
+            llDeliveryTimeSlot.setEnabled(true);
+            deliveryDate.setVisibility(View.GONE);
+            deliveryTime.setText("");
+            if (sharedPreferencesClass.getString(sharedPreferencesClass.AVG_COLLECTION_TIME) != null && sharedPreferencesClass.getString(sharedPreferencesClass.AVG_COLLECTION_TIME).trim().length() > 0) {
+                deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgPreparationTime() + " min");
+            } else {
+                deliveryTime.setText("0 min");
+            }
 //            tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.BILLING_ADDRESS));
             deliveryFeesAmt = 0.0d;
             deliveryFees.setText("£" + String.format("%.2f", 0.00));
@@ -1179,6 +1197,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             llCollectionFromRestaurant.setVisibility(View.GONE);
             llDeliveryAddress.setVisibility(View.GONE);
             llBillingAddress.setVisibility(View.GONE);
+
             llDeliveryTimeSlot.setEnabled(false);
             deliveryFees.setText("£" + String.format("%.2f", 0.00));
             netAmount = totalPrice;
@@ -1292,7 +1311,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                 } else {
                                     alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
                                     tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", String.format("%.2f", minOrderValue)));
+                                    tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
                                 }
                             } else if (voucherType.equalsIgnoreCase("flat")) {
 
@@ -1429,6 +1448,13 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 if (val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId() != null && !val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId().equalsIgnoreCase("")) {
                     i.putExtra("RESTAURANTID", val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    db.deleteCart();
+                    sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
+                    sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
+                    sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
+                    sharedPreferencesClass.setString(sharedPreferencesClass.DEFAULT_ADDRESS, null);
+
                     startActivity(i);
                     getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
@@ -1526,6 +1552,14 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             restaurantRating.setText("New");
 
                         }
+                        if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgPreparationTime() != null && val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgPreparationTime() > 0) {
+
+                            sharedPreferencesClass.setString(sharedPreferencesClass.AVG_COLLECTION_TIME, String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgPreparationTime()));
+
+                        } else {
+                            sharedPreferencesClass.setString(sharedPreferencesClass.AVG_COLLECTION_TIME, null);
+                        }
+
                         if (val.getRestaurantDetailsResponse() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
                             deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
                             sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, "");

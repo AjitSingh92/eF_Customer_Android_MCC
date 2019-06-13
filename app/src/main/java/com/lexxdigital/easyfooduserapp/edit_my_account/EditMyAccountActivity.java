@@ -134,9 +134,9 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         userPhone.setText(val.getMobileNo());
         Glide.with(EditMyAccountActivity.this)
                 .load(val.getProfileImage())
-                .placeholder(R.drawable.avatar)
+                .placeholder(R.mipmap.avatar_profile)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.avatar)
+                .error(R.mipmap.avatar_profile)
                 .into(profileImg);
         editFirstName.setText(val.getFirstName());
         editLastName.setText(val.getLastName());

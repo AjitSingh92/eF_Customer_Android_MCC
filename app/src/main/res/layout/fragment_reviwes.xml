@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background_color"
-    android:nestedScrollingEnabled="true"
+    android:nestedScrollingEnabled="false"
     android:orientation="vertical">
 
     <LinearLayout
@@ -63,4 +63,18 @@
         android:layout_marginRight="@dimen/_10sdp"
         android:background="@color/white"
         android:focusable="false" />
+
+    <TextView
+        android:id="@+id/tv.noRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="center"
+        android:text="@string/no_ratings"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 </LinearLayout>

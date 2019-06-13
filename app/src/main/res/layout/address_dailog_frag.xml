@@ -57,6 +57,20 @@
                         android:background="@color/white"
                         android:focusable="false" />
 
+                    <TextView
+                        android:id="@+id/tv.Empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_60sdp"
+                        android:fontFamily="@font/avenir_medium"
+                        android:gravity="center"
+                        android:text="@string/no_address"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/_16sdp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>

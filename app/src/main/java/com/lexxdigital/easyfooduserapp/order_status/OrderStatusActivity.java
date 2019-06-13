@@ -63,10 +63,12 @@ public class OrderStatusActivity extends AppCompatActivity {
     String prepared_time, average_delivery_time;
     String phone_number;
     String payment_mode;
+    String orderDeliveryTime;
     BroadcastReceiver broadcastReceiver;
     String OrderId = null;
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
+
 
     public static OrderStatusActivity getActivity() {
         return orderStatusActivity;
@@ -291,6 +293,28 @@ public class OrderStatusActivity extends AppCompatActivity {
                                     average_delivery_time = data.getData().getAverage_delivery_time();
                                     phone_number = data.getData().getPhone_number();
                                     tvPaymentMode.setText(data.getData().getPayment_mode().toUpperCase());
+                                    orderDeliveryTime = data.getData().getOrder_delivery_collection_time();
+                                    order_type = data.getData().getOrder_type();
+
+                                    if (data.getData().getOrder_type().equalsIgnoreCase("collection")) {
+                                        view2.setVisibility(View.INVISIBLE);
+                                        view3.setVisibility(View.INVISIBLE);
+                                        linearLayout_3.setVisibility(View.INVISIBLE);
+                                        linearLayout_4.setVisibility(View.INVISIBLE);
+
+                                        tvOnTheWayText.setVisibility(View.INVISIBLE);
+                                        tvDeliveredText.setVisibility(View.INVISIBLE);
+
+
+                                    } else {
+                                        view2.setVisibility(View.VISIBLE);
+                                        view3.setVisibility(View.VISIBLE);
+                                        linearLayout_3.setVisibility(View.VISIBLE);
+                                        linearLayout_4.setVisibility(View.VISIBLE);
+
+                                        tvOnTheWayText.setVisibility(View.VISIBLE);
+                                        tvDeliveredText.setVisibility(View.VISIBLE);
+                                    }
                                     setUi(data.getData().getOrder_status());
                                     //Toast.makeText(val, data.getMessage(), Toast.LENGTH_SHORT).show();
                                     //  setUi(data.getData().getOrder_status());
@@ -354,7 +378,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                 mainImg.setImageResource(R.drawable.ic_order_status_0);
 //                Glide.with(OrderStatusActivity.this).load(R.drawable.ssssss).asGif().into(mainImg);
                 tvTitileText.setText(getResources().getString(R.string.order_title_0));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_0) + " " + restaurant_name + " accept your order.");
+                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_0) + " " + restaurant_name + " accepts your order.");
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.border_circle_white));
 
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.gray));
@@ -381,7 +405,11 @@ public class OrderStatusActivity extends AppCompatActivity {
                 mainImg.setImageResource(R.drawable.ic_order_status_1);
                 mainImg.setBackground(getResources().getDrawable(R.drawable.circle_shape));
                 tvTitileText.setText(getResources().getString(R.string.order_title_1));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_1) + " " + prepared_time + " min " + "to prepare.");
+                if (order_type.equalsIgnoreCase("collection")) {
+                    tvDetailsMsg.setText(restaurant_name + " " + "" + "has accepted your order, which will be ready to collect at " + orderDeliveryTime);
+                } else {
+                    tvDetailsMsg.setText(restaurant_name + " " + "" + "has accepted your order, which will be delivered at " + orderDeliveryTime);
+                }
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
 
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));

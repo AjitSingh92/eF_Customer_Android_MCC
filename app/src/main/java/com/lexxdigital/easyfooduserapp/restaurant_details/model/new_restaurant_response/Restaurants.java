@@ -69,6 +69,9 @@ public class Restaurants {
     @SerializedName("avg_delivery_time")
     @Expose
     private Integer avgDeliveryTime;
+    @SerializedName("avg_preparation_time")
+    @Expose
+    private Integer avgPreparationTime;
     @SerializedName("free_delivery")
     @Expose
     private String freeDelivery;
@@ -266,6 +269,14 @@ public class Restaurants {
         this.avgDeliveryTime = avgDeliveryTime;
     }
 
+    public Integer getAvgPreparationTime() {
+        return avgPreparationTime;
+    }
+
+    public void setAvgPreparationTime(Integer avgPreparationTime) {
+        this.avgPreparationTime = avgPreparationTime;
+    }
+
     public String getFreeDelivery() {
         return freeDelivery;
     }
@@ -362,6 +373,7 @@ public class Restaurants {
                 ", minOrderValue='" + minOrderValue + '\'' +
                 ", deliveryCharge='" + deliveryCharge + '\'' +
                 ", avgDeliveryTime=" + avgDeliveryTime +
+                ", avgPreparationTime=" + avgPreparationTime +
                 ", freeDelivery='" + freeDelivery + '\'' +
                 ", deliveryLabel='" + deliveryLabel + '\'' +
                 ", avgRating=" + avgRating +

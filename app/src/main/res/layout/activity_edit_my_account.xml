@@ -85,15 +85,15 @@
                             android:layout_height="@dimen/_100sdp"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
-                            android:visibility="gone"
-                            android:src="@drawable/avatar" />
+                            android:src="@mipmap/avatar_profile"
+                            android:visibility="gone" />
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/image"
                             android:layout_width="@dimen/_100sdp"
                             android:layout_height="@dimen/_100sdp"
                             android:layout_gravity="center"
-                            fresco:placeholderImage="@drawable/avatar"
+                            fresco:placeholderImage="@mipmap/avatar_profile"
                             fresco:progressBarAutoRotateInterval="5000"
                             fresco:progressBarImage="@drawable/image_loader"
                             fresco:progressBarImageScaleType="center"

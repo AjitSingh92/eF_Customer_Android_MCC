@@ -313,11 +313,12 @@
                     android:fontFamily="@font/avenir_medium"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    android:text="Pay with cash"
+                    android:text="Pay With Cash"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/btn.backToMenu"
                 style="@style/TextAppearance.AppCompat.Medium"

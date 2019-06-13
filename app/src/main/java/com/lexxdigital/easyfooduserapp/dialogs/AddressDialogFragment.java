@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lexxdigital.easyfooduserapp.R;
@@ -60,6 +61,7 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
     ProgressBar progressBar;
     Boolean isDelivery = true;
     Boolean isAddressSelected = false;
+    TextView tvEmpty;
 
     @Override
     public void onAddressSelect(int position, AddressList address) {
@@ -149,6 +151,9 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
         llAddAddress = view.findViewById(R.id.doneLL);
         llAddAddress.setOnClickListener(this);
 
+        tvEmpty = view.findViewById(R.id.tv_Empty);
+        tvEmpty.setVisibility(View.GONE);
+
         recyclerViewList = view.findViewById(R.id.addreshList);
 
         recyclerLayoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
@@ -233,7 +238,6 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
 
                 try {
 
-
                     if (response.body().getSuccess()) {
                         addressList.clear();
                         for (int i = 0; i < response.body().getData().getAddresses().size(); i++) {
@@ -249,14 +253,23 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
                                     response.body().getData().getAddresses().get(i).getIsDelivering()));
 
                         }
-                        addressDialogAdapter = new AddressDialogAdapter(context, addressList, AddressDialogFragment.this);
-                        recyclerViewList.setVisibility(View.VISIBLE);
-                        recyclerViewList.setAdapter(addressDialogAdapter);
+                        if (response.body().getData().getAddresses() != null && response.body().getData().getAddresses().size() > 0) {
+                            addressDialogAdapter = new AddressDialogAdapter(context, addressList, AddressDialogFragment.this);
+                            recyclerViewList.setVisibility(View.VISIBLE);
+                            tvEmpty.setVisibility(View.GONE);
+                            recyclerViewList.setAdapter(addressDialogAdapter);
+                        } else {
+                            recyclerViewList.setVisibility(View.GONE);
+                            tvEmpty.setVisibility(View.VISIBLE);
+                        }
 
                     } else {
-
+                        recyclerViewList.setVisibility(View.GONE);
+                        tvEmpty.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
+                    recyclerViewList.setVisibility(View.GONE);
+                    tvEmpty.setVisibility(View.VISIBLE);
                     Log.e("Exception", e.getMessage());
 
                 }

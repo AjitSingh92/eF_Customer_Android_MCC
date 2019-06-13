@@ -47,7 +47,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/rounded"
-                    android:src="@drawable/avatar"
+                    android:src="@mipmap/avatar_profile"
                     android:visibility="visible" />
 
                 <TextView

@@ -215,7 +215,6 @@ public class CardsListFragment extends Fragment
             public void onResponse(Call<MakeCardDefaultRes> call, Response<MakeCardDefaultRes> response) {
                 try {
                     if (response.body().getSuccess()) {
-                        Toast.makeText(mContext, "" + response.body().getMessage(), Toast.LENGTH_LONG).show();
                         getCardList();
                         // moveItem= AnimationUtils.loadAnimation(mContext,R.anim.pull_in_left);
                         //holder.layoutcard.startAnimation(moveItem);

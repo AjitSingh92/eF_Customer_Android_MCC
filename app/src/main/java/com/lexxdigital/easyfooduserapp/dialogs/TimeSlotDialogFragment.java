@@ -257,6 +257,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         VoucherApplyInterface apiInterface = ApiClient.getClient(context).create(VoucherApplyInterface.class);
         TimeSlotRequest request = new TimeSlotRequest();
         request.setRestaurant_id(sharePre.getString(sharePre.RESTUARANT_ID));
+        request.setOrder_type(sharePre.getString(sharePre.ORDER_TYPE));
 
         Call<TimeSlotResponse> call3 = apiInterface.restuarantTimeSlot(request);
         call3.enqueue(new Callback<TimeSlotResponse>() {

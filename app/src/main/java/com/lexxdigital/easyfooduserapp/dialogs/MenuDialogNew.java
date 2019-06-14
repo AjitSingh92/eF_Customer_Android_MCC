@@ -423,46 +423,46 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
             Double totalPrice = 0d;
             for (MenuProduct menuProduct : menuProducts) {
                 int itemQty = menuProduct.getOriginalQuantity();
+                if (menuProduct.getMenuProductSize() != null) {
+                    if (menuProduct.getMenuProductSize().size() > 0) {
 
-                if (menuProduct.getMenuProductSize().size() > 0) {
+                        for (MenuProductSize menuProductSize1 : menuProduct.getMenuProductSize()) {
+                            if (menuProductSize1.getSelected()) {
+                                selectedSizePrice = menuProductSize1.getProductSizePrice();
+                                totalPrice += Double.parseDouble(menuProductSize1.getProductSizePrice());
+                                if (menuProductSize1.getSizeModifiers() != null) {
+                                    for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
+                                        if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
 
-                    for (MenuProductSize menuProductSize1 : menuProduct.getMenuProductSize()) {
-                        if (menuProductSize1.getSelected()) {
-                            selectedSizePrice = menuProductSize1.getProductSizePrice();
-                            totalPrice += Double.parseDouble(menuProductSize1.getProductSizePrice());
-                            if (menuProductSize1.getSizeModifiers() != null) {
-                                for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
-                                    if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
+                                            int allCount = 0;
+                                            for (int j = 0; j < sizeModifier.getModifier().size(); j++) {
+                                                allCount = allCount + Integer.parseInt(sizeModifier.getModifier().get(j).getOriginalQuantity());
+                                            }
 
-                                        int allCount = 0;
-                                        for (int j = 0; j < sizeModifier.getModifier().size(); j++) {
-                                            allCount = allCount + Integer.parseInt(sizeModifier.getModifier().get(j).getOriginalQuantity());
-                                        }
-
-                                        if (allCount > sizeModifier.getMaxAllowedQuantity()) {
+                                            if (allCount > sizeModifier.getMaxAllowedQuantity()) {
                                        /* for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
                                             int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getQuantity());
                                             qty = (qty * itemQty);
                                             totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
                                         }*/
-                                            totalPrice += (((allCount * itemQty) - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
-                                        }
-                                    } else {
-                                        for (Modifier modifier : sizeModifier.getModifier()) {
-                                            int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                            qty = (qty * itemQty);
-                                            totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                totalPrice += (((allCount * itemQty) - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
+                                            }
+                                        } else {
+                                            for (Modifier modifier : sizeModifier.getModifier()) {
+                                                int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                                qty = (qty * itemQty);
+                                                totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+
+                    } else {
+                        totalPrice += (itemQty * Double.parseDouble(menuProduct.getMenuProductPrice()));
                     }
-
-                } else {
-                    totalPrice += (itemQty * Double.parseDouble(menuProduct.getMenuProductPrice()));
                 }
-
 
                 for (ProductModifier productModifier : menuProduct.getProductModifiers()) {
                     if (productModifier.getModifierType().equalsIgnoreCase("free")) {

@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "428549606507",
-    "firebase_url": "https://easyfood-d93c0.firebaseio.com",
-    "project_id": "easyfood-d93c0",
-    "storage_bucket": "easyfood-d93c0.appspot.com"
+    "project_number": "1028511164813",
+    "firebase_url": "https://easy-food-customer-android-app.firebaseio.com",
+    "project_id": "easy-food-customer-android-app",
+    "storage_bucket": "easy-food-customer-android-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:428549606507:android:f81e334be96e12a3",
+        "mobilesdk_app_id": "1:1028511164813:android:7bbf096f5f2dc554",
         "android_client_info": {
-          "package_name": "com.lexxdigital.easyfooduserapp"
+          "package_name": "com.lexxdigital.easyfooduserapps"
         }
       },
       "oauth_client": [
         {
-          "client_id": "428549606507-srdmn2s06u862ceebj5iovv5cc8d2rgl.apps.googleusercontent.com",
+          "client_id": "1028511164813-sp2p43t68mc7gf9796tgn8ka5b84c5tm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lexxdigital.easyfooduserapps",
+            "certificate_hash": "88d2a5c73dbe2985870e4ebdd0c61f57419213b1"
+          }
+        },
+        {
+          "client_id": "1028511164813-2cae9ktgtlnslk7s34f9ik8v3s43s7no.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA4o4oInYfqshhmf1dkNyM9xkFenA6lMj4"
+          "current_key": "AIzaSyBPNFDzp6lYJza7GVuEKpJX4OZiExhFs1g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "428549606507-srdmn2s06u862ceebj5iovv5cc8d2rgl.apps.googleusercontent.com",
+              "client_id": "1028511164813-2cae9ktgtlnslk7s34f9ik8v3s43s7no.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

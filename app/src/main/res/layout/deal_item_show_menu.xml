@@ -99,7 +99,7 @@
 
                     </LinearLayout>
 
-                    <com.lexxdigital.easyfooduserapp.utility.VerticalTextView
+                    <com.lexxdigital.easyfooduserapps.utility.VerticalTextView
 
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_130sdp"

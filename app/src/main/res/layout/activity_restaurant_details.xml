@@ -405,7 +405,7 @@
                     android:background="#f0f1f4"
                     app:tabIndicatorColor="@color/orange" />
 
-                <com.lexxdigital.easyfooduserapp.utility.HeightWrappingViewPager
+                <com.lexxdigital.easyfooduserapps.utility.HeightWrappingViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

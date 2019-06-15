@@ -27,7 +27,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                tools:context="com.lexxdigital.easyfooduserapp.fragments.InfoFragment" />
+                tools:context="com.lexxdigital.easyfooduserapps.fragments.InfoFragment" />
 
             <!--<com.google.android.gms.maps.MapView-->
             <!--android:id="@+id/mapView2"-->

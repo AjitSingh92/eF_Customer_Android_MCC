@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.ReatingAdapter;
 import com.lexxdigital.easyfooduserapps.restaurant_details.api.ReviewInterface;
@@ -51,6 +52,7 @@ public class ReviwesFragment extends Fragment {
 
     private GlobalValues val;
     private Dialog dialog;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public ReviwesFragment() {
     }
@@ -65,7 +67,7 @@ public class ReviwesFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_reviwes, container, false);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         // Inflate the layout for this fragment
 
         ButterKnife.bind(this, view);

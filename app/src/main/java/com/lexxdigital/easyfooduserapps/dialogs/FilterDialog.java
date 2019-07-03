@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.FilterByCuisinerAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.FilterByOfferAdapter;
@@ -46,7 +47,7 @@ public class FilterDialog extends Dialog
     private FilterSortByAdapter.PositionSortInterface positionSortInterface;
     private FilterByOfferAdapter.PositionByOfferInterface positionByOfferInterface;
     private FilterByCuisinerAdapter.PositionInterface positionInterfaceCoisine;
-
+    FirebaseAnalytics mFirebaseAnalytics;
 
 
     interface  OnFilterClickListener{
@@ -74,7 +75,7 @@ public class FilterDialog extends Dialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT);

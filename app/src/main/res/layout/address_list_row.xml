@@ -97,13 +97,13 @@
 
                 <TextView
                     android:id="@+id/edit_details_tv"
-                    android:layout_width="@dimen/_145sdp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fm"
                     android:background="@drawable/rounded"
                     android:fontFamily="@font/avenir_medium"
                     android:gravity="center"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="10dp"
                     android:text="Not delivery to this"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp" />

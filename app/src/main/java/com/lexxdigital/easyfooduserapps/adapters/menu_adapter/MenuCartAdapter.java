@@ -198,8 +198,10 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                     for (int p = 0; p < mItem.get(position).getMealProducts().size(); p++) {
                         View _view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
 //                        ((TextView) _view.findViewById(R.id.tv_title)).setText(mItem.get(position).getMealProducts().get(p).getQuantity() + "x " +  mItem.get(position).getMealProducts().get(p).getProductName()+" "+mItem.get(position).getMealProducts().get(p).getProductSizeName());
-                        ((TextView) _view.findViewById(R.id.tv_title)).setText(mItem.get(position).getMealProducts().get(p).getProductName() + " " + mItem.get(position).getMealProducts().get(p).getProductSizeName());
-                        ((TextView) _view.findViewById(R.id.tv_price)).setVisibility(View.GONE);
+                        ((TextView) _view.findViewById(R.id.tv_title)).setText(itemQty + "x " + mItem.get(position).getMealProducts().get(p).getProductName() + " " + mItem.get(position).getMealProducts().get(p).getProductSizeName());
+                        ((TextView) _view.findViewById(R.id.tv_price)).setVisibility(View.VISIBLE);
+                        ((TextView) _view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
+
                         modifiers.addView(_view);
                         if (mItem.get(position).getMealProducts().get(p).getMenuProductSize() != null && mItem.get(position).getMealProducts().get(p).getMenuProductSize().size() > 0) {
                             for (MenuProductSize menuProductSize1 : mItem.get(position).getMealProducts().get(p).getMenuProductSize()) {

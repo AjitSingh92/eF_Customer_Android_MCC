@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.BillingAddressDialogAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
@@ -57,7 +58,7 @@ public class BillingAddressDialogFragment extends DialogFragment implements
     Boolean isDelivery = true;
     Boolean isAddressSelected = false;
     TextView tvEmpty;
-
+    FirebaseAnalytics mFirebaseAnalytics;
     @Override
     public void onAddressSelect(int position, AddressList address) {
         val.setAddress1(address.getAddressOne());
@@ -134,6 +135,7 @@ public class BillingAddressDialogFragment extends DialogFragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         val = (GlobalValues) getActivity().getApplication();
         sharePre = new SharedPreferencesClass(context);
         progressBar = view.findViewById(R.id.progressBar);

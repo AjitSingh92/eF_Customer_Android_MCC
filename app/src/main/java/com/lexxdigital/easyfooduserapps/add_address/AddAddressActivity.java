@@ -127,7 +127,7 @@ public class AddAddressActivity extends AppCompatActivity implements
     String locationTag = "home";
     private int defaultStatus = 0;
     private List<PostalCodeAddRes.Datum> postalAddres = new ArrayList<>();
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

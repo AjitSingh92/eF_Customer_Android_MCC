@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AdapterCardList;
 import com.lexxdigital.easyfooduserapps.add_card.AddNewCardActivity;
@@ -69,6 +70,7 @@ public class CardsListFragment extends Fragment
     private Dialog dialog;
     List<Card> dataList = new ArrayList<>();
     AdapterCardList.PositionSortInterface positionSortInterface;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @SuppressLint("ValidFragment")
 
@@ -81,6 +83,7 @@ public class CardsListFragment extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cards_list, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
         val = (GlobalValues) mContext;
         positionSortInterface = this;

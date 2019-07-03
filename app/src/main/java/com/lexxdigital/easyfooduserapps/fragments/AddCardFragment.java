@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
 
@@ -71,7 +72,7 @@ public class AddCardFragment extends Fragment {
     private GlobalValues val;
     private Dialog dialog;
     private Context mContext;
-
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @SuppressLint("ValidFragment")
     public AddCardFragment(Context mContext) {
@@ -83,6 +84,7 @@ public class AddCardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_card, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         val = (GlobalValues) mContext;
         dialog = new Dialog(mContext);
         dialog.setTitle("");

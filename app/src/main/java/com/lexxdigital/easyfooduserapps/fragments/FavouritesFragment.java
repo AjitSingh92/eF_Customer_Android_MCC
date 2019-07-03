@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.FavouritesAdapter;
 import com.lexxdigital.easyfooduserapps.api.AddFavouritesInterface;
@@ -76,6 +77,7 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
     private List<FavouriteList> listFavourites = new ArrayList<>();
     private List<FavouriteList.RestaurantTimingList> restaurantTimingLists = new ArrayList<>();
     FavouritesAdapter.PostionInterface postionInterface;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public FavouritesFragment(Context mContext) {
         this.mContext = mContext;
@@ -86,6 +88,7 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favourites, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
         val = (GlobalValues) mContext;
         postionInterface = this;

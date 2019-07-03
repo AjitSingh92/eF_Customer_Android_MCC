@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
@@ -22,7 +23,6 @@ import java.util.List;
 public class ChooseLastCustnizationDialog extends DialogFragment implements View.OnClickListener {
 
     Context context;
-
     int childPosition;
     int parentPosition;
     MenuCategory menuCategory;
@@ -33,7 +33,7 @@ public class ChooseLastCustnizationDialog extends DialogFragment implements View
     TextView qtyTextView;
     List<MenuProduct> menuProduct;
     Boolean isSubCat;
-
+    FirebaseAnalytics mFirebaseAnalytics;
     public interface OnChooseLastCustnizationListener {
         void onRepeatLast(int position, int parentPosition, List<MenuProduct> menuProduct, View view, TextView qtyTextView, MenuCategory menuCategory, int itemCount, Boolean isSubCat, int action);
 
@@ -71,6 +71,7 @@ public class ChooseLastCustnizationDialog extends DialogFragment implements View
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         TextView lastItemName = (TextView) view.findViewById(R.id.last_item_name);
         if (isSubCat) {
             lastItemName.setText(menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getProductName());

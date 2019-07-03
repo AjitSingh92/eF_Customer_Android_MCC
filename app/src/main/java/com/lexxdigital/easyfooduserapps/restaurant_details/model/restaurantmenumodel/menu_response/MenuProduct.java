@@ -49,7 +49,7 @@ public class MenuProduct {
     @SerializedName("productModifiers")
     @Expose
     private List<ProductModifier> productModifiers = null;
-    @SerializedName("meal_products")
+    @SerializedName("mealProducts")
     @Expose
     private List<MealProduct> mealProducts = null;
     @Expose

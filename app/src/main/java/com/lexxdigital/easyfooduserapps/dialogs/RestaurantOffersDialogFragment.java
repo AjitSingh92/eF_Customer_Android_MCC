@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.adapters.RestaurantOffersAdapter;
@@ -36,6 +37,7 @@ public class RestaurantOffersDialogFragment extends DialogFragment implements Vi
     ImageView imClose;
     TextView btnOk;
     OnOffersSelectedListener onOffersSelectedListener;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public interface OnOffersSelectedListener {
         void onOffersSelect(String time);
@@ -69,6 +71,7 @@ public class RestaurantOffersDialogFragment extends DialogFragment implements Vi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
 
     }
 

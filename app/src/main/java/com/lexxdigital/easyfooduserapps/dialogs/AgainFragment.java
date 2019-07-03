@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.AgainAdapter;
@@ -30,8 +31,8 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
     int againChildPosition;
     List<MenuProduct> menuProduct;
     View view;
-    TextView qtyTetView,tvToDelete;
-    LinearLayout llAction,llitemRemove, llItemAdd;
+    TextView qtyTetView, tvToDelete;
+    LinearLayout llAction, llitemRemove, llItemAdd;
     MenuCategory menuCategory;
     int itemCount;
     int action;
@@ -40,6 +41,7 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
     AgainAdapter againAdapter;
     TextView msg;
     OneItemMultiTimeListener oneItemMultiTimeListener;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public AgainFragment() {
         // Required empty public constructor
@@ -86,6 +88,7 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         msg = view.findViewById(R.id.tv_msg);
         productModifierView = view.findViewById(R.id.list);
         tvToDelete = view.findViewById(R.id.tv_to_delete);
@@ -105,17 +108,15 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
         } else {
             msg.setVisibility(View.GONE);
         }
-        if (action == 1){
+        if (action == 1) {
             llitemRemove.setVisibility(View.VISIBLE);
             llItemAdd.setVisibility(View.GONE);
             tvToDelete.setText("to delete the product");
-        }
-        else if (action == 2){
+        } else if (action == 2) {
             llitemRemove.setVisibility(View.GONE);
             llItemAdd.setVisibility(View.VISIBLE);
             tvToDelete.setText("to add the product");
-        }
-        else {
+        } else {
             llAction.setVisibility(View.GONE);
         }
 

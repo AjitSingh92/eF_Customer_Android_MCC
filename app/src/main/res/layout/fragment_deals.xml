@@ -97,8 +97,8 @@
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
 
             <LinearLayout
@@ -123,27 +123,30 @@
                     android:animateLayoutChanges="false"
                     android:background="@color/white"
                     android:nestedScrollingEnabled="false" />
+
                 <LinearLayout
                     android:id="@+id/oops_layout"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:layout_marginTop="@dimen/_100sdp"
-                    android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_100sdp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/_200sdp"
                         android:layout_height="@dimen/_100sdp"
-                        android:src="@drawable/oops"/>
+                        android:src="@drawable/no_result_found" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_16sdp"
-                        android:textColor="@color/black"
+                        android:fontFamily="@font/avenir_medium"
                         android:text="we are unable to match your search"
-                        android:fontFamily="@font/avenir_medium"/>
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sdp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
 

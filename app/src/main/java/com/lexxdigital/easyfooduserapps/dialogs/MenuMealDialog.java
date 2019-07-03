@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.ItemClickListener;
@@ -55,6 +56,7 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
 
     TextView validationError;
     Boolean openOnClick;
+    FirebaseAnalytics mFirebaseAnalytics;
     public static MenuMealDialog newInstance(Context context,Boolean openOnClick, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener) {
         MenuMealDialog c = new MenuMealDialog();
         c.context = context;
@@ -77,6 +79,7 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DatabaseHelper(context);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
     }
 
     @Nullable

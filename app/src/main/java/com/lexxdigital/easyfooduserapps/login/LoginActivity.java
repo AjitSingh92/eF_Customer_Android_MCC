@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -43,6 +44,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
@@ -68,6 +70,7 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -246,7 +249,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.e("DD", "handleSignInResult:" + result.isSuccess());
-
+        dialog.show();
 
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
@@ -272,25 +275,33 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     lastName = arrName[1];
                 }
 
+                Log.e("google", mGoogleApiClient.hasConnectedApi(Plus.API) + "");
                 if (mGoogleApiClient.hasConnectedApi(Plus.API)) {
                     Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-                    profilePic = person.getImage().getUrl();
-                    dialog.show();
+                    if (person != null && person.getImage().getUrl() != null) {
+                        profilePic = person.getImage().getUrl();
+                    }
                     callAPI(email, "        ", Constants.LOGIN_WITH_GPLUS, personName);
                 } else {
-                    Toast.makeText(this, "Some error occurred. Please try again.", Toast.LENGTH_SHORT).show();
-                }
+                    Toast.makeText(this, "Some error occurred. Please try again.", Toast.LENGTH_LONG).show();
+                    dialog.hide();
 
+                }
 
 //
 //                Log.e("DD", "Name: " + personName + ", email: " + email
 //                        + ", Image: , Name : " + profilePic);
                 // signOut();
             } catch (Exception e) {
+                dialog.hide();
+                Log.e("Exception", e.toString());
 
             }
 
         } else {
+            dialog.hide();
+            Toast.makeText(LoginActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
+            Log.e("Success", "" + result.isSuccess());
             // Signed out, show unauthenticated UI.
             //updateUI(false);
         }
@@ -303,6 +314,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         callbackManager.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }

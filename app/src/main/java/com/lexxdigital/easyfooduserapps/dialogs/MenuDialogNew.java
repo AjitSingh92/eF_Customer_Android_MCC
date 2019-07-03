@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
 import com.lexxdigital.easyfooduserapps.R;
@@ -61,7 +62,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
     TextView totalPriceView, categoryName;
     View qtyLayout;
     Boolean isSubCat;
-
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public static MenuDialogNew newInstance(Context context, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener) {
         MenuDialogNew c = new MenuDialogNew();
@@ -94,7 +95,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         totalPriceView = view.findViewById(R.id.total_price);
 
         view.findViewById(R.id.sign_up_btn_dialog).setOnClickListener(this);

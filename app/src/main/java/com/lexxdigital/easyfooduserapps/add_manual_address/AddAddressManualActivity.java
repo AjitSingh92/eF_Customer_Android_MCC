@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,14 +21,18 @@ import android.widget.Toast;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.add_address.AddAddressActivity;
+import com.lexxdigital.easyfooduserapps.api.SearchPostalCodeAddressInterface;
 import com.lexxdigital.easyfooduserapps.model.AddressList;
 import com.lexxdigital.easyfooduserapps.model.add_model.AddressRequestModel;
 import com.lexxdigital.easyfooduserapps.model.add_model.AddressResponseModel;
 import com.lexxdigital.easyfooduserapps.model.add_model.EditAddressRequest;
+import com.lexxdigital.easyfooduserapps.model.postal_code_address.PostalCodeAddRes;
+import com.lexxdigital.easyfooduserapps.model.postal_code_address.PostalCodeAddressReq;
 import com.lexxdigital.easyfooduserapps.search_post_code.api.SearchPostCodeInterface;
 import com.lexxdigital.easyfooduserapps.search_post_code.model.search_request.SearchPostCodeRequest;
 import com.lexxdigital.easyfooduserapps.search_post_code.model.search_response.SearchPostCodeResponse;
 import com.lexxdigital.easyfooduserapps.utility.ApiClient;
+import com.lexxdigital.easyfooduserapps.utility.ApiClient2;
 import com.lexxdigital.easyfooduserapps.utility.ApiInterface;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
@@ -60,7 +65,7 @@ public class AddAddressManualActivity extends AppCompatActivity {
     String fromActivity = "";
     int intaddType = 0;
     private int defaultStatus = 0;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +178,8 @@ public class AddAddressManualActivity extends AppCompatActivity {
                         editmanageAddress();
                     } else
                         manageAddress();*/
-                    callSearchPostAPI(postalCode.getText().toString().trim());
+//                    callSearchPostAPI(postalCode.getText().toString().trim());
+                    performSearchPostal(postalCode.getText().toString().trim());
                 }
             }
         });
@@ -378,6 +384,7 @@ public class AddAddressManualActivity extends AppCompatActivity {
         alert11.show();
     }
 
+
     public void callSearchPostAPI(String postcode) {
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Check Postal Code");
@@ -402,11 +409,11 @@ public class AddAddressManualActivity extends AppCompatActivity {
                             manageAddress();
                     } else {
                         dialog.dismiss();
-                        showDialog("Delivery Not Available Here, Please change postal code");
+                        showDialog("We are not here yet, Please change post code");
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    showDialog("Delivery Not Available Here, Please change postal code");
+                    showDialog("We are not here yet, Please change post code");
                     Log.e("Error <>>>", ">>>>>" + e.getMessage());
                 }
             }
@@ -415,7 +422,71 @@ public class AddAddressManualActivity extends AppCompatActivity {
             public void onFailure(Call<SearchPostCodeResponse> call, Throwable t) {
                 Log.e("Error <>>>", ">>>>>" + t.getMessage());
                 dialog.dismiss();
-                showDialog("Delivery Not Available Here, Please change postal code");
+                showDialog("We are not here yet, Please change post code");
+
+            }
+        });
+    }
+
+    private void performSearchPostal(String postCode) {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Please Wait!");
+        dialog.show();
+        SearchPostalCodeAddressInterface apiInterface = ApiClient2.getClient2(this)
+                .create(SearchPostalCodeAddressInterface.class);
+        PostalCodeAddressReq request = new PostalCodeAddressReq();
+        request.setPostCode(postCode);
+        Call<PostalCodeAddRes> call = apiInterface.mLogin(request);
+        call.enqueue(new Callback<PostalCodeAddRes>() {
+            @Override
+            public void onResponse(Call<PostalCodeAddRes> call, Response<PostalCodeAddRes> response) {
+                try {
+                    Log.e("AddressAdd:", "onResponse: " + response.code() + " ");
+                    if (response.code() == 200) {
+                        if (response.body().getSuccess()) {
+                            dialog.dismiss();
+
+                            if (response.body().getData().size() > 0) {
+
+                                if (!cityName.getText().toString().trim().equalsIgnoreCase(response.body().getData().get(0).getPostTown())) {
+                                    cityName.setText(Constants.capitalize(response.body().getData().get(0).getPostTown()));
+                                }
+                                if (!countyName.getText().toString().trim().equalsIgnoreCase(response.body().getData().get(0).getCountry())) {
+                                    countyName.setText(Constants.capitalize(response.body().getData().get(0).getCountry()));
+                                } else {
+
+                                    if (isEditable) {
+                                        editmanageAddress();
+                                    } else
+                                        manageAddress();
+                                }
+
+                            } else {
+                                dialog.dismiss();
+                                showDialog("We are not here yet, Please change post code");
+
+                            }
+
+
+                        } else {
+                            dialog.dismiss();
+                            showDialog("We are not here yet, Please change post code");
+
+                        }
+                    } else {
+                        dialog.dismiss();
+                        showDialog("We are not here yet, Please change post code");
+
+                    }
+                } catch (Exception e) {
+                    dialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostalCodeAddRes> call, Throwable t) {
+                dialog.dismiss();
 
             }
         });

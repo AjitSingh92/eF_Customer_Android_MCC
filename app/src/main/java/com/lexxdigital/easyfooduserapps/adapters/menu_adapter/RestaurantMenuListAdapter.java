@@ -162,6 +162,7 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
             layoutManager.setScrollEnabled(false);
             childItemView.setLayoutManager(layoutManager);
 
+
             if (dataItem.getMenuCategoryName().equalsIgnoreCase("MEAL")) {
 
                 RestaurantMealCategoryAdapter restaurantMealCategoryAdapter = new RestaurantMealCategoryAdapter(context, getLayoutPosition(), menuItemClickListener);

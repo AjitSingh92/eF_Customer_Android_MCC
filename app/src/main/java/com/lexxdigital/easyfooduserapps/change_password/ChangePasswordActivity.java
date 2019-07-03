@@ -61,7 +61,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     String pic = "";
     private GlobalValues val;
     SharedPreferencesClass sharePre;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

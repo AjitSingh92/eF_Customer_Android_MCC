@@ -72,7 +72,7 @@ public class ManageAddressActivity extends AppCompatActivity implements AddressS
     AddressSaveAdapter.DeletePositionInterface mDeletePositionInterface;
     AddressSaveAdapter mAddressSaveAdapter;
     SharedPreferencesClass sharePre;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

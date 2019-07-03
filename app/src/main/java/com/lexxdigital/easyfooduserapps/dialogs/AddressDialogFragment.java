@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AddressDialogAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
@@ -58,6 +59,7 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
     Boolean isDelivery = true;
     Boolean isAddressSelected = false;
     TextView tvEmpty;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onAddressSelect(int position, AddressList address) {
@@ -133,6 +135,7 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         val = (GlobalValues) getActivity().getApplication();
         sharePre = new SharedPreferencesClass(context);
         progressBar = view.findViewById(R.id.progressBar);

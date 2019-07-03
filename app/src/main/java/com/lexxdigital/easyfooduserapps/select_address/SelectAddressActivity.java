@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.SelectAddressAdapter;
 import com.lexxdigital.easyfooduserapps.api.AddressListInterface;
@@ -57,11 +58,14 @@ public class SelectAddressActivity extends AppCompatActivity implements SelectAd
     private Dialog dialog;
     private List<AddressList> addressList = new ArrayList<AddressList>();
     int position = 0;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_address);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         ButterKnife.bind(this);
         initView();
         getAddressList();

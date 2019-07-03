@@ -41,7 +41,7 @@ public class CustomerReviewProcess extends AppCompatActivity {
     CircleImageView crlRestoLogo;
     float food, delivery, orderAgain, recommed;
     Dialog dialog;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

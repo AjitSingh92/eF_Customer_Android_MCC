@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.adapters.SearchPostalAddressAdapter;
@@ -31,6 +32,7 @@ public class PostalAddressListDialogFragment extends DialogFragment implements
     int position;
     OnFragmentInteractionListener listener;
     Boolean isAddressSelected = false;
+    FirebaseAnalytics mFirebaseAnalytics;
     public PostalAddressListDialogFragment() {
         // Required empty public constructor
     }
@@ -47,6 +49,7 @@ public class PostalAddressListDialogFragment extends DialogFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
     }
 
     @Override

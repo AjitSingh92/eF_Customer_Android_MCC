@@ -183,7 +183,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     private MenuProductViewModel menuProductViewModel;
     private String restaurantId;
     private String restaurantName;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,6 +265,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 Log.e("CART DATA>>", gson2.toJson(db.getCartData()));
                 preferencesClass.setCartRestaurantDeatilKey(json2);
                 if (Integer.parseInt(footerCount.getText().toString()) > 0) {
+                    sharePre.setString(sharePre.RESTUARANT_ID, restaurantId);
                     Intent i = new Intent(RestaurantDetailsActivity.this, DashboardActivity.class);
                     i.putExtra("FROMMENU", "YES");
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -298,7 +299,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
     @Override
     public void onBackPressed() {
-         Constants.switchActivity(RestaurantDetailsActivity.this, DashboardActivity.class);
+        Constants.switchActivity(RestaurantDetailsActivity.this, DashboardActivity.class);
 //        finish();
 //        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 
@@ -357,8 +358,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         showPriceAndView(null, null, 0);
         extras = getIntent().getExtras();
         if (extras != null) {
+            restaurantId = extras.getString("RESTAURANTID");
             if (Constants.isInternetConnectionAvailable(300)) {
-                getRestaurantDetails(extras.getString("RESTAURANTID"));
+                getRestaurantDetails(restaurantId);
             } else {
                 dialogNoInternetConnection("Please check internet connection.");
             }
@@ -702,7 +704,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         Call<MenuProducts> call3 = apiInterface.mRestaurantCategoryProduct(request);
         call3.enqueue(new Callback<MenuProducts>() {
             @Override
-            public void onResponse(Call<MenuProducts> call, Response<MenuProducts> response) {
+            public void onResponse(Call<MenuProducts> call, final Response<MenuProducts> response) {
                 final Response<MenuProducts> mResponse = response;
                 new Thread(new Runnable() {
                     @Override
@@ -710,6 +712,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                         if (mResponse.body().getSuccess()) {
                             mResponse.body().getData().setCategoryId(categoryId);
                             final Long id = GlobalValues.getInstance().getDb().menuProductMaster().insert(mResponse.body().getData());
+                            Log.e("id>>>>>", response.body().getData().toString());
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

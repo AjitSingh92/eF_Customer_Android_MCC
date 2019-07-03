@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.EditProfileInterface;
 import com.lexxdigital.easyfooduserapps.model.edit_account_request.EditAccountRequest;
@@ -87,12 +88,13 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
     String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE};
     private final int PICK_IMAGE_CAMERA = 101, PICK_IMAGE_GALLERY = 102;
     private File imgFile;
-
+    FirebaseAnalytics mFirebaseAnalytics;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
         val = (GlobalValues) mContext;
         dialog = new Dialog(mContext);

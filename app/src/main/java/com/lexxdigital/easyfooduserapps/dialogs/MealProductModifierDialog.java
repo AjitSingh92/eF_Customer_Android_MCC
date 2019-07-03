@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.ItemClickListener;
@@ -64,7 +65,8 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
     ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable;
     Double totalPayPrice = 0d;
     Double modifierPrice = 0d;
-
+    FirebaseAnalytics mFirebaseAnalytics;
+    
     public static MealProductModifierDialog newInstance(Context context, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable, ItemClickListener itemClickListener) {
         MealProductModifierDialog c = new MealProductModifierDialog();
         c.context = context;
@@ -88,6 +90,7 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DatabaseHelper(context);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
     }
 
     @Nullable

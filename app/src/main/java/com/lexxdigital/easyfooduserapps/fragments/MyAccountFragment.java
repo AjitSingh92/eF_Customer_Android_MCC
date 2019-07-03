@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.MyAccountInterface;
 import com.lexxdigital.easyfooduserapps.change_password.ChangePasswordActivity;
@@ -80,6 +81,7 @@ public class MyAccountFragment extends Fragment {
     private boolean isFirstTime = true;
     LinearLayout lyContainer;
     SimpleDraweeView image;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @SuppressLint("ValidFragment")
     public MyAccountFragment(Context mContext, TextView title) {
@@ -93,6 +95,7 @@ public class MyAccountFragment extends Fragment {
         Fresco.initialize(mContext);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
 
         sharePre = new SharedPreferencesClass(mContext);

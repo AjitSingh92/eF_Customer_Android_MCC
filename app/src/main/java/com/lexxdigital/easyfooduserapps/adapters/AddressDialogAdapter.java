@@ -138,7 +138,9 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
 
         if (addressList.get(listPosition).getIsDelivered() == 0) {
             edit_details_tv.setBackground(mContext.getResources().getDrawable(R.drawable.rounded));
-            edit_details_tv.setText("Not delivery to this");
+            edit_details_tv.setText("We are not here yet!");
+            edit_details_tv.setAllCaps(true);
+
 
         } else {
             edit_details_tv.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_orange));

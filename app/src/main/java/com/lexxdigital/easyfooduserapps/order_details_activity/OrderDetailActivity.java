@@ -91,7 +91,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     public static String menuCategory;
     private List<MenuCategoryCart> orderDetail;
     TextView reasonForCancel;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AddressDialogAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
@@ -59,6 +60,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     Spinner todaySpinner, tomorrowSpinner;
     SharedPreferencesClass sharePre;
     OnDeliveryTimeSelectedListener onDeliveryTimeSelectedListener;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public interface OnDeliveryTimeSelectedListener {
         void onDeliveryTimeSelect(String time);
@@ -92,7 +94,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
     }
 
     @Override

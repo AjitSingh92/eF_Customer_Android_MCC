@@ -169,10 +169,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM" />
+            android:value="@string/geo_api_key" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM" />
+            android:value="@string/geo_api_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -263,11 +264,14 @@
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
         <service
             android:name="com.lexxdigital.easyfooduserapps.services.FetchAddressIntentService"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

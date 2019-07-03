@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.previous_order.MyorderAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.previous_order.OrderPositionListner;
@@ -81,7 +82,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     SharedPreferencesClass sharePre;
     //private List<PreviousOrderResponse.Data.PreviousOrderDetail> previousOrderDetailList=new ArrayList<>();
     // private List<DataList> previousOrderDetails = new ArrayList<DataList>();
-
+    FirebaseAnalytics mFirebaseAnalytics;
     public PreviousOrderFragment() {
         // Required empty public constructor
 
@@ -99,6 +100,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_previous_order, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -200,7 +202,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     public void getCardList() {
         swipreferesh.setRefreshing(true);
         PreviousOrderInterface apiInterface = ApiClient.getClient(getContext()).create(PreviousOrderInterface.class);
-        String cstomerid = "34c8b734-5455-11e9-9ec9-0657952ed75a";
         String custId = val.getLoginResponse().getData().getUserId();
         //Log.d("previous order", "getCardList: customerId:" + customerId + " custId: " + custId);
         int offset = 0, limit = 50;

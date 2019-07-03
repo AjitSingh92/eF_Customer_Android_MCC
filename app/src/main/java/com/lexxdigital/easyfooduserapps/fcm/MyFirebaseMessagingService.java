@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
 import com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
@@ -17,7 +18,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private NotificationUtils notificationUtils;
     SharedPreferencesClass sharePre;
-
+    private DatabaseHelper db;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -26,11 +27,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "FCMToken: " + remoteMessage.getMessageId());
 
         sharePre = new SharedPreferencesClass(this);
+        db = new DatabaseHelper(this);
 
         if (remoteMessage == null)
             return;
         else {
-
+            //TODO: -------------- Notes --------------
+            //TODO:    0   ---> Order Pending
+            //TODO:    1   ---> Order Accepted
+            //TODO:    2   ---> Order Prepared
+            //TODO:    3   ---> Order Out for Delivery
+            //TODO:    4   ---> Order Delivered
+            //TODO:    5   ---> Order Canceled
+            //TODO:    100 ---> Menu Update
             try {
                 Log.e("Notification", remoteMessage.getData().toString());
                 String title = remoteMessage.getData().get("title");
@@ -38,12 +47,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String timestamp = remoteMessage.getData().get("timestamp");
                 String notif_type = remoteMessage.getData().get("type");
                 String order_id = remoteMessage.getData().get("order_number");
+                String restaurant_update = remoteMessage.getData().get("restaurant");
+
                 Log.e("Message", message);
-                if (!notif_type.equalsIgnoreCase(""))
+                if (notif_type != null && !notif_type.equalsIgnoreCase(""))
                     sharePre.setInt(sharePre.NOTIFICATION_TYPE, Integer.parseInt(notif_type));
 
-                if (!order_id.equalsIgnoreCase(""))
+                /*Todo: Restaurant Menu update*/
+                if (notif_type != null && notif_type.equalsIgnoreCase("100")) {
+                    if (db.getCartData() != null && sharePre.getString(sharePre.RESTUARANT_ID).equals(restaurant_update))
+                        db.deleteCart();
+                }
+
+                if (order_id != null) {
                     sharePre.setOrderIDKey(order_id);
+                }
 
                 Intent resultIntent = null;
                 if (OrderStatusActivity.getActivity() == null) {

@@ -53,7 +53,7 @@ public class Restaurants {
     private String deliveryAreas;
     @SerializedName("distance_in_miles")
     @Expose
-    private Integer distanceInMiles;
+    private double distanceInMiles;
     @SerializedName("delivery_in_miles")
     @Expose
     private Integer deliveryInMiles;
@@ -221,11 +221,11 @@ public class Restaurants {
         this.deliveryAreas = deliveryAreas;
     }
 
-    public Integer getDistanceInMiles() {
+    public double getDistanceInMiles() {
         return distanceInMiles;
     }
 
-    public void setDistanceInMiles(Integer distanceInMiles) {
+    public void setDistanceInMiles(double distanceInMiles) {
         this.distanceInMiles = distanceInMiles;
     }
 

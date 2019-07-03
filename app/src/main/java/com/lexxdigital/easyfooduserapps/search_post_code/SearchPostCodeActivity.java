@@ -116,7 +116,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
     boolean isPermissionGranted;
     private boolean doubleBackToExitPressedOnce = false;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

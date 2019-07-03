@@ -23,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AddressSaveAdapter;
 import com.lexxdigital.easyfooduserapps.add_address.AddAddressActivity;
@@ -82,7 +83,7 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
     AddressSaveAdapter.PositionInterface mPositionInterface;
     AddressSaveAdapter.DeletePositionInterface mDeletePositionInterface;
     AddressSaveAdapter mAddressSaveAdapter;
-
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @SuppressLint("ValidFragment")
     public ManageAddressFragment(Context mContext, TextView title) {
@@ -95,6 +96,7 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manage_address, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
         val = (GlobalValues) mContext;
         dialog = new Dialog(getActivity());

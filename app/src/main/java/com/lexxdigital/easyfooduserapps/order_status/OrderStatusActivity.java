@@ -69,7 +69,7 @@ public class OrderStatusActivity extends AppCompatActivity {
     String OrderId = null;
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public static OrderStatusActivity getActivity() {
         return orderStatusActivity;

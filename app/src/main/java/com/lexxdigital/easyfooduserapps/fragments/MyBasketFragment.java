@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AdapterBasketOrderItems;
@@ -281,12 +282,14 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     Boolean isPreOrder = false;
     String restuarantOpenStatus;
     List<RestaurantSpecialOffers> restaurantSpecialOffers = null;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_basket, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
         val = (GlobalValues) getActivity().getApplication();
 
@@ -1215,7 +1218,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             appliedVoucherPaymentType = voucherValidOn;
 //                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                             tvVoucherStatus.setVisibility(View.VISIBLE);
-                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                            tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
                             voucherDiscount = voucherCal;
                         } else {
@@ -1234,7 +1237,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             netAmount = voucherCal;
 //                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                             tvVoucherStatus.setVisibility(View.VISIBLE);
-                            tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
+                            tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherValue) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
                             voucherDiscount = voucherValue;
                         } else {

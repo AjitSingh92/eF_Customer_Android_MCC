@@ -28,7 +28,7 @@ public class CartDatRequest {
     @SerializedName("deliveryCharge")
     @Expose
     Double deliveryCharge;
-    @SerializedName("org_delivery_charge")
+    @SerializedName("org_deliveryCharge")
     @Expose
     String org_delivery_charge;
     @SerializedName("maxLength")
@@ -41,7 +41,7 @@ public class CartDatRequest {
     @Expose
     String voucherCode;
 
-    @SerializedName("restaurant_slug")
+    @SerializedName("restaurantSlug")
     @Expose
     String restaurantSlug;
 

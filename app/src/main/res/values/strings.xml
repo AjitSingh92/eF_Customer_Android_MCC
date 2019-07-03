@@ -2,6 +2,13 @@
     <string name="app_name">Easy Food</string>
     <string name="currency">\u00a3</string>
 
+    <string name="facebook_app_id">1883086888469507</string>
+    <string name="fb_login_protocol_scheme">fb1883086888469507</string>
+    <!--<string name="geo_api_key">AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM</string>-->
+    <string name="geo_api_key">AIzaSyBZt8tduk1FCQCxlMm9J8EhiTCGjRvDCGw</string>
+
+
+
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="please_enter_your_email_address_below_to_reveive_an_email_instruction_for_resetting_your_password">Please enter your email address\nbelow to reveive an email\ninstruction for resetting\nyour password.</string>
@@ -9,8 +16,7 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="submit">SUBMIT</string>
     <string name="cancel">CANCEL</string>
-    <string name="facebook_app_id">1883086888469507</string>
-    <string name="fb_login_protocol_scheme">fb1883086888469507</string>
+
     <string name="sorry_we_don_t_currently_deliver_in_your_area">Sorry, we don’t currently deliver in your area</string>
     <string name="add_note">Add note</string>
     <string name="No_items_added">No items added</string>

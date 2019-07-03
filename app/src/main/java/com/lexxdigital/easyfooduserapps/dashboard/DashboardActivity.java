@@ -636,7 +636,7 @@ public class DashboardActivity extends AppCompatActivity {
         webView.setVisibility(View.VISIBLE);
         webView.setWebViewClient(new MyWebViewClient());
 
-        String url = ApiConstants.RESTAURANT_FAQ;
+        String url = ApiConstants.CONSUMER_FAQ;
         // webView.getSettings().setJavaScriptEnabled(true);
         //  webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webView.loadUrl(url);

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.ExpandableAdapterRecycleview;
@@ -79,6 +80,7 @@ public class MenuFragment extends Fragment {
     Gson gson = new Gson();
     private DatabaseHelper db;
     MenuProductViewModel menuProductViewModel;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     public static MenuFragment newInstance(Activity activity, Context context, Menu restaurantMenuData, ItemClickListener menuItemClickListener) {
         MenuFragment fragment = new MenuFragment();
@@ -125,6 +127,7 @@ public class MenuFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         ButterKnife.bind(this, view);
 
         return view;

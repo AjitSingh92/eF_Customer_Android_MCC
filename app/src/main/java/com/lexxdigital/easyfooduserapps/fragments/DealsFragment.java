@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.DealAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.DealCardAdapter;
@@ -134,6 +135,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     ImageView clear;
     RecyclerLayoutManager layoutManager;
     //*******************************************
+    FirebaseAnalytics mFirebaseAnalytics;
     static DealsFragment _dealsFragment;
 
     public static DealsFragment getFragment() {
@@ -169,6 +171,8 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = getView() != null ? getView() : inflater.inflate(R.layout.fragment_deals, container, false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
+
         sortByList = new ArrayList<>();
         cuisineList = new ArrayList<>();
         filterByList = new ArrayList<Offer>();

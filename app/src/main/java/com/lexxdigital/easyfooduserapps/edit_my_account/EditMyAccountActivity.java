@@ -41,6 +41,7 @@ import com.lexxdigital.easyfooduserapps.api.EditProfileInterface;
 import com.lexxdigital.easyfooduserapps.model.edit_account_request.EditAccountRequest;
 import com.lexxdigital.easyfooduserapps.model.edit_account_response.EditAccountResponse;
 import com.lexxdigital.easyfooduserapps.utility.ApiClient;
+import com.lexxdigital.easyfooduserapps.utility.ApiConstants;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
@@ -145,7 +146,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
 
 
         String profileImageStr = val.getProfileImage();
-        if (!profileImageStr.equalsIgnoreCase("http:\\/\\/35.177.163.219\\/easyfood_backend\\/public") && profileImageStr != null) {
+        if (!profileImageStr.equalsIgnoreCase(ApiConstants.BASE_IMAGE_URL) && profileImageStr != null) {
             Uri uri = Uri.parse(profileImageStr);
 
             if (uri != null) {

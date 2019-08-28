@@ -12,18 +12,20 @@ public class FavouriteList {
     private String DeliveryCharge;
     private Double OverallRating;
     private String restaurantStatus;
+    private String distance_in_miles;
     private List<RestaurantTimingList> restaurantTimingLists;
 
-    public FavouriteList(String entityID, String restaurantName, String logo, String backImane, String cuisines, String minOrderValue, String deliveryCharge, Double overallRating, String restaurantStatus, List<RestaurantTimingList> restaurantTimingLists) {
+    public FavouriteList(String entityID, String restaurantName, String logo, String backImane, String cuisines, String minOrderValue, String deliveryCharge, Double overallRating, String restaurantStatus, String distance_in_miles, List<RestaurantTimingList> restaurantTimingLists) {
         EntityID = entityID;
         RestaurantName = restaurantName;
         Logo = logo;
         BackImane = backImane;
         Cuisines = cuisines;
-        MinOrderValue = minOrderValue;
+        this.MinOrderValue = minOrderValue;
         DeliveryCharge = deliveryCharge;
         OverallRating = overallRating;
         this.restaurantStatus = restaurantStatus;
+        this.distance_in_miles = distance_in_miles;
         this.restaurantTimingLists = restaurantTimingLists;
     }
 
@@ -204,6 +206,15 @@ public class FavouriteList {
 
     public void setRestaurantStatus(String restaurantStatus) {
         this.restaurantStatus = restaurantStatus;
+    }
+
+
+    public String getDistance_in_miles() {
+        return distance_in_miles;
+    }
+
+    public void setDistance_in_miles(String distance_in_miles) {
+        this.distance_in_miles = distance_in_miles;
     }
 
     public List<RestaurantTimingList> getRestaurantTimingLists() {

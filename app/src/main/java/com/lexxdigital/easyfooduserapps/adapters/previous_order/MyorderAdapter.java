@@ -507,7 +507,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                     }
                 }
 
-                db.insertMenuProduct(id, menuProducts.get(j).getMenuSubCatId(), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
+                db.insertMenuProduct(id,Long.parseLong( menuProducts.get(j).getMenuSubCatId()), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
                         menuProducts.get(j).getMenuProductId(),
                         menuProducts.get(j).getProductName(),
                         menuProducts.get(j).getVegType(),

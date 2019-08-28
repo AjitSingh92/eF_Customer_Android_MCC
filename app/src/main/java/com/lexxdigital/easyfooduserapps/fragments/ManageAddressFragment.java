@@ -15,9 +15,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -68,11 +70,12 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
     TextView checkOutTv;
     @BindView(R.id.doneLL)
     LinearLayout doneLL;
+
     @BindView(R.id.llbotom)
     LinearLayout llbotom;
     Unbinder unbinder;
     Context mContext;
-    TextView txtToolbarTitle;
+    TextView txtToolbarTitle, addMoareAdd;
     @BindView(R.id.swipreferesh)
     SwipeRefreshLayout swipreferesh;
     @BindView(R.id.tv_Empty)
@@ -107,6 +110,8 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+
+        addMoareAdd = (TextView) view.findViewById(R.id.addmore_add);
         swipreferesh.setOnRefreshListener(this);
         swipreferesh.setColorSchemeResources(R.color.orange,
                 android.R.color.holo_green_dark,
@@ -124,6 +129,13 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
                     dialogNoInternetConnection("Please check internet connection.");
                 }
 
+            }
+        });
+
+        addMoareAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Constants.switchActivity(getActivity(), AddAddressActivity.class);
             }
         });
 
@@ -268,6 +280,7 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.address_delete_dialog);
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         TextView confirm = dialog.findViewById(R.id.btn_confirm);
         TextView cancel = dialog.findViewById(R.id.btn_cancel);
@@ -285,7 +298,61 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
             }
         });
         dialog.show();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
+
+
+
+
+
+/*
+    public void reportDialog() {
+        View dialogView = LayoutInflater.from(ProductDetailActivity.this).inflate(R.layout.layout_report_dialog, null);
+        final LayoutReportDialogBinding dialogBinding = DataBindingUtil.bind(dialogView);
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogBinding.getRoot());
+        dialog.setCancelable(false);
+        reasonId = "";
+        ReasonsAdapter reasonsAdapter = new ReasonsAdapter(this, reasonListBeans, this);
+        dialogBinding.rvReasons.setLayoutManager(new LinearLayoutManager(this));
+        dialogBinding.rvReasons.setAdapter(reasonsAdapter);
+
+        dialogBinding.ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialogBinding.cvReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (reasonId.equals("")) {
+                    showSnackBar(dialogBinding.getRoot(), getResources().getString(R.string.please_select_reason_first));
+                } else {
+                    dialog.dismiss();
+                    reportPost();
+                }
+
+
+            }
+        });
+        dialog.show();
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.seme_transparent)));
+    }
+*/
 
     public void popUpConfirmation(final String message) {
 
@@ -371,12 +438,20 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
         unbinder.unbind();
 
     }
-
+/*
     @OnClick(R.id.doneLL)
     public void onViewClicked() {
+
         Constants.switchActivity(getActivity(), AddAddressActivity.class);
 
     }
+
+    @OnClick(R.id.addmore_add)
+    public void onViewClicked() {
+
+        Constants.switchActivity(getActivity(), AddAddressActivity.class);
+
+    }*/
 
     @Override
     public void onRefresh() {

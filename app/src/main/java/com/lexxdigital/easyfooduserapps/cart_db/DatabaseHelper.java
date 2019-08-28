@@ -920,8 +920,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
 
                 MenuProduct data = new MenuProduct();
-                data.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                data.setMenuId(cursor.getInt(cursor.getColumnIndex("menuId")));
+                data.setId(String.valueOf(cursor.getInt(cursor.getColumnIndex(COLUMN_ID))));
+                data.setMenuId(String.valueOf(cursor.getInt(cursor.getColumnIndex("menuId"))));
                 data.setMenuProductId(cursor.getString(cursor.getColumnIndex("menu_product_id")));
                 data.setProductName(cursor.getString(cursor.getColumnIndex("product_name")));
                 data.setVegType(cursor.getString(cursor.getColumnIndex("veg_type")));
@@ -972,9 +972,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
 
                 MenuProduct data = new MenuProduct();
-                data.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                data.setMenuId(cursor.getInt(cursor.getColumnIndex("menuId")));
-                data.setMenuId(cursor.getInt(cursor.getColumnIndex("menuSubCatId")));
+                data.setId(String.valueOf(cursor.getInt(cursor.getColumnIndex(COLUMN_ID))));
+                data.setMenuId(String.valueOf(cursor.getInt(cursor.getColumnIndex("menuId"))));
+                data.setMenuId(String.valueOf(cursor.getInt(cursor.getColumnIndex("menuSubCatId"))));
                 data.setMenuProductId(cursor.getString(cursor.getColumnIndex("menu_product_id")));
                 data.setProductName(cursor.getString(cursor.getColumnIndex("product_name")));
                 data.setVegType(cursor.getString(cursor.getColumnIndex("veg_type")));
@@ -1027,8 +1027,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
 
                 MenuProduct data = new MenuProduct();
-                data.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-                data.setMenuId(cursor.getInt(cursor.getColumnIndex("menuId")));
+                data.setId(String.valueOf(cursor.getInt(cursor.getColumnIndex(COLUMN_ID))));
+                data.setMenuId(String.valueOf(cursor.getInt(cursor.getColumnIndex("menuId"))));
                 data.setMenuProductId(cursor.getString(cursor.getColumnIndex("menu_product_id")));
                 data.setProductName(cursor.getString(cursor.getColumnIndex("product_name")));
                 data.setVegType(cursor.getString(cursor.getColumnIndex("veg_type")));
@@ -1041,7 +1041,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 data.setOriginalAmount1(cursor.getDouble(cursor.getColumnIndex("originalAmount1")));
                 data.setAmount(cursor.getString(cursor.getColumnIndex("amount")));
 
-                String catName = getCategoryName(data.getMenuId());
+                String catName = getCategoryName(Integer.parseInt(data.getMenuId()));
 
                 if (catName.equalsIgnoreCase("Meal")) {
 

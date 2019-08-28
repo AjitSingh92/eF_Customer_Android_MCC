@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="5dp"
+    android:layout_marginTop="@dimen/_8sdp"
+    android:paddingLeft="10dp"
+    android:weightSum="4"
     android:paddingRight="@dimen/_5sdp"
     android:paddingTop="@dimen/_2sdp"
     android:paddingBottom="@dimen/_2sdp"
@@ -14,9 +16,9 @@
         android:id="@+id/tv.title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="1.6"
         android:fontFamily="@font/avenir_roman"
-        android:textColor="@color/black"
+        android:textColor="@color/gray"
         android:textSize="@dimen/_12sdp"
         android:text="Title" />
 
@@ -24,8 +26,8 @@
         android:id="@+id/tv.price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:fontFamily="@font/avenir_roman"
+        android:layout_weight="1.1"
+        android:fontFamily="@font/avenir_medium"
         android:textColor="@color/black"
         android:gravity="center"
         android:textSize="@dimen/_12sdp"
@@ -33,17 +35,18 @@
 
     <LinearLayout
         android:id="@+id/clickCount"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="end"
+        android:layout_weight="1.3"
         android:orientation="horizontal"
         android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/item_remove"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:background="@drawable/ic_remove_group"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:background="@drawable/border_circle_gray"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -61,26 +64,27 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:fontFamily="@font/avenir_black"
+            android:fontFamily="@font/avenir_roman"
             android:gravity="center"
             android:text="0"
-            android:textColor="@color/descolor"
+            android:textColor="@color/gray"
             android:textSize="@dimen/_12sdp"
             android:textStyle="bold" />
 
 
         <LinearLayout
             android:id="@+id/item_add"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:background="@drawable/ic_add_group"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:background="@drawable/border_circle_gray"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:padding="@dimen/_45sdp"
                 android:background="@drawable/ic_plus_symbol" />
         </LinearLayout>

@@ -190,7 +190,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         }
     }
 
-    public void callSearchPostAPI(String postcode) {
+    public void callSearchPostAPI(final String postcode) {
         SearchPostCodeInterface apiInterface = ApiClient.getClient(getApplicationContext()).create(SearchPostCodeInterface.class);
 
         SearchPostCodeRequest request = new SearchPostCodeRequest();
@@ -204,7 +204,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
                     if (response.body().getSuccess()) {
                         String pstcode = response.body().getData().getPostcode();
-
+                        DashboardActivity.getInstance().setLocation(postcode);
                         checkRestaurantDeliveryPostcode(pstcode);
 
                     } else {

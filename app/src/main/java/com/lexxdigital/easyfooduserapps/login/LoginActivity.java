@@ -14,8 +14,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -545,7 +547,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         final View mDialogView = factory.inflate(R.layout.popup_email, null);
         forgotDialog = new AlertDialog.Builder(this).create();
         forgotDialog.setView(mDialogView);
+
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        forgotDialog.getWindow().setAttributes(lp);
         forgotDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         final EditText email = (EditText) mDialogView.findViewById(R.id.email);
         mDialogView.findViewById(R.id.submit_tv).setOnClickListener(new View.OnClickListener() {
             @Override

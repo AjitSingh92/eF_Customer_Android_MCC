@@ -174,7 +174,8 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
         FavouristeListRequest request = new FavouristeListRequest();
         request.setUserId(val.getLoginResponse().getData().getUserId());
         request.setFavouriteType("restaurant");
-        request.setPostCode("");
+        Log.e("POSTal Code Fav", "" + sharedPreferencesClass.getPostalCode());
+        request.setPostCode(sharedPreferencesClass.getPostalCode());
         request.setOffset(0);
         request.setLimit(100);
 
@@ -190,7 +191,7 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
                             for (int j = 0; j < response.body().getData().getFavourites().get(i).getRestaurantTiming().size(); j++) {
                                 restaurantTimingLists.add(new FavouriteList.RestaurantTimingList(response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getId(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getRestaurant_id(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getDay(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getOpening_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getOpening_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getCollection_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getCollection_end_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getDelivery_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getDelivery_end_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getStatus()));
                             }
-                            listFavourites.add(new FavouriteList(response.body().getData().getFavourites().get(i).getEntityId(), response.body().getData().getFavourites().get(i).getRestaurantName(), response.body().getData().getFavourites().get(i).getLogo(), response.body().getData().getFavourites().get(i).getBackgroundImage(), response.body().getData().getFavourites().get(i).getCuisines(), response.body().getData().getFavourites().get(i).getMinOderValue(), response.body().getData().getFavourites().get(i).getDeliveryCharge(), response.body().getData().getFavourites().get(i).getOverallRating(), response.body().getData().getFavourites().get(i).getRestaurantStatus(), restaurantTimingLists));
+                            listFavourites.add(new FavouriteList(response.body().getData().getFavourites().get(i).getEntityId(), response.body().getData().getFavourites().get(i).getRestaurantName(), response.body().getData().getFavourites().get(i).getLogo(), response.body().getData().getFavourites().get(i).getBackgroundImage(), response.body().getData().getFavourites().get(i).getCuisines(), response.body().getData().getFavourites().get(i).getMinOderValue(), response.body().getData().getFavourites().get(i).getDeliveryCharge(), response.body().getData().getFavourites().get(i).getOverallRating(), response.body().getData().getFavourites().get(i).getRestaurantStatus(),response.body().getData().getFavourites().get(i).getDistance_in_miles() ,restaurantTimingLists));
                         }
 
                         Log.e("fav", "onResponse:listFavourites size " + listFavourites.size());

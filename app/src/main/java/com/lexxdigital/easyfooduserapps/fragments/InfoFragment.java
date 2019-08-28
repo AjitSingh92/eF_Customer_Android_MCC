@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +23,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
+import com.lexxdigital.easyfooduserapps.adapters.DeliveryAreaAdapter;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +62,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.list_postcode)
     TextView listDeliveryArea;
 
+    @BindView(R.id.rv_delivery_areas)
+    RecyclerView rvDeliverAreas;
+
     Unbinder unbinder;
 
     NewRestaurantsDetailsResponse response;
@@ -73,6 +83,8 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.ly_sunday)
     LinearLayout lySunday;
     FirebaseAnalytics mFirebaseAnalytics;
+
+    private List<String> areCodeList;
 
     public InfoFragment() {
         // Required empty public constructor
@@ -96,6 +108,7 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map1);
         mapFragment.getMapAsync(this);
+        areCodeList = new ArrayList<>();
 
 //        mapView = (MapView) view.findViewById(R.id.mapView2);
 //        mapView.onCreate(savedInstanceState);
@@ -122,9 +135,19 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    private void setAreaAdapter() {
+        DeliveryAreaAdapter deliveryAreaAdapter = new DeliveryAreaAdapter(getActivity(), areCodeList);
+        rvDeliverAreas.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvDeliverAreas.setAdapter(deliveryAreaAdapter);
+    }
+
     public void setData() {
-        restaurantsName.setText(response.getData().getRestaurants().getRestaurantName());
+        restaurantsName.setText("About " + response.getData().getRestaurants().getRestaurantName());
+
         about.setText(response.getData().getRestaurants().getInfo().getAbout());
+        areCodeList = Arrays.asList(response.getData().getRestaurants().getDeliveryAreas().split("\\s*,\\s*"));
+        setAreaAdapter();
+
         String todayDay = Constants.getTodayDay();
         Log.e("Day", todayDay);
         if (response.getData().getRestaurants().getInfo().getTimings().getMonday() != null) {
@@ -140,9 +163,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             lyMonday.setVisibility(View.VISIBLE);
             timeMonday.setText(times);
             if (todayDay.equalsIgnoreCase("Monday")) {
-                lyMonday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two));
+                lyMonday.setBackground(getResources().getDrawable(R.drawable.bg_blue_slection));
             } else {
-                lyMonday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two_2));
+                lyMonday.setBackground(null);
             }
         } else
             lyMonday.setVisibility(View.GONE);
@@ -164,9 +187,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             lyTuesday.setVisibility(View.VISIBLE);
 
             if (todayDay.equalsIgnoreCase("Tuesday")) {
-                lyTuesday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two));
+                lyTuesday.setBackground(getResources().getDrawable(R.drawable.bg_blue_slection));
             } else {
-                lyTuesday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two_2));
+                lyTuesday.setBackground(null);
             }
         } else
             lyTuesday.setVisibility(View.GONE);
@@ -186,9 +209,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             lyWednesday.setVisibility(View.VISIBLE);
 
             if (todayDay.equalsIgnoreCase("Wednesday")) {
-                lyWednesday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two));
+                lyWednesday.setBackground(getResources().getDrawable(R.drawable.bg_blue_slection));
             } else {
-                lyWednesday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two_2));
+                lyWednesday.setBackground(null);
             }
         } else
             lyWednesday.setVisibility(View.GONE);
@@ -208,9 +231,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             lyThursday.setVisibility(View.VISIBLE);
 
             if (todayDay.equalsIgnoreCase("Thursday")) {
-                lyThursday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two));
+                lyThursday.setBackground(getResources().getDrawable(R.drawable.bg_blue_slection));
             } else {
-                lyThursday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two_2));
+                lyThursday.setBackground(null);
             }
 
         } else
@@ -231,9 +254,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             lyFriday.setVisibility(View.VISIBLE);
 
             if (todayDay.equalsIgnoreCase("Friday")) {
-                lyFriday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two));
+                lyFriday.setBackground(getResources().getDrawable(R.drawable.bg_blue_slection));
             } else {
-                lyFriday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two_2));
+                lyFriday.setBackground(null);
             }
         } else
             lyFriday.setVisibility(View.GONE);
@@ -253,9 +276,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             lySaturday.setVisibility(View.VISIBLE);
 
             if (todayDay.equalsIgnoreCase("Saturday")) {
-                lySaturday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two));
+                lySaturday.setBackground(getResources().getDrawable(R.drawable.bg_blue_slection));
             } else {
-                lySaturday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two_2));
+                lySaturday.setBackground(null);
             }
         } else
             lySaturday.setVisibility(View.GONE);
@@ -274,9 +297,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             timeSunday.setText(times);
             lySunday.setVisibility(View.VISIBLE);
             if (todayDay.equalsIgnoreCase("Sunday")) {
-                lySunday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two));
+                lySunday.setBackground(getResources().getDrawable(R.drawable.bg_blue_slection));
             } else {
-                lySunday.setBackground(getResources().getDrawable(R.drawable.bg_btn_forgot_two_2));
+                lySunday.setBackground(null);
             }
         } else
             lySunday.setVisibility(View.GONE);

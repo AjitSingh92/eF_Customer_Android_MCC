@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -49,7 +50,8 @@ public class ReviwesFragment extends Fragment {
     TextView onBased;
     @BindView(R.id.tv_noRating)
     TextView tvnoRating;
-
+    @BindView(R.id.rat_5)
+    ImageView rat_5;
     private GlobalValues val;
     private Dialog dialog;
     FirebaseAnalytics mFirebaseAnalytics;
@@ -82,7 +84,10 @@ public class ReviwesFragment extends Fragment {
             if (val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount() > 1) {
                 onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
             } else {
-                onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Review");
+                overallRating.setVisibility(View.GONE);
+                rat_5.setVisibility(View.GONE);
+                onBased.setText("This restaurant is yet to recieve a review. Why not be the first to review this restaurant and help other customers decide where to eat?");
+                // onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Review");
             }
 
         } catch (Exception e) {
@@ -103,6 +108,9 @@ public class ReviwesFragment extends Fragment {
             if (res.getData().getReviews() != null && res.getData().getReviews().size() > 0) {
                 reviewList.setVisibility(View.VISIBLE);
                 tvnoRating.setVisibility(View.GONE);
+                overallRating.setVisibility(View.VISIBLE);
+                rat_5.setVisibility(View.VISIBLE);
+                onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
 
                 mReatingAdapter = new ReatingAdapter(mContext, res);
 
@@ -114,7 +122,11 @@ public class ReviwesFragment extends Fragment {
                 reviewList.setAdapter(mReatingAdapter);
             } else {
                 reviewList.setVisibility(View.GONE);
-                tvnoRating.setVisibility(View.VISIBLE);
+                overallRating.setVisibility(View.GONE);
+                rat_5.setVisibility(View.GONE);
+                onBased.setText("This restaurant is yet to recieve a review. Why not be the first to review this restaurant and help other customers decide where to eat?");
+
+                // tvnoRating.setVisibility(View.VISIBLE);
             }
         }
 

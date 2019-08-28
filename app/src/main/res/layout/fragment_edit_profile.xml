@@ -118,7 +118,7 @@
                     android:paddingLeft="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <EditText
                     android:id="@+id/edit_last_name"
@@ -136,7 +136,7 @@
                     android:paddingStart="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <EditText
                     android:id="@+id/email"
@@ -155,7 +155,7 @@
                     android:paddingStart="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp"
+                    android:textSize="@dimen/_12sdp"
                     android:visibility="visible" />
 
                 <EditText
@@ -174,7 +174,7 @@
                     android:paddingStart="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
 
             </LinearLayout>

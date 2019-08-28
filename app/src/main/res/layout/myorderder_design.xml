@@ -9,6 +9,7 @@
     android:layout_marginBottom="@dimen/_5sdp"
     android:background="@color/white"
     android:padding="@dimen/_5sdp"
+    android:layout_marginTop="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_5sdp"
     card_view:cardElevation="@dimen/_20sdp"
     card_view:cardUseCompatPadding="true">
@@ -27,16 +28,16 @@
             <TextView
                 android:id="@+id/rest_name"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_weight="1"
                 android:fontFamily="@font/avenir_black"
-                android:text="Big Burger"
+                android:text="New Restaurant withOUT KYC"
                 android:textColor="@color/price_color"
-                android:textSize="@dimen/_14sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_13sdp"
+              />
 
             <TextView
                 android:id="@+id/order_status"
@@ -48,7 +49,7 @@
                 android:fontFamily="@font/avenir_medium"
                 android:text=""
                 android:textColor="@color/price_color"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_13sdp" />
         </LinearLayout>
 
 
@@ -70,7 +71,7 @@
                 android:fontFamily="@font/avenir_roman"
                 android:text="Order No. 1234567890"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_10sdp"
 
                 />
 
@@ -84,7 +85,7 @@
                 android:fontFamily="@font/avenir_roman"
                 android:text="27/04/2019"
                 android:textColor="@color/price_color"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
 
         </LinearLayout>
 
@@ -242,7 +243,7 @@
                 android:fontFamily="@font/avenir_black"
                 android:text="$ 20.0"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16sdp" />
+                android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>
     </LinearLayout>

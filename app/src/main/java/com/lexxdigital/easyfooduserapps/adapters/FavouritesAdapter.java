@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
 import com.lexxdigital.easyfooduserapps.model.FavouriteList;
@@ -42,7 +43,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView restaurantName, cuisines, minOrder, restaurantFavRemove, rating, preOrder, tvPreOrderMsg;
+        TextView restaurantName, cuisines, minOrder, restaurantFavRemove, rating, preOrder, tvPreOrderMsg, tv_distance;
         ImageView restaurantImage, logo;
         LinearLayout llDelivery, llDinein, llCollection, lyClick;
         ImageView delivery, dine_in, collection;
@@ -61,7 +62,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             this.rating = (TextView) itemView.findViewById(R.id.restaurant_rating);
             this.restaurantFavRemove = (TextView) itemView.findViewById(R.id.restaurant_fav_remove);
             this.favIcon = itemView.findViewById(R.id.favourites);
-
+            this.tv_distance = itemView.findViewById(R.id.tv_distance);
 
             this.imRatingImage = itemView.findViewById(R.id.im_ratingImage);
             this.llDelivery = itemView.findViewById(R.id.ll_delivery);
@@ -111,8 +112,16 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             fav = listFavourites.get(listPosition);
             holder.restaurantName.setText(fav.getRestaurantName());
             holder.cuisines.setText(fav.getCuisines());
-            holder.minOrder.setText(mContext.getResources().getString(R.string.currency) + fav.getDeliveryCharge() + " delivery  •  " + mContext.getResources().getString(R.string.currency) + fav.getMinOrderValue() + " min order");
+            if (fav.getDistance_in_miles() != null && !fav.getDistance_in_miles().trim().isEmpty()) {
+                holder.tv_distance.setText(fav.getDistance_in_miles() + " miles");
+            }
+            Log.e("Min Order Value", "" + fav.getMinOrderValue());
+            if (fav.getMinOrderValue() != null) {
+                holder.minOrder.setText(mContext.getResources().getString(R.string.currency) + fav.getDeliveryCharge() + " delivery  •  " + mContext.getResources().getString(R.string.currency) + fav.getMinOrderValue() + " min order");
+            } else {
+                holder.minOrder.setText(mContext.getResources().getString(R.string.currency) + fav.getDeliveryCharge() + " delivery");
 
+            }
             if (fav.getOverallRating() != null) {
                 if (fav.getOverallRating() == 0) {
                     holder.rating.setText("New");
@@ -163,14 +172,27 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                     holder.dine_in.setImageDrawable(mContext.getResources().getDrawable(R.drawable.open));
                 }
             }*/
-            Glide.with(mContext)
+         /*   Glide.with(mContext)
                     .load(fav.getLogo())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.logo);
-            Glide.with(mContext)
+                    .into(holder.logo);*/
+           /* Glide.with(mContext)
                     .load(fav.getBackImane())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.restaurantImage);*/
+
+           /* Glide.with(mContext).load(fav.getLogo()).apply(new RequestOptions()                                    )
+                    .into(holder.logo);*/
+
+
+            Glide.with(activity).load(fav.getLogo()).apply(new RequestOptions()
+                    .placeholder(R.drawable.easy_food_image))
+                    .into(holder.logo);
+
+
+            Glide.with(mContext).load(fav.getBackImane()).apply(new RequestOptions())
                     .into(holder.restaurantImage);
+
 
             holder.favIcon.setOnClickListener(new View.OnClickListener() {
                 @Override

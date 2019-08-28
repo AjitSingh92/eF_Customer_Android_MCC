@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
@@ -341,8 +342,16 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                         restoLogo = response.body().getData().getRestaurantLogo();
                         OrdAvgRating = response.body().getData().getAvgRating();
                         fltRating = Float.valueOf(OrdAvgRating);
-                        Glide.with(OrderDetailActivity.this).load(restoImage).placeholder(R.drawable.default_restaurant_image).centerCrop().into(restImage);
-                        Glide.with(OrderDetailActivity.this).load(restoLogo).placeholder(R.drawable.restaurant_default_logo).centerCrop().into(restLogo);
+
+                        Glide.with(OrderDetailActivity.this).load(restoImage).apply(new RequestOptions()
+                                .placeholder(R.drawable.default_restaurant_image))
+                                .into(restImage);
+                        Glide.with(OrderDetailActivity.this).load(restoLogo).apply(new RequestOptions()
+                                .placeholder(R.drawable.default_restaurant_image))
+                                .into(restLogo);
+
+                        //Glide.with(OrderDetailActivity.this).load(restoImage).placeholder(R.drawable.default_restaurant_image).centerCrop().into(restImage);
+                      //  Glide.with(OrderDetailActivity.this).load(restoLogo).placeholder(R.drawable.restaurant_default_logo).centerCrop().into(restLogo);
                         restName.setText(restoName);
                         ivToolBarTitle.setText(restoName);
                         orderNo.setText(strOrderNo);
@@ -648,7 +657,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                     }
                 }
 
-                db.insertMenuProduct(id, menuProducts.get(j).getMenuSubCatId(), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
+                db.insertMenuProduct(id, Long.parseLong(menuProducts.get(j).getMenuSubCatId()), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
                         menuProducts.get(j).getMenuProductId(),
                         menuProducts.get(j).getProductName(),
                         menuProducts.get(j).getVegType(),

@@ -1,6 +1,9 @@
 package com.lexxdigital.easyfooduserapps.adapters.menu_adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
+import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
 
@@ -30,8 +35,9 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
     int parentPosition;
     MenuCategory menuCategory;
     DatabaseHelper db;
+    private boolean isClosed;
 
-    public RestaurantCategoryAdapter(Context context, int parentPosition, ItemClickListener menuItemClickListener) {
+    public RestaurantCategoryAdapter(Context context, int parentPosition, ItemClickListener menuItemClickListener, boolean isClosed) {
         this.context = context;
         this.menuItemClickListener = menuItemClickListener;
 
@@ -43,6 +49,7 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
         mItem = new ArrayList<>();
 //        this.mItem = RestaurantDetailsActivity.completeData.getMenu().getMenuCategory().get(parentPosition).getMenuProducts();
         db = new DatabaseHelper(context);
+        this.isClosed = isClosed;
     }
 
     public void setHideDetail(Boolean hideDetail) {
@@ -223,14 +230,18 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
                     }
                     break;
                 default:
-                    if (clickCount.getVisibility() == View.GONE) {
+                    if (isClosed) {
+                        restaurantClosedDialog();
+                    } else {
+                        if (clickCount.getVisibility() == View.GONE) {
 //                        clickCount.setVisibility(View.VISIBLE);
 //                        item_count.setText("1");
-                        itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
-                        if (menuItemClickListener != null) {
-                            List<MenuProduct> mItemNew = mItem;
+                            itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
+                            if (menuItemClickListener != null) {
+                                List<MenuProduct> mItemNew = mItem;
 
-                            menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
+                                menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
+                            }
                         }
                     }
                     break;
@@ -240,4 +251,24 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+
+    public void restaurantClosedDialog() {
+        LayoutInflater factory = LayoutInflater.from(RestaurantDetailsActivity.restaurantDetailsActivity);
+        final View mDialogVieww = factory.inflate(R.layout.layout_closed_dialog, null);
+        final AlertDialog alertClodseDialog = new AlertDialog.Builder(RestaurantDetailsActivity.restaurantDetailsActivity).create();
+        alertClodseDialog.setView(mDialogVieww);
+        alertClodseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
+
+        mDialogVieww.findViewById(R.id.tv_btn_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertClodseDialog.dismiss();
+            }
+        });
+
+
+        alertClodseDialog.show();
+    }
 }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_5sdp"
+
     android:orientation="vertical">
 
     <LinearLayout
@@ -18,17 +18,17 @@
             android:gravity="center_vertical"
             android:text="Title"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_11sdp" />
 
-        <TextView
-            android:id="@+id/tv.note"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_roman"
-            android:padding="5dp"
-            android:text="Title"
-            android:textSize="@dimen/_10sdp" />
+        <!--  <TextView
+              android:id="@+id/tv.note"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/avenir_medium"
+              android:padding="5dp"
+              android:text="Title"
+              android:textSize="@dimen/_10sdp" />-->
     </LinearLayout>
 
     <View
@@ -39,6 +39,7 @@
         android:layout_marginBottom="@dimen/_5sdp"
         android:background="@color/gray"
         android:paddingTop="@dimen/_5sdp"
+        android:visibility="gone"
         android:paddingBottom="@dimen/_5sdp" />
 
     <android.support.v7.widget.RecyclerView

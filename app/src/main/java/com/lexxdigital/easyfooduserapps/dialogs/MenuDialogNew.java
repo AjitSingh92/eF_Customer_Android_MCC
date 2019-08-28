@@ -2,6 +2,8 @@ package com.lexxdigital.easyfooduserapps.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +65,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
     TextView totalPriceView, categoryName;
     View qtyLayout;
     Boolean isSubCat;
+    LinearLayout llprice;
     FirebaseAnalytics mFirebaseAnalytics;
 
     public static MenuDialogNew newInstance(Context context, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener) {
@@ -97,6 +101,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         totalPriceView = view.findViewById(R.id.total_price);
+        llprice = (LinearLayout) view.findViewById(R.id.llprice);
 
         view.findViewById(R.id.sign_up_btn_dialog).setOnClickListener(this);
         view.findViewById(R.id.cross_tv).setOnClickListener(this);
@@ -151,6 +156,7 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
         int dialogWindowHeight = (int) (displayHeight * 0.95f);
         layoutParams.width = dialogWindowWidth;
         getDialog().getWindow().setAttributes(layoutParams);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
@@ -417,6 +423,13 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                     Log.e("Exception", e.getLocalizedMessage());
                 }
             }
+
+
+            if (Double.parseDouble(totalPriceView.getText().toString()) == 0) {
+                llprice.setVisibility(View.GONE);
+            } else {
+                llprice.setVisibility(View.VISIBLE);
+            }
         }
 
         if (menuProducts != null) {
@@ -492,7 +505,13 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                 }
 
             }
+
             totalPriceView.setText(String.format("%.2f", totalPrice));
+            if (Double.parseDouble(totalPriceView.getText().toString()) == 0) {
+                llprice.setVisibility(View.GONE);
+            } else {
+                llprice.setVisibility(View.VISIBLE);
+            }
         }
     }
 

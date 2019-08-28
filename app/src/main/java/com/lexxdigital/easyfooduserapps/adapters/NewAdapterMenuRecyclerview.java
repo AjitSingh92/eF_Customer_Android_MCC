@@ -9,9 +9,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implements WhatLikeAdapter.PositionInterface{
+public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implements WhatLikeAdapter.PositionInterface {
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
@@ -40,11 +42,11 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
     private HashMap<String, List<Object>> _listDataChild;
     private RestaurantDetailsResponse respose;
     private TextView footerDetails;
-    private int totalCount=0;
-    private Double prePrice=0.0;
-    private Double totalPrice=0.00,totalPrice2=0.00;
+    private int totalCount = 0;
+    private Double prePrice = 0.0;
+    private Double totalPrice = 0.00, totalPrice2 = 0.00;
     SharedPreferencesClass sharedPreferencesClass;
-    private int indexList=0, addMul=1,removeMul=1;
+    private int indexList = 0, addMul = 1, removeMul = 1;
     ArrayList<String> array = new ArrayList<>();
     private List<CartDetailsModel> listAddCartDetails = new ArrayList<>();
     TextView popupTotalPrice;
@@ -79,7 +81,7 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
     }
 
     public NewAdapterMenuRecyclerview(Activity activity, Context context, List<String> listDataHeader,
-                                        HashMap<String, List<Object>> listChildData, RestaurantDetailsResponse res, TextView footer, LinearLayout llbotom, FinalMenuCartDetails fCart, List<Object> menuCartDetails, TextView fCount, TextView txtEmptyBasket) {
+                                      HashMap<String, List<Object>> listChildData, RestaurantDetailsResponse res, TextView footer, LinearLayout llbotom, FinalMenuCartDetails fCart, List<Object> menuCartDetails, TextView fCount, TextView txtEmptyBasket) {
 
         this._context = context;
         this._listDataHeader = listDataHeader;
@@ -110,7 +112,7 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final String childText = (String) getChild(groupPosition, childPosition);
         val = (GlobalValues) _context;
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.offer_item_list, null);
@@ -130,8 +132,8 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
             @Override
             public void onClick(View v) {
 
-                Log.e("LEN1",""+mProduct.getMenuProductSize().size());
-                Log.e("LEN2",""+mProduct.getProductModifiers().size());
+                Log.e("LEN1", "" + mProduct.getMenuProductSize().size());
+                Log.e("LEN2", "" + mProduct.getProductModifiers().size());
                 //       Log.e("LEN3",""+);
 
                 //   showCartProductSize.clear();
@@ -139,26 +141,26 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
                 //  showCartProductModifier.clear();
                 //   showCartSizeModifier.clear();
 
-                if(mProduct.getMenuProductSize().size() <= 0 && mProduct.getProductModifiers().size() <= 0){
+                if (mProduct.getMenuProductSize().size() <= 0 && mProduct.getProductModifiers().size() <= 0) {
                     itemCount.setVisibility(View.VISIBLE);
                     itemCount.setText("1");
-                    footerDetails.setText(String.format("%.2f",Double.parseDouble(footerDetails.getText().toString())+Double.parseDouble(mProduct.getMenuProductPrice())));
-                    footerCount.setText(String.valueOf(Integer.parseInt(footerCount.getText().toString())+1));
+                    footerDetails.setText(String.format("%.2f", Double.parseDouble(footerDetails.getText().toString()) + Double.parseDouble(mProduct.getMenuProductPrice())));
+                    footerCount.setText(String.valueOf(Integer.parseInt(footerCount.getText().toString()) + 1));
                     llBotom.setBackgroundColor(_context.getResources().getColor(R.color.orange));
                     itemCount.setVisibility(View.VISIBLE);
                     emptyBasket.setText("View basket");
 
                     arrayListIndextwo.add(mProduct.getMenuProductId());
-                    Log.e("MANOJ","KUMAR");
+                    Log.e("MANOJ", "KUMAR");
 
-                }else {
+                } else {
                     check.clear();
-                    if(finalNewCartDetails.getData().size() <= 0){
-                        alertDialogItems(mProduct, childPosition, groupPosition, countClick,itemCount);
-                    }else{
-                        if(!getIsProductAdded(mProduct.getMenuProductId())){
-                            alertDialogItems(mProduct, childPosition, groupPosition, countClick,itemCount);
-                        }else {
+                    if (finalNewCartDetails.getData().size() <= 0) {
+                        alertDialogItems(mProduct, childPosition, groupPosition, countClick, itemCount);
+                    } else {
+                        if (!getIsProductAdded(mProduct.getMenuProductId())) {
+                            alertDialogItems(mProduct, childPosition, groupPosition, countClick, itemCount);
+                        } else {
                             alertDialogRepeat(groupPosition, itemCount, mProduct, childPosition, countClick);
                         }
                     }
@@ -173,9 +175,9 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
     }
 
 
-    public boolean getIsProductAdded(String id){
-        for(int i=0; i<finalNewCartDetails.getData().size(); i++){
-            if(finalNewCartDetails.getData().get(0).getMenuCategory().getMenuProducts().getMenuProductId().equalsIgnoreCase(id)){
+    public boolean getIsProductAdded(String id) {
+        for (int i = 0; i < finalNewCartDetails.getData().size(); i++) {
+            if (finalNewCartDetails.getData().get(0).getMenuCategory().getMenuProducts().getMenuProductId().equalsIgnoreCase(id)) {
                 return true;
             }
         }
@@ -226,7 +228,6 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
         // Toast.makeText(_context,"GruopPosition ="+groupPosition,Toast.LENGTH_LONG).show();
 
 
-
         return convertView;
     }
 
@@ -246,26 +247,32 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
         final View mDialogView = factory.inflate(R.layout.popup_select_items, null);
         final AlertDialog allergyDialog = new AlertDialog.Builder(mActivity).create();
         allergyDialog.setView(mDialogView);
-        allergyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        lblSize = (TextView)  mDialogView.findViewById(R.id.size_lable);
-        TextView categoryName = (TextView)  mDialogView.findViewById(R.id.txt_category);
-        TextView categoryPrice = (TextView)  mDialogView.findViewById(R.id.category_price);
-        popupTotalPrice = (TextView)  mDialogView.findViewById(R.id.total_price);
-        RecyclerView what_type_list  = (RecyclerView) mDialogView.findViewById(R.id.what_size_type_list);
-        productModifier  = (RecyclerView) mDialogView.findViewById(R.id.product_modifier);
-        mPositionInterface2=this;
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+
+        allergyDialog.getWindow().setAttributes(lp);
+   //  allergyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(mActivity.getResources().getColor(R.color.seme_transparent)));
+        lblSize = (TextView) mDialogView.findViewById(R.id.size_lable);
+        TextView categoryName = (TextView) mDialogView.findViewById(R.id.txt_category);
+        TextView categoryPrice = (TextView) mDialogView.findViewById(R.id.category_price);
+        popupTotalPrice = (TextView) mDialogView.findViewById(R.id.total_price);
+        RecyclerView what_type_list = (RecyclerView) mDialogView.findViewById(R.id.what_size_type_list);
+        productModifier = (RecyclerView) mDialogView.findViewById(R.id.product_modifier);
+        mPositionInterface2 = this;
 
         categoryName.setText(product.getProductName());
-        categoryPrice.setText("£"+product.getMenuProductPrice());
+        categoryPrice.setText("£" + product.getMenuProductPrice());
 
-        if(product.getMenuProductSize().size() >= 0){
+        if (product.getMenuProductSize().size() >= 0) {
 
-            for(int i=0;i<product.getMenuProductSize().size();i++){
+            for (int i = 0; i < product.getMenuProductSize().size(); i++) {
                 check.add("0");
             }
 
-            mWhatLikeAdapter = new WhatLikeAdapter(_context,mPositionInterface2,check,product,popupTotalPrice);
-
+            mWhatLikeAdapter = new WhatLikeAdapter(_context, mPositionInterface2, check, product, popupTotalPrice);
 
 
             @SuppressLint("WrongConstant")
@@ -273,12 +280,12 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
                     = new LinearLayoutManager(_context, LinearLayoutManager.VERTICAL, false);
             what_type_list.setLayoutManager(horizontalLayoutManagaer);
             what_type_list.setAdapter(mWhatLikeAdapter);
-            Log.e("G POS >>",""+gPos);
-            if(product.getMenuProductSize().size() <= 0) {
+            Log.e("G POS >>", "" + gPos);
+            if (product.getMenuProductSize().size() <= 0) {
                 lblSize.setVisibility(View.GONE);
             }
-            if(product.getProductModifiers().size() > 0) {
-                bindProductModifires(productModifier,product,gPos);
+            if (product.getProductModifiers().size() > 0) {
+                bindProductModifires(productModifier, product, gPos);
             }
 
 //            @SuppressLint("WrongConstant")
@@ -295,21 +302,20 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
                 //your business logic
                 allergyDialog.dismiss();
                 Gson gson = new Gson();
-                Log.e("CART>>",">>>"+parentPos);
-                itemTotalCount.setText(String.valueOf(Integer.parseInt(itemTotalCount.getText().toString())+1));
+                Log.e("CART>>", ">>>" + parentPos);
+                itemTotalCount.setText(String.valueOf(Integer.parseInt(itemTotalCount.getText().toString()) + 1));
                 FinalMenuCartDetails mCat = (FinalMenuCartDetails) finalMenuCartDetails.get(0);
                 int pPos = 0;
-                if(mCat.getSpecialOffers().size() <= 0){
+                if (mCat.getSpecialOffers().size() <= 0) {
                     pPos = parentPos;
-                }else if(mCat.getSpecialOffers().size() > 0){
-                    pPos = parentPos-1;
+                } else if (mCat.getSpecialOffers().size() > 0) {
+                    pPos = parentPos - 1;
                 }
 
 
                 llBotom.setBackgroundColor(_context.getResources().getColor(R.color.orange));
                 itemCount.setVisibility(View.VISIBLE);
                 emptyBasket.setText("View basket");
-
 
 
             }
@@ -323,10 +329,12 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
             }
         });
 
+
         allergyDialog.show();
     }
+
     public void logLargeString(String str) {
-        if(str.length() > 3000) {
+        if (str.length() > 3000) {
             Log.e("CART>>", str.substring(0, 3000));
             logLargeString(str.substring(3000));
         } else {
@@ -342,7 +350,7 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
 //        sizeModifier.setAdapter(sizeModifierAdapter);
 //    }
 
-    public void bindProductModifires(RecyclerView productModifier, MenuProduct product, int childPos){
+    public void bindProductModifires(RecyclerView productModifier, MenuProduct product, int childPos) {
 
 //        productModifierAdapter = new AdapterProductModifier(_context,product,childPos,showCartProductModifier, popupTotalPrice,totalPrice2);
 //        @SuppressLint("WrongConstant")
@@ -350,9 +358,9 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
 //                = new LinearLayoutManager(_context, LinearLayoutManager.VERTICAL, false);
 //        productModifier.setLayoutManager(horizontalLayoutManagaer2);
 //        productModifier.setAdapter(productModifierAdapter);
-        if(product.getMenuProductSize().size() > 0) {
+        if (product.getMenuProductSize().size() > 0) {
             productModifier.setVisibility(View.GONE);
-        }else{
+        } else {
             productModifier.setVisibility(View.VISIBLE);
         }
 
@@ -365,31 +373,31 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
     @Override
     public void onClickPos2(int pos, ArrayList<String> check, MenuProduct qProduct) {
 
-        if(check.contains("1")){
-            for(int i=0;i<qProduct.getMenuProductSize().size();i++){
-                check.set(i,"0");
+        if (check.contains("1")) {
+            for (int i = 0; i < qProduct.getMenuProductSize().size(); i++) {
+                check.set(i, "0");
             }
-            check.set(pos,"1");
-        }else{
-            check.set(pos,"0");
+            check.set(pos, "1");
+        } else {
+            check.set(pos, "0");
         }
 
         popupTotalPrice.setText(qProduct.getMenuProductSize().get(pos).getProductSizePrice());
         totalPrice2 = Double.parseDouble(qProduct.getMenuProductSize().get(pos).getProductSizePrice());
 
-        if(!check.contains("1")){
+        if (!check.contains("1")) {
 //            sizeModifier.setVisibility(View.GONE);
             lblSize.setVisibility(View.GONE);
             popupTotalPrice.setText("0.00");
             productModifier.setVisibility(View.GONE);
-        }else{
+        } else {
 //            sizeModifier.setVisibility(View.VISIBLE);
             lblSize.setVisibility(View.VISIBLE);
             productModifier.setVisibility(View.VISIBLE);
 
         }
         mWhatLikeAdapter.notifyDataSetChanged();
-        if(qProduct.getMenuProductSize().size() > 0) {
+        if (qProduct.getMenuProductSize().size() > 0) {
 
             if (qProduct.getMenuProductSize().get(pos).getSizeModifiers().size() > 0) {
                 lblSize.setVisibility(View.VISIBLE);
@@ -402,38 +410,38 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
 //                sizeModifier.setLayoutManager(horizontalLayoutManagaer2);
 //                sizeModifier.setAdapter(sizeModifierAdapter);
             }
-        }else{
+        } else {
             lblSize.setVisibility(View.GONE);
         }
 
     }
 
-    public void alertDialogRepeat(final int groupPosition, final TextView itemTotalCount, final MenuProduct mProduct, final int childPosition, final LinearLayout itemCount){
+    public void alertDialogRepeat(final int groupPosition, final TextView itemTotalCount, final MenuProduct mProduct, final int childPosition, final LinearLayout itemCount) {
         LayoutInflater factory = LayoutInflater.from(mActivity);
         final View mDialogView = factory.inflate(R.layout.choose_last_customization, null);
         final AlertDialog repeatDialog = new AlertDialog.Builder(mActivity).create();
         repeatDialog.setView(mDialogView);
         repeatDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        TextView lastItemName = (TextView)  mDialogView.findViewById(R.id.last_item_name);
+        TextView lastItemName = (TextView) mDialogView.findViewById(R.id.last_item_name);
         lastItemName.setText(mProduct.getProductName());
         mDialogView.findViewById(R.id.repeat_last).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //your business logic
                 repeatDialog.dismiss();
-                itemTotalCount.setText(String.valueOf(Integer.parseInt(itemTotalCount.getText().toString())+1));
-                footerCount.setText(String.valueOf(Integer.parseInt(footerCount.getText().toString())+1));
-                footerDetails.setText(String.format("%.2f",Double.parseDouble(popupTotalPrice.getText().toString()) + Double.parseDouble(footerDetails.getText().toString())));
+                itemTotalCount.setText(String.valueOf(Integer.parseInt(itemTotalCount.getText().toString()) + 1));
+                footerCount.setText(String.valueOf(Integer.parseInt(footerCount.getText().toString()) + 1));
+                footerDetails.setText(String.format("%.2f", Double.parseDouble(popupTotalPrice.getText().toString()) + Double.parseDouble(footerDetails.getText().toString())));
 
                 //    ShowMenuCartDetails = new ArrayList<>();
 
                 FinalMenuCartDetails mCat = (FinalMenuCartDetails) finalMenuCartDetails.get(0);
 
                 int pPos = 0;
-                if(mCat.getSpecialOffers().size() <= 0){
+                if (mCat.getSpecialOffers().size() <= 0) {
                     pPos = groupPosition;
-                }else if(mCat.getSpecialOffers().size() > 0){
-                    pPos = groupPosition-1;
+                } else if (mCat.getSpecialOffers().size() > 0) {
+                    pPos = groupPosition - 1;
                 }
 
             }
@@ -444,7 +452,7 @@ public class NewAdapterMenuRecyclerview extends BaseExpandableListAdapter implem
                 //your business logic
                 repeatDialog.dismiss();
                 check.clear();
-                alertDialogItems(mProduct, childPosition, groupPosition, itemCount,itemTotalCount);
+                alertDialogItems(mProduct, childPosition, groupPosition, itemCount, itemTotalCount);
 
             }
         });

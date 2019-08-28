@@ -23,7 +23,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -34,12 +37,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.gson.JsonObject;
+import com.lexxdigital.easyfooduserapps.OtpSmsAutoFetch.SmsListener;
+import com.lexxdigital.easyfooduserapps.OtpSmsAutoFetch.SmsReceiver;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.EditProfileInterface;
+import com.lexxdigital.easyfooduserapps.api.UpdateMobileInterface;
+import com.lexxdigital.easyfooduserapps.api.VerifyOtpInterface;
 import com.lexxdigital.easyfooduserapps.model.edit_account_request.EditAccountRequest;
 import com.lexxdigital.easyfooduserapps.model.edit_account_response.EditAccountResponse;
+import com.lexxdigital.easyfooduserapps.signup.SignupActivity;
 import com.lexxdigital.easyfooduserapps.utility.ApiClient;
 import com.lexxdigital.easyfooduserapps.utility.ApiConstants;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
@@ -89,8 +99,9 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
     Button btnConfirm;
     @BindView(R.id.user_name)
     TextView userName;
-
+    EditText pin;
     SimpleDraweeView image;
+
     @BindView(R.id.user_phone)
     TextView userPhone;
     @BindView(R.id.user_address)
@@ -104,6 +115,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
     SharedPreferencesClass sharePre;
     private Uri mCropImageUri;
     FirebaseAnalytics mFirebaseAnalytics;
+    private String previousMobileNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +127,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         StrictMode.setThreadPolicy(policy);
         Constants.setStatusBarGradiant(EditMyAccountActivity.this);
         image = findViewById(R.id.image);
+
         sharePre = new SharedPreferencesClass(EditMyAccountActivity.this);
         val = (GlobalValues) getApplicationContext();
         dialog = new Dialog(EditMyAccountActivity.this);
@@ -133,15 +146,24 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
             userAddress.setVisibility(View.GONE);
         }
 
-        userPhone.setText(val.getMobileNo());
-        Glide.with(EditMyAccountActivity.this)
+        userPhone.setText("Tel: " + val.getMobileNo());
+      /*  Glide.with(EditMyAccountActivity.this)
                 .load(val.getProfileImage())
                 .placeholder(R.mipmap.avatar_profile)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.mipmap.avatar_profile)
+                .into(profileImg);*/
+
+
+        Glide.with(EditMyAccountActivity.this).load(val.getProfileImage()).apply(new RequestOptions()
+                .placeholder(R.mipmap.avatar_profile))
                 .into(profileImg);
+
+        image.setVisibility(View.GONE);
+        profileImg.setVisibility(View.VISIBLE);
         editFirstName.setText(val.getFirstName());
         editLastName.setText(val.getLastName());
+        previousMobileNo = val.getMobileNo();
         editMobile.setText(val.getMobileNo());
 
 
@@ -201,8 +223,14 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                     editMobile.setError("Please Enter valid Mobile No.");
                     editMobile.requestFocus();
                 } else {
+
+
                     dialog.show();
-                    updateAccountDetail();
+                    if (editMobile.getText().toString().equalsIgnoreCase(previousMobileNo)) {
+                        updateAccountDetail();
+                    } else {
+                        upadteMobileNo();
+                    }
                 }
                 break;
         }
@@ -225,8 +253,9 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                 try {
                     dialog.hide();
                     if (response.body().getSuccess()) {
-                        showDialog("Account details changed successfully.");
 
+                        //   if (editMobile.getText().toString().equalsIgnoreCase(previousMobileNo)) {
+                        showDialog("Account details changed successfully.");
                         val.setUserName(response.body().getData().getFirstName() + " " + response.body().getData().getLastName());
                         val.setMobileNo(response.body().getData().getPhoneNumber());
                         val.setProfileImage(response.body().getData().getProfilePic());
@@ -234,13 +263,15 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                         val.setLastName(response.body().getData().getLastName());
                         val.setProfileImage(response.body().getData().getProfilePic());
                         sharePre.setString(sharePre.USER_PROFILE_IMAGE, response.body().getData().getProfilePic());
-
                         Log.e("URL>>", "" + response.body().getData().getProfilePic());
 //                        Glide.with(EditMyAccountActivity.this)
 //                                .load(response.body().getData().getProfilePic())
 //                                .placeholder(R.drawable.ellipse)
 //                                .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                                .into(profileImg);
+                       /* } else {
+
+                        }*/
                     } else {
 
                         showDialog(response.body().getErrors().getPhoneNumber().get(0));
@@ -403,7 +434,8 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[],
+                                           int[] grantResults) {
         if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // required permissions granted, start crop image activity
             startCropImageActivity(mCropImageUri);
@@ -456,5 +488,153 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         super.onStop();
         dialog.dismiss();
     }
+
+
+    public void upadteMobileNo() {
+        UpdateMobileInterface apiInterface = ApiClient.getClient(this).create(UpdateMobileInterface.class);
+        final JsonObject object = new JsonObject();
+        object.addProperty("userid", val.getLoginResponse().getData().getUserId());
+        object.addProperty("phone", editMobile.getText().toString());
+        Call<EditAccountResponse> call3 = apiInterface.updateMobile(object);
+        call3.enqueue(new Callback<EditAccountResponse>() {
+            @Override
+            public void onResponse(Call<EditAccountResponse> call, Response<EditAccountResponse> response) {
+                try {
+                    dialog.hide();
+
+                    alertOtpVerification();
+                } catch (Exception e) {
+                    dialog.hide();
+                    showDialog("Failed to change account details. Please try again.");
+                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
+                    //    showDialog("Please try again.");
+//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EditAccountResponse> call, Throwable t) {
+                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
+                showDialog("Failed to change account details. Please try again.");
+                dialog.hide();
+//                showDialog("Please try again.");
+                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public void alertOtpVerification() {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View mDialogView = factory.inflate(R.layout.popup_otp_verify, null);
+        final AlertDialog mDialog = new AlertDialog.Builder(this).create();
+        mDialog.setView(mDialogView);
+        mDialog.setCancelable(false);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        mDialog.getWindow().setAttributes(lp);
+
+
+
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvPhoneEnding = mDialogView.findViewById(R.id.tv_mobileEnding);
+      tvPhoneEnding.setText("For security reason we need you to verify your new mobile number. Please check your text messages on phone number ending "+ editMobile.getText().toString().trim().substring(editMobile.getText().toString().trim().length() - 4, editMobile.getText().toString().trim().length()) + " and enter the verification code below");
+   //     tvPhoneEnding.setText("Please check your text messages for phone number ending " + editMobile.getText().toString().trim().substring(editMobile.getText().toString().trim().length() - 4, editMobile.getText().toString().trim().length()) + " and enter the verification code");
+        //   tvPhoneEnding.setText("Please enter the verification code shared on your email and mobile");
+        pin = (EditText) mDialogView.findViewById(R.id.pin_tv);
+
+        SmsReceiver.bindListener(new SmsListener() {
+            @Override
+            public void messageReceived(String messageText) {
+                pin.setText(messageText);
+            }
+        });
+
+
+        TextView sendOTP = (TextView) mDialogView.findViewById(R.id.send_again);
+        sendOTP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = new Dialog(EditMyAccountActivity.this);
+                dialog.setTitle("");
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.progress_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+                pin.setText("");
+                upadteMobileNo();
+                mDialog.dismiss();
+            }
+        });
+        mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                //  isPopupVisible = false;
+                mDialog.dismiss();
+
+            }
+        });
+        mDialogView.findViewById(R.id.sign_up_btn_dialog).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                //   mDialog.dismiss();
+                if (pin.getText().toString().trim().length() < 4) {
+                    pin.setError("Please enter 4 digit code.");
+                    pin.requestFocus();
+                    Toast.makeText(EditMyAccountActivity.this, "Please enter 4 digit code.", Toast.LENGTH_SHORT).show();
+                } else {
+                    dialog.show();
+                    verifyOtp(pin.getText().toString().trim());
+                    mDialog.dismiss();
+
+                }
+
+            }
+        });
+
+        mDialog.show();
+    }
+
+
+    public void verifyOtp(final String otpPin) {
+        VerifyOtpInterface apiInterface = ApiClient.getClient(this).create(VerifyOtpInterface.class);
+        final JsonObject object = new JsonObject();
+        object.addProperty("userid", val.getLoginResponse().getData().getUserId());
+        object.addProperty("otp", otpPin);
+        Call<EditAccountResponse> call3 = apiInterface.verifyOtp(object);
+        call3.enqueue(new Callback<EditAccountResponse>() {
+            @Override
+            public void onResponse(Call<EditAccountResponse> call, Response<EditAccountResponse> response) {
+                try {
+                    updateAccountDetail();
+
+
+                } catch (Exception e) {
+                    dialog.hide();
+                    showDialog("Failed to change account details. Please try again.");
+                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
+                    //    showDialog("Please try again.");
+//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EditAccountResponse> call, Throwable t) {
+                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
+                showDialog("Failed to change account details. Please try again.");
+                dialog.hide();
+//                showDialog("Please try again.");
+                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }
 

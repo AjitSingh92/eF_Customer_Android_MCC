@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_40sdp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingLeft="10dp"
-    android:paddingTop="5dp">
+    android:paddingLeft="10dp">
 
     <TextView
         android:id="@+id/tv.title"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:fontFamily="@font/avenir_black"
         android:gravity="center_vertical"
         android:text="Item"
-        android:textColor="@android:color/black"
-        android:textSize="12dp" />
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/tv.price"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:fontFamily="@font/avenir_black"
+        android:gravity="center_vertical|end"
         android:text="Item"
         android:textColor="@android:color/black"
-        android:textSize="12dp" />
+        android:textSize="@dimen/_12sdp" />
 
 </LinearLayout>

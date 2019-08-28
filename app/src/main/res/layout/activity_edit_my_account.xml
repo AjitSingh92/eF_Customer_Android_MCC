@@ -86,18 +86,20 @@
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
                             android:src="@mipmap/avatar_profile"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/image"
                             android:layout_width="@dimen/_100sdp"
                             android:layout_height="@dimen/_100sdp"
                             android:layout_gravity="center"
+                            android:visibility="visible"
                             fresco:actualImageScaleType="fitCenter"
                             fresco:placeholderImage="@mipmap/avatar_profile"
                             fresco:progressBarAutoRotateInterval="5000"
                             fresco:progressBarImage="@drawable/image_loader"
                             fresco:progressBarImageScaleType="center"
+                            android:scaleType="fitXY"
                             fresco:roundAsCircle="true" />
 
                         <LinearLayout
@@ -138,7 +140,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_medium"
                             android:gravity="center"
-                            android:textColor="#2e3333"
+                            android:text="Manoj Kumar"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp" />
 
                         <TextView
@@ -151,7 +154,7 @@
                             android:padding="@dimen/_5sdp"
                             android:text=""
                             android:textColor="#828585"
-                            android:textSize="@dimen/_14sdp" />
+                            android:textSize="@dimen/_13sdp" />
 
                         <TextView
                             android:id="@+id/user_phone"
@@ -160,7 +163,7 @@
                             android:fontFamily="@font/avenir_medium"
                             android:gravity="center"
                             android:textColor="#828585"
-                            android:textSize="@dimen/_14sdp" />
+                            android:textSize="@dimen/_13sdp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -172,6 +175,7 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:fontFamily="@font/avenir_black"
+                    android:textColor="@color/black"
                     android:text="Personal Information"
                     android:textSize="@dimen/_16sdp" />
 
@@ -194,7 +198,7 @@
                     android:paddingLeft="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <EditText
                     android:id="@+id/edit_last_name"
@@ -215,7 +219,7 @@
                     android:paddingStart="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/email"
@@ -235,7 +239,7 @@
                     android:paddingStart="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp"
+                    android:textSize="@dimen/_12sdp"
                     android:visibility="visible" />
 
                 <EditText
@@ -255,7 +259,7 @@
                     android:maxLines="1"
                     android:paddingStart="@dimen/_10sdp"
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
 
             </LinearLayout>

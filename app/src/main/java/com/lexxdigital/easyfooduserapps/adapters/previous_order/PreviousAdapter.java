@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.model.myorder.OrderDetails;
 import com.lexxdigital.easyfooduserapps.model.myorder.PreviousOrderDetail;
@@ -36,9 +37,9 @@ public class PreviousAdapter extends RecyclerView.Adapter<PreviousAdapter.MyView
     private List<PreviousOrderDetail> previousOrderDetailList;
 
     public PreviousAdapter(List<PreviousOrderDetail> previousOrderDetailList, Context context) {
-        this.previousOrderDetailList=previousOrderDetailList;
+        this.previousOrderDetailList = previousOrderDetailList;
         this.context = context;
-       // this.previousOrder = previousOrder;
+        // this.previousOrder = previousOrder;
     }
 
     @Override
@@ -55,22 +56,26 @@ public class PreviousAdapter extends RecyclerView.Adapter<PreviousAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        Log.e("listPosition", "onBindViewHolder: "+listPosition );
-       final PreviousOrderDetail dataList= previousOrderDetailList.get(listPosition);
-        Log.e(TAG, "onBindViewHolder:name resrto "+ dataList.getRestaurantName());
+        Log.e("listPosition", "onBindViewHolder: " + listPosition);
+        final PreviousOrderDetail dataList = previousOrderDetailList.get(listPosition);
+        Log.e(TAG, "onBindViewHolder:name resrto " + dataList.getRestaurantName());
         holder.restName.setText(dataList.getRestaurantName());
-        holder.orderNo.setText("Order No."+dataList.getOrderNum());
+        holder.orderNo.setText("Order No." + dataList.getOrderNum());
         holder.orderDate.setText(dataList.getOrderDateTime());
 
-       // Log.d("e", "onBindViewHolder: "+dataList.getTotal());
+        // Log.d("e", "onBindViewHolder: "+dataList.getTotal());
 
-        holder.total.setText("\u00a3 "+String.valueOf(dataList.getOrderTotal()));
-        Log.e(TAG, "onBindViewHolder: logoooooooooooo"+dataList.getRestaurantLogo() );
-        Glide.with(context).load(dataList.getRestaurantImage()).centerCrop().into(holder.restImage);
-        Glide.with(context).load(dataList.getRestaurantLogo()).centerCrop().into(holder.restLogo);
-        orderDetailsRes=dataList.getOrderDetails();
+        holder.total.setText("\u00a3 " + String.valueOf(dataList.getOrderTotal()));
+        Log.e(TAG, "onBindViewHolder: logoooooooooooo" + dataList.getRestaurantLogo());
+       // Glide.with(context).load(dataList.getRestaurantImage()).centerCrop().into(holder.restImage);
+       // Glide.with(context).load(dataList.getRestaurantLogo()).centerCrop().into(holder.restLogo);
+        Glide.with(context).load(dataList.getRestaurantImage()).apply(new RequestOptions().centerCrop())
+                .into(holder.restImage);
+        Glide.with(context).load(dataList.getRestaurantLogo()).apply(new RequestOptions().centerCrop())
+                .into(holder.restLogo);
+        orderDetailsRes = dataList.getOrderDetails();
 
-         //cartList=dataList.getCart();
+        //cartList=dataList.getCart();
         holder.initView();
         //Log.d("cartlist", "onBindViewHolder:cartList"+listPosition+":"+cartList.size());
         //Toast.makeText(context,"cartList: "+cartList.size(),Toast.LENGTH_LONG).show();
@@ -83,19 +88,20 @@ public class PreviousAdapter extends RecyclerView.Adapter<PreviousAdapter.MyView
         holder.orderAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, OrderDetailActivity.class);
-                intent.putExtra("order_no",dataList.getRestaurantId());
+                Intent intent = new Intent(context, OrderDetailActivity.class);
+                intent.putExtra("order_no", dataList.getRestaurantId());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
         // Picasso.with(context).load(dataList.getRestaurantImage()).into(holder.restImage);
 
-         }
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView restImage;
         CircleImageView restLogo;
-        TextView restName,orderNo,orderDate,total,addReview,orderAgain;
+        TextView restName, orderNo, orderDate, total, addReview, orderAgain;
         RecyclerView subProductRecycler;
         SubProductListAdapter subProductListAdapter;
         // ImageView imageViewIcon;
@@ -108,9 +114,9 @@ public class PreviousAdapter extends RecyclerView.Adapter<PreviousAdapter.MyView
             this.total = (TextView) itemView.findViewById(R.id._total);
             this.addReview = (TextView) itemView.findViewById(R.id.add_review);
             this.orderAgain = (TextView) itemView.findViewById(R.id.order_again);
-            this.restImage=itemView.findViewById(R.id.rest_image);
-            this.restLogo=itemView.findViewById(R.id.rest_logo);
-            this.subProductRecycler=itemView.findViewById(R.id.sub_prodc_recyclist);
+            this.restImage = itemView.findViewById(R.id.rest_image);
+            this.restLogo = itemView.findViewById(R.id.rest_logo);
+            this.subProductRecycler = itemView.findViewById(R.id.sub_prodc_recyclist);
         }
 
         private void initView() {
@@ -123,9 +129,10 @@ public class PreviousAdapter extends RecyclerView.Adapter<PreviousAdapter.MyView
         }
 
     }
+
     @Override
     public int getItemCount() {
-        Log.e(TAG, "getItemCount:list size: "+previousOrderDetailList.size() );
+        Log.e(TAG, "getItemCount:list size: " + previousOrderDetailList.size());
         // Log.e("count", "getItemCount: previousOrderDetailList.size()"+ previousOrder.getData().getPreviousOrderDetails().size() );
         return previousOrderDetailList.size();
     }

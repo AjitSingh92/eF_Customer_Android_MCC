@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.ChangePasswordInterface;
@@ -110,11 +111,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         if (sharePre.getString(sharePre.USER_PROFILE_IMAGE) != null) {
 
-            Glide.with(ChangePasswordActivity.this)
+    /*        Glide.with(ChangePasswordActivity.this)
                     .load(sharePre.getString(sharePre.USER_PROFILE_IMAGE))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.mipmap.avatar_profile)
-                    .into(profileImg);
+                    .into(profileImg);*/
+
+
+            Glide.with(ChangePasswordActivity.this).load(sharePre.getString(sharePre.USER_PROFILE_IMAGE)).apply(new RequestOptions()
+                    .placeholder(R.mipmap.avatar_profile))
+                    .into(profileImg2);
 //            Picasso.with(ChangePasswordActivity.this).load(pic).placeholder(R.drawable.avatar).into(profileImg2);
         }
 
@@ -242,11 +248,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 .placeholder(R.drawable.avatar)
                                 .into(profileImg);*/
 
-                        Glide.with(ChangePasswordActivity.this)
+                      /*  Glide.with(ChangePasswordActivity.this)
                                 .load(response.body().getData().getProfile().getProfilePic())
                                 .placeholder(R.mipmap.avatar_profile)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .error(R.mipmap.avatar_profile)
+                                .into(profileImg2);*/
+
+
+                        Glide.with(ChangePasswordActivity.this).load(response.body().getData().getProfile().getProfilePic()).apply(new RequestOptions()
+                                .placeholder(R.mipmap.avatar_profile))
                                 .into(profileImg2);
                         Log.e("image url", "onResponse: " + response.body().getData().getProfile().getProfilePic());
                     } else {
@@ -290,7 +301,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onResume();
 
         userName.setText(val.getUserName());
-        Picasso.with(ChangePasswordActivity.this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(profileImg2);
+//        Picasso.with(ChangePasswordActivity.this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(profileImg2);
     }
 
     @Override

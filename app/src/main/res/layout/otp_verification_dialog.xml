@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/sign_up_btn_dialog"
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@drawable/halfwhitup">
+
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_600sdp"
+        android:layout_above="@+id/sign_up_btn_dialog">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_20sdp">
+
+            <!-- TODO: Update blank fragment layout -->
+
+
+            <ImageView
+                android:id="@+id/cross_tv"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginRight="@dimen/_2sdp"
+                android:background="@drawable/circle_gray"
+                android:padding="@dimen/_10sdp"
+                android:src="@mipmap/x_copy" />
+
+            <ImageView
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/mobile" />
+
+
+            <TextView
+                android:id="@+id/tv_mobileEnding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:autoText="true"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text=""
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_14sdp" />
+
+
+            <EditText
+                android:id="@+id/pin_tv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_65sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@mipmap/grey_category_copy"
+                android:ems="10"
+                android:fontFamily="@font/avenir_medium"
+                android:hint="Enter 4 digital code"
+                android:inputType="number"
+                android:maxLength="4"
+                android:padding="@dimen/_5sdp"
+                android:textAllCaps="true"
+                android:textColor="#9d9d9c"
+                android:textSize="@dimen/_14sdp" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoText="true"
+                    android:clickable="true"
+                    android:fontFamily="@font/avenir_black"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Didn’t receive it?"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/send_again"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoText="true"
+                    android:clickable="true"
+                    android:fontFamily="@font/avenir_black"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text=" Send again"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/sign_up_btn_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_with_bottom_round"
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp"
+        android:text="Verify"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16sdp" />
+
+</RelativeLayout>

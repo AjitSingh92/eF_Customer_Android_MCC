@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.FilterSortInterface;
@@ -68,13 +69,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity.getActivity;
+
 public class DashboardActivity extends AppCompatActivity {
     @BindView(R.id.tvToolbarTitle)
     TextView tvToolbarTitle;
-    @BindView(R.id.imtitileIcone)
-    ImageView imTitileImage;
+    //    @BindView(R.id.imtitileIcone)
+    //  ImageView imTitileImage;
+    @BindView(R.id.ivFilter)
+    ImageView ivFilter;
+    @BindView(R.id.et_location)
+    EditText etLocation;
     @BindView(R.id.menuId)
     ImageView menuId;
+
     @BindView(R.id.toolbarhide)
     RelativeLayout toolbarhide;
     @BindView(R.id.frameLayout)
@@ -89,6 +97,12 @@ public class DashboardActivity extends AppCompatActivity {
     LinearLayout topAc1;
     @BindView(R.id.list_of_address)
     TextView listOfAddress;
+    @BindView(R.id.tv_my_acc)
+    TextView tvMyAcc;
+    @BindView(R.id.tv_manageAddress)
+    TextView tvManageAddress;
+    @BindView(R.id.tv_logout)
+    TextView tvLogout;
     @BindView(R.id.home)
     LinearLayout home;
     @BindView(R.id.top_ac)
@@ -103,6 +117,8 @@ public class DashboardActivity extends AppCompatActivity {
     TextView payments;
     @BindView(R.id.paymentId)
     LinearLayout paymentId;
+    @BindView(R.id.my_basket_id)
+    LinearLayout myBasketId;
     @BindView(R.id.my_credit_debit_card)
     TextView myCreditDebitCard;
     @BindView(R.id.creditCardId)
@@ -113,8 +129,7 @@ public class DashboardActivity extends AppCompatActivity {
     LinearLayout newCard;
     @BindView(R.id.my_basket)
     TextView myBasket;
-    @BindView(R.id.my_basket_id)
-    LinearLayout myBasketId;
+
     @BindView(R.id.my_orders)
     TextView myOrders;
     @BindView(R.id.my_orderId)
@@ -162,6 +177,9 @@ public class DashboardActivity extends AppCompatActivity {
     private DatabaseHelper db;
     private Dialog mDialog;
     FirebaseAnalytics mFirebaseAnalytics;
+    private static DashboardActivity instance = null;
+    // private LinearLayout home, top_ac, manageAddressId, paymentId, my_basket_id, my_orderId, myfevId, privacyId, fapId, logout;
+    //   private TextView list_of_address, , tv_manageAddress, payments, my_basket, my_orders, favourites, privacy_policy, faq, tv_logout;
 
     // FilterSortByAdapter.PositionInterface mPositionInterface2;
     @Override
@@ -170,6 +188,7 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.dashboard_with_drawer);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        instance = this;
         ButterKnife.bind(this);
         val = (GlobalValues) getApplicationContext();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -208,18 +227,41 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
+        /*
+         Intent i = new Intent(RestaurantDetailsActivity.this, DashboardActivity.class);
+                        i.putExtra("FROMMENU", "YES");
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.setAction("custom");
+                        startActivity(i);
+    */
+
+
         Constants.setStatusBarGradiant(DashboardActivity.this);
         Bundle extras = getIntent().getExtras();
         Log.e("EXTRA>>>", "//" + extras);
-        imTitileImage.setVisibility(View.GONE);
+        //imTitileImage.setVisibility(View.GONE);
+        ivFilter.setVisibility(View.GONE);
         if (extras != null) {
             if (extras.getString("FROMMENU").equalsIgnoreCase("YES")) {
-                imTitileImage.setVisibility(View.VISIBLE);
+                // imTitileImage.setVisibility(View.VISIBLE);
+
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                myBasketId.setBackgroundColor(getResources().getColor(R.color.orange));
+                myBasket.setTextColor(getResources().getColor(R.color.white));
+                ivFilter.setVisibility(View.GONE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
                 //  transaction.commit();
                 transaction.commitAllowingStateLoss();
             } else if (val.getPostCode() != null) {
+
+                setDefaultDrawer();
+                etLocation.setVisibility(View.GONE);
+                home.setBackgroundColor(getResources().getColor(R.color.orange));
+                listOfAddress.setTextColor(getResources().getColor(R.color.white));
+                tvToolbarTitle.setText("Restaurants");
+                ivFilter.setVisibility(View.VISIBLE);
                 postCode = val.getPostCode();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode));
@@ -228,6 +270,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
         } else if (val.getPostCode() != null) {
+            ivFilter.setVisibility(View.VISIBLE);
             postCode = val.getPostCode();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
             transaction.replace(R.id.frameLayout, new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode));
@@ -268,8 +311,10 @@ public class DashboardActivity extends AppCompatActivity {
         myAccount.setText(val.getFirstName() + " " + val.getLastName());
         String imgUrl = val.getProfileImage();
         System.out.println("imgUrl: " + imgUrl);
-        Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
-
+        // Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
+        Glide.with(this).load(val.getProfileImage()).apply(new RequestOptions()
+                .placeholder(R.mipmap.avatar_profile))
+                .into(drawer_profile_pic);
         if (val.getPostCode() == null) {
             val.setIsFromDealPage(true);
             Intent i = new Intent(this, SearchPostCodeActivity.class);
@@ -277,6 +322,32 @@ public class DashboardActivity extends AppCompatActivity {
 //            finish();
             overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
         }
+
+
+      /*  ivFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(val, "Hello", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+    }
+
+    public void locationVisibility(boolean isVisible, String location) {
+        if (isVisible) {
+            etLocation.setVisibility(View.VISIBLE);
+            etLocation.setText(location);
+        } else {
+            etLocation.setVisibility(View.GONE);
+        }
+    }
+
+    public void setLocation(String postCode) {
+        etLocation.setText(postCode);
+    }
+
+    public static DashboardActivity getInstance() {
+        return instance;
     }
 
     public void slidefromRightToLeft() {
@@ -313,23 +384,33 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.top_track_order, R.id.txt_trackorder, R.id.menuId, R.id.my_account, R.id.top_ac, R.id.manageAddressId, R.id.list_of_address, R.id.home, R.id.add_new_address, R.id.new_address, R.id.payments, R.id.paymentId, R.id.my_credit_debit_card, R.id.creditCardId, R.id.add_credit_debit_card, R.id.new_card, R.id.my_basket, R.id.my_basket_id, R.id.my_orders, R.id.my_orderId, R.id.favourites, R.id.myfevId, R.id.privacy_policy, R.id.privacyId, R.id.faq, R.id.fapId, R.id.help, R.id.helpId, R.id.profileId, R.id.logout, R.id.menuIdRl})
+    @OnClick({R.id.top_track_order, R.id.txt_trackorder, R.id.menuId, R.id.my_account, R.id.top_ac, R.id.manageAddressId,/* R.id.list_of_address,*/ R.id.home, R.id.add_new_address, R.id.new_address, /*R.id.payments,*/ R.id.paymentId, R.id.my_credit_debit_card, R.id.creditCardId, R.id.add_credit_debit_card, R.id.new_card,/* R.id.my_basket,*/ R.id.my_basket_id, /*R.id.my_orders,*/ R.id.my_orderId, /*R.id.favourites,*/ R.id.myfevId, /*R.id.privacy_policy,*/ R.id.privacyId, /*R.id.faq,*/ R.id.fapId, R.id.help, R.id.helpId, R.id.profileId, R.id.logout, R.id.menuIdRl, R.id.ivFilter, R.id.et_location})
     public void onViewClicked(View view) {
-        imTitileImage.setVisibility(View.GONE);
+        //imTitileImage.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.top_track_order:
+                ivFilter.setVisibility(View.GONE);
+                etLocation.setVisibility(View.GONE);
                 startActivity(new Intent(DashboardActivity.this, OrderStatusActivity.class));
                 //  Constants.fragmentCall(new MyAccountFragment(getApplicationContext(), tvToolbarTitle), getSupportFragmentManager());
 //                Animation RightSwipe = AnimationUtils.loadAnimation(DashboardActivity.this, R.anim.left_slide);
 //                menuIdRl.startAnimation(RightSwipe);
 //                menuIdRl.setVisibility(View.VISIBLE);
+                // setDefaultDrawer();
+                // home.setBackgroundColor(getResources().getColor(R.color.orange));
+                //  listOfAddress.setTextColor(getResources().getColor(R.color.white));
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
                     drawer.openDrawer(Gravity.RIGHT);
                 }
                 break;
+            case R.id.ivFilter:
+                DealsFragment.getInstance().alertDialogFilter();
+                break;
             case R.id.txt_trackorder:
+                ivFilter.setVisibility(View.GONE);
+                etLocation.setVisibility(View.GONE);
                 startActivity(new Intent(DashboardActivity.this, OrderStatusActivity.class));
 //                Animation RightSwipe = AnimationUtils.loadAnimation(DashboardActivity.this, R.anim.left_slide);
 //                menuIdRl.startAnimation(RightSwipe);
@@ -344,18 +425,29 @@ public class DashboardActivity extends AppCompatActivity {
 //                Animation RightSwipe = AnimationUtils.loadAnimation(DashboardActivity.this, R.anim.left_slide);
 //                menuIdRl.startAnimation(RightSwipe);
 //                menuIdRl.setVisibility(View.VISIBLE);
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
                     drawer.openDrawer(Gravity.RIGHT);
                 }
-                Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
+                //  Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
+
+                Glide.with(this).load(val.getProfileImage()).apply(new RequestOptions()
+                        .placeholder(R.mipmap.avatar_profile))
+                        .into(drawer_profile_pic);
                 myAccount.setText(val.getFirstName() + " " + val.getLastName());
                 break;
-            case R.id.my_account:
 
+            /*case R.id.imtitileIcone:
+                Toast.makeText(val, "Hello", Toast.LENGTH_SHORT).show();
+                break;*/
+            case R.id.my_account:
+                etLocation.setVisibility(View.GONE);
                 break;
             case R.id.top_ac:
+                etLocation.setVisibility(View.GONE);
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("My Account");
                 Constants.fragmentCall(new MyAccountFragment(getApplicationContext(), tvToolbarTitle), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -363,9 +455,18 @@ public class DashboardActivity extends AppCompatActivity {
                 } else {
                     drawer.openDrawer(Gravity.RIGHT);
                 }
+
+                setDefaultDrawer();
+                topAc.setBackgroundColor(getResources().getColor(R.color.orange));
+                tvMyAcc.setTextColor(getResources().getColor(R.color.white));
                 break;
 
             case R.id.manageAddressId:
+                setDefaultDrawer();
+                etLocation.setVisibility(View.GONE);
+                manageAddressId.setBackgroundColor(getResources().getColor(R.color.orange));
+                tvManageAddress.setTextColor(getResources().getColor(R.color.white));
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Manage Addresses");
                 Constants.fragmentCall(new ManageAddressFragment(getApplicationContext(), tvToolbarTitle), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -373,9 +474,13 @@ public class DashboardActivity extends AppCompatActivity {
                 } else {
                     drawer.openDrawer(Gravity.RIGHT);
                 }
+
+
                 break;
             case R.id.list_of_address:
                 tvToolbarTitle.setText("Restaurants");
+                etLocation.setVisibility(View.GONE);
+                ivFilter.setVisibility(View.VISIBLE);
                 Constants.fragmentCall(new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode), getSupportFragmentManager());
 
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -385,7 +490,12 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.home:
+                setDefaultDrawer();
+                etLocation.setVisibility(View.GONE);
+                home.setBackgroundColor(getResources().getColor(R.color.orange));
+                listOfAddress.setTextColor(getResources().getColor(R.color.white));
                 tvToolbarTitle.setText("Restaurants");
+                ivFilter.setVisibility(View.VISIBLE);
                 Constants.fragmentCall(new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -394,6 +504,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.add_new_address:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -401,6 +512,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.new_address:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -408,6 +520,8 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.payments:
+                etLocation.setVisibility(View.GONE);
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("My Saved Cards");
                 Constants.fragmentCall(new CardsListFragment(getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -417,6 +531,11 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.paymentId:
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                paymentId.setBackgroundColor(getResources().getColor(R.color.orange));
+                payments.setTextColor(getResources().getColor(R.color.white));
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("My Saved Cards");
                 Constants.fragmentCall(new CardsListFragment(getApplicationContext()), getSupportFragmentManager());
 
@@ -427,6 +546,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.my_credit_debit_card:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -434,6 +554,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.creditCardId:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -441,6 +562,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.add_credit_debit_card:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -448,6 +570,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.new_card:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -455,8 +578,10 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.my_basket:
-                tvToolbarTitle.setText("My Basket");
-                imTitileImage.setVisibility(View.VISIBLE);
+                etLocation.setVisibility(View.GONE);
+                ivFilter.setVisibility(View.GONE);
+                tvToolbarTitle.setText("Order Summary");
+//                imTitileImage.setVisibility(View.VISIBLE);
                 Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -465,8 +590,13 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.my_basket_id:
-                tvToolbarTitle.setText("My Basket");
-                imTitileImage.setVisibility(View.VISIBLE);
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                myBasketId.setBackgroundColor(getResources().getColor(R.color.orange));
+                myBasket.setTextColor(getResources().getColor(R.color.white));
+                ivFilter.setVisibility(View.GONE);
+                tvToolbarTitle.setText("Order Summary");
+                //              imTitileImage.setVisibility(View.GONE);
                 Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -475,6 +605,8 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.my_orders:
+                etLocation.setVisibility(View.GONE);
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("My Orders");
                 Constants.fragmentCall(new PreviousOrderFragment(getApplicationContext(), tvToolbarTitle), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -484,6 +616,11 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.my_orderId:
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                myOrderId.setBackgroundColor(getResources().getColor(R.color.orange));
+                myOrders.setTextColor(getResources().getColor(R.color.white));
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("My Orders");
                 Constants.fragmentCall(new PreviousOrderFragment(getApplicationContext(), tvToolbarTitle), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -493,6 +630,8 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.favourites:
+                etLocation.setVisibility(View.GONE);
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Favourites");
                 Constants.fragmentCall(new FavouritesFragment(getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -502,6 +641,11 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.myfevId:
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                myfevId.setBackgroundColor(getResources().getColor(R.color.orange));
+                favourites.setTextColor(getResources().getColor(R.color.white));
+                ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Favourites");
                 Constants.fragmentCall(new FavouritesFragment(getApplicationContext()), getSupportFragmentManager());
 
@@ -512,6 +656,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.privacy_policy:
+                etLocation.setVisibility(View.GONE);
                 callWebviewPrivacy();
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -520,6 +665,10 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.privacyId:
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                privacyId.setBackgroundColor(getResources().getColor(R.color.orange));
+                privacyPolicy.setTextColor(getResources().getColor(R.color.white));
                 callWebviewPrivacy();
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -528,6 +677,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.faq:
+                etLocation.setVisibility(View.GONE);
                 callWebviewFaqs();
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -536,6 +686,11 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.fapId:
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                fapId.setBackgroundColor(getResources().getColor(R.color.orange));
+                faq.setTextColor(getResources().getColor(R.color.white));
+
                 callWebviewFaqs();
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -544,6 +699,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.help:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -551,6 +707,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.helpId:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -558,6 +715,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.profileId:
+                etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -565,6 +723,11 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.logout:
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                logout.setBackgroundColor(getResources().getColor(R.color.orange));
+                tvLogout.setTextColor(getResources().getColor(R.color.white));
+
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -579,6 +742,13 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.menuIdRl:
+                etLocation.setVisibility(View.GONE);
+                break;
+            case R.id.et_location:
+                val.setIsFromDealPage(true);
+                Intent i = new Intent(DashboardActivity.this, SearchPostCodeActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 break;
         }
     }
@@ -691,6 +861,10 @@ public class DashboardActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
         } else {
+
+
+
+
             if (doubleBackToExitPressedOnce) {
                 finish();
                 return;
@@ -713,17 +887,31 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        imTitileImage.setVisibility(View.GONE);
+        //imTitileImage.setVisibility(View.GONE);
+        ivFilter.setVisibility(View.GONE);
         if (intent.getAction() != null) {
             if (intent.getAction().equals("custom")) {
-                tvToolbarTitle.setText("My Basket");
-                imTitileImage.setVisibility(View.VISIBLE);
+
+
+                etLocation.setVisibility(View.GONE);
+                setDefaultDrawer();
+                myBasketId.setBackgroundColor(getResources().getColor(R.color.orange));
+                myBasket.setTextColor(getResources().getColor(R.color.white));
+                ivFilter.setVisibility(View.GONE);
+                tvToolbarTitle.setText("Order Summary");
+                // imTitileImage.setVisibility(View.VISIBLE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
                 //  transaction.commit();
                 transaction.commitAllowingStateLoss();
             }
         } else {
+            setDefaultDrawer();
+            etLocation.setVisibility(View.GONE);
+            home.setBackgroundColor(getResources().getColor(R.color.orange));
+            listOfAddress.setTextColor(getResources().getColor(R.color.white));
+            tvToolbarTitle.setText("Restaurants");
+            ivFilter.setVisibility(View.VISIBLE);
             postCode = val.getPostCode();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
             transaction.replace(R.id.frameLayout, new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode));
@@ -735,7 +923,11 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
+        // Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
+
+        Glide.with(this).load(val.getProfileImage()).apply(new RequestOptions()
+                .placeholder(R.mipmap.avatar_profile))
+                .into(drawer_profile_pic);
         if (db.getCartData() == null) {
             sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
             sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
@@ -874,6 +1066,30 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
+
+    private void setDefaultDrawer() {
+        home.setBackgroundColor(0);
+        topAc.setBackgroundColor(0);
+        manageAddressId.setBackgroundColor(0);
+        paymentId.setBackgroundColor(0);
+        myBasketId.setBackgroundColor(0);
+        myOrderId.setBackgroundColor(0);
+        myfevId.setBackgroundColor(0);
+        privacyId.setBackgroundColor(0);
+        fapId.setBackgroundColor(0);
+        logout.setBackgroundColor(0);
+        listOfAddress.setTextColor(getResources().getColor(R.color.orange));
+        tvMyAcc.setTextColor(getResources().getColor(R.color.orange));
+        tvManageAddress.setTextColor(getResources().getColor(R.color.orange));
+        payments.setTextColor(getResources().getColor(R.color.orange));
+        myBasket.setTextColor(getResources().getColor(R.color.orange));
+        myOrders.setTextColor(getResources().getColor(R.color.orange));
+        favourites.setTextColor(getResources().getColor(R.color.orange));
+        privacyPolicy.setTextColor(getResources().getColor(R.color.orange));
+        faq.setTextColor(getResources().getColor(R.color.orange));
+        tvLogout.setTextColor(getResources().getColor(R.color.orange));
+
+    }
 
     /*@Override
     public void onClickPos2(int pos, ArrayList<String> check) {

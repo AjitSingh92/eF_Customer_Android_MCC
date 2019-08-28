@@ -26,9 +26,9 @@ public class Favourite {
     @SerializedName("cuisines")
     @Expose
     private String cuisines;
-    @SerializedName("min_oder_value")
+    @SerializedName("min_order_value")
     @Expose
-    private String minOderValue;
+    private String min_order_value;
     @SerializedName("delivery_charge")
     @Expose
     private String deliveryCharge;
@@ -41,6 +41,10 @@ public class Favourite {
     @SerializedName("restaurant_status")
     @Expose
     private String restaurantStatus;
+    @SerializedName("distance_in_miles")
+    @Expose
+    private String distance_in_miles;
+
     @SerializedName("restaurant_timing")
     @Expose
     private List<RestaurantTiming> restaurantTiming = null;
@@ -249,11 +253,11 @@ public class Favourite {
     }
 
     public String getMinOderValue() {
-        return minOderValue;
+        return min_order_value;
     }
 
     public void setMinOderValue(String minOderValue) {
-        this.minOderValue = minOderValue;
+        this.min_order_value = minOderValue;
     }
 
     public String getDeliveryCharge() {
@@ -288,6 +292,14 @@ public class Favourite {
         this.restaurantStatus = restaurantStatus;
     }
 
+    public String getDistance_in_miles() {
+        return distance_in_miles;
+    }
+
+    public void setDistance_in_miles(String distance_in_miles) {
+        this.distance_in_miles = distance_in_miles;
+    }
+
     public List<RestaurantTiming> getRestaurantTiming() {
         return restaurantTiming;
     }
@@ -305,7 +317,7 @@ public class Favourite {
                 ", restaurantName='" + restaurantName + '\'' +
                 ", logo='" + logo + '\'' +
                 ", cuisines='" + cuisines + '\'' +
-                ", minOderValue='" + minOderValue + '\'' +
+                ", minOderValue='" + min_order_value + '\'' +
                 ", deliveryCharge='" + deliveryCharge + '\'' +
                 ", overallRating=" + overallRating +
                 ", backgroundImage='" + backgroundImage + '\'' +

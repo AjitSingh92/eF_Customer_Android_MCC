@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
@@ -72,6 +75,7 @@ import retrofit2.Response;
 import static com.facebook.AccessTokenManager.TAG;
 
 /**
+ *
  */
 @SuppressLint("ValidFragment")
 public class DealsFragment extends Fragment implements FilterSortByAdapter.PositionSortInterface, /*SwipeRefreshLayout.OnRefreshListener,*/ FilterByOfferAdapter.PositionByOfferInterface, FilterByCuisinerAdapter.PositionInterface {
@@ -80,6 +84,8 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     Unbinder unbinder;
     @BindView(R.id.edit_search)
     EditText editSearch;
+    @BindView(R.id.nsv_deal)
+    NestedScrollView nsvDeal;
     @BindView(R.id.txt_postcode)
     TextView txtPostcode;
     @BindView(R.id.btn_change)
@@ -94,6 +100,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     @BindView(R.id.oops_layout)
     LinearLayout oopsLayout;
     private Dialog dialog;
+    private Handler handler;
     private GlobalValues val;
     private DealAdapter mDealAdapter;
     private DealAdapter.PositionInterface mPositionInterface;
@@ -133,10 +140,12 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     List<String> filterRestaurantTyped = new ArrayList<>();
     RestaurantsDealResponse.Data data;
     ImageView clear;
+    private Runnable callback;
     RecyclerLayoutManager layoutManager;
     //*******************************************
     FirebaseAnalytics mFirebaseAnalytics;
     static DealsFragment _dealsFragment;
+    private static DealsFragment instance = null;
 
     public static DealsFragment getFragment() {
         return _dealsFragment;
@@ -171,8 +180,9 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = getView() != null ? getView() : inflater.inflate(R.layout.fragment_deals, container, false);
+        handler = new Handler();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
-
+        instance = this;
         sortByList = new ArrayList<>();
         cuisineList = new ArrayList<>();
         filterByList = new ArrayList<Offer>();
@@ -202,6 +212,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         arrayCuisine.add("all");
 
         initView();
+        DashboardActivity.getInstance().locationVisibility(false, txtPostcode.getText().toString().trim());
         swipreferesh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -225,6 +236,41 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             }
         });
 
+        nsvDeal.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
+                if (i1 > 150) {
+                    DashboardActivity.getInstance().locationVisibility(true, txtPostcode.getText().toString().trim());
+
+                } else {
+                    DashboardActivity.getInstance().locationVisibility(false, txtPostcode.getText().toString().trim());
+
+                }
+            }
+        });
+
+        txtPostcode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                DashboardActivity.getInstance().setLocation(txtPostcode.getText().toString().trim());
+            }
+        });
+     /*   nsvDeal.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                Toast
+            }
+        });*/
 
         /*swipreferesh.setOnRefreshListener(this);
         swipreferesh.setColorSchemeResources(R.color.orange,
@@ -288,6 +334,11 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         }
 
         return view;
+    }
+
+
+    public static DealsFragment getInstance() {
+        return instance;
     }
 
     @Override
@@ -357,11 +408,19 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
                                                           mDealAdapter.getFilter().filter(s.toString());
 
-                                                          if (mDealAdapter.getItemCount() > 1) {
-                                                              restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurants delivering to");
-                                                          } else {
-                                                              restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurant delivering to");
-                                                          }
+                                                          int SPLASH_TIME_OUT = 300;
+
+                                                          handler.postDelayed(callback = new Runnable() {
+                                                              @Override
+                                                              public void run() {
+                                                                  if (mDealAdapter.getItemCount() > 1) {
+                                                                      restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurants delivering to");
+                                                                  } else {
+                                                                      restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurant delivering to");
+                                                                  }
+                                                              }
+                                                          }, SPLASH_TIME_OUT);
+
 
                                                           if (s.toString().equals("")) {
                                                               clear.setVisibility(View.GONE);
@@ -442,6 +501,13 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                             }
 
                         } else {
+                            /*if (mDealAdapter.getItemCount() > 1) {
+                                restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurants delivering to");
+                            } else {
+                                restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurant delivering to");
+                            }
+*/
+                            restaurauntCount.setText(0 + " Restaurant delivering to");
                             oopsLayout.setVisibility(View.VISIBLE);
                             restaurantList.setVisibility(View.GONE);
                         }
@@ -511,6 +577,8 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                     if (response.body().getSuccess()) {
                         data = response.body().getData();
                         mDealAdapter.addLazyLoadedData(data.getRestaurants(), offset);
+
+
                        /* if (data.getRestaurants().size() > 0) {
                             restaurantList.setVisibility(View.VISIBLE);
                             oopsLayout.setVisibility(View.GONE);
@@ -793,11 +861,11 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                     if (response.body().getSuccess()) {
                         /* Todo: Start remove distace */
                         for (int i = 0; i < response.body().getData().getSortBy().size(); i++) {
-                            if (response.body().getData().getSortBy().get(i).getLabel().equalsIgnoreCase("Distance")) {
+                           /* if (response.body().getData().getSortBy().get(i).getLabel().equalsIgnoreCase("Distance")) {
 
-                            } else {
-                                sortByList.add(response.body().getData().getSortBy().get(i));
-                            }
+                            } else {*/
+                            sortByList.add(response.body().getData().getSortBy().get(i));
+                            // }
                         }
                         /* Todo: End remove distance*/
 

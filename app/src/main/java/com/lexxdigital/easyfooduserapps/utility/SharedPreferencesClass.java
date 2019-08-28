@@ -42,7 +42,7 @@ public class SharedPreferencesClass {
     public static final String DELIVERY_DATE_TIME = "DELIVERY_DATE_TIME";
     public static final String AVG_COLLECTION_TIME = "AVG_COLLECTION_TIME";
     public static final String ORDER_TYPE = "ORDER_TYPE";
-
+    public static final String CUSTOMER_ID = "CUSTOMER_ID";
     public SharedPreferencesClass(Context mContext) {
         this.mContext = mContext;
     }

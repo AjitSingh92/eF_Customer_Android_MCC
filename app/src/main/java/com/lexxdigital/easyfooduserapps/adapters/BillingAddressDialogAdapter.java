@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ public class BillingAddressDialogAdapter extends RecyclerView.Adapter<BillingAdd
         TextView edit_details_tv, txtAddreddType, txtAddress, tvDefault;
         ImageView cross_tv, iconAddressList;
         RelativeLayout holeItemClick;
+        LinearLayout edit_details_ll;
 
 
         public MyViewHolder(View itemView) {
@@ -44,7 +46,7 @@ public class BillingAddressDialogAdapter extends RecyclerView.Adapter<BillingAdd
             this.cross_tv = (ImageView) itemView.findViewById(R.id.cross_tv);
             this.cross_tv.setVisibility(View.GONE);
             this.edit_details_tv = (TextView) itemView.findViewById(R.id.edit_details_tv);
-
+            this.edit_details_ll = (LinearLayout) itemView.findViewById(R.id.edit_details_ll);
             this.holeItemClick = (RelativeLayout) itemView.findViewById(R.id.holeItemClick);
             this.txtAddreddType = (TextView) itemView.findViewById(R.id.addressType);
             this.txtAddress = (TextView) itemView.findViewById(R.id.address);
@@ -122,9 +124,10 @@ public class BillingAddressDialogAdapter extends RecyclerView.Adapter<BillingAdd
         }
 
         ImageView cross_tv = holder.cross_tv;
+        LinearLayout edit_details_ll = holder.edit_details_ll;
         RelativeLayout holeItemClick = holder.holeItemClick;
         TextView edit_details_tv = holder.edit_details_tv;
-        edit_details_tv.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_orange));
+        edit_details_ll.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_orange));
         edit_details_tv.setText("Use this");
         /*if (addressList.get(listPosition).getIsDelivered() == 0) {
             edit_details_tv.setBackground(mContext.getResources().getDrawable(R.drawable.rounded));

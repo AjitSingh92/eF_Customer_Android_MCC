@@ -10,9 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_weight="3"
+        android:fontFamily="@font/avenir_black"
         android:gravity="center_vertical"
-        android:text=""
-        android:textColor="@color/black"
+        android:text="2xGravy(Regular)"
+        android:textColor="@color/orange"
         android:textSize="14sp" />
 
     <TextView
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_weight="1"
+        android:fontFamily="@font/avenir_black"
         android:gravity="center_vertical|end"
         android:text=""
         android:textColor="@color/black"

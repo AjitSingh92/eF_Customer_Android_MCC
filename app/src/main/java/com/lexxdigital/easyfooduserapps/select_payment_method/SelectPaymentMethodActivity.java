@@ -466,10 +466,12 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         if (!paymentType.equalsIgnoreCase("cash"))
             detail = dataList.get(position);
+
         CheckoutRequest request = new CheckoutRequest();
         request.setRestaurantId(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
         request.setCustomerId(sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID));
         request.setPaymentMode(paymentType);
+        request.setIsTomorrow("0");
         request.setDeliveryOption(orderType.toLowerCase());
         request.setDeliveryCharge(deliveryFee);
         request.setDiscountAmount(voucherDiscount);
@@ -483,6 +485,10 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         request.setOrderNotes(notes);
         request.setStripeToken(token);
         request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_DATE_TIME));
+        /*if (orderType.toLowerCase().equalsIgnoreCase("collection"))
+            request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.AVG_COLLECTION_TIME));
+        else*/
+       // request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_DATE_TIME));
 
         if (!exYear.equalsIgnoreCase("") && !exDate.equalsIgnoreCase("")) {
             request.setExpMonth(Integer.parseInt(exDate));
@@ -536,6 +542,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                         alertDialogOrderPlaced("Your order has been placed successfully.", true);
 
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
+                        Toast.makeText(val, "", Toast.LENGTH_SHORT).show();
 //                        alertDialogOrderPlaced(response.body().getMessage(), false);
                         alertDialogCVV("Please enter valid expiry date");
                     } else {

@@ -92,6 +92,18 @@ public class RestaurantsDealResponse {
             @Expose
             private String restaurantName;
 
+            public String getDistance_in_miles() {
+                return distance_in_miles;
+            }
+
+            public void setDistance_in_miles(String distance_in_miles) {
+                this.distance_in_miles = distance_in_miles;
+            }
+
+            @SerializedName("distance_in_miles")
+            @Expose
+            private String distance_in_miles;
+
             @SerializedName("serve_style")
             @Expose
             private String serve_style;

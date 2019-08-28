@@ -8,10 +8,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +26,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,19 +38,33 @@ import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AddressDialogAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.api.VoucherApplyInterface;
+import com.lexxdigital.easyfooduserapps.fragments.InfoFragment;
+import com.lexxdigital.easyfooduserapps.fragments.MenuFragment;
+import com.lexxdigital.easyfooduserapps.fragments.ReviwesFragment;
+import com.lexxdigital.easyfooduserapps.fragments.TodayFragment;
+import com.lexxdigital.easyfooduserapps.fragments.TommorowFragment;
 import com.lexxdigital.easyfooduserapps.model.AddressList;
 import com.lexxdigital.easyfooduserapps.model.restuarant_time_slot.TimeSlotRequest;
 import com.lexxdigital.easyfooduserapps.model.restuarant_time_slot.TimeSlotResponse;
+import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.Menu;
 import com.lexxdigital.easyfooduserapps.utility.ApiClient;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
+import com.lexxdigital.easyfooduserapps.utility.HeightWrappingViewPager;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class TimeSlotDialogFragment extends DialogFragment implements View.OnClickListener {
     Context context;
@@ -51,6 +73,16 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     RecyclerView recyclerViewList;
     RecyclerLayoutManager recyclerLayoutManager;
     ProgressBar progressBar;
+    TabLayout tabs;
+    ImageView ivLcose;
+    HeightWrappingViewPager pager;
+    String dayOfTheWeek;
+    String nextDay;
+    private List<TimeSlotResponse.Data> timeSlotList = new ArrayList<>();
+    private List<String> todayList = new ArrayList<>();
+    private List<String> tommorowList = new ArrayList<>();
+
+
     private static String[] toDayList;
     private static String[] tomorrowList;
     private static List<String> toDayDataList;
@@ -61,6 +93,8 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     SharedPreferencesClass sharePre;
     OnDeliveryTimeSelectedListener onDeliveryTimeSelectedListener;
     FirebaseAnalytics mFirebaseAnalytics;
+    private String finalSlot = "";
+    private static TimeSlotDialogFragment instance = null;
 
     public interface OnDeliveryTimeSelectedListener {
         void onDeliveryTimeSelect(String time);
@@ -101,19 +135,40 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.time_slot_dialog, container, false);
+        //  return inflater.inflate(R.layout.time_slot_dialog, container, false);
+
+        instance = this;
+        return inflater.inflate(R.layout.time_slot_popup, container, false);
+
+    }
+
+    public static TimeSlotDialogFragment getInstance() {
+        return instance;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tabs = view.findViewById(R.id.tabs);
+        pager = view.findViewById(R.id.pager);
         progressBar = view.findViewById(R.id.progressBar);
         sharePre = new SharedPreferencesClass(context);
-        todaySpinner = view.findViewById(R.id.spinner_day);
-        tomorrowSpinner = view.findViewById(R.id.spinner_tomorrow);
-        view.findViewById(R.id.cross_tv).setOnClickListener(this);
-        view.findViewById(R.id.btn_ok).setOnClickListener(this);
-
+        // ivLcose = view.findViewById(R.id.iv_close);
+        //  todaySpinner = view.findViewById(R.id.spinner_day);
+        //  tomorrowSpinner = view.findViewById(R.id.spinner_tomorrow);
+        //  view.findViewById(R.id.cross_tv).setOnClickListener(this);
+        // view.findViewById(R.id.btn_ok).setOnClickListener(this);
+        view.findViewById(R.id.iv_close).setOnClickListener(this);
+        view.findViewById(R.id.tv_confirm).setOnClickListener(this);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE");
+        Calendar calendar = Calendar.getInstance();
+        Date d = new Date();
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        Date nd = calendar.getTime();
+        dayOfTheWeek = sdf.format(d);
+        nextDay = sdf.format(nd);
+        tabs.setupWithViewPager(pager);
+        pager.getCurrentItem();
         if (Constants.isInternetConnectionAvailable(300)) {
             getTimeSlot();
         } else {
@@ -124,7 +179,72 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         }
 
 
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.e("IREMS COUNT", "" + tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
     }
+
+
+    public void setTimeSlot(String timeSlotttt) {
+        finalSlot = timeSlotttt;
+    }
+
+    private void setupViewPager(ViewPager viewPager, String currentDay, String nextDay) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFrag(TodayFragment.newInstance(getActivity(), getApplicationContext(), todayList), currentDay + "(ASAP)");
+        adapter.addFrag(TommorowFragment.newInstance(getActivity(), getApplicationContext(), tommorowList), nextDay + "(Tomorrow)");
+        pager.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        viewPager.setAdapter(adapter);
+    }
+
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // Toast.makeText(RestaurantDetailsActivity.this, "POS " + position, Toast.LENGTH_SHORT).show();
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            //    Toast.makeText(RestaurantDetailsActivity.this, "Len "+mFragmentList.size(), Toast.LENGTH_SHORT).show();
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
 
     private void initView() {
 
@@ -188,10 +308,16 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.cross_tv:
+            case R.id.iv_close:
                 dismiss();
                 break;
-            case R.id.btn_ok:
+            case R.id.tv_confirm:
+
+                if (!finalSlot.isEmpty() && finalSlot != "") {
+                    onDeliveryTimeSelectedListener.onDeliveryTimeSelect(finalSlot);
+                }
+
+/*
 
                 if (toDay != null && !toDay.equalsIgnoreCase("Select Delivery Time")) {
                     if (todaySpinner != null && todaySpinner.getSelectedItemPosition() != 0) {
@@ -207,7 +333,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                             }
                         }
                     }
-                }
+                }*/
 
                 dismiss();
 
@@ -232,17 +358,27 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int displayWidth = displayMetrics.widthPixels;
         int displayHeight = displayMetrics.heightPixels;
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        getDialog().getWindow().setAttributes(lp);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+
+    /*    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(getDialog().getWindow().getAttributes());
         int dialogWindowWidth = (int) (displayWidth * 0.90f);
-        int dialogWindowHeight = (int) (displayHeight * 0.60f);
+        int dialogWindowHeight = (int) (displayHeight * 0.90f);
         layoutParams.width = dialogWindowWidth;
         layoutParams.height = dialogWindowHeight;
 
         getDialog().getWindow().setAttributes(layoutParams);
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
+        getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);*/
     }
 
 
@@ -262,8 +398,25 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                 try {
                     if (response.body().getSuccess()) {
 
+
+                        if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
+                            toDayDataList = response.body().getData().getToday();
+                            for (int i = 0; i < toDayDataList.size(); i++) {
+                                todayList.add(toDayDataList.get(i));
+                            }
+                        }
+                        if (response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() > 0) {
+                            tomorrowDataList = response.body().getData().getTomorrow();
+                            for (int i = 0; i < response.body().getData().getTomorrow().size(); i++) {
+                                tommorowList.add(tomorrowDataList.get(i));
+                            }
+                        }
+
+                        setupViewPager(pager, dayOfTheWeek, nextDay);
+
+
                         /* Start========================================*/
-                        todaySpinner.setVisibility(View.VISIBLE);
+                      /*  todaySpinner.setVisibility(View.VISIBLE);
                         int size = 0;
                         if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
                             size = response.body().getData().getToday().size();
@@ -312,9 +465,9 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                             }
                         }
 
-                        /*End*/
+                        *//*End*//*
 
-/*
+                         *//*
                         if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
                             todaySpinner.setVisibility(View.VISIBLE);
                             toDayList = new String[(response.body().getData().getToday().size() + 1)];
@@ -362,12 +515,13 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                             }
                         } else {
                             tomorrowSpinner.setVisibility(View.GONE);
-                        }*/
+                        }*//*
 
                         if (response.body().getData().getToday() != null && response.body().getData().getToday().size() == 0 && response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() == 0) {
                             dismiss();
                         }
-                        initView();
+                        initView();*/
+
                     } else {
 
 

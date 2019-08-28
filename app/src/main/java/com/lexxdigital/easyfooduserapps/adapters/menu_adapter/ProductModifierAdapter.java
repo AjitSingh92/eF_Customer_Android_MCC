@@ -180,28 +180,30 @@ public class ProductModifierAdapter extends RecyclerView.Adapter<ProductModifier
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ModifierProductAdapter.ModifierItemSelectListener {
 
-        private final TextView title, note;
+        private final TextView title;
         private final RecyclerView modifierList;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.tv_title);
-            note = itemView.findViewById(R.id.tv_note);
+//            note = itemView.findViewById(R.id.tv_note);
             modifierList = itemView.findViewById(R.id.list_modifierList);
 
             itemView.setOnClickListener(this);
         }
 
         private void bindData(int position) {
-            title.setText(mItem.get(position).getModifierName());
+            // title.setText(mItem.get(position).getModifierName());
 
             if (mItem.get(position).getModifierType().equalsIgnoreCase("free")) {
                 //note.setText("Choose Any " + mItem.get(position).getMaxAllowedQuantity() + " - It's Free. More Than " + mItem.get(position).getMaxAllowedQuantity() + " Will Be Charged");
-                note.setText("(Only " + mItem.get(position).getMaxAllowedQuantity() + " Free, More Will Be Charged)");
+                title.setText(mItem.get(position).getModifierName() + " (Choose " + mItem.get(position).getMaxAllowedQuantity() + " Free. Additional items will be chargeable.)");
             } else {
                 //note.setText("Cost Of Each Will Be Added In The Price");
-                note.setText("(All Paid)");
+                //   title.setText(mItem.get(position).getModifierName() + " (All Paid)");
+                title.setText(mItem.get(position).getModifierName());
+
             }
             RecyclerLayoutManager layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
             layoutManager.setScrollEnabled(false);

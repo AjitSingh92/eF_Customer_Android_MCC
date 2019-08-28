@@ -79,13 +79,16 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
 
     class AgaincategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView tvCategory, itemPrice;
-        private final LinearLayout llAdd;
-        private final LinearLayout llMinus, llModifier;
+        private final TextView tvCategory, itemPrice, itemsCount;
+        private final LinearLayout llAdd, llMain;
+        private final LinearLayout llMinus, llModifier, llCounter;
         private final TextView tvQty;
 
         public AgaincategoryViewHolder(@NonNull View itemView) {
             super(itemView);
+            llCounter = itemView.findViewById(R.id.ll_counter);
+            llMain = itemView.findViewById(R.id.ll_main);
+            itemsCount = itemView.findViewById(R.id.tv_itemcount);
             tvCategory = itemView.findViewById(R.id.item);
             itemPrice = itemView.findViewById(R.id.itemPrice);
             llAdd = itemView.findViewById(R.id.item_add);
@@ -94,15 +97,17 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
             llMinus.setOnClickListener(this);
             llModifier = itemView.findViewById(R.id.llModifier);
             tvQty = itemView.findViewById(R.id.item_count);
+            llModifier.setOnClickListener(this);
+            llMain.setOnClickListener(this);
         }
 
         private void bindData(int position) {
             Log.e("Action", action + "");
             if (action == 2) {
                 llAdd.setVisibility(View.VISIBLE);
-                llMinus.setVisibility(View.GONE);
+                llMinus.setVisibility(View.VISIBLE);
             } else if (action == 1) {
-                llAdd.setVisibility(View.GONE);
+                llAdd.setVisibility(View.VISIBLE);
                 llMinus.setVisibility(View.VISIBLE);
             } else {
                 llAdd.setVisibility(View.GONE);
@@ -114,6 +119,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
 
             int itemQty = data.get(position).getOriginalQuantity();
             tvQty.setText(String.valueOf(itemQty));
+            itemsCount.setText(String.valueOf(itemQty));
             llModifier.removeAllViews();
             Double itemTotalPrice = 0d;
 
@@ -134,11 +140,11 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
 
                             if (menuProductSize.getSizeModifiers() != null && menuProductSize.getSizeModifiers().size() > 0) {
 
-                                for (SizeModifier sizeModifier:menuProductSize.getSizeModifiers()) {
+                                for (SizeModifier sizeModifier : menuProductSize.getSizeModifiers()) {
 
                                     if (sizeModifier.getModifier().size() > 0) {
                                         View child2 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
-                                        ((TextView) child2.findViewById(R.id.tv_name)).setPadding(23, 0, 0, 0);
+                                        ((TextView) child2.findViewById(R.id.tv_name)).setPadding(0, 0, 0, 0);
                                         ((TextView) child2.findViewById(R.id.tv_name)).setTypeface(null, Typeface.BOLD);
                                         //((TextView) child2.findViewById(R.id.tv_name)).setText(itemQty + "x" + ((sizeModifier.getModifierName().trim().length() == 0) ? " Modifier" : sizeModifier.getModifierName()));
                                         ((TextView) child2.findViewById(R.id.tv_name)).setText(((sizeModifier.getModifierName().trim().length() == 0) ? "Modifier" : sizeModifier.getModifierName()));
@@ -150,7 +156,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                                         for (Modifier modifier : sizeModifier.getModifier()) {
                                             View child = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
                                             int qtyy = (itemQty * Integer.parseInt(modifier.getOriginalQuantity()));
-                                            ((TextView) child.findViewById(R.id.tv_name)).setPadding(20, 0, 0, 0);
+                                            ((TextView) child.findViewById(R.id.tv_name)).setPadding(0, 0, 0, 0);
                                             ((TextView) child.findViewById(R.id.tv_name)).setText(qtyy + "x" + modifier.getProductName());
 
 
@@ -202,7 +208,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                         for (SizeModifier sizeModifier : menuProductSize.getSizeModifiers()) {
                             if (sizeModifier.getModifier().size() > 0) {
                                 View child2 = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
-                                ((TextView) child2.findViewById(R.id.tv_name)).setPadding(23, 0, 0, 0);
+                                ((TextView) child2.findViewById(R.id.tv_name)).setPadding(0, 0, 0, 0);
                                 ((TextView) child2.findViewById(R.id.tv_name)).setTypeface(null, Typeface.BOLD);
                                 //((TextView) child2.findViewById(R.id.tv_name)).setText(itemQty + "x" + ((sizeModifier.getModifierName().trim().length() == 0) ? " Modifier" : sizeModifier.getModifierName()));
                                 ((TextView) child2.findViewById(R.id.tv_name)).setText(((sizeModifier.getModifierName().trim().length() == 0) ? "Modifier" : sizeModifier.getModifierName()));
@@ -214,7 +220,7 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                                 for (Modifier modifier : sizeModifier.getModifier()) {
                                     View child = ((AppCompatActivity) context).getLayoutInflater().inflate(R.layout.again_modifier_row, null);
                                     int qtyy = (itemQty * Integer.parseInt(modifier.getOriginalQuantity()));
-                                    ((TextView) child.findViewById(R.id.tv_name)).setPadding(20, 0, 0, 0);
+                                    ((TextView) child.findViewById(R.id.tv_name)).setPadding(0, 0, 0, 0);
                                     ((TextView) child.findViewById(R.id.tv_name)).setText(qtyy + "x" + modifier.getProductName());
 
 
@@ -315,8 +321,16 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
         public void onClick(View v) {
             Double price = -1d;
             switch (v.getId()) {
+                case R.id.ll_main:
+                    if (llCounter.getVisibility() == View.VISIBLE) {
+                        llCounter.setVisibility(View.GONE);
+                    } else {
+                        llCounter.setVisibility(View.VISIBLE);
+                    }
+                    break;
                 case R.id.item_add:
                     tvQty.setText(String.valueOf((Integer.parseInt(tvQty.getText().toString()) + 1)));
+                    itemsCount.setText(String.valueOf((Integer.parseInt(tvQty.getText().toString()) + 1)));
                     data.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(tvQty.getText().toString()));
 
                     if (data.get(getLayoutPosition()).getMenuProductSize() != null && data.get(getLayoutPosition()).getMenuProductSize().size() > 0) {
@@ -325,15 +339,16 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                                 price = Double.parseDouble(item.getProductSizePrice());
                             }
                         }
-                    }else{
+                    } else {
                         price = Double.parseDouble(data.get(getLayoutPosition()).getMenuProductPrice());
                     }
-                    db.updateProductQuantity(data.get(getLayoutPosition()).getId(), Integer.parseInt(tvQty.getText().toString()),price);
+                    db.updateProductQuantity(Integer.parseInt(data.get(getLayoutPosition()).getId()), Integer.parseInt(tvQty.getText().toString()), price);
                     notifyItemChanged(getLayoutPosition());
                     break;
                 case R.id.item_remove:
                     if (Integer.parseInt(tvQty.getText().toString()) > 1) {
                         tvQty.setText(String.valueOf((Integer.parseInt(tvQty.getText().toString()) - 1)));
+                        itemsCount.setText(String.valueOf((Integer.parseInt(tvQty.getText().toString()) - 1)));
                         data.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(tvQty.getText().toString()));
                         notifyItemChanged(getLayoutPosition());
 
@@ -343,16 +358,25 @@ public class AgainAdapter extends RecyclerView.Adapter<AgainAdapter.Againcategor
                                     price = Double.parseDouble(item.getProductSizePrice());
                                 }
                             }
-                        }else{
+                        } else {
                             price = Double.parseDouble(data.get(getLayoutPosition()).getMenuProductPrice());
                         }
-                        db.updateProductQuantity(data.get(getLayoutPosition()).getId(), Integer.parseInt(tvQty.getText().toString()),price);
+                        db.updateProductQuantity(Integer.parseInt(data.get(getLayoutPosition()).getId()), Integer.parseInt(tvQty.getText().toString()), price);
                     } else {
-                        db.deleteItem(data.get(getLayoutPosition()).getMenuId(), data.get(getLayoutPosition()).getId());
+                        db.deleteItem(Integer.parseInt(data.get(getLayoutPosition()).getMenuId()), Integer.parseInt(data.get(getLayoutPosition()).getId()));
                         data.remove(getLayoutPosition());
                         notifyItemRemoved(getLayoutPosition());
                     }
 
+                    break;
+
+
+                case R.id.llModifier:
+                    if (llCounter.getVisibility() == View.VISIBLE) {
+                        llCounter.setVisibility(View.GONE);
+                    } else {
+                        llCounter.setVisibility(View.VISIBLE);
+                    }
                     break;
 
             }

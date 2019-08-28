@@ -90,7 +90,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/addreshList"
+                android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/rounded"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="visible">
@@ -100,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fm"
-                    android:background="@drawable/rounded"
+
                     android:fontFamily="@font/avenir_medium"
                     android:gravity="center"
                     android:padding="10dp"

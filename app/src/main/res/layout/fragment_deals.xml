@@ -3,6 +3,11 @@
     android:id="@+id/swipreferesh"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nsv_deal"
+        android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,7 +83,8 @@
                 android:id="@+id/ll_filter"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/btn_filter"
@@ -95,10 +101,7 @@
 
         </LinearLayout>
 
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+
 
 
             <LinearLayout
@@ -124,12 +127,12 @@
                     android:background="@color/white"
                     android:nestedScrollingEnabled="false" />
 
+
                 <LinearLayout
                     android:id="@+id/oops_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_100sdp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:visibility="gone">
@@ -143,13 +146,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_medium"
-                        android:text="we are unable to match your search"
+                        android:text="We are unable to match your search"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16sdp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+
     </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

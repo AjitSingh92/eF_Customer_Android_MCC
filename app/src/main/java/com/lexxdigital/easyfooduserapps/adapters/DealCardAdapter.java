@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import com.bumptech.glide.request.RequestOptions;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.AddFavouritesInterface;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
@@ -63,8 +67,11 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             } else {
                 if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                    String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + response.get(mListPosition).getRestaurantName()+"\"";
-                    alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
+                    // String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + response.get(mListPosition).getRestaurantName() + "\"";
+                    String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+
+                    //  alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
+                    alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
 
                 } else {
                     new Thread(new Runnable() {
@@ -190,7 +197,8 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                 holder.favIcon.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_white));
             }
 
-            Glide.with(mContext).load(R.drawable.animated_arrow2).asGif().into(holder.arraowAnimation);
+            Glide.with(mContext).asGif().load(R.drawable.animated_arrow2).into(holder.arraowAnimation);
+
 
             holder.favIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,15 +206,32 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                     addFavourites(response.get(mListPosition).getId(), mHolder.favIcon, response.get(mListPosition).getFavourite());
                 }
             });
-            Glide.with(mContext)
-                    .load(response.get(mListPosition).getLogo())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.logo);
+
+            if (response.get(mListPosition).getLogo() != null) {
+                /*Glide.with(mContext)
+                        .load(response.get(mListPosition).getLogo())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(holder.logo);*/
+
+                /*Glide.with(activity).load(blogPostList.get(position).getImage()).apply(new RequestOptions()
+                        .placeholder(R.drawable.placeholder))
+                        .into(holder.binding.ivBlog);*/
+
+                Glide.with(activity).load(response.get(mListPosition).getLogo()).apply(new RequestOptions()
+                        .placeholder(R.drawable.easy_food_image))
+                        .into(holder.logo);
+            }
+
+
             if (response.get(mListPosition).getRestaurantsGallery().size() > 0)
-                Glide.with(mContext)
+              /*  Glide.with(mContext)
                         .load(response.get(mListPosition).getRestaurantsGallery().get(0).getFilePath())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.bgImage);
+                        .into(holder.bgImage);*/
+
+
+            Glide.with(activity).load(response.get(mListPosition).getRestaurantsGallery().get(0).getFilePath()).apply(new RequestOptions())
+                    .into(holder.bgImage);
 
             holder.clickRestaurant.setOnClickListener(this);
 
@@ -218,9 +243,13 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             }
 
         } else if (position > mSize) {
-            Glide.with(mContext)
+           /* Glide.with(mContext)
                     .load(response.get(mListPosition).getLogo())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.menuLogo);*/
+
+            Glide.with(activity).load(response.get(mListPosition).getLogo()).apply(new RequestOptions()
+            .placeholder(R.drawable.easy_food_image))
                     .into(holder.menuLogo);
 
 
@@ -240,8 +269,11 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                             activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                         } else {
                             if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + response.get(mListPosition).getRestaurantName()+"\"";
-                                alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
+                                // String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + response.get(mListPosition).getRestaurantName() + "\"";
+                                String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+
+                                //   alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
+                                alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.get(mListPosition).getRestaurantName(), response.get(mListPosition).getId());
 
                             } else {
                                 new Thread(new Runnable() {
@@ -402,5 +434,71 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
         // show it
         alertDialog.show();
     }
+
+
+    public void alreadyAlertDialog(String message, String oldRest, final String currentRestuarant, final String currentRestId) {
+        LayoutInflater factory = LayoutInflater.from(mContext);
+        final View mDialogVieww = factory.inflate(R.layout.layout_already_added_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+        alertDialog.setView(mDialogVieww);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final TextView tvTitle = (TextView) mDialogVieww.findViewById(R.id.tv_closed_title);
+        final TextView tvGoOld = (TextView) mDialogVieww.findViewById(R.id.tv_go_to_old);
+        final TextView tvGoNew = (TextView) mDialogVieww.findViewById(R.id.tv_go_to_new);
+        tvTitle.setText(message);
+
+
+        tvGoOld.setText("GO TO " + oldRest);
+        tvGoNew.setText("GO TO " + currentRestuarant);
+
+        tvGoOld.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
+                i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(i);
+                alertDialog.dismiss();
+            }
+        });
+
+        tvGoNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GlobalValues.getInstance().getDb().menuMaster().nuke();
+                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                        db.deleteCart();
+                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                        sharePre.setString(sharePre.RESTUARANT_ID, response.get(mListPosition).getId());
+                        sharePre.setString(sharePre.RESTUARANT_NAME, response.get(mListPosition).getRestaurantName());
+                        sharePre.setString(sharePre.NOTEPAD, "");
+
+                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                        i.putExtra("RESTAURANTID", currentRestId);
+                        i.putExtra("RESTAURANTNAME", response.get(mListPosition).getRestaurantName());
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(i);
+                    }
+                }).start();
+            }
+        });
+        mDialogVieww.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertDialog.dismiss();
+            }
+        });
+
+
+        alertDialog.show();
+    }
+
 
 }

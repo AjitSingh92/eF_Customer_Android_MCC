@@ -4,8 +4,11 @@ package com.lexxdigital.easyfooduserapps.fragments;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,7 @@ import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.ItemClickListener;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.RestaurantMenuListAdapter;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
+import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.menu_category.FinalMenuCartDetails;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.response.RestaurantDetailsResponse;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.Menu;
@@ -81,13 +86,16 @@ public class MenuFragment extends Fragment {
     private DatabaseHelper db;
     MenuProductViewModel menuProductViewModel;
     FirebaseAnalytics mFirebaseAnalytics;
+    private boolean isClosed;
 
-    public static MenuFragment newInstance(Activity activity, Context context, Menu restaurantMenuData, ItemClickListener menuItemClickListener) {
+    public static MenuFragment newInstance(Activity activity, Context context, Menu restaurantMenuData, ItemClickListener menuItemClickListener, boolean isClosed) {
         MenuFragment fragment = new MenuFragment();
         fragment.mActivity = activity;
         fragment.menuItemClickListener = menuItemClickListener;
         fragment.mContext = context;
         fragment.DATA = restaurantMenuData;
+        fragment.isClosed = isClosed;
+
         return fragment;
     }
 
@@ -130,6 +138,7 @@ public class MenuFragment extends Fragment {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         ButterKnife.bind(this, view);
 
+        Log.e("isClosed", "" + isClosed);
         return view;
     }
 
@@ -165,7 +174,7 @@ public class MenuFragment extends Fragment {
         layoutManager.setScrollEnabled(false);
         mainMenu.setLayoutManager(layoutManager);
         mainMenu.setNestedScrollingEnabled(false);
-        mMenuAdapter = new RestaurantMenuListAdapter(mActivity, mContext, menuProductViewModel, menuItemClickListener);
+        mMenuAdapter = new RestaurantMenuListAdapter(mActivity, mContext, menuProductViewModel, menuItemClickListener, isClosed);
         mainMenu.setAdapter(mMenuAdapter);
 
 
@@ -187,5 +196,27 @@ public class MenuFragment extends Fragment {
         mMenuAdapter.notifyItemChanged(position);
 
     }
+
+
+    public void restaurantClosedDialog() {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View mDialogVieww = factory.inflate(R.layout.layout_closed_dialog, null);
+        final AlertDialog alertClodseDialog = new AlertDialog.Builder(getActivity()).create();
+        alertClodseDialog.setView(mDialogVieww);
+        alertClodseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
+
+        mDialogVieww.findViewById(R.id.tv_btn_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertClodseDialog.dismiss();
+            }
+        });
+
+
+        alertClodseDialog.show();
+    }
+
 
 }

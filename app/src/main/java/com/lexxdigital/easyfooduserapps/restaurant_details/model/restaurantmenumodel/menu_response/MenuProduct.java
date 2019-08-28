@@ -11,11 +11,11 @@ import java.util.List;
 
 public class MenuProduct {
     @Expose
-    int id;
+    String id;
     @Expose
-    int menuId;
+    String menuId;
     @Expose
-    int menuSubCatId;
+    String menuSubCatId;
 
     @PrimaryKey
     @NonNull
@@ -85,27 +85,27 @@ public class MenuProduct {
         this.originalAmount1 = originalAmount1;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getMenuId() {
+    public String getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(int menuId) {
+    public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
 
-    public int getMenuSubCatId() {
+    public String getMenuSubCatId() {
         return menuSubCatId;
     }
 
-    public void setMenuSubCatId(int menuSubCatId) {
+    public void setMenuSubCatId(String menuSubCatId) {
         this.menuSubCatId = menuSubCatId;
     }
 

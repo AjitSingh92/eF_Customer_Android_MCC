@@ -55,10 +55,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_black"
                         android:text="@string/big_burger"
-                        android:textColor="@color/descolor"
-                        android:textSize="@dimen/_16sdp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14sdp" />
 
                     <LinearLayout
+                        android:id="@+id/ll_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -71,7 +72,7 @@
                             android:layout_marginRight="@dimen/_10sdp"
                             android:fontFamily="@font/avenir_black"
                             android:text="New"
-                            android:textColor="@color/descolor"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp" />
 
 
@@ -84,25 +85,26 @@
                             android:padding="@dimen/_10sdp"
                             android:visibility="visible" />
                     </LinearLayout>
+
                 </RelativeLayout>
 
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_1sdp"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/_1sdp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
+
                     android:layout_marginRight="@dimen/_5sdp"
-                    android:layout_weight="1"
+                    android:layout_toStartOf="@+id/ll_end"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/_1sdp">
 
@@ -138,7 +140,7 @@
                             android:paddingLeft="@dimen/_5sdp"
                             android:paddingRight="@dimen/_5sdp"
                             android:text="."
-                            android:textColor="@color/gray"
+                            android:textColor="@color/price_color"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="bold" />
 
@@ -178,7 +180,7 @@
                                 android:layout_marginLeft="@dimen/_1sdp"
                                 android:fontFamily="@font/avenir_medium"
                                 android:text="Delivery"
-                                android:textColor="@color/price_color"
+                                android:textColor="@color/item_name"
                                 android:textSize="@dimen/_12sdp" />
 
                         </LinearLayout>
@@ -204,7 +206,7 @@
                                 android:layout_marginLeft="@dimen/_1sdp"
                                 android:fontFamily="@font/avenir_medium"
                                 android:text="Dine in"
-                                android:textColor="@color/price_color"
+                                android:textColor="@color/item_name"
                                 android:textSize="@dimen/_12sdp" />
 
                         </LinearLayout>
@@ -230,7 +232,7 @@
                                 android:layout_marginLeft="@dimen/_1sdp"
                                 android:fontFamily="@font/avenir_medium"
                                 android:text="Collection"
-                                android:textColor="@color/price_color"
+                                android:textColor="@color/item_name"
                                 android:textSize="@dimen/_12sdp" />
 
                         </LinearLayout>
@@ -239,35 +241,60 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout.deliveryTime"
+                    android:id="@+id/ll_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:background="@drawable/dark_gray"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:src="@drawable/ic_scooter2" />
+                    android:layout_alignParentEnd="true"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/restaurant_delivery_time"
+                        android:id="@+id/tv_distance"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:fontFamily="@font/avenir_black"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:text="30 min"
-                        android:textColor="@color/white"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_3sdp"
+
+                        android:fontFamily="@font/avenir_roman"
+                        android:text="0.02 miles"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout.deliveryTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+
+                        android:layout_marginEnd="@dimen/_5sdp"
+
+                        android:background="@drawable/dark_box_bg"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:src="@drawable/ic_scooter2" />
+
+                        <TextView
+                            android:id="@+id/restaurant_delivery_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:fontFamily="@font/avenir_black"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="30 min"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+
                 </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout

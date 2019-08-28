@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.RestaurentReviewInterface;
@@ -101,8 +102,16 @@ public class CustomerReviewProcess extends AppCompatActivity {
         }
 
         try {
-            Glide.with(this).load(strRestoImage).centerCrop().into(imgRestoImage);
-            Glide.with(this).load(strRestoLogo).centerCrop().into(crlRestoLogo);
+
+            Glide.with(this).load(strRestoImage).apply(new RequestOptions()
+                    .centerCrop())
+                    .into(imgRestoImage);
+            Glide.with(this).load(strRestoLogo).apply(new RequestOptions()
+                    .centerCrop())
+                    .into(crlRestoLogo);
+
+          //  Glide.with(this).load(strRestoImage).centerCrop().into(imgRestoImage);
+         //   Glide.with(this).load(strRestoLogo).centerCrop().into(crlRestoLogo);
 
         } catch (Exception e) {
 

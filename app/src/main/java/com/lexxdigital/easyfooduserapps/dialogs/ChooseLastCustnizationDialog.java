@@ -2,6 +2,8 @@ package com.lexxdigital.easyfooduserapps.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +36,7 @@ public class ChooseLastCustnizationDialog extends DialogFragment implements View
     List<MenuProduct> menuProduct;
     Boolean isSubCat;
     FirebaseAnalytics mFirebaseAnalytics;
+
     public interface OnChooseLastCustnizationListener {
         void onRepeatLast(int position, int parentPosition, List<MenuProduct> menuProduct, View view, TextView qtyTextView, MenuCategory menuCategory, int itemCount, Boolean isSubCat, int action);
 
@@ -71,6 +74,7 @@ public class ChooseLastCustnizationDialog extends DialogFragment implements View
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         TextView lastItemName = (TextView) view.findViewById(R.id.last_item_name);
         if (isSubCat) {
@@ -97,11 +101,11 @@ public class ChooseLastCustnizationDialog extends DialogFragment implements View
         int displayHeight = displayMetrics.heightPixels;
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(getDialog().getWindow().getAttributes());
-        int dialogWindowWidth = (int) (displayWidth * 0.95f);
-        int dialogWindowHeight = (int) (displayHeight * 0.95f);
+        int dialogWindowWidth = (int) (displayWidth * 0.85f);
+        int dialogWindowHeight = (int) (displayHeight * 0.90f);
         layoutParams.width = dialogWindowWidth;
         getDialog().getWindow().setAttributes(layoutParams);
-
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
     }

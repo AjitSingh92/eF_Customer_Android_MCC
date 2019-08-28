@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_restaurant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,48 +26,51 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="@dimen/_120sdp">
 
                     <ImageView
                         android:id="@+id/restaurant_image"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_130sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:adjustViewBounds="true"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:scaleType="fitXY" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/restaurant_logo"
-                        android:layout_width="@dimen/_140sdp"
-                        android:layout_height="@dimen/_140sdp"
-                        android:layout_marginLeft="@dimen/_10sdp" />
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:src="@drawable/easy_food_image"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="@dimen/_1sdp" />
 
 
                     <ImageView
                         android:id="@+id/favourites"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="right"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="@dimen/_30sdp"
-                        android:src="@drawable/favourite_white"
-                        />
+                        android:src="@drawable/favourite_white" />
+
                     <ImageView
                         android:id="@+id/detail_arraw"
                         android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_30sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="right|center_vertical"
                         android:layout_marginEnd="@dimen/_1sdp"
-                        android:layout_marginRight="@dimen/_30sdp"
-                        />
+                        android:layout_marginRight="@dimen/_30sdp" />
+
                     <LinearLayout
                         android:id="@+id/sweepIdLLdeal"
                         android:layout_width="@dimen/_60sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_gravity="right|center_vertical"
                         android:layout_marginEnd="@dimen/_18sdp"
-                        android:visibility="gone"
-                        android:layout_marginRight="@dimen/_30sdp">
+                        android:layout_marginRight="@dimen/_30sdp"
+                        android:visibility="gone">
 
                         <ImageView
 
@@ -102,9 +106,10 @@
                     <com.lexxdigital.easyfooduserapps.utility.VerticalTextView
 
                         android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_130sdp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="right"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@color/orange"
                         android:fontFamily="@font/avenir_medium"
                         android:gravity="center"

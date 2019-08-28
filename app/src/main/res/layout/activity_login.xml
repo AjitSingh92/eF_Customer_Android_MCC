@@ -30,13 +30,13 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/avenir_black"
                     android:gravity="center"
                     android:text="Sign into account"
                     android:textColor="@color/white"
                     android:id="@+id/tv.headline"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -51,13 +51,13 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Email"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edit_email"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_below="@+id/edittextFname"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_15sdp"
@@ -71,7 +71,7 @@
                     android:padding="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -79,18 +79,19 @@
                     android:layout_below="@+id/fm"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:autoText="true"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/avenir_black"
                     android:padding="@dimen/_5sdp"
                     android:text="Password"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edit_password"
 
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_below="@+id/edittextFname"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_15sdp"
@@ -103,20 +104,20 @@
                     android:padding="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <LinearLayout
                     android:id="@+id/sendVerivication"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:gravity="center"
                     android:visibility="visible">
 
                     <TextView
                         android:id="@+id/btn_signin"
-                        android:layout_width="@dimen/_130sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="@dimen/_35sdp"
                         android:layout_below="@+id/fm"
                         android:background="@drawable/btn_intro_bg"
                         android:fontFamily="@font/avenir_medium"
@@ -172,6 +173,7 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="horizontal">
 
                 <View
@@ -209,6 +211,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/llview"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -217,11 +220,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/ll"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/rounded_rectangle"
                     android:gravity="center_vertical"
                     android:visibility="visible">
@@ -237,8 +240,8 @@
                         />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/fm"
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:fontFamily="@font/avenir_medium"
@@ -247,7 +250,7 @@
                         android:paddingRight="@dimen/_20sdp"
                         android:text="Log in with Facebook"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
 
@@ -258,11 +261,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/ll"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/rounded_rectangle"
                     android:gravity="center_vertical"
                     android:visibility="visible">
@@ -276,8 +279,8 @@
                         android:padding="@dimen/_8sdp" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/fm"
                         android:layout_marginLeft="@dimen/_16sdp"
                         android:fontFamily="@font/avenir_medium"
@@ -286,7 +289,7 @@
                         android:paddingRight="@dimen/_20sdp"
                         android:text="Log in with Google"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -298,7 +301,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lll"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:gravity="center"
                 android:orientation="horizontal">
 

@@ -534,6 +534,7 @@ public class AddNewCardActivity extends AppCompatActivity {
                     }
 
                     public void onError(Exception error) {
+                        Log.e("Error", "" + error);
                         // Show localized error message
                         mProgressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Please try again!", Toast.LENGTH_LONG).show();
@@ -577,6 +578,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         request.setCustomerId(val.getLoginResponse().getData().getUserId());
         request.setPaymentMode(paymentType);
         request.setDeliveryOption(orderType.toLowerCase());
+        request.setIsTomorrow("0");
         request.setDeliveryCharge(deliveryFee);
         request.setDiscountAmount(voucherDiscount);
         request.setOrderTotal(totalAmount);
@@ -619,6 +621,7 @@ public class AddNewCardActivity extends AppCompatActivity {
 
                     Log.e("Success ><<<<<<<", ">>>>> Success" + response.code() + "//" + response.body().getSuccess() + "//" + response.body().getData().getOrderId());
                     if (response.code() == 200 && response.body().getSuccess()) {
+
 
                         try {
                             Log.e("Success ><<<<<<<", ">>>>> Success" + response.code() + "//" + response.body().getSuccess() + "//" + response.body().getData().getOrder_number());

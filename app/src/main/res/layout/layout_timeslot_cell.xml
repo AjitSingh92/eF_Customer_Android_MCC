@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_main_slot"
+    android:layout_width="match_parent"
+    android:background="@drawable/rounded_orange"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_slot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_roman"
+        android:text="09:30AM-10:30AM"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13sdp" />
+
+</RelativeLayout>

@@ -4,15 +4,15 @@
 
     <string name="facebook_app_id">1883086888469507</string>
     <string name="fb_login_protocol_scheme">fb1883086888469507</string>
-    <!--<string name="geo_api_key">AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM</string>-->
-    <string name="geo_api_key">AIzaSyBZt8tduk1FCQCxlMm9J8EhiTCGjRvDCGw</string>
-
+    <string name="geo_api_key">AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM</string>
+    <!--<string name="geo_api_key">AIzaSyBZt8tduk1FCQCxlMm9J8EhiTCGjRvDCGw</string>-->
 
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="please_enter_your_email_address_below_to_reveive_an_email_instruction_for_resetting_your_password">Please enter your email address\nbelow to reveive an email\ninstruction for resetting\nyour password.</string>
+    <string name="please_enter_your_email_address_below_to_reveive_an_email_instruction_for_resetting_your_password">Please enter your email \naddress below to receive an\nemail instruction for resetting\nyour password.</string>
     <string name="email">Email</string>
+    <string name="email_required">Email (required)</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="submit">SUBMIT</string>
     <string name="cancel">CANCEL</string>
@@ -21,7 +21,7 @@
     <string name="add_note">Add note</string>
     <string name="No_items_added">No items added</string>
     <string name="your_basket_is_empty_add_items_to_your_order_before_accessing_your_basket">Your basket is empty. Add items to your order before accessing your basket.</string>
-    <string name="are_you_sure_you_want_to_remove_this_address">Are you sure, you \n want to remove this address?</string>
+    <string name="are_you_sure_you_want_to_remove_this_address">Are you sure, you want to remove this address?</string>
     <string name="voucher_code_n_has_now_expired">Voucher code has now expired</string>
     <string name="unfortunately_discount_code_has_expired_please_try_again_with_a_valid_code">Unfortunately [Discount Code] has expired. Please try again with a valid code.</string>
     <string name="voucher_code_is_invalid">Voucher code is invalid</string>
@@ -107,11 +107,11 @@ ou will be sent a varification code to your mobile </string>
     <string name="view_map">View map</string>
     <string name="your_basket_is_empty">Your basket is empty</string>
     <string name="special_offers">Special Offers</string>
-    <string name="add_more_favou">Add more favourites</string>
+    <string name="add_more_favou">Add More Favourites</string>
     <string name="details">Details</string>
     <string name="order_again">Order again</string>
     <string name="order_summary">Order Summary</string>
-    <string name="RestaurantsorCuisine">Restaurants or Cuisine</string>
+    <string name="RestaurantsorCuisine">Restaurants</string>
     <string name="my_account">My Account</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="Manage_Address">Manage Address</string>
@@ -184,5 +184,8 @@ ou will be sent a varification code to your mobile </string>
     <string name="settings">Settings</string>
     <string name="no_ratings">No Ratings</string>
     <string name="no_address">No address found. \nPlease add a new address</string>
+    <string name="restaurant_closed_msg">This restaurant is currently closed.</string>
+    <string name="ok">OK</string>
+    <string name="view_basket">View basket</string>
 
 </resources>

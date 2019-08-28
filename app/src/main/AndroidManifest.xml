@@ -24,9 +24,11 @@
     <permission
         android:name="com.example.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.example.permission.MAPS_RECEIVE" />
+
     <application
-        android:name="com.lexxdigital.easyfooduserapps.utility.GlobalValues"
+        android:name=".utility.GlobalValues"
         android:allowBackup="false"
         android:appComponentFactory="whateverString"
         android:configChanges="orientation|screenSize|keyboardHidden"
@@ -39,17 +41,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name="com.lexxdigital.easyfooduserapps.select_address.SelectAddressActivity"></activity>
+        <activity android:name=".select_address.SelectAddressActivity" />
+
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.TestScrollingActivity"
+            android:name=".TestScrollingActivity"
             android:label="@string/title_activity_test_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.restaurants_detail_new.RestaurantDetailNewActivity"
+            android:name=".restaurants_detail_new.RestaurantDetailNewActivity"
             android:label="@string/title_activity_restaurant_detail_new"
-            android:parentActivityName="com.lexxdigital.easyfooduserapps.dashboard.DashboardActivity"
+            android:parentActivityName=".dashboard.DashboardActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible">
             <meta-data
@@ -62,89 +65,89 @@
             android:required="false" />
 
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.customer_review.CustomerReviewProcess"
+            android:name=".customer_review.CustomerReviewProcess"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.order_details_activity.OrderDetailActivity"
+            android:name=".order_details_activity.OrderDetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.change_password.ChangePasswordActivity"
+            android:name=".change_password.ChangePasswordActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.ScrollingActivity"
+            android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.select_payment_method.SelectPaymentMethodActivity"
+            android:name=".select_payment_method.SelectPaymentMethodActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity"
+            android:name=".order_status.OrderStatusActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" /> <!-- <activity android:name=".add_address.AddAddressActivity"/> -->
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.add_manual_address.AddAddressManualActivity"
+            android:name=".add_manual_address.AddAddressManualActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.search_post_code.SearchPostCodeActivity"
+            android:name=".search_post_code.SearchPostCodeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.add_address.AddAddressActivity"
+            android:name=".add_address.AddAddressActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.manage_address.ManageAddressActivity"
+            android:name=".manage_address.ManageAddressActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.edit_my_account.EditMyAccountActivity"
+            android:name=".edit_my_account.EditMyAccountActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity"
+            android:name=".restaurant_details.RestaurantDetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.add_card.AddNewCardActivity"
+            android:name=".add_card.AddNewCardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label=""
             android:launchMode="singleTask"
@@ -152,7 +155,7 @@
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.SplashActivity"
+            android:name=".SplashActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
@@ -170,7 +173,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/geo_api_key" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/geo_api_key" />
@@ -179,21 +181,21 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.inrodution_slide.IntroActivity"
+            android:name=".inrodution_slide.IntroActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.login.LoginActivity"
+            android:name=".login.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.signup.SignupActivity"
+            android:name=".signup.SignupActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -233,26 +235,26 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <receiver android:name="com.lexxdigital.easyfooduserapps.OtpSmsAutoFetch.SmsReceiver">
+        <receiver android:name=".OtpSmsAutoFetch.SmsReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name="com.lexxdigital.easyfooduserapps.dashboard.DashboardActivity"
+            android:name=".dashboard.DashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
-        <service android:name="com.lexxdigital.easyfooduserapps.fcm.MyFirebaseMessagingService">
+        <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.lexxdigital.easyfooduserapps.fcm.MyFirebaseInstanceIDService">
+        <service android:name=".fcm.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -269,8 +271,9 @@
             android:value="false" />
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
+
         <service
-            android:name="com.lexxdigital.easyfooduserapps.services.FetchAddressIntentService"
+            android:name=".services.FetchAddressIntentService"
             android:exported="false" />
     </application>
 

@@ -19,6 +19,9 @@ public class CheckoutRequest {
     @SerializedName("delivery_option")
     @Expose
     private String deliveryOption;
+    @SerializedName("isTomorrow")
+    @Expose
+    private String isTomorrow;
     @SerializedName("delivery_charge")
     @Expose
     private Double deliveryCharge;
@@ -110,6 +113,15 @@ public class CheckoutRequest {
 
     public void setPaymentMode(String paymentMode) {
         this.paymentMode = paymentMode;
+    }
+
+
+    public String getIsTomorrow() {
+        return isTomorrow;
+    }
+
+    public void setIsTomorrow(String isTomorrow) {
+        this.isTomorrow = isTomorrow;
     }
 
     public String getDeliveryOption() {

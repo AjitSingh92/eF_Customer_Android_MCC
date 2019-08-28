@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/_10sdp"
         android:paddingTop="@dimen/_5sdp"
         android:text="John Smith"
-        android:textColor="@color/descolor"
+        android:textColor="@color/black"
         android:textSize="@dimen/_14sdp" />
 
     <RelativeLayout
@@ -23,11 +23,14 @@
 
         <android.support.v7.widget.AppCompatRatingBar
             android:id="@+id/ratingBar1"
-            style="?android:attr/ratingBarStyleSmall"
+            style="?android:attr/ratingBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:isIndicator="true"
+            android:scaleX=".7"
+            android:scaleY=".7"
+            android:layout_marginStart="@dimen/_minus25sdp"
             android:stepSize="0.1" />
 
         <ImageView
@@ -85,10 +88,11 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_weight="1"
-            android:fontFamily="@font/avenir_medium"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/avenir_roman"
             android:text="12/02/2019"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_13sdp" />
 
 
     </RelativeLayout>

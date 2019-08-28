@@ -36,10 +36,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
+                android:fontFamily="@font/avenir_roman"
                 android:gravity="center_vertical"
                 android:text="Item"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -55,20 +56,40 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/avenir_roman"
             android:gravity="center_vertical"
             android:text="£00.00"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp" />
+
+        <TextView
+            android:id="@+id/txt_count"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/cardvieworange"
+            android:fontFamily="@font/avenir_roman"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_7sdp"
+            android:paddingEnd="@dimen/_7sdp"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/txt_items_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_roman"
         android:paddingLeft="10dp"
         android:paddingBottom="5dp"
         android:text="Any 12” pizza, 2 fillet burgers, 6 spicy wings,2 regular fries 1.5ltr bottle"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/gray"
         android:textSize="12dp"
         android:visibility="visible" />
 
@@ -85,15 +106,16 @@
 
         <LinearLayout
             android:id="@+id/item_remove"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/border_circle_gray"
             android:gravity="center"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:orientation="vertical">
 
             <View
                 android:layout_width="12dp"
-                android:layout_height="2dp"
+                android:layout_height="3dp"
                 android:layout_gravity="center"
                 android:background="@android:color/holo_red_dark" />
 
@@ -108,24 +130,27 @@
             android:layout_marginRight="10dp"
             android:gravity="center"
             android:text="0"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="12dp"
+            android:fontFamily="@font/avenir_medium"
+            android:textColor="@color/black"
+            android:textSize="16dp"
             android:textStyle="bold" />
 
 
         <LinearLayout
             android:id="@+id/item_add"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/border_circle_gray"
             android:gravity="center"
+            android:layout_marginStart="@dimen/_15sdp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:text="+"
+               android:layout_marginBottom="@dimen/_2sdp"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="16dp"
                 android:textStyle="bold" />

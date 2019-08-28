@@ -107,9 +107,9 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<ModifierProduct
             mItem.get(position).setQuantity("0");
 
             item_count.setText("0");
-            if ((Integer.parseInt(item_count.getText().toString()) < 1)) {
+            /*if ((Integer.parseInt(item_count.getText().toString()) < 1)) {
                 item_remove.setVisibility(View.INVISIBLE);
-            }
+            }*/
 
 
 
@@ -142,9 +142,9 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<ModifierProduct
                         if (modifierItemSelectListener != null) {
                             modifierItemSelectListener.onModifierItemSelected(parentPosition, mItem);
                         }
-                        if ((Integer.parseInt(item_count.getText().toString()) < 1)) {
+                        /*if ((Integer.parseInt(item_count.getText().toString()) < 1)) {
                             item_remove.setVisibility(View.INVISIBLE);
-                        }
+                        }*/
                     }
                     break;
                 default:

@@ -1,6 +1,9 @@
 package com.lexxdigital.easyfooduserapps.adapters.menu_adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
+import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.Meal;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 
@@ -29,8 +34,9 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
     int parentPosition;
     MenuCategory menuCategory;
     DatabaseHelper db;
+    private boolean isClosed;
 
-    public RestaurantMealCategoryAdapter(Context context, int parentPosition, ItemClickListener menuItemClickListener) {
+    public RestaurantMealCategoryAdapter(Context context, int parentPosition, ItemClickListener menuItemClickListener, boolean isClosed) {
         this.context = context;
         this.menuItemClickListener = menuItemClickListener;
 
@@ -42,6 +48,7 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
         mItem = new ArrayList<>();
 //        this.mItem = RestaurantDetailsActivity.completeData.getMenu().getMenuCategory().get(parentPosition).getMenuProducts();
         db = new DatabaseHelper(context);
+        this.isClosed = isClosed;
     }
 
     public void setHideDetail(Boolean hideDetail) {
@@ -136,7 +143,7 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView txt_menu_title, txt_price, txt_items_detail, item_count;
+        private final TextView txt_menu_title, txt_price, txt_items_detail, item_count/*, txt_Count*/;
         private final LinearLayout clickCount, item_remove, item_add;
         private final ProgressBar progressBar;
 
@@ -148,6 +155,7 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
             txt_menu_title = itemView.findViewById(R.id.txt_menu_title);
             txt_price = itemView.findViewById(R.id.txt_price);
             txt_items_detail = itemView.findViewById(R.id.txt_items_detail);
+          //  txt_Count = (TextView) itemView.findViewById(R.id.txt_count);
             clickCount = itemView.findViewById(R.id.clickCount);
             item_remove = itemView.findViewById(R.id.item_remove);
             item_add = itemView.findViewById(R.id.item_add);
@@ -161,6 +169,7 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
             txt_menu_title.setText(mItem.get(position).getMealName());
             txt_price.setText(context.getResources().getString(R.string.currency) + mItem.get(position).getMealPrice());
             item_count.setText("0");
+           // txt_Count.setText("0");
             if (hideDetail) {
                 txt_items_detail.setVisibility(View.GONE);
             } else {
@@ -176,9 +185,13 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
 
             if (qtyCount == 0) {
                 clickCount.setVisibility(View.GONE);
+               // txt_Count.setVisibility(View.GONE);
+                //txt_Count.setText(String.valueOf(qtyCount));
                 item_count.setText(String.valueOf(qtyCount));
             } else {
                 clickCount.setVisibility(View.VISIBLE);
+               // txt_Count.setVisibility(View.VISIBLE);
+                //txt_Count.setText(String.valueOf(qtyCount));
                 item_count.setText(String.valueOf(qtyCount));
             }
         }
@@ -190,14 +203,17 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
             switch (v.getId()) {
                 case R.id.item_add:
                     itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
+                  //  txt_Count.setText(Integer.parseInt(item_count.getText().toString()) + 1);
                     if (menuItemClickListener != null) {
                         menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
                     }
                     break;
                 case R.id.item_remove:
                     itemQty = (Integer.parseInt(item_count.getText().toString()) - 1);
+                  //  txt_Count.setText(Integer.parseInt(item_count.getText().toString()) - 1);
                     if (itemQty == 0) {
                         clickCount.setVisibility(View.GONE);
+                      //  txt_Count.setVisibility(View.GONE);
                     }
                     if (menuItemClickListener != null) {
                         List<Meal> mItemNew = mItem;
@@ -205,11 +221,18 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
                     }
                     break;
                 default:
-                    if (clickCount.getVisibility() == View.GONE) {
-                        itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
-                        if (menuItemClickListener != null) {
-                            List<Meal> mItemNew = mItem;
-                            menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
+                    if (isClosed) {
+                        restaurantClosedDialog();
+                    } else {
+                       // txt_Count.setVisibility(View.VISIBLE);
+                        if (clickCount.getVisibility() == View.GONE) {
+                            //txt_Count.setVisibility(View.VISIBLE);
+                            itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
+                           // txt_Count.setText(Integer.parseInt(item_count.getText().toString()) + 1);
+                            if (menuItemClickListener != null) {
+                                List<Meal> mItemNew = mItem;
+                                menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
+                            }
                         }
                     }
                     break;
@@ -217,6 +240,27 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
 
 
         }
+    }
+
+
+    public void restaurantClosedDialog() {
+        LayoutInflater factory = LayoutInflater.from(RestaurantDetailsActivity.restaurantDetailsActivity);
+        final View mDialogVieww = factory.inflate(R.layout.layout_closed_dialog, null);
+        final AlertDialog alertClodseDialog = new AlertDialog.Builder(RestaurantDetailsActivity.restaurantDetailsActivity).create();
+        alertClodseDialog.setView(mDialogVieww);
+        alertClodseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
+
+        mDialogVieww.findViewById(R.id.tv_btn_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertClodseDialog.dismiss();
+            }
+        });
+
+
+        alertClodseDialog.show();
     }
 
 }

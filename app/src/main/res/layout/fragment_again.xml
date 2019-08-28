@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/cardview"
     android:orientation="vertical"
     tools:context=".dialogs.AgainFragment">
 
@@ -10,68 +11,72 @@
         android:id="@+id/ll_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+
         android:gravity="center_vertical"
-        android:padding="10dp"
-        android:background="@drawable/bg_top_popup"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_marginRight="@dimen/_5sdp"
+       android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="@font/avenir_black"
-            android:text="Please click on" />
+            android:text="Please click"
+            android:textSize="@dimen/_13sdp" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <!--
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/item_remove"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/border_circle_gray"
-                android:gravity="center"
-                android:visibility="gone"
-                android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/item_remove"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/border_circle_gray"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="vertical">
 
-                <View
-                    android:layout_width="@dimen/_12sdp"
-                    android:layout_height="@dimen/_2sdp"
-                    android:layout_gravity="center"
-                    android:background="@color/black" />
+                        <View
+                            android:layout_width="@dimen/_12sdp"
+                            android:layout_height="@dimen/_2sdp"
+                            android:layout_gravity="center"
+                            android:background="@color/black" />
 
-            </LinearLayout>
+                    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/item_add"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/border_circle_gray"
-                android:gravity="center"
-                android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/item_add"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/border_circle_gray"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/avenir_black"
-                    android:gravity="center_horizontal"
-                    android:text="+"
-                    android:textColor="@color/descolor"
-                    android:textSize="@dimen/_16sdp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </FrameLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/avenir_black"
+                            android:gravity="center_horizontal"
+                            android:text="+"
+                            android:textColor="@color/descolor"
+                            android:textSize="@dimen/_16sdp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </FrameLayout>
+        -->
 
         <TextView
             android:id="@+id/tv_to_delete"
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_black"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:text="to delete the product " />
+            android:text="to delete the product "
+            android:textSize="@dimen/_13sdp" />
     </LinearLayout>
     <!-- TODO: Update blank fragment layout -->
     <FrameLayout
@@ -79,10 +84,23 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+
+            android:background="#F2F3F5">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_15sdp" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv.msg"
@@ -132,3 +150,91 @@
     </LinearLayout>
 
 </LinearLayout>
+
+    <!--
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/seme_transparent"
+        tools:context=".dialogs.AgainFragment">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_15sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_black"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:textSize="@dimen/_15sdp"
+                        android:id="@+id/tv_title"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="Please click - to delete the product."/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_below="@+id/tv_title"
+                    android:id="@+id/vi"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="#F5F5F5"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_below="@+id/vi"
+                    android:layout_weight="1">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/tv.msg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="All item removed"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sdp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv.Ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/orange"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:text="Ok"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sdp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+    -->

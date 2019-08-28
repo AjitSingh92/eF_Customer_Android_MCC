@@ -93,7 +93,7 @@
                 android:text="Add more addresses"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/doneLL"
@@ -101,6 +101,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/orange"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:padding="@dimen/_15sdp">
 

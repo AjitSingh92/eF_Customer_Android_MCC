@@ -28,6 +28,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
     OnMenuCartItemClick onMenuCartItemClick;
     DatabaseHelper db;
 
+
     public interface OnMenuCartItemClick {
         void OnQuantityBtnClick();
 
@@ -78,12 +79,14 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView title, price, qty;
-        private final LinearLayout modifiers, btnRemove, btnAdd;
+        private final TextView title, price, qty, itemsCount;
+        private final LinearLayout modifiers, btnRemove, btnAdd, btnMain, llCounter;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            llCounter = itemView.findViewById(R.id.ll_counter);
+            btnMain = itemView.findViewById(R.id.ly_item);
+            itemsCount = itemView.findViewById(R.id.tv_itemcount);
             title = itemView.findViewById(R.id.tv_title);
             price = itemView.findViewById(R.id.tv_price);
             modifiers = itemView.findViewById(R.id.layout_modifiers);
@@ -92,13 +95,16 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
             qty = itemView.findViewById(R.id.tv_qty);
 
             itemView.setOnClickListener(this);
+
             btnAdd.setOnClickListener(this);
             btnRemove.setOnClickListener(this);
+            btnMain.setOnClickListener(this);
         }
 
         private void bindData(int position) {
 
             int itemQty = mItem.get(position).getOriginalQuantity();
+            itemsCount.setText(String.valueOf(itemQty));
             qty.setText(String.valueOf(itemQty));
             modifiers.removeAllViews();
             Double totalPrice = 0d;
@@ -110,15 +116,15 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                 }
             }*/
             if (mItem.get(position).getMealProducts() != null && mItem.get(position).getMealProducts().size() > 0) {
-                title.setText(itemQty + "x " + mItem.get(position).getProductName());
+                title.setText(/*itemQty + "x " +*/ mItem.get(position).getProductName());
                 totalPrice += mItem.get(position).getOriginalAmount1();
             } else {
                 if (mItem.get(position).getMenuProductSize().size() > 0) {
-                    title.setText(itemQty + "x " + mItem.get(position).getMenuProductSize().get(0).getProductSizeName() + " " + mItem.get(position).getProductName());
+                    title.setText(/*itemQty + "x " +*/ mItem.get(position).getMenuProductSize().get(0).getProductSizeName() + " " + mItem.get(position).getProductName());
 
                     totalPrice += (itemQty * Double.parseDouble(mItem.get(position).getMenuProductSize().get(0).getProductSizePrice()));
                 } else {
-                    title.setText(itemQty + "x " + mItem.get(position).getProductName());
+                    title.setText(/*itemQty + "x " +*/ mItem.get(position).getProductName());
                     totalPrice += (itemQty * Double.parseDouble(mItem.get(position).getMenuProductPrice()));
                 }
             }
@@ -164,6 +170,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                                                 View viewFree = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
                                                 ((TextView) viewFree.findViewById(R.id.tv_title)).setText(maxAllowFree + "x " + sizeModifier.getModifier().get(i).getProductName());
                                                 ((TextView) viewFree.findViewById(R.id.tv_price)).setText("Free");
+
                                                 modifiers.addView(viewFree);
 
                                             }
@@ -336,12 +343,20 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                 price = Double.parseDouble(mItem.get(getLayoutPosition()).getMenuProductPrice());
             }
             switch (v.getId()) {
+                case R.id.ly_item:
+                    if (llCounter.getVisibility() == View.VISIBLE) {
+                        llCounter.setVisibility(View.GONE);
+                    } else {
+                        llCounter.setVisibility(View.VISIBLE);
+                    }
+                    break;
                 case R.id.btn_add:
                     qty.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) + 1)));
+                    itemsCount.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) + 1)));
                     mItem.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(qty.getText().toString()));
 //                    if (mItem.get(getLayoutPosition()).getMealProducts() != null)
 
-                    int id = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()), price);
+                    int id = db.updateProductQuantity(Integer.parseInt(mItem.get(getLayoutPosition()).getId()), Integer.parseInt(qty.getText().toString()), price);
 
                     if (onMenuCartItemClick != null) {
                         onMenuCartItemClick.OnQuantityBtnClick();
@@ -353,11 +368,12 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                 case R.id.btn_remove:
                     if (Integer.parseInt(qty.getText().toString()) > 0) {
                         qty.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) - 1)));
+                        itemsCount.setText(String.valueOf((Integer.parseInt(qty.getText().toString()) - 1)));
                         mItem.get(getLayoutPosition()).setOriginalQuantity(Integer.parseInt(qty.getText().toString()));
                         int id1 = -1;
 
                         if (Integer.parseInt(qty.getText().toString()) == 0) {
-                            db.deleteItem(mItem.get(getLayoutPosition()).getId(), mItem.get(getLayoutPosition()).getId());
+                            db.deleteItem(Integer.parseInt(mItem.get(getLayoutPosition()).getId()), Integer.parseInt(mItem.get(getLayoutPosition()).getId()));
                             if (mItem.get(getLayoutPosition()).getMealProducts() != null) {
                             } else {
                                 db.deleteUpsellProductByParentId(mItem.get(getLayoutPosition()).getMenuProductId());
@@ -368,7 +384,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                                 onMenuCartItemClick.OnUpSellItemRemove();
                             }
                         } else {
-                            id1 = db.updateProductQuantity(mItem.get(getLayoutPosition()).getId(), Integer.parseInt(qty.getText().toString()), price);
+                            id1 = db.updateProductQuantity(Integer.parseInt(mItem.get(getLayoutPosition()).getId()), Integer.parseInt(qty.getText().toString()), price);
                         }
                         if (onMenuCartItemClick != null) {
                             onMenuCartItemClick.OnQuantityBtnClick();

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:id="@+id/click_items"
-        android:orientation="vertical"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/_10sdp"
-            >
+            android:paddingLeft="@dimen/_10sdp">
 
             <TextView
                 android:id="@+id/txt_menu_title"
@@ -32,15 +32,25 @@
                 android:id="@+id/txt_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_weight="1"
                 android:fontFamily="@font/avenir_black"
                 android:text="£14.99"
-                android:layout_marginRight="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
-
+            <TextView
+                android:id="@+id/txt_product_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:fontFamily="@font/avenir_black"
+                android:text="£14.99"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
 
 
         </RelativeLayout>
@@ -49,15 +59,14 @@
             android:id="@+id/txt_items_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_medium"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingBottom="@dimen/_5sdp"
-            android:fontFamily="@font/avenir_medium"
             android:text="Any 12” pizza, 2 fillet burgers, 6 spicy wings,2 regular fries 1.5ltr bottle"
             android:textColor="@color/descolor"
             android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -66,10 +75,10 @@
         android:layout_height="wrap_content"
         android:background="#f7f4f4"
         android:gravity="center"
-        android:visibility="gone"
         android:orientation="horizontal"
         android:padding="@dimen/_15sdp"
-        android:paddingTop="@dimen/_15sdp">
+        android:paddingTop="@dimen/_15sdp"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/item_remove"
@@ -115,10 +124,10 @@
             <TextView
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:fontFamily="@font/avenir_black"
                 android:gravity="center"
                 android:text="+"
-                android:layout_marginBottom="@dimen/_8sdp"
                 android:textColor="@color/descolor"
                 android:textSize="@dimen/_16sdp"
                 android:textStyle="bold" />

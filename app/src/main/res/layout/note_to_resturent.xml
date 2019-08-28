@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llNotePad"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="@dimen/_15sdp"
     android:background="@drawable/cardview"
-    android:id="@+id/llNotePad"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
@@ -39,7 +39,7 @@
         android:layout_below="@+id/fm"
 
 
-        android:fontFamily="@font/avenir_medium"
+        android:fontFamily="@font/avenir_black"
         android:gravity="center"
         android:padding="@dimen/_5sdp"
         android:text="Add note to your order"
@@ -57,8 +57,8 @@
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
         android:text="If you want to include any information for the restaurant, (eg. door bell doesn’t work,please knock the door) then please add your note below."
-        android:textColor="@color/descolor"
-        android:textSize="@dimen/_12sdp" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13sdp" />
 
     <EditText
         android:id="@+id/desIdEt"
@@ -72,7 +72,7 @@
         android:gravity="left"
         android:imeOptions="actionDone"
         android:inputType="textMultiLine"
-        android:maxLength="150"
+        android:maxLength="240"
         android:padding="@dimen/_5sdp"
         android:singleLine="false"
         android:text=""
@@ -88,7 +88,7 @@
         android:fontFamily="@font/avenir_medium"
         android:gravity="right"
         android:padding="@dimen/_5sdp"
-        android:text="0/150"
+        android:text="0/240"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/_10sdp" />
 
@@ -104,14 +104,17 @@
 
         <TextView
             android:id="@+id/okTv"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/fm"
-
             android:background="@drawable/rounded_orange"
-            android:fontFamily="@font/avenir_medium"
+            android:fontFamily="@font/avenir_black"
             android:gravity="center"
-            android:padding="@dimen/_5sdp"
+            android:paddingStart="@dimen/_45sdp"
+            android:paddingEnd="@dimen/_45sdp"
+            android:paddingTop="@dimen/_7sdp"
+            android:paddingBottom="@dimen/_7sdp"
+
             android:text="@string/add_note"
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp" />

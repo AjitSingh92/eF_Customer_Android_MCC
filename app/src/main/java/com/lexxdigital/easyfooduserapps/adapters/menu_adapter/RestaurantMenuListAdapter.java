@@ -1,7 +1,10 @@
 package com.lexxdigital.easyfooduserapps.adapters.menu_adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import com.lexxdigital.easyfooduserapps.cart_db.tables.MenuProducts;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
+import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.RestaurantMenuList;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.SpecialOffer;
@@ -23,6 +27,8 @@ import com.lexxdigital.easyfooduserapps.viewmodel.MenuProductViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity.getActivity;
 
 public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     MenuProductViewModel menuProductViewModel;
@@ -34,8 +40,9 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
     List<RestaurantCategoryAdapter> restaurantCategoryAdapters;
     Activity activity;
     HashMap<Integer, Boolean> isItemVisible;
+    private boolean isClosed;
 
-    public RestaurantMenuListAdapter(Activity activity, Context context, MenuProductViewModel menuProductViewModel, ItemClickListener menuItemClickListener) {
+    public RestaurantMenuListAdapter(Activity activity, Context context, MenuProductViewModel menuProductViewModel, ItemClickListener menuItemClickListener, boolean isClosed) {
         this.activity = activity;
         this.context = context;
         this.menuProductViewModel = menuProductViewModel;
@@ -44,6 +51,7 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
         db = new DatabaseHelper(context);
         restaurantCategoryAdapters = new ArrayList<>();
         isItemVisible = new HashMap<>();
+        this.isClosed = isClosed;
 //        menuProductViewModel = ViewModelProviders.of((FragmentActivity)context).get(MenuProductViewModel.class);
     }
 
@@ -119,7 +127,7 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
             RecyclerLayoutManager layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
             layoutManager.setScrollEnabled(false);
             childItemView.setLayoutManager(layoutManager);
-            SpecialOffersMenuAdapter specialOffersMenuAdapter = new SpecialOffersMenuAdapter(context, getLayoutPosition(), menuItemClickListener);
+            SpecialOffersMenuAdapter specialOffersMenuAdapter = new SpecialOffersMenuAdapter(context, getLayoutPosition(), menuItemClickListener, isClosed);
             specialOffersMenuAdapter.setHideDetail(false);
             childItemView.setAdapter(specialOffersMenuAdapter);
             specialOffersMenuAdapter.addItem(specialOffers);
@@ -165,7 +173,7 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
             if (dataItem.getMenuCategoryName().equalsIgnoreCase("MEAL")) {
 
-                RestaurantMealCategoryAdapter restaurantMealCategoryAdapter = new RestaurantMealCategoryAdapter(context, getLayoutPosition(), menuItemClickListener);
+                RestaurantMealCategoryAdapter restaurantMealCategoryAdapter = new RestaurantMealCategoryAdapter(context, getLayoutPosition(), menuItemClickListener, isClosed);
                 restaurantMealCategoryAdapter.setHideDetail(true);
                 childItemView.setAdapter(restaurantMealCategoryAdapter);
 
@@ -189,7 +197,8 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
                 }).start();
 
             } else {
-                RestaurantCategoryAdapter restaurantCategoryAdapter = new RestaurantCategoryAdapter(context, getLayoutPosition(), menuItemClickListener);
+
+                RestaurantCategoryAdapter restaurantCategoryAdapter = new RestaurantCategoryAdapter(context, getLayoutPosition(), menuItemClickListener, isClosed);
                 restaurantCategoryAdapter.setHideDetail(true);
                 childItemView.setAdapter(restaurantCategoryAdapter);
                 final RestaurantCategoryAdapter mRestaurantCategoryAdapter = restaurantCategoryAdapter;
@@ -259,6 +268,10 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
         @Override
         public void onClick(View view) {
+
+           /* if (isClosed) {
+                restaurantClosedDialog();
+            } else {*/
             if (menuItemClickListener != null) {
                 menuItemClickListener.LoadMenuProduct(getLayoutPosition(), mMenuDataItem.get(getLayoutPosition()).getMenuCategories().getMenuCategoryId(), progressBar);
 
@@ -274,5 +287,27 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
                 }
             }
         }
+        //}
+    }
+
+
+    public void restaurantClosedDialog() {
+        LayoutInflater factory = LayoutInflater.from(RestaurantDetailsActivity.restaurantDetailsActivity);
+        final View mDialogVieww = factory.inflate(R.layout.layout_closed_dialog, null);
+        final AlertDialog alertClodseDialog = new AlertDialog.Builder(RestaurantDetailsActivity.restaurantDetailsActivity).create();
+        alertClodseDialog.setView(mDialogVieww);
+        alertClodseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
+
+        mDialogVieww.findViewById(R.id.tv_btn_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                alertClodseDialog.dismiss();
+            }
+        });
+
+
+        alertClodseDialog.show();
     }
 }

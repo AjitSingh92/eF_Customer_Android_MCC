@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.newrelic.agent.android.NewRelic;
+
 public class TestScrollingActivity extends AppCompatActivity {
 
     @Override
@@ -15,7 +17,9 @@ public class TestScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        NewRelic.withApplicationToken(
+                "eu01xxae9ccb44aafd9f746b5862b2dcb19769290d"
+        ).start(this.getApplicationContext());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

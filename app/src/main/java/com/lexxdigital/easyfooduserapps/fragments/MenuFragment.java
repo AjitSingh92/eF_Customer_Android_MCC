@@ -4,11 +4,8 @@ package com.lexxdigital.easyfooduserapps.fragments;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,32 +13,22 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
-import com.lexxdigital.easyfooduserapps.adapters.ExpandableAdapterRecycleview;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.ItemClickListener;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.RestaurantMenuListAdapter;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
-import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
-import com.lexxdigital.easyfooduserapps.restaurant_details.model.menu_category.FinalMenuCartDetails;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.response.RestaurantDetailsResponse;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.Menu;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.RestaurantMenuList;
 import com.lexxdigital.easyfooduserapps.viewmodel.MenuProductViewModel;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,29 +39,9 @@ import butterknife.ButterKnife;
 @SuppressLint("ValidFragment")
 public class MenuFragment extends Fragment {
     static MenuFragment menuFragment;
-    //   SpicalOfferAdapter mRoomOrderAdapter;
-//    @BindView(R.id.dropdownImg)
-//    ImageView dropdownImg;
-    ExpandableAdapterRecycleview listAdapter;
-    // ExpandableListAdapter listAdapter;
-    List<Object> finalMenuCartDetails = new ArrayList<Object>();
-    List<String> listDataHeader;
-    HashMap<String, List<Object>> listDataChild;
-    Boolean isTrue = true;
-    String position;
     RestaurantDetailsResponse respose;
-
-    TextView footerDetails;
-
-    LinearLayout llBotom;
-    TextView footerCount;
     Context mContext;
     Activity mActivity;
-    FinalMenuCartDetails fCart;
-    TextView emptyBasket;
-//    @BindView(R.id.infoList)
-//    NonScrollExpandableListView infoList;
-
     Menu DATA;
 
     ItemClickListener menuItemClickListener;
@@ -95,21 +62,10 @@ public class MenuFragment extends Fragment {
         fragment.mContext = context;
         fragment.DATA = restaurantMenuData;
         fragment.isClosed = isClosed;
-
         return fragment;
     }
 
-    /*@SuppressLint("ValidFragment")
-    public MenuFragment(Activity activity, Context context, RestaurantDetailsResponse res, TextView footer, LinearLayout llbotom, TextView fCount, TextView txtEmptyBasket) {
-        // Required empty public constructor
-        this.respose = res;
-        this.footerDetails = footer;
-        this.llBotom = llbotom;
-        this.footerCount = fCount;
-        this.mContext = context;
-        this.mActivity = activity;
-        this.emptyBasket = txtEmptyBasket;
-    }*/
+
     @SuppressLint("ValidFragment")
     public MenuFragment() {
         // Required empty public constructor
@@ -132,13 +88,9 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         ButterKnife.bind(this, view);
-
-        Log.e("isClosed", "" + isClosed);
         return view;
     }
 
@@ -152,20 +104,6 @@ public class MenuFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initView() {
 
-        //    infoList.setVisibility(View.VISIBLE);
-        //    infoList.setNestedScrollingEnabled(true);
-        // listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
-
-        // setting list adapter
-        //       infoList.setAdapter(listAdapter);
-
-//        mRoomOrderAdapter = new SpicalOfferAdapter();
-//
-//        @SuppressLint("WrongConstant")
-//        LinearLayoutManager horizontalLayoutManagaer
-//                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        infoList.setLayoutManager(horizontalLayoutManagaer);
-//        infoList.setAdapter(mRoomOrderAdapter);
 
     }
 
@@ -196,27 +134,5 @@ public class MenuFragment extends Fragment {
         mMenuAdapter.notifyItemChanged(position);
 
     }
-
-
-    public void restaurantClosedDialog() {
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        final View mDialogVieww = factory.inflate(R.layout.layout_closed_dialog, null);
-        final AlertDialog alertClodseDialog = new AlertDialog.Builder(getActivity()).create();
-        alertClodseDialog.setView(mDialogVieww);
-        alertClodseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
-
-        mDialogVieww.findViewById(R.id.tv_btn_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                alertClodseDialog.dismiss();
-            }
-        });
-
-
-        alertClodseDialog.show();
-    }
-
 
 }

@@ -20,14 +20,8 @@ import static com.facebook.AccessTokenManager.TAG;
 
 public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapter.MyViewHolder> {
 
-    // private ArrayList<Arraylist> dataSet;
-
-
-    DealCardAdapter mDealCardAdapter;
     Context mContext;
-    TextView popupTotalPrice;
     ArrayList<String> check;
-    ArrayList<String> allReadyCheck;
     List<SortBy> sortByList;
     FilterSortByAdapter.PositionSortInterface positionSortInterface;
 
@@ -48,9 +42,7 @@ public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView sizeName;
         ImageView rightImg, not_right_tv;
-        LinearLayout rightCount, lyAddRemove, lySizeItem;
-
-        // ImageView imageViewIcon;
+        LinearLayout lySizeItem;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -58,9 +50,7 @@ public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapte
             this.rightImg = (ImageView) itemView.findViewById(R.id.rightImg_1);
             this.not_right_tv = (ImageView) itemView.findViewById(R.id.not_right_tv_1);
             this.sizeName = (TextView) itemView.findViewById(R.id.name);
-
             this.lySizeItem = (LinearLayout) itemView.findViewById(R.id.ly_size_item);
-//                this.dealIdRl = (RelativeLayout) itemView.findViewById(R.id.dealIdRl);
 
         }
     }
@@ -91,28 +81,18 @@ public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapte
             rightImg.setVisibility(View.VISIBLE);
             not_right_tv.setVisibility(View.GONE);
             positionSortInterface.onClickSortBy(listPosition, check, sortByList);
-            //  holder.rightCount.setVisibility(View.VISIBLE);
-//            holder.lyAddRemove.setVisibility(View.VISIBLE);
-
         } else {
             not_right_tv.setVisibility(View.VISIBLE);
-            //       holder.rightCount.setVisibility(View.INVISIBLE);
             rightImg.setVisibility(View.GONE);
-//            holder.lyAddRemove.setVisibility(View.GONE);
-
         }
 
         holder.rightImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("", "onClickSortBy:1111111111111111111  right img");
                 if (totalSelectedPosition != listPosition) {
                     totalSelectedPosition = listPosition;
                     check.set(listPosition, "0");
-                    //allReadyCheck.set(listPosition,"0");
-                    //  allReadyCheck.set(0,"0");
                     positionSortInterface.onClickSortBy(listPosition, check, sortByList);
-
                     holder.rightImg.setVisibility(View.GONE);
                     holder.not_right_tv.setVisibility(View.VISIBLE);
                 }
@@ -122,14 +102,11 @@ public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapte
         holder.not_right_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("", "onClickSortBy:000000 not right tv ");
                 if (totalSelectedPosition != listPosition) {
                     totalSelectedPosition = listPosition;
                     check.set(listPosition, "1");
-                    //  allReadyCheck.set(0,"1");
                     positionSortInterface.onClickSortBy(listPosition, check, sortByList);
                     holder.not_right_tv.setVisibility(View.GONE);
-
                     holder.rightImg.setVisibility(View.VISIBLE);
                 }
 
@@ -141,7 +118,6 @@ public class FilterSortByAdapter extends RecyclerView.Adapter<FilterSortByAdapte
 
     @Override
     public int getItemCount() {
-        Log.e(TAG, "getItemCount: sortByList.size() " + sortByList.size());
         return sortByList.size();
     }
 }

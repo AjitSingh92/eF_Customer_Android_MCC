@@ -42,7 +42,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/avenir_black"
             android:gravity="center"
-            android:text="Order progress"
+            android:text="Your order progress"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sdp" />
 
@@ -378,7 +378,7 @@
                                 android:paddingTop="@dimen/_5sdp"
                                 android:paddingRight="@dimen/_10sdp"
                                 android:paddingBottom="@dimen/_5sdp"
-                                android:text="Payment Mode: Cash"
+                                android:text="Cash"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_12sdp" />
                         </LinearLayout>

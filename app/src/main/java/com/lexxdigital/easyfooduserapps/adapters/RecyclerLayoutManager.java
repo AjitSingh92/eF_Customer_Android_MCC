@@ -5,7 +5,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 
 /**
- * Created by akumar7 on 5/19/2016.
+
  */
 public class RecyclerLayoutManager extends StaggeredGridLayoutManager {
     private boolean isScrollEnabled = true;

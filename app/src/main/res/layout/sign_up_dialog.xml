@@ -12,7 +12,7 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_600sdp"
+        android:layout_height="match_parent"
         android:layout_above="@+id/sign_up_btn_dialog">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_5sdp"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/_20sdp">
+          >
 
             <!-- TODO: Update blank fragment layout -->
 
@@ -124,6 +124,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="horizontal">
 
                 <TextView

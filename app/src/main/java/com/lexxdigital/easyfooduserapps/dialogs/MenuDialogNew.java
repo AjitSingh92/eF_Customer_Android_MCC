@@ -45,7 +45,6 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
     ItemClickListener itemClickListener;
     int parentPosition;
     int childPosition;
-    //    MenuProduct menuProduct;
     MenuCategory subCategory;
     int action;
     View view;
@@ -107,7 +106,6 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
         view.findViewById(R.id.cross_tv).setOnClickListener(this);
 
         categoryName = view.findViewById(R.id.txt_category);
-//        categoryName.setText(menuCategory.getMenuCategoryName());
         if (menuCategory.getMenuProducts().get(childPosition) != null)
             categoryName.setText(menuCategory.getMenuProducts().get(childPosition).getProductName());
 
@@ -175,7 +173,6 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                 dismiss();
                 break;
             case R.id.sign_up_btn_dialog:
-//                getSelectedModifier();
                 if (productSizeAdapter != null) {
                     if (productSizeAdapter.getItemCount() > 1) {
                         if (productSizeAdapter.getSelectedItem(false).size() != 0) {
@@ -234,14 +231,9 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 menuCategory.getMenuProducts().get(i).getMenuProductPrice()
                                                 /*gson.toJson(menuCategory.getMenuProducts().get(i).getUpsells())*/);
 
-                                    } /*else {
-                                    menuProducts.add(menuCategory.getMenuProducts().get(i));
-                                }*/
+                                    }
                                 }
                             }
-
-
-//                            MenuCategory mCategory = new MenuCategory(menuCategory.getMenuCategoryId(), menuCategory.getMenuCategoryName(), menuCategory.getMenuSubCategory(), menuProducts);
 
 
                             if (productModifierAdapter != null) {
@@ -293,18 +285,12 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                                 1,
                                                 Double.parseDouble(menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getMenuProductPrice()),
                                                 menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getMenuProductPrice()
-                                                /*gson.toJson(menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(i).getUpsells())*/);
+                                        );
                                     }
                                 }
                             } else {
                                 for (int i = 0; i < menuCategory.getMenuProducts().size(); i++) {
                                     if (i == childPosition) {
-                                    /*MenuProduct product = new MenuProduct(menuCategory.getMenuProducts().get(i).getMenuProductId(),
-                                            menuCategory.getMenuProducts().get(i).getProductName(), menuCategory.getMenuProducts().get(i).getVegType(), menuCategory.getMenuProducts().get(i).getMenuProductPrice(), menuCategory.getMenuProducts().get(i).getUserappProductImage(), menuCategory.getMenuProducts().get(i).getEcomProductImage(), menuCategory.getMenuProducts().get(i).getProductOverallRating(), menuCategory.getMenuProducts().get(i).getMenuProductSize(),
-                                            productModifierAdapter.getSelectedProductModifier(), menuCategory.getMenuProducts().get(i).getUpsells(), menuCategory.getMenuProducts().get(i).getAmount(), menuCategory.getMenuProducts().get(i).getQuantity());
-                                    product.setQuantity(1);
-                                    menuProducts.add(product);*/
-
                                         db.insertMenuProduct(id, subCatId, menuCategory.getMenuCategoryId(),
                                                 menuCategory.getMenuProducts().get(i).getMenuProductId(),
                                                 menuCategory.getMenuProducts().get(i).getProductName(),
@@ -324,7 +310,6 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                     }
                                 }
                             }
-//                            MenuCategory mCategory = new MenuCategory(menuCategory.getMenuCategoryId(), menuCategory.getMenuCategoryName(), menuCategory.getMenuSubCategory(), menuProducts);
 
                             if (itemClickListener != null) {
                                 itemClickListener.OnAddItem(parentPosition, childPosition, qtyLayout, item_count, 1, action, menuCategory);
@@ -332,8 +317,6 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                             dismiss();
                         }
                     }
-                } else {
-//                    Toast.makeText(context, "Please select a size.", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -406,15 +389,12 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                         menuCategory.getMenuProducts().get(i).getProductOverallRating(),
                                         menuCategory.getMenuProducts().get(i).getMenuProductSize(),
                                         productModifierAdapter.getSelectedProductModifier(),
-                                        /* menuCategory.getMenuProducts().get(i).getUpsells(),*/
                                         null,
                                         menuCategory.getMenuProducts().get(i).getMenuProductPrice(),
                                         1,
                                         1,
                                         Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()),
                                         Double.parseDouble(menuCategory.getMenuProducts().get(i).getMenuProductPrice()));
-//                                product.setQuantity(1);
-//                                product.setOriginalQuantity(1);
                                 menuProducts.add(product);
                             }
                         }
@@ -454,11 +434,6 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                                             }
 
                                             if (allCount > sizeModifier.getMaxAllowedQuantity()) {
-                                       /* for (int i = 0; i < sizeModifier.getModifier().size(); i++) {
-                                            int qty = Integer.parseInt(sizeModifier.getModifier().get(i).getQuantity());
-                                            qty = (qty * itemQty);
-                                            totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
-                                        }*/
                                                 totalPrice += (((allCount * itemQty) - sizeModifier.getMaxAllowedQuantity()) * Double.parseDouble(sizeModifier.getModifier().get(0).getModifierProductPrice()));
                                             }
                                         } else {
@@ -487,11 +462,6 @@ public class MenuDialogNew extends DialogFragment implements View.OnClickListene
                             allCount = allCount + Integer.parseInt(productModifier.getModifier().get(j).getOriginalQuantity());
                         }
                         if (allCount > productModifier.getMaxAllowedQuantity()) {
-                          /*  for (int i = 0; i < productModifier.getModifier().size(); i++) {
-                                int qty = Integer.parseInt(productModifier.getModifier().get(i).getQuantity());
-                                qty = (qty * itemQty);
-                                totalPrice += (qty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice()));
-                            }*/
                             totalPrice += ((allCount - productModifier.getMaxAllowedQuantity()) * Double.parseDouble(productModifier.getModifier().get(0).getModifierProductPrice()));
                         }
 

@@ -36,13 +36,15 @@
                     android:text="@string/special_offers"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp" />
+                <!--   style="?android:attr/progressBarStyleSmall"-->
 
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:indeterminateTint="@color/orange" />
 
                 <View
                     android:layout_width="0dp"

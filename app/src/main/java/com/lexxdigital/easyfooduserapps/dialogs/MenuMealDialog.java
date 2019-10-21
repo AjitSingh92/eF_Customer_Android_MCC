@@ -57,7 +57,8 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
     TextView validationError;
     Boolean openOnClick;
     FirebaseAnalytics mFirebaseAnalytics;
-    public static MenuMealDialog newInstance(Context context,Boolean openOnClick, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener) {
+
+    public static MenuMealDialog newInstance(Context context, Boolean openOnClick, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener) {
         MenuMealDialog c = new MenuMealDialog();
         c.context = context;
         c.openOnClick = openOnClick;
@@ -101,9 +102,6 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
         view.findViewById(R.id.cross_tv).setOnClickListener(this);
 
         categoryName = view.findViewById(R.id.txt_category);
-//        categoryName.setText(menuCategory.getMenuCategoryName());
-//        if (menuCategory.getMeal().get(childPosition) != null)
-
         categoryName.setText(menuCategory.getMeal().get(childPosition).getMealName());
         tvBasePrice.setText("Base Price\n" + context.getResources().getString(R.string.currency) + String.format("%.2f", Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice())));
         tvAmountToPay.setText("Amount to pay\n" + context.getResources().getString(R.string.currency) + String.format("%.2f", Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice())));
@@ -112,19 +110,11 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
         layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
         layoutManager.setScrollEnabled(false);
         listMealProductCategory.setLayoutManager(layoutManager);
-        mealProductCategoryAdapter = new MealProductCategoryAdapter(context,openOnClick, getDialog(), parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, this);
+        mealProductCategoryAdapter = new MealProductCategoryAdapter(context, openOnClick, getDialog(), parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, this);
         listMealProductCategory.setAdapter(mealProductCategoryAdapter);
 
         mealProductCategoryAdapter.addItem(menuCategory.getMeal().get(childPosition).getMealCategories());
-        /*if (childParentPosition!=-1){
-//            menuCategory.getMeal().get(parentPosition).getMealCategories().get(childPosition).getMealProducts().get(selectedChildPosition).setMenuProductSize(productSizeAdapter.getSelectedItem());
 
-//            menuCategory.getMeal().get(parentPosition).getMealCategories().get(childPosition).getMealProducts().get(selectedChildPosition).setMenuProductSize(productSizeAdapter.getSelectedItem());
-            mealProductCategoryAdapter.addItem(menuCategory.getMeal().get(parentPosition).getMealCategories());
-
-        }else{
-
-        }*/
 
         updatePrice();
     }
@@ -176,21 +166,6 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
                         return;
                     }
                 }
-
-                  /*  db.insertMenuProduct(id, subCatId, menuCategory.getMenuCategoryId(),
-                            menuCategory.getMeal().get(parentPosition).getMealId(),
-                            menuCategory.getMeal().get(parentPosition).getMealName(),
-                            menuCategory.getMeal().get(parentPosition).getVegType(),
-                            menuCategory.getMeal().get(parentPosition).getMealPrice(),
-                            "",
-                            "",
-                            "",
-                            1,
-                            gson.toJson(mealProductAdapters.get(i).getSelectedItem()),
-                            gson.toJson(mealProductAdapters.get(i).getSelectedItem()),
-                            1,
-                            Double.parseDouble(menuCategory.getMeal().get(parentPosition).getMealPrice()),
-                            menuCategory.getMeal().get(parentPosition).getMealPrice());*/
 
                 List<MealProduct> mealProducts = new ArrayList<>();
                 for (int i = 0; i < mealProductAdapters.size(); i++) {
@@ -248,28 +223,6 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
                 }
 
             }
-
-           /* for (MealProductAdapter adapter : mealProductAdapters) {
-                List<MealProduct> mealProducts = adapter.getSelectedItem();
-
-                if (mealProducts != null) {
-                    for (int i = 0; i < mealProducts.size(); i++) {
-
-                        if (mealProducts.get(i).getMenuProductSize() != null) {
-                            for (int j = 0; j < mealProducts.get(i).getMenuProductSize().get(0).getSizeModifiers().size(); j++) {
-
-                                for (int k = 0; k < mealProducts.get(i).getMenuProductSize().get(0).getSizeModifiers().get(j).getModifier().size(); k++) {
-
-                                    totalPrice += Double.parseDouble(mealProducts.get(i).getMenuProductSize().get(0).getSizeModifiers().get(j).getModifier().get(k).getOriginalQuantity()) * Double.parseDouble(mealProducts.get(i).getMenuProductSize().get(0).getSizeModifiers().get(j).getModifier().get(k).getModifierProductPrice());
-
-                                }
-                            }
-                        }
-
-                    }
-                }
-
-            }*/
             totalPriceView.setText(String.format("%.2f", totalPrice));
         }
 

@@ -49,6 +49,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="@font/avenir_medium"
         android:gravity="center"
+        android:inputType="textCapWords"
         android:text=""
         android:textColor="@color/black"
         android:textSize="@dimen/_16sdp" />

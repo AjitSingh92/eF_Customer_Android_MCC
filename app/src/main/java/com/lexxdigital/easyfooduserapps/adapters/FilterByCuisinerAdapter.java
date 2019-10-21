@@ -25,10 +25,7 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
 
     DealCardAdapter mDealCardAdapter;
     Context mContext;
-    TextView popupTotalPrice;
-    // ArrayList<Boolean> isCheck = new ArrayList<>();
     ArrayList<String> check;
-    ArrayList<String> checkValue;
     List<Cuisine> cuisineList;
     PositionInterface mPositionInterface2;
 
@@ -57,22 +54,15 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
 
         TextView sizeName;
         ImageView rightImg, not_right_tv;
-        LinearLayout rightCount, lyAddRemove, lySizeItem;
+        LinearLayout lySizeItem;
 
-
-        // ImageView imageViewIcon;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
             this.rightImg = (ImageView) itemView.findViewById(R.id.rightImg_1);
             this.not_right_tv = (ImageView) itemView.findViewById(R.id.not_right_tv_1);
             this.sizeName = (TextView) itemView.findViewById(R.id.name);
-            // this.price = (TextView) itemView.findViewById(R.id.rs_tv);
-
             this.lySizeItem = (LinearLayout) itemView.findViewById(R.id.ly_size_item);
-//                this.dealIdRl = (RelativeLayout) itemView.findViewById(R.id.dealIdRl);
-
             rightImg.setOnClickListener(this);
             not_right_tv.setOnClickListener(this);
 
@@ -100,19 +90,12 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
                 case R.id.not_right_tv_1:
                     if (getLayoutPosition() == 0) {
                         for (int i = 1; i < cuisineList.size(); i++) {
-                            //check.set(i,"0");
-                            // check.set(i,"0");
                             isCheck.set(i, false);
                         }
-
                     } else {
                         isCheck.set(0, false);
                         isCheck.set(getLayoutPosition(), true);
                         check.set(getLayoutPosition(), "1");
-//                        not_right_tv.setVisibility(View.GONE);
-//                        rightImg.setVisibility(View.VISIBLE);
-
-
                     }
                     mPositionInterface2.onClickPosCoisine(getLayoutPosition(), check, cuisineList);
                     notifyDataSetChanged();
@@ -124,11 +107,8 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
 
     @Override
     public FilterByCuisinerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_filter_sort_by, parent, false);
-
         FilterByCuisinerAdapter.MyViewHolder myViewHolder = new FilterByCuisinerAdapter.MyViewHolder(view);
         return myViewHolder;
     }
@@ -140,7 +120,6 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
         ImageView rightImg = holder.rightImg;
         ImageView not_right_tv = holder.not_right_tv;
         holder.sizeName.setText(sortBy.getLabel());
-        Log.e("check status", "position:" + position + "," + isCheck.get(position));
         if (isCheck.get(position)) {
             rightImg.setVisibility(View.VISIBLE);
             not_right_tv.setVisibility(View.GONE);
@@ -149,81 +128,6 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
             not_right_tv.setVisibility(View.VISIBLE);
             rightImg.setVisibility(View.GONE);
         }
-
-        // mPositionInterface2.onClickPosCoisine(listPosition,check,cuisineList);
-        /*for (int i = 0; i < cuisineList.size(); i++) {
-            if (check.get(listPosition).equals("1")) {
-                rightImg.setVisibility(View.VISIBLE);
-                not_right_tv.setVisibility(View.GONE);
-
-            } else {
-                not_right_tv.setVisibility(View.VISIBLE);
-                rightImg.setVisibility(View.GONE);
-            }
-
-        }*/
-        /*holder.rightImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               *//* if (listPosition != 0) {
-                    check.set(0, "0");
-                    isCheck.set(0, false);
-                    notifyDataSetChanged();
-                    *//**//*holder.rightImg.setVisibility(View.GONE);
-                    holder.not_right_tv.setVisibility(View.VISIBLE);*//**//*
-                }*//*
-                // check.set(listPosition,"0");
-                //  mPositionInterface2.onClickPosCoisine(listPosition,check,cuisineList);
-                //check.set(listPosition,"0");
-                int isCheckedCount = 0;
-                for (Boolean isChecked : isCheck) {
-                    if (isChecked) {
-                        isCheckedCount++;
-                    }
-                }
-                if (isCheckedCount > 1) {
-                    isCheck.set(listPosition, false);
-                    holder.rightImg.setVisibility(View.GONE);
-                    holder.not_right_tv.setVisibility(View.VISIBLE);
-                    mPositionInterface2.onClickPosCoisine(listPosition, check, cuisineList);
-                }
-            }
-        });
-
-        holder.not_right_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listPosition == 0) {
-                    for (int i = 1; i < cuisineList.size(); i++) {
-                        //check.set(i,"0");
-                        // check.set(i,"0");
-                        isCheck.set(i, false);
-                    }
-
-                } else {
-                    isCheck.set(0, false);
-                    isCheck.set(listPosition, true);
-                    check.set(listPosition, "1");
-                    holder.not_right_tv.setVisibility(View.GONE);
-                    holder.rightImg.setVisibility(View.VISIBLE);
-                    mPositionInterface2.onClickPosCoisine(listPosition, check, cuisineList);
-
-                }
-                notifyDataSetChanged();
-
-                    *//*holder.rightImg.setVisibility(View.GONE);
-                    holder.not_right_tv.setVisibility(View.VISIBLE);*//*
-
-
-                //   check.set(listPosition,"1");
-                *//*isCheck.set(listPosition, true);
-                //   mPositionInterface2.onClickPosCoisine(listPosition,check,cuisineList);
-                holder.not_right_tv.setVisibility(View.GONE);
-                holder.rightImg.setVisibility(View.VISIBLE);
-                mPositionInterface2.onClickPosCoisine(listPosition, check, cuisineList);*//*
-
-            }
-        });*/
 
 
     }
@@ -247,18 +151,10 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
     public ArrayList getCuisineArray() {
         ArrayList<String> cuisineArray = new ArrayList<>();
         String selectedCuisines = "";
-        //cuisineArray.clear();
         for (int i = 0; i < cuisineList.size(); i++) {
             if (isCheck.get(i)) {
-                Log.e("size of :", cuisineArray.size() + "cuisineList " + cuisineList.size() + ", check:" + check.size());
-               /* if (selectedCuisines.equalsIgnoreCase("")) {
-                    Log.e("", "getCuisineArray: "+cuisineArray.size() );
-                    cuisineArray.add(cuisineList.get(i).getValue());
-                    // selectedCuisines = cuisineList.get(i).getValue();
-                } else {*/
-                // selectedCuisines = selectedCuisines+","+cuisineList.get(i).getValue();
                 cuisineArray.add(cuisineList.get(i).getValue());
-                //}
+
             }
 
         }

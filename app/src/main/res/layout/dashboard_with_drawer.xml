@@ -235,7 +235,7 @@
                                 android:focusable="false"
                                 android:focusableInTouchMode="false"
                                 android:fontFamily="@font/avenir_black"
-                                android:text="Manage Address"
+                                android:text="Manage Addresses"
                                 android:textColor="@color/orange"
 
                                 android:textSize="@dimen/_14sdp" />
@@ -574,6 +574,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:visibility="gone"
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginRight="@dimen/_20sdp"
                             android:background="@color/orange"
@@ -586,6 +587,7 @@
                             android:layout_height="@dimen/_40sdp"
                             android:layout_gravity="center"
                             android:clickable="true"
+                            android:visibility="gone"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:padding="@dimen/_5sdp">

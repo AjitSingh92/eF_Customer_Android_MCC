@@ -54,18 +54,12 @@ public class ReatingAdapter extends RecyclerView.Adapter<ReatingAdapter.MyViewHo
                                                           int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.reating_row, parent, false);
-
-        //view.setOnClickListener(MainActivity.myOnClickListener);
-
         ReatingAdapter.MyViewHolder myViewHolder = new ReatingAdapter.MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ReatingAdapter.MyViewHolder holder, final int listPosition) {
-
-//        Log.e("SIZE >>","//"+response.getData().getReviews().getRating().size()+"////"+listPosition);
-        //  holder.txtName.setText(response.getData().getReviews().getRating().get(listPosition).getUserName());
 
         if (response.getData().getReviews().size() > 0) {
             holder.txtName.setText(response.getData().getReviews().get(listPosition).getUserName());
@@ -79,44 +73,10 @@ public class ReatingAdapter extends RecyclerView.Adapter<ReatingAdapter.MyViewHo
             } else {
                 num = (int) (Float.parseFloat(response.getData().getReviews().get(listPosition).getOverallRating()) - 0.5);
             }
-//             holder.ratingBar.setNumStars(num);
             holder.ratingBar.setNumStars(5);
             holder.ratingBar.setRating(Float.parseFloat(response.getData().getReviews().get(listPosition).getOverallRating()));
 
 
-
-           /* if (Math.round(Double.parseDouble(response.getData().getReviews().get(listPosition).getOverallRating())) == 1) {
-                holder.img1.setVisibility(View.VISIBLE);
-                holder.img2.setVisibility(View.INVISIBLE);
-                holder.img3.setVisibility(View.INVISIBLE);
-                holder.img4.setVisibility(View.INVISIBLE);
-                holder.img5.setVisibility(View.INVISIBLE);
-
-            } else if (Math.round(Double.parseDouble(response.getData().getReviews().get(listPosition).getOverallRating())) == 2) {
-                holder.img1.setVisibility(View.VISIBLE);
-                holder.img2.setVisibility(View.VISIBLE);
-                holder.img3.setVisibility(View.INVISIBLE);
-                holder.img4.setVisibility(View.INVISIBLE);
-                holder.img5.setVisibility(View.INVISIBLE);
-            } else if (Math.round(Double.parseDouble(response.getData().getReviews().get(listPosition).getOverallRating())) == 3) {
-                holder.img1.setVisibility(View.VISIBLE);
-                holder.img2.setVisibility(View.VISIBLE);
-                holder.img3.setVisibility(View.VISIBLE);
-                holder.img4.setVisibility(View.INVISIBLE);
-                holder.img5.setVisibility(View.INVISIBLE);
-            } else if (Math.round(Double.parseDouble(response.getData().getReviews().get(listPosition).getOverallRating())) == 4) {
-                holder.img1.setVisibility(View.VISIBLE);
-                holder.img2.setVisibility(View.VISIBLE);
-                holder.img3.setVisibility(View.VISIBLE);
-                holder.img4.setVisibility(View.VISIBLE);
-                holder.img5.setVisibility(View.INVISIBLE);
-            } else if (Math.round(Double.parseDouble(response.getData().getReviews().get(listPosition).getOverallRating())) == 5) {
-                holder.img1.setVisibility(View.VISIBLE);
-                holder.img2.setVisibility(View.VISIBLE);
-                holder.img3.setVisibility(View.VISIBLE);
-                holder.img4.setVisibility(View.VISIBLE);
-                holder.img5.setVisibility(View.VISIBLE);
-            }*/
         }
 
 

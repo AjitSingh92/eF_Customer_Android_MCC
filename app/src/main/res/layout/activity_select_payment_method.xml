@@ -316,7 +316,8 @@
                     android:text="Pay With Cash"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <TextView

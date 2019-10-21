@@ -47,14 +47,11 @@ import retrofit2.Response;
 
 import static com.facebook.AccessTokenManager.TAG;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 
 @SuppressLint("ValidFragment")
 public class CardsListFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener, AdapterCardList.PositionSortInterface {
-
     @BindView(R.id.cardList)
     RecyclerView cardList;
     Unbinder unbinder;
@@ -142,15 +139,12 @@ public class CardsListFragment extends Fragment
         CardListInterface apiInterface = ApiClient.getClient(getContext()).create(CardListInterface.class);
         CardListRequest request = new CardListRequest();
         request.setUserId(val.getLoginResponse().getData().getUserId());
-
-
         Call<CardListResponse> call3 = apiInterface.mLogin(request);
         call3.enqueue(new Callback<CardListResponse>() {
             @Override
             public void onResponse(Call<CardListResponse> call, Response<CardListResponse> response) {
                 try {
                     dialog.hide();
-
                     if (response.body().getSuccess()) {
                         dataList = response.body().getData().getCards();
                         initView(dataList);
@@ -164,21 +158,13 @@ public class CardsListFragment extends Fragment
                     }
                 } catch (Exception e) {
                     dialog.hide();
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
                 swipreferesh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<CardListResponse> call, Throwable t) {
-                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
-                swipreferesh.setRefreshing(false);
-//                dialog.hide();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+                swipreferesh.setRefreshing(false); }
         });
     }
 
@@ -208,7 +194,6 @@ public class CardsListFragment extends Fragment
         } else {
             Toast.makeText(mContext, "Card has been set as default.", Toast.LENGTH_LONG).show();
         }
-        Log.e("Button ", "" + position);
     }
 
 
@@ -223,8 +208,7 @@ public class CardsListFragment extends Fragment
                 try {
                     if (response.body().getSuccess()) {
                         getCardList();
-                        // moveItem= AnimationUtils.loadAnimation(mContext,R.anim.pull_in_left);
-                        //holder.layoutcard.startAnimation(moveItem);
+
                     } else {
                         Toast.makeText(mContext, "" + response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }

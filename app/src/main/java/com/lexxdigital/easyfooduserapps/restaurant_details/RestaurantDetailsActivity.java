@@ -184,10 +184,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     ImageView favourites;
     private double minimumValue = 0.0;
 
-    //    @BindView(R.id.container_restaurants_details)
-//    ScrollView containerRestaurantsDetails;
-//    @BindView(R.id.observable_scrollview)
-//    ObservableScrollView observableScrollview;
+
     String restaurantPhoneNumber;
     SharedPreferencesClass sharePre;
     private GlobalValues val;
@@ -245,16 +242,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             }
         });
-        //  SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
 
-      /*  Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            dialog.show();
-            getRestaurantDetails(extras.getString("RESTAURANTID"));
-
-        }*/
-
-        // pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
         pager.getCurrentItem();
 
@@ -274,7 +262,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
             }
         });
-      //  containerRestaurantsDetails.MaxS();
+
 
         containerRestaurantsDetails.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -283,7 +271,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 if (i1 > 150) {
                     containerRestaurantsDetails.stopNestedScroll();
                 } else {
-                    //containerRestaurantsDetails.setNestedScrollingEnabled(true);
+
                 }
             }
         });
@@ -295,32 +283,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     restaurantClosedDialog();
                 } else {
 
-                    //  restaurantClosedDialog();
-
-//                Gson gson = new Gson();
-//                String json = gson.toJson(cartData);
-//                Log.e("menuCategory >>", json);
-
-//                db.deleteCart();
 
                     SharedPreferencesClass preferencesClass = new SharedPreferencesClass(RestaurantDetailsActivity.this);
 
                     Gson gson2 = new Gson();
                     String json2 = gson2.toJson(val.getRestaurantDetailsResponse());
-                    Log.e("CART DATA>>", gson2.toJson(db.getCartData()));
+
                     preferencesClass.setCartRestaurantDeatilKey(json2);
                     if (Integer.parseInt(footerCount.getText().toString()) > 0 && Double.parseDouble(footerDetails.getText().toString()) > minimumValue) {
-                        // init();
-                        //  llbotom.setVisibility(View.VISIBLE);
+
                         sharePre.setString(sharePre.RESTUARANT_ID, restaurantId);
                         Intent i = new Intent(RestaurantDetailsActivity.this, DashboardActivity.class);
                         i.putExtra("FROMMENU", "YES");
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         i.setAction("custom");
                         startActivity(i);
-                    }/* else {
-                        llbotom.setVisibility(View.GONE);
-                    }*/
+                    }
                 }
             }
         });
@@ -338,15 +316,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     private void setupViewPager(ViewPager viewPager, Menu
             restaurantMenuData, NewRestaurantsDetailsResponse data, TextView footer) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        // adapter.addFrag(new MenuFragment(RestaurantDetailsActivity.this, getApplicationContext(), res, footer, llbotom, footerCount, txtEmptyBasket), "Menu");
-//        adapter.addFrag(new MenuFragment(RestaurantDetailsActivity.this, getApplicationContext()), "Menu");
         adapter.addFrag(MenuFragment.newInstance(RestaurantDetailsActivity.this, getApplicationContext(), restaurantMenuData, this, isClosed), "Menu");
         adapter.addFrag(new ReviwesFragment(getApplicationContext()), "Reviews");
-        // adapter.addFrag(new ReviwesFragment(getApplicationContext()), "Reviwes");
-
         adapter.addFrag(new InfoFragment(RestaurantDetailsActivity.this, getApplicationContext(), data), "Info");
 
-//        adapter.addFrag(new InfoFragment(), "Info");
         pager.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         viewPager.setAdapter(adapter);
     }
@@ -355,9 +328,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     @Override
     public void onBackPressed() {
         Constants.switchActivity(RestaurantDetailsActivity.this, DashboardActivity.class);
-//        finish();
-//        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-
     }
 
     @OnClick({R.id.back, R.id.lnr_allergy})
@@ -390,13 +360,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
         @Override
         public Fragment getItem(int position) {
-            // Toast.makeText(RestaurantDetailsActivity.this, "POS " + position, Toast.LENGTH_SHORT).show();
             return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            //    Toast.makeText(RestaurantDetailsActivity.this, "Len "+mFragmentList.size(), Toast.LENGTH_SHORT).show();
             return mFragmentList.size();
         }
 
@@ -435,7 +403,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
     @Override
     protected void onStop() {
-//        db.deleteCart();
         super.onStop();
         dialog.dismiss();
     }
@@ -471,7 +438,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                             isClosed = false;
                         }
                         sharePre.setInt(sharePre.NUMBER_OF_ORDERS, response.body().getData().getRestaurants().getUserHaveOrdered());
-                        Log.e("rating", response.body().getData().getRestaurants().getAvgRating() + "");
                         if (response.body().getData().getRestaurants().getAvgRating() != null) {
                             if (response.body().getData().getRestaurants().getAvgRating() == 0) {
                                 imRatingImage.setVisibility(View.GONE);
@@ -522,24 +488,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                 layoutDeliveryTime.setVisibility(View.VISIBLE);
                             }
                         }
-/*
-                        Glide.with(RestaurantDetailsActivity.this)
-                                .load(response.body().getData().getRestaurants().getRestaurantLogo())
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(logo);*/
-
 
                         Glide.with(RestaurantDetailsActivity.this).load(response.body().getData().getRestaurants().getRestaurantLogo()).apply(new RequestOptions())
                                 .into(logo);
-                       /* Glide.with(RestaurantDetailsActivity.this)
-                                .load(response.body().getData().getRestaurants().getRestaurantImage())
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(backImage);*/
 
                         Glide.with(RestaurantDetailsActivity.this).load(response.body().getData().getRestaurants().getRestaurantImage()).apply(new RequestOptions()
                                 .placeholder(R.drawable.easy_food_image))
                                 .into(backImage);
-                        //    llbotom.setVisibility(View.VISIBLE);
                         if (response.body().getData().getRestaurants().getFavourite() == 1) {
                             favourites.setVisibility(View.VISIBLE);
                         } else {
@@ -555,7 +510,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Log.e("ERROR 345351>>", e.getMessage());
+
                     llbotom.setVisibility(View.GONE);
                     containerRestaurantsDetails.setVisibility(View.GONE);
                 }
@@ -563,39 +518,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
             @Override
             public void onFailure(Call<NewRestaurantsDetailsResponse> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
                 dialog.dismiss();
                 llbotom.setVisibility(View.GONE);
                 containerRestaurantsDetails.setVisibility(View.GONE);
             }
         });
-
-
-    }
-
-
-    private void init() {
-
-        //  Toast.makeText(val, "" + minimumValue, Toast.LENGTH_SHORT).show();
-        llbotom.setVisibility(View.VISIBLE);
-        if (Double.parseDouble(footerDetails.getText().toString()) < minimumValue) {
-            llbotom.setBackgroundColor(getResources().getColor(R.color.gray));
-            footerCount.setVisibility(View.GONE);
-            tvCurrency.setVisibility(View.GONE);
-            footerDetails.setVisibility(View.GONE);
-
-
-            // String.format("%.2f", minimumValue-Double.parseDouble(footerTotalAmount.getText().toString()));
-            txtEmptyBasket.setText("Spend £" + String.format("%.2f", minimumValue - Double.parseDouble(footerDetails.getText().toString())) + " more to view Basket");
-
-        } else {
-            llbotom.setBackgroundColor(getResources().getColor(R.color.orange));
-            footerCount.setVisibility(View.VISIBLE);
-            tvCurrency.setVisibility(View.VISIBLE);
-            footerDetails.setVisibility(View.VISIBLE);
-            txtEmptyBasket.setText(getResources().getString(R.string.view_basket));
-
-        }
 
 
     }
@@ -673,8 +600,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     if (response.body().getSuccess()) {
                         response.body().getData().getMenu().setRestaurantId(resID);
                         menuViewModel.insertMenu(response.body().getData().getMenu());
-//                        setupViewPager(pager, response.body().getData().getMenu(), data, footerDetails);
-
                     } else {
                         dialog.dismiss();
                         llbotom.setVisibility(View.GONE);
@@ -683,7 +608,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Log.e("ERROR 1>>", e.getMessage());
                     llbotom.setVisibility(View.GONE);
                     containerRestaurantsDetails.setVisibility(View.GONE);
 
@@ -693,7 +617,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
             @Override
             public void onFailure(Call<Rough> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
+
                 dialog.dismiss();
                 llbotom.setVisibility(View.GONE);
                 containerRestaurantsDetails.setVisibility(View.GONE);
@@ -718,14 +642,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             }
         }).start();
 
-        /*menuProductViewModel.getMenuProductList(category_id).observe(this, new Observer<MenuProducts.MenuProductsTable>() {
-            @Override
-            public void onChanged(@Nullable MenuProducts.MenuProductsTable menuProducts) {
-                if (menuProducts == null) {
-                    getMenuCategoryProducts(mParentPosition, categoryId, mProgressBar);
-                }
-            }
-        });*/
+
     }
 
     private void loafSizeAndModifiers(final Boolean isCategory, final String productId,
@@ -783,7 +700,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
             @Override
             public void onFailure(Call<ProductSizeAndModifier> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -809,8 +725,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         });
         RestaurantDetailsInterface apiInterface = ApiClient.getClient(this).create(RestaurantDetailsInterface.class);
         CategoryProductsRequest request = new CategoryProductsRequest(extras.getString("RESTAURANTID"), category_id, 0);
-
-        Log.e("MenuCat_request", "" + request);
         Call<MenuProducts> call3 = apiInterface.mRestaurantCategoryProduct(request);
         call3.enqueue(new Callback<MenuProducts>() {
             @Override
@@ -822,7 +736,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                         if (mResponse.body().getSuccess()) {
                             mResponse.body().getData().setCategoryId(categoryId);
                             final Long id = GlobalValues.getInstance().getDb().menuProductMaster().insert(mResponse.body().getData());
-                            Log.e("id>>>>>", response.body().getData().toString());
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -842,7 +755,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
             @Override
             public void onFailure(Call<MenuProducts> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -871,7 +783,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     @Override
     public void OnSpecialOfferClick(int parentPosition, int childPosition, TextView
             itemQtyView, int itemCount, int action, SpecialOffer item) {
-        Log.e("Spacial offer >>", parentPosition + " > " + childPosition + " > " + itemCount + " > " + item.toString());
         if (menu.getSpecialOffers().size() > 0) {
             for (int i = 0; i < menu.getSpecialOffers().size(); i++) {
                 if (menu.getSpecialOffers().get(i).getOfferId().equals(item.getOfferId())) {
@@ -892,17 +803,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                         menuCategory, ProgressBar progressBar) {
         if (menuCategory.getMenuCategoryName().equalsIgnoreCase("MEAL")) {
             checkModifierAndSizeInDb(true, menuCategory.getMeal().get(childPosition).getId(), parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
-
-//            MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, this);
-//            menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
-
         } else {
-            Log.e("OnCategoryClick >>", parentPosition + " > " + childPosition + " > " + itemCount + " > " + menuCategory.getMenuCategoryName() + " > " + menuCategory.getMenuProducts().get(childPosition).toString());
-        /*if (menuCategory.getMenuProducts().get(childPosition).getProductModifiers() != null && menuCategory.getMenuProducts().get(childPosition).getMenuProductSize() != null) {
-            updateUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
-        } else {
-            loafSizeAndModifiers(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
-        }*/
             checkModifierAndSizeInDb(true, menuCategory.getMenuProducts().get(childPosition).getMenuProductId(), parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
         }
 
@@ -1071,20 +972,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     }
 
                 } else {
-                    /*if (menuProduct.size() > 1) {
-                        AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, menuProduct, qtyLayout, itemQtyView, menuCategory, itemCount, action);
-                        againFragment.show(getSupportFragmentManager(), "againDailog");
-                    } else {
-                        if (itemCount == 0) {
-                            db.deleteItem(menuProduct.get(0).getMenuId(), menuProduct.get(0).getId());
-                            qtyLayout.setVisibility(View.GONE);
-                            itemQtyView.setText(String.valueOf(itemCount));
-                        } else {
-                            db.updateProductQuantity(menuProduct.get(0).getId(), itemCount);
-                            itemQtyView.setText(String.valueOf(itemCount));
-                        }
-                        showPriceAndView(null, null, 0);
-                    }*/
 
                     if (qtyLayout.getVisibility() == View.GONE) {
                         qtyLayout.setVisibility(View.VISIBLE);
@@ -1202,47 +1089,18 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         if (menuCategory.getMeal() != null && db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId()) > 0) {
             List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMeal().get(childPosition).getId());
             updateItemQty(view, qtyTextView, mProduct);
-            /*int itemQty = 0;
-            for (MenuProduct product : mProduct) {
-                itemQty += product.getOriginalQuantity();
-            }
-            if (itemQty == 0) {
-                view.setVisibility(View.GONE);
-            }
-            qtyTextView.setText(String.valueOf(itemQty));
 
-            showPriceAndView(null, null, 0);*/
         } else {
 
             if (menuCategory.getMenuProducts() != null && menuCategory.getMenuProducts().size() > 0 && db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
                 List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId());
                 updateItemQty(view, qtyTextView, mProduct);
-                /*int itemQty = 0;
-                for (MenuProduct product : mProduct) {
-                    itemQty += product.getOriginalQuantity();
-                }
-                if (itemQty == 0) {
-                    view.setVisibility(View.GONE);
-                }
-                qtyTextView.setText(String.valueOf(itemQty));
 
-                showPriceAndView(null, null, 0);*/
             } else {
                 if (menuCategory.getMenuSubCategory().size() > 0 && menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().size() > 0) {
                     if (db.getMenuProductCount(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
                         List<MenuProduct> mProduct = db.getMenuProduct(menuCategory.getMenuSubCategory().get(parentPosition).getMenuCategoryId(), menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId());
                         updateItemQty(view, qtyTextView, mProduct);
-                        /*int itemQty = 0;
-                        for (MenuProduct product : mProduct) {
-                            itemQty += product.getOriginalQuantity();
-                        }
-                        if (itemQty == 0) {
-                            view.setVisibility(View.GONE);
-                        }
-                        qtyTextView.setText(String.valueOf(itemQty));
-
-                        showPriceAndView(null, null, 0);*/
-
                     } else {
                         view.setVisibility(View.GONE);
                         qtyTextView.setText("0");
@@ -1264,8 +1122,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
         checkModifierAndSizeInDb(false, menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductId(), parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, progressBar);
 
-
-//        createCardData(parentPosition, childPosition, qtyLayout,itemQtyView, itemCount, action, menuCategory);
 
     }
 
@@ -1322,7 +1178,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
         } else {
             MenuDialogNew menuDialogNew = MenuDialogNew.newInstance(this, parentPosition, position, view, qtyTextView, itemCount, action, menuCategory, isSubCat, this);
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
             menuDialogNew.show(getSupportFragmentManager(), "menuDialogNew");
         }
     }
@@ -1367,25 +1222,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
 
                         showPriceAndView(null, null, 0);
-                    /*if (menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getProductModifiers().size() > 0 || menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductSize().size() > 0) {
-                        if (action == 1) {
-                            AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, mProduct, view, qtyTextView, menuCategory, itemCount, action);
-                            againFragment.show(getSupportFragmentManager(), "againDailog");
-                        } else {
-                            ChooseLastCustnizationDialog chooseLastCustnizationDialog = ChooseLastCustnizationDialog.newInstance(this, mProduct, itemCount, view, qtyTextView, parentPosition, childPosition, menuCategory, true, action, this);
-                            chooseLastCustnizationDialog.show(getSupportFragmentManager(), "chooseLastCustnizationDialog");
-                        }
-                    } else {
-                        if (itemCount == 0) {
-                            db.deleteItem(mProduct.get(0).getMenuId(), mProduct.get(0).getId());
-                            view.setVisibility(View.GONE);
-                            qtyTextView.setText(String.valueOf(itemCount));
-                        } else {
-                            db.updateProductQuantity(mProduct.get(0).getId(), itemCount);
-                            qtyTextView.setText(String.valueOf(itemCount));
-                        }
-                        showPriceAndView(null, null, 0);
-                    }*/
                     } else {
                         qtyLayout.setVisibility(View.GONE);
                         itemQtyView.setText("0");
@@ -1435,25 +1271,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
 
                         showPriceAndView(null, null, 0);
-                    /*if (menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getProductModifiers().size() > 0 || menuCategory.getMenuSubCategory().get(parentPosition).getMenuProducts().get(childPosition).getMenuProductSize().size() > 0) {
-                        if (action == 1) {
-                            AgainFragment againFragment = AgainFragment.newInstance(this, childPosition, parentPosition, mProduct, view, qtyTextView, menuCategory, itemCount, action);
-                            againFragment.show(getSupportFragmentManager(), "againDailog");
-                        } else {
-                            ChooseLastCustnizationDialog chooseLastCustnizationDialog = ChooseLastCustnizationDialog.newInstance(this, mProduct, itemCount, view, qtyTextView, parentPosition, childPosition, menuCategory, true, action, this);
-                            chooseLastCustnizationDialog.show(getSupportFragmentManager(), "chooseLastCustnizationDialog");
-                        }
-                    } else {
-                        if (itemCount == 0) {
-                            db.deleteItem(mProduct.get(0).getMenuId(), mProduct.get(0).getId());
-                            view.setVisibility(View.GONE);
-                            qtyTextView.setText(String.valueOf(itemCount));
-                        } else {
-                            db.updateProductQuantity(mProduct.get(0).getId(), itemCount);
-                            qtyTextView.setText(String.valueOf(itemCount));
-                        }
-                        showPriceAndView(null, null, 0);
-                    }*/
                     } else {
                         qtyLayout.setVisibility(View.GONE);
                         itemQtyView.setText("0");
@@ -1595,10 +1412,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
         List<MenuProduct> menuProducts = db.getMenuProduct();
 
-//        String json = gson.toJson(menuProducts);
 
-
-        //  sharePre.setCartDetailsKey(json);
         if (menuProducts != null) {
             Log.e("ANAND >>", menuProducts.toString());
 
@@ -1721,18 +1535,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                                         }
 
 
-                                /*int allCount = 0;
-                                for (int j = 0; j < productModifier.getModifier().size(); j++) {
-                                    allCount = allCount + Integer.parseInt(productModifier.getModifier().get(j).getQuantity());
-                                }
-                                if (allCount > productModifier.getMaxAllowedQuantity()) {
-                               *//* for (int i = 0; i < productModifier.getModifier().size(); i++) {
-                                    int qty = Integer.parseInt(productModifier.getModifier().get(i).getQuantity());
-                                    qty = (qty * itemQty);
-                                    totalPrice += (qty * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice()));
-                                }*//*
-                                    totalPrice += ((allCount - productModifier.getMaxAllowedQuantity()) * Double.parseDouble(productModifier.getModifier().get(0).getModifierProductPrice()));
-                                }*/
                                     } else {
                                         for (Modifier modifier : productModifier.getModifier()) {
                                             int qty = Integer.parseInt(modifier.getOriginalQuantity());
@@ -1750,32 +1552,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 totalPrice += ((item.getQuantity() * Double.parseDouble(item.getOfferPrice())));
                 totalCartIterm += item.getQuantity();
             }
-//            int totalCartIterm = specialOffers.size() + menuProducts.size();
-            Log.e("TOTAL PRICE >>", totalCartIterm + "," + totalPrice);
-
-
             if (totalCartIterm > 0) {
-
-                //   llbotom.setBackground(getResources().getDrawable(R.color.orange));
-//                txtEmptyBasket.setText("View Basket");
                 footerCount.setText(String.valueOf(totalCartIterm));
-                Log.e(">>>>>>>>>>", totalCartIterm + "" + totalPrice);
                 footerDetails.setText(String.format("%.2f", totalPrice));
-
-//                if (extras != null) {
-//                    sharePre.setString(sharePre.RESTUARANT_ID, extras.getString("RESTAURANTID"));
-//                    sharePre.setString(sharePre.RESTUARANT_NAME, extras.getString("RESTAURANTNAME"));
-//                }
                 if (Double.parseDouble(footerDetails.getText().toString()) < minimumValue) {
-
                     llbotom.setBackgroundColor(getResources().getColor(R.color.gray));
                     footerCount.setVisibility(View.GONE);
                     tvCurrency.setVisibility(View.GONE);
                     footerDetails.setVisibility(View.GONE);
-
-
-                    // String.format("%.2f", minimumValue-Double.parseDouble(footerTotalAmount.getText().toString()));
-                    txtEmptyBasket.setText("Spend £" + String.format("%.2f", minimumValue - Double.parseDouble(footerDetails.getText().toString())) + " more to view Basket");
+                     txtEmptyBasket.setText("Spend £" + String.format("%.2f", minimumValue - Double.parseDouble(footerDetails.getText().toString())) + " more to view Basket");
                     llbotom.setVisibility(View.VISIBLE);
                 } else {
 
@@ -1792,8 +1577,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 txtEmptyBasket.setText(getString(R.string.your_basket_is_empty));
                 footerCount.setText("0");
                 footerDetails.setText("0.00");
-//                sharePre.setString(sharePre.RESTUARANT_ID, "");
-//                sharePre.setString(sharePre.RESTUARANT_NAME, "");
             }
 
         }
@@ -1883,7 +1666,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
             @Override
             public void onFailure(Call<ProductSizeAndModifier> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1898,30 +1680,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     }
 
 
-    public void restaurantClosedDialogg() {
-        View dialogView = LayoutInflater.from(RestaurantDetailsActivity.this).inflate(R.layout.layout_closed_dialog, null);
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
 
-        TextView tvOk = (TextView) dialogView.findViewById(R.id.tv_btn_ok);
-
-        tvOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.gravity = Gravity.CENTER;
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.seme_transparent)));
-    }
 
 
     public void restaurantClosedDialog() {
@@ -1930,8 +1689,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         final AlertDialog alertClodseDialog = new AlertDialog.Builder(RestaurantDetailsActivity.this).create();
         alertClodseDialog.setView(mDialogVieww);
         alertClodseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
-
         mDialogVieww.findViewById(R.id.tv_btn_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

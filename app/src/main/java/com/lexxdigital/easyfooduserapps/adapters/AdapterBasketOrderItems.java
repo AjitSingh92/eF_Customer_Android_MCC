@@ -17,14 +17,16 @@ public class AdapterBasketOrderItems extends RecyclerView.Adapter<AdapterBasketO
 
     Context mContext;
     FinalNewCartDetails cartList;
-    int total_count=0,num=0;
-    Double deliveryFees=0.0, discountAmt=0.0;
+    int total_count = 0, num = 0;
+    Double deliveryFees = 0.0, discountAmt = 0.0;
     TextView discount, subTotal, totalCount, totalAmmount, footerTotalCount, footerTotalAmount;
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView itemCount,itemTitle,itemPrice,totalCount;
-        LinearLayout btnAdd,btnRemove;
+        TextView itemCount, itemTitle, itemPrice, totalCount;
+        LinearLayout btnAdd, btnRemove;
         RecyclerView listItem;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -64,22 +66,22 @@ public class AdapterBasketOrderItems extends RecyclerView.Adapter<AdapterBasketO
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
-        com.lexxdigital.easyfooduserapps.cart_model.final_cart.Datum cart ;
-        if(cartList.getData().size() > 0) {
-            if(cartList.getData().get(listPosition).getSpecialOffer() != null){
+        com.lexxdigital.easyfooduserapps.cart_model.final_cart.Datum cart;
+        if (cartList.getData().size() > 0) {
+            if (cartList.getData().get(listPosition).getSpecialOffer() != null) {
 
-                cart = (com.lexxdigital.easyfooduserapps.cart_model.final_cart.Datum)cartList.getData().get(listPosition);
+                cart = (com.lexxdigital.easyfooduserapps.cart_model.final_cart.Datum) cartList.getData().get(listPosition);
                 holder.listItem.setVisibility(View.GONE);
                 holder.itemCount.setText(cart.getSpecialOffer().getProductQty());
                 holder.itemTitle.setText(cart.getSpecialOffer().getOfferTitle());
                 holder.itemPrice.setText("£" + cart.getSpecialOffer().getTotalAmmount());
                 holder.totalCount.setText(cart.getSpecialOffer().getProductQty());
                 total_count = Integer.parseInt(cart.getSpecialOffer().getProductQty());
-                subTotal.setText(String.valueOf(Double.parseDouble(subTotal.getText().toString())+Double.parseDouble(cart.getSpecialOffer().getTotalAmmount())));
-                totalAmmount.setText(String.valueOf(Double.parseDouble(totalAmmount.getText().toString())+Double.parseDouble(cart.getSpecialOffer().getTotalAmmount())));
-                footerTotalAmount.setText(String.valueOf(Double.parseDouble(footerTotalAmount.getText().toString())+Double.parseDouble(cart.getSpecialOffer().getTotalAmmount())));
-                totalCount.setText(String.valueOf(Integer.parseInt(totalCount.getText().toString())+Integer.parseInt(cart.getSpecialOffer().getProductQty())));
-                footerTotalCount.setText(String.valueOf(Integer.parseInt(footerTotalCount.getText().toString())+Integer.parseInt(cart.getSpecialOffer().getProductQty())));
+                subTotal.setText(String.valueOf(Double.parseDouble(subTotal.getText().toString()) + Double.parseDouble(cart.getSpecialOffer().getTotalAmmount())));
+                totalAmmount.setText(String.valueOf(Double.parseDouble(totalAmmount.getText().toString()) + Double.parseDouble(cart.getSpecialOffer().getTotalAmmount())));
+                footerTotalAmount.setText(String.valueOf(Double.parseDouble(footerTotalAmount.getText().toString()) + Double.parseDouble(cart.getSpecialOffer().getTotalAmmount())));
+                totalCount.setText(String.valueOf(Integer.parseInt(totalCount.getText().toString()) + Integer.parseInt(cart.getSpecialOffer().getProductQty())));
+                footerTotalCount.setText(String.valueOf(Integer.parseInt(footerTotalCount.getText().toString()) + Integer.parseInt(cart.getSpecialOffer().getProductQty())));
                 holder.btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -96,18 +98,7 @@ public class AdapterBasketOrderItems extends RecyclerView.Adapter<AdapterBasketO
             }
 
         }
-//        if(cartList.get(0).getMenuCategory().size() > 0){
-//            com.lexxdigital.easyfooduserapp.restaurant_details.model.show_menu_category.MenuCategory cart2 = (com.lexxdigital.easyfooduserapp.restaurant_details.model.show_menu_category.MenuCategory)cartList.get(0).getMenuCategory().get(0);
-//            holder.listItem.setVisibility(View.GONE);
-//            holder.itemTitle.setText(cart2.getMenuCategoryName());
-//
-//            Adapter_basket_items productModifierAdapter = new Adapter_basket_items(mContext);
-//            @SuppressLint("WrongConstant")
-//            LinearLayoutManager horizontalLayoutManagaer2
-//                    = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-//            holder.listItem.setLayoutManager(horizontalLayoutManagaer2);
-//            holder.listItem.setAdapter(productModifierAdapter);
-//        }
+
 
     }
 

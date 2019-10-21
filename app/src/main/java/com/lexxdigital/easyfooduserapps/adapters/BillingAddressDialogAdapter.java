@@ -113,7 +113,7 @@ public class BillingAddressDialogAdapter extends RecyclerView.Adapter<BillingAdd
             address = add.getAddressOne() + ", " + add.getCity() + "\n" + add.getPostCode();
         }
         holder.txtAddress.setText(address);
-        Log.e(TAG, "onBindViewHolder: address id: " + add.getID());
+
 
         if (add.getIsDefault() == 1) {
             holder.tvDefault.setVisibility(View.VISIBLE);
@@ -129,15 +129,7 @@ public class BillingAddressDialogAdapter extends RecyclerView.Adapter<BillingAdd
         TextView edit_details_tv = holder.edit_details_tv;
         edit_details_ll.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_orange));
         edit_details_tv.setText("Use this");
-        /*if (addressList.get(listPosition).getIsDelivered() == 0) {
-            edit_details_tv.setBackground(mContext.getResources().getDrawable(R.drawable.rounded));
-            edit_details_tv.setText("Not delivery to this");
 
-        } else {
-            edit_details_tv.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_orange));
-            edit_details_tv.setText("Delivery to this");
-        }
-*/
         holder.edit_details_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

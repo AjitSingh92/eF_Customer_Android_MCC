@@ -15,17 +15,18 @@
         <FrameLayout
             android:id="@+id/fm"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_210sdp"
+            android:layout_height="@dimen/_240sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:background="@drawable/bg_card">
+
+            android:background="@drawable/bg_visa_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_35sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:orientation="vertical">
 
@@ -241,6 +242,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_25sdp"
+
             android:layout_toRightOf="@+id/brand" />
     </RelativeLayout>
 

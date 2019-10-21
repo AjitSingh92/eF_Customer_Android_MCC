@@ -26,6 +26,7 @@ import com.lexxdigital.easyfooduserapps.dashboard.DashboardActivity;
 import com.lexxdigital.easyfooduserapps.login.LoginActivity;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
+import com.newrelic.agent.android.NewRelic;
 
 import java.util.List;
 
@@ -46,17 +47,16 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Constants.setStatusBarGradiant(IntroActivity.this);
-        // Checking for first time launch - before calling setContentView()
+        NewRelic.withApplicationToken(
+                "eu01xxae9ccb44aafd9f746b5862b2dcb19769290d"
+        ).start(this.getApplicationContext());
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
         String isfirst = sharedPreferencesClass.isFirstTimeLaunch();
         Log.e("jdfjdfjjdfdfh", "onCreate: " + isfirst);
         if (sharedPreferencesClass.getPostalCode() != null) {
             Constants.switchActivity(IntroActivity.this, DashboardActivity.class);
-            //  finish();
         }
 
-
-        // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
@@ -71,17 +71,12 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
         btnLetsGo = (Button) findViewById(R.id.btn_lets_go);
 
         btnBack.setVisibility(View.GONE);
-        // layouts of all welcome sliders
-        // add few more layouts if you want
         layouts = new int[]{
                 R.layout.intro_screen1,
-                /*R.layout.intro_screen2,*/
                 R.layout.intro_screen3};
 
-        // adding bottom dots
-        addBottomDots(0);
 
-        // making notification bar transparent
+        addBottomDots(0);
         changeStatusBarColor();
 
         myViewPagerAdapter = new MyViewPagerAdapter();
@@ -93,10 +88,8 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
             public void onClick(View v) {
                 int current = getItem(-1);
                 if (current < layouts.length) {
-                    // move to next screen
                     viewPager.setCurrentItem(current);
                 } else {
-                    // launchHomeScreen();
                 }
             }
         });
@@ -112,8 +105,6 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
                 int current = getItem(+1);
                 if (current < layouts.length) {
                     // move to next screen
@@ -124,25 +115,6 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
             }
         });
 
-      /*  if (Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
-            String[] perms = {
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    //Manifest.permission.ACCESS_NETWORK_STATE,
-//                    Manifest.permission.RECEIVE_SMS,
-//                    Manifest.permission.READ_SMS,
-//                    Manifest.permission.READ_PHONE_STATE,
-//                    Manifest.permission.CAMERA
-            };
-
-
-            if (!EasyPermissions.hasPermissions(this, perms)) {
-                EasyPermissions.requestPermissions(this, "All permissions are required in oder to run this application", 101, perms);
-            }
-
-
-        }
-        ActivityCompat.requestPermissions(IntroActivity.this, new String[]{android.Manifest.permission.RECEIVE_SMS}, 12);*/
     }
 
     private void addBottomDots(int currentPage) {
@@ -180,16 +152,10 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
-
-            // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
-                //   btnNext.setText(getString(R.string.start));
                 btnBack.setVisibility(View.VISIBLE);
                 btnNext.setVisibility(View.GONE);
             } else if (position > 0) {
-                // still pages are left
-                //    btnNext.setText(getString(R.string.next));
                 btnBack.setVisibility(View.VISIBLE);
                 btnNext.setVisibility(View.VISIBLE);
             }
@@ -263,16 +229,12 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        EasyPermissions.requestPermissions(this, "All permissions are required to run this application", requestCode, permissions);
-        // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> list) {
-        // Some permissions have been granted
-        // ...
+
     }
 
     @Override
@@ -283,7 +245,7 @@ public class IntroActivity extends AppCompatActivity implements EasyPermissions.
 
     @Override
     public void onBackPressed() {
-//
+
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;

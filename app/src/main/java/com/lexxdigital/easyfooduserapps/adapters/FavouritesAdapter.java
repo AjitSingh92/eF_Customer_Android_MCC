@@ -63,7 +63,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             this.restaurantFavRemove = (TextView) itemView.findViewById(R.id.restaurant_fav_remove);
             this.favIcon = itemView.findViewById(R.id.favourites);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
-
             this.imRatingImage = itemView.findViewById(R.id.im_ratingImage);
             this.llDelivery = itemView.findViewById(R.id.ll_delivery);
             this.lyClick = itemView.findViewById(R.id.ly_click);
@@ -72,7 +71,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             this.dine_in = itemView.findViewById(R.id.dine_in);
             this.llCollection = itemView.findViewById(R.id.ll_collection);
             this.collection = itemView.findViewById(R.id.collection);
-
             this.preOrder = (TextView) itemView.findViewById(R.id.pre_order);
             this.btnPreOrder = (LinearLayout) itemView.findViewById(R.id.layout_btnPreOrder);
             this.tvPreOrderMsg = (TextView) itemView.findViewById(R.id.tv_PreOrderMsg);
@@ -97,7 +95,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                                                              int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.add_favourites_list, parent, false);
-
         FavouritesAdapter.MyViewHolder myViewHolder = new FavouritesAdapter.MyViewHolder(view);
         return myViewHolder;
     }
@@ -108,14 +105,12 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
         try {
             sharePre = new SharedPreferencesClass(mContext);
             db = new DatabaseHelper(mContext);
-
             fav = listFavourites.get(listPosition);
             holder.restaurantName.setText(fav.getRestaurantName());
             holder.cuisines.setText(fav.getCuisines());
             if (fav.getDistance_in_miles() != null && !fav.getDistance_in_miles().trim().isEmpty()) {
                 holder.tv_distance.setText(fav.getDistance_in_miles() + " miles");
             }
-            Log.e("Min Order Value", "" + fav.getMinOrderValue());
             if (fav.getMinOrderValue() != null) {
                 holder.minOrder.setText(mContext.getResources().getString(R.string.currency) + fav.getDeliveryCharge() + " delivery  •  " + mContext.getResources().getString(R.string.currency) + fav.getMinOrderValue() + " min order");
             } else {
@@ -150,39 +145,8 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                     holder.llClosed.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
-                Log.e("DealAdapter", "onBindViewHolder<<Exception>>: " + e.getMessage());
+                e.printStackTrace();
             }
-
-//            holder.rating.setText(String.format("%.1f", fav.getOverallRating()));
-
-            /*TODO: Collection, Delivery, Dinein ... Right now this option not available on api*/
-            /*if (fav.getOverallRating() != null || !fav.getOverallRating().equals("")) {
-                String[] serve_styles = fav.getOverallRating().split(",");
-
-                if (Arrays.asList(serve_styles).contains("collection")) {
-                    holder.llCollection.setVisibility(View.VISIBLE);
-                    holder.collection.setImageDrawable(mContext.getResources().getDrawable(R.drawable.open));
-                }
-                if (Arrays.asList(serve_styles).contains("delivery")) {
-                    holder.llDelivery.setVisibility(View.VISIBLE);
-                    holder.delivery.setImageDrawable(mContext.getResources().getDrawable(R.drawable.open));
-                }
-                if (Arrays.asList(serve_styles).contains("dinein")) {
-                    holder.llDinein.setVisibility(View.VISIBLE);
-                    holder.dine_in.setImageDrawable(mContext.getResources().getDrawable(R.drawable.open));
-                }
-            }*/
-         /*   Glide.with(mContext)
-                    .load(fav.getLogo())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.logo);*/
-           /* Glide.with(mContext)
-                    .load(fav.getBackImane())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.restaurantImage);*/
-
-           /* Glide.with(mContext).load(fav.getLogo()).apply(new RequestOptions()                                    )
-                    .into(holder.logo);*/
 
 
             Glide.with(activity).load(fav.getLogo()).apply(new RequestOptions()
@@ -247,8 +211,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
             holder.preOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    /*Start*/
                     TextView deliveryTime, minOrderForDelivery, collectionTime, preOrderForLetter, tvDay;
                     ImageView im_cross;
                     LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -262,7 +224,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                     preOrderForLetter = view.findViewById(R.id.tv_pre_order_for_later);
                     im_cross = view.findViewById(R.id.cross_tv);
                     tvDay = view.findViewById(R.id.tv_day);
-
                     String startDelTime = "", endDelTime = "", startCollTime = "", endCollTime = "";
                     String todayDay = Constants.getTodayDay();
 
@@ -271,18 +232,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                     endDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDelivery_end_time();
                     startCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getCollection_start_time();
                     endCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getCollection_end_time();
-
-                   /* for (int i = 0; i < listFavourites.get(listPosition).getRestaurantTimingLists().size(); i++) {
-
-                        if (todayDay.equalsIgnoreCase(listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getDay())) {
-                            startDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getDelivery_start_time();
-                            endDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getDelivery_end_time();
-                            startCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getCollection_start_time();
-                            endCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(i).getCollection_end_time();
-                        }
-
-                    }*/
-
                     deliveryTime.setText(startDelTime + " - " + endDelTime);
                     collectionTime.setText(startCollTime + " - " + endCollTime);
 
@@ -335,7 +284,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                     });
 
                     dialog.show();
-                    /*End*/
+
                 }
 
             });

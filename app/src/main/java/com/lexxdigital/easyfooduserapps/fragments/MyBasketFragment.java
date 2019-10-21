@@ -177,16 +177,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     @BindView(R.id.delivery_time)
     TextView deliveryTime;
 
-    //@BindView(R.id.delivery_date)
-    //TextView deliveryDate;
     @BindView(R.id.ll_DeliveryTimeSlot)
     LinearLayout llDeliveryTimeSlot;
     @BindView(R.id.btn_checkout)
     LinearLayout btnCheckout;
     @BindView(R.id.scroll)
     NestedScrollView scroll;
-    /*@BindView(R.id.add_note)
-    TextView addNote;*/
     @BindView(R.id.ly_container)
     RelativeLayout lyContainer;
     @BindView(R.id.recyclerview_menu_items)
@@ -294,12 +290,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     private String voucherValidOn = "";
     private double minimumValue = 0.0;
 
-    public MyBasketFragment(Activity mActivity, Context mContext) {
-        this.mActivity = mActivity;
-        this.mContext = mContext;
-    }
-
-
     Double totalPrice = 0d;
     int totalCartIterm;
     Boolean voucherApplyStatus = false;
@@ -313,6 +303,15 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     String restuarantOpenStatus;
     List<RestaurantSpecialOffers> restaurantSpecialOffers = null;
     FirebaseAnalytics mFirebaseAnalytics;
+
+    public MyBasketFragment(Activity mActivity, Context mContext) {
+        this.mActivity = mActivity;
+        this.mContext = mContext;
+    }
+
+    public MyBasketFragment() {
+        // Required empty public constructor
+    }
 
 
     @Override
@@ -354,8 +353,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 } else {
                     dialogNoInternetConnection("Please check internet connection.", 1);
                 }
-                //getAddressList(); // By-default  default address
-
                 if (coponcode.getText().toString().trim() == null && coponcode.getText().toString().equalsIgnoreCase("")) {
                     tvVoucherStatus.setVisibility(View.GONE);
                 }
@@ -373,7 +370,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
 
         DashboardActivity.getInstance().locationVisibility(false, "");
-        //init();
         return view;
     }
 
@@ -405,9 +401,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
 
     public void setAddress(AddressList address) {
-
-        /*   if (address.getIsDelivered() == 1) {*/
-
         if (address.getAddressTwo() != null && address.getAddressTwo().trim().length() > 0) {
             sharePre.setString(sharePre.DEFAULT_ADDRESS, address.getAddressOne() + ", " + address.getAddressTwo() + ", " + address.getCity() + "\n" + address.getPostCode());
         } else {
@@ -415,12 +408,21 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         }
         sharePre.setString(sharePre.DELIVERY_ADDRESS_ID, address.getID());
 
-        //  }
     }
 
 
     void spinnerCall(int deliveryPosition) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, paths);
+        List<String> wordList = new ArrayList<String>(Arrays.asList(paths));
+        for (int i = 0; i < wordList.size(); i++) {
+            if (wordList.get(i).equalsIgnoreCase("Dinein")) {
+                wordList.remove(i);
+            }
+        }
+
+        String[] newPaths = new String[wordList.size()];
+        newPaths = wordList.toArray(newPaths);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, newPaths);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -432,8 +434,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 orderType = (String) parent.getItemAtPosition(position);
                 sharedPreferencesClass.setString(sharedPreferencesClass.ORDER_TYPE, orderType.toLowerCase());
                 sharedPreferencesClass.setString(sharedPreferencesClass.CUSTOMER_ID, orderType.toLowerCase());
-                Log.e("item", (String) parent.getItemAtPosition(position));
-
                 setPriceCalculation(totalCartIterm);
                 if (voucherApplicableOn != null) {
                     if (voucherApplicableOn.contains(orderType.toLowerCase())) {
@@ -472,8 +472,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setView(mDialogView);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        // ImageView confirm = (ImageView) alertDialog.findViewById(R.id.cross_tv);
         mDialogView.findViewById(R.id.time_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -487,12 +485,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 alertDialog.dismiss();
             }
         });
-        /*confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });*/
+
         alertDialog.show();
     }
 
@@ -504,43 +497,14 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         roomorderListId.setAdapter(mRoomOrderAdapter);
     }
 
-    private void initView2(FinalNewCartDetails list, TextView discount, TextView subTotal, TextView totalCount, TextView totalAmmount, TextView footerTotalCount, TextView footerTotalAmount) {
-
-        int lCount = 0;
-        for (int i = 0; i < list.getData().size(); i++) {
-            if (list.getData().get(i).getSpecialOffer() != null) {
-                lCount++;
-            }
-        }
-        oAdapter = new AdapterBasketOrderItems(getContext(), list, discount, subTotal, totalCount, totalAmmount, footerTotalCount, footerTotalAmount, lCount);
-
-
-        @SuppressLint("WrongConstant")
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerviewOrderItems.setLayoutManager(horizontalLayoutManagaer);
-        recyclerviewOrderItems.setAdapter(oAdapter);
-    }
-
-  /*  private void initVieww() {
-
-
-        oAdapter = new AdapterBasketOrderItems(getContext(), list, discount, subTotal, totalCount, totalAmmount, footerTotalCount, footerTotalAmount, lCount);
-        @SuppressLint("WrongConstant")
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerviewOrderItems.setLayoutManager(horizontalLayoutManagaer);
-        recyclerviewOrderItems.setAdapter(oAdapter);
-    }*/
 
     private void initViewCart() {
-        Gson gson = new Gson();
         db = new DatabaseHelper(mContext);
 
         CartData data = db.getCartData();
 
         List<MenuProduct> cartMenu = new ArrayList<>();
-//        for (CartData data : cartData) {
+
         for (MenuCategoryCart menuCategoryCart : data.getMenuCategoryCarts()) {
             for (MenuProduct menuProduct : menuCategoryCart.getMenuProducts()) {
                 cartMenu.add(menuProduct);
@@ -551,7 +515,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 }
             }
         }
-//        }
+
 
         RecyclerLayoutManager layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
         recyclerviewOrderItems.setLayoutManager(layoutManager);
@@ -576,21 +540,16 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
         initViewUpsell();
         showPriceAndView();
-        //init();
+
 
     }
 
     private void init() {
-
-        //  Toast.makeText(val, "" + minimumValue, Toast.LENGTH_SHORT).show();
         if (Double.parseDouble(footerTotalAmount.getText().toString()) < minimumValue) {
             llBottom.setBackgroundColor(getResources().getColor(R.color.gray));
             llCount.setVisibility(View.GONE);
             tvCurrency.setVisibility(View.GONE);
             footerTotalAmount.setVisibility(View.GONE);
-
-
-            // String.format("%.2f", minimumValue-Double.parseDouble(footerTotalAmount.getText().toString()));
             checkOutTv.setText("Spend £" + String.format("%.2f", minimumValue - Double.parseDouble(footerTotalAmount.getText().toString())) + " more to checkout");
 
         } else {
@@ -634,23 +593,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
     }
 
-    private void initView3(FinalNewCartDetails list, TextView discount, TextView subTotal, TextView totalCount, TextView totalAmmount, TextView footerTotalCount, TextView footerTotalAmount, Double deliveryCharge, TextView txtDeliveryFees) {
-
-        int llCount = 0;
-        for (int i = 0; i < list.getData().size(); i++) {
-            if (list.getData().get(i).getMenuCategory() != null) {
-                llCount++;
-            }
-        }
-        MenuAdapterItems iAdapter = new MenuAdapterItems(getContext(), list, discount, subTotal, totalCount, totalAmmount, footerTotalCount, footerTotalAmount, deliveryCharge, txtDeliveryFees, llCount);
-
-        @SuppressLint("WrongConstant")
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerviewMenuItems.setLayoutManager(horizontalLayoutManagaer);
-        recyclerviewMenuItems.setAdapter(iAdapter);
-    }
-
 
     @OnClick({R.id.allergy_click, R.id.click_delivery_time_change, /*R.id.add_note,*/
             R.id.btn_addNoteEdit, R.id.add_more_item, R.id.btn_checkout, R.id.tv_viewMap,
@@ -664,9 +606,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             case R.id.click_delivery_time_change:
                 changeTime();
                 break;
-          /*  case R.id.add_note:
-                alertDialogNote();
-                break;*/
             case R.id.btn_addNoteEdit:
                 alertDialogNote();
                 break;
@@ -688,73 +627,71 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 }
                 break;
             case R.id.btn_checkout:
-                try {
-
-                    if (orderType == null || orderType.equalsIgnoreCase("Please Select")) {
-                        scroll.fullScroll(ScrollView.FOCUS_UP);
-                        spinner.performClick();
-
+                if (deliveryTime.getText().toString().contains("min")) {
+                    if (orderType.equalsIgnoreCase("collection")) {
+                        alertDailogConfirm("Please selected collection time");
                     } else {
-                        if (orderType.equalsIgnoreCase("Delivery")) {
-                            if (totalPrice >= Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())) {
-                                if (!isPreOrder) {
-                                    if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).equals("")) {
-//                                    if (sharedPreferencesClass.getString(sharedPreferencesClass.BILLING_ADDRESS) != null) {
-                                        Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        intent.putExtra("orderType", orderType);
-                                        intent.putExtra("deliveryCharge", deliveryFeesAmt);
-                                        intent.putExtra("ORDER_TOTAL", netAmount);
-                                        intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                                        intent.putExtra("voucherDiscount", voucherDiscount);
-                                        intent.putExtra("notes", tvAddNoteData.getText().toString());
-                                        intent.putExtra("appliedVoucherCode", appliedVoucherCode);
-                                        intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
-                                        intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
-                                        startActivity(intent);
-                                        getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-//                                    } else {
-//                                        alertDailogConfirm("Please select or add billing address");
-//                                    }
-                                    } else {
-                                        alertDailogConfirm("Please select or add delivery address");
+                        alertDailogConfirm("Please selected delivery time");
+                    }
 
+                } else {
+                    try {
+
+                        if (orderType == null || orderType.equalsIgnoreCase("Please Select")) {
+                            scroll.fullScroll(ScrollView.FOCUS_UP);
+                            spinner.performClick();
+
+                        } else {
+                            if (orderType.equalsIgnoreCase("Delivery")) {
+                                if (totalPrice >= Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())) {
+                                    if (!isPreOrder) {
+                                        if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).equals("")) {
+                                            Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.putExtra("orderType", orderType);
+                                            intent.putExtra("deliveryCharge", deliveryFeesAmt);
+                                            intent.putExtra("ORDER_TOTAL", netAmount);
+                                            intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
+                                            intent.putExtra("voucherDiscount", voucherDiscount);
+                                            intent.putExtra("notes", tvAddNoteData.getText().toString());
+                                            intent.putExtra("appliedVoucherCode", appliedVoucherCode);
+                                            intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
+                                            intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
+                                            startActivity(intent);
+                                            getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                                        } else {
+                                            alertDailogConfirm("Please select or add delivery address");
+
+                                        }
+                                    } else {
+                                        timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this);
+                                        timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
                                     }
                                 } else {
-                                    timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this);
-                                    timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
+                                    alertDailogConfirm("Order value must be greater than minimum order value.");
                                 }
                             } else {
-                              /*  llBottom.setBackgroundColor(getResources().getColor(R.color.gray));
-                                llCount.setVisibility(View.GONE);
-                                tvCurrency.setVisibility(View.GONE);
-                                footerTotalAmount.setVisibility(View.GONE);*/
-                                // checkOutTv.setText("Spend £" + String.valueOf(String.format("%.2f", Double.parseDouble(res.getData().getRestaurants().getMinOrderValue()) - totalPrice))) + " more to checkout");
+                                Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("orderType", orderType);
+                                intent.putExtra("deliveryCharge", deliveryFeesAmt);
+                                intent.putExtra("ORDER_TOTAL", netAmount);
+                                intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
+                                intent.putExtra("voucherDiscount", voucherDiscount);
+                                intent.putExtra("notes", tvAddNoteData.getText().toString());
+                                intent.putExtra("appliedVoucherCode", appliedVoucherCode);
+                                intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
+                                intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
+                                startActivity(intent);
+                                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
 
-                                alertDailogConfirm("Order value must be greater than minimum order value.");
-                                //  alertDailogConfirm("Minimum order value " + mContext.getString(R.string.currency) + String.format("%.2f", Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())));
                             }
-                        } else {
-                            Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("orderType", orderType);
-                            intent.putExtra("deliveryCharge", deliveryFeesAmt);
-                            intent.putExtra("ORDER_TOTAL", netAmount);
-                            intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                            intent.putExtra("voucherDiscount", voucherDiscount);
-                            intent.putExtra("notes", tvAddNoteData.getText().toString());
-                            intent.putExtra("appliedVoucherCode", appliedVoucherCode);
-                            intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
-                            intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                         }
+                    } catch (Exception e) {
+                        Log.e("Exception", e.toString());
                     }
-                } catch (Exception e) {
-                    Log.e("Exception", e.toString());
                 }
-
                 break;
             case R.id.tv_viewMap:
                 try {
@@ -796,43 +733,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 break;
 
             case R.id.tv_ChangeAddress:
-
                 startActivity(new Intent(getActivity(), AddAddressActivity.class));
-
-               /* AddressDialogFragment addressDialogFragment = AddressDialogFragment.newInstance(mContext, true, new AddressDialogFragment.OnAddressDialogListener() {
-                    @Override
-                    public void onAddressDialogDismiss(Boolean isItem) {
-                        if (isItem) {
-                            llDeliveryAddress.setVisibility(View.VISIBLE);
-                            tvDeliveryAddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
-                            tvChange.setText("Change Address");
-                            *//* Removing checkbox ....*//*
-             *//*if (chDeliverySameBilling.isChecked()) {
-                                tvChangeBillingAddress.setVisibility(View.GONE);
-                                tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
-                            } else {
-                                tvChangeBillingAddress.setVisibility(View.VISIBLE);
-                                tvBillingAdddress.setText("");
-                            }*//*
-                        }
-                    }
-                });
-                addressDialogFragment.show(getFragmentManager(), "addressDialog");
-                addressDialogFragment.setCancelable(false);
-                break;*/
-         /*   case R.id.tv_ChangeBillingAddress:
-                AddressDialogFragment addressDialogFragment2 = AddressDialogFragment.newInstance(mContext, false, new AddressDialogFragment.OnAddressDialogListener() {
-                    @Override
-                    public void onAddressDialogDismiss(Boolean isItem) {
-                        if (isItem) {
-                            tvChangeBillingAddress.setText("Add new delivery address");
-                            tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.BILLING_ADDRESS));
-                        }
-                    }
-                });
-                addressDialogFragment2.show(getFragmentManager(), "addressDialog");
-                addressDialogFragment2.setCancelable(false);
-                break;*/
             case R.id.ch_billAddress:
                 if (chDeliverySameBilling.isChecked()) {
                     tvChangeBillingAddress.setVisibility(View.GONE);
@@ -846,18 +747,13 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 break;
 
             case R.id.ll_DeliveryTimeSlot:
-
-                //   if()
-
                 timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this);
                 timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
-
                 break;
 
             case R.id.tv_SeeOffers:
                 offersDialogFragment = RestaurantOffersDialogFragment.newInstance(mContext, restaurantSpecialOffers);
                 offersDialogFragment.show(getFragmentManager(), "offers");
-
                 break;
         }
     }
@@ -878,8 +774,8 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             btnaddNotePadEdit.setText("Add");
             tvAddNoteData.setVisibility(View.GONE);
         }
-        Log.e("onResume", "hehe...........");
-//        getAddressList();
+
+
     }
 
     @Override
@@ -905,7 +801,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         final AlertDialog allergyDialog = new AlertDialog.Builder(getActivity()).create();
         allergyDialog.setView(mDialogView);
         allergyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
         TextView tvRestaurantNumber = mDialogView.findViewById(R.id.tv_restaurantNumber);
         tvRestaurantNumber.setText(getString(R.string.restaurant_call_details) + " " + restaurantPhoneNumber + ".");
 
@@ -925,7 +820,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     Toast.makeText(mContext, "Call not available", Toast.LENGTH_SHORT).show();
                 }
                 allergyDialog.dismiss();
-                //    dialog2.show();
 
             }
         });
@@ -950,12 +844,9 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 Constants.switchActivity(getActivity(), DashboardActivity.class);
-                //  getActivity().finish();
                 getActivity().overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 emptyDialog.dismiss();
-                //    dialog2.show();
             }
         });
         emptyDialog.show();
@@ -967,7 +858,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         final AlertDialog noteDialog = new AlertDialog.Builder(getActivity()).create();
         noteDialog.setView(mDialogView);
         noteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
         final LinearLayout llNotePad = mDialogView.findViewById(R.id.llNotePad);
         final EditText notePadDetails = mDialogView.findViewById(R.id.desIdEt);
         final TextView tvCountText = mDialogView.findViewById(R.id.tv_countText);
@@ -995,7 +885,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tvCountText.setText(s.length() + "/" + "240");
-//                sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, s.toString());
                 if (s.length() == 240) {
 
                 }
@@ -1012,7 +901,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, notePadDetails.getText().toString());
                 if (sharedPreferencesClass.getString(sharedPreferencesClass.NOTEPAD) != null && sharedPreferencesClass.getString(sharedPreferencesClass.NOTEPAD).length() > 0) {
                     btnaddNotePadEdit.setText("Edit");
@@ -1023,17 +911,14 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     btnaddNotePadEdit.setText("Add");
                     tvAddNoteData.setVisibility(View.GONE);
                 }
-                //alertDailogConfirm(getString(R.string.note_added_successfully));
-
                 noteDialog.dismiss();
-                //    dialog2.show();
+
 
             }
         });
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 noteDialog.dismiss();
             }
         });
@@ -1041,25 +926,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         noteDialog.show();
     }
 
-    public void deliveryTimeSlotDialog(String message, List<String> items) {
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        final View mDialogView = factory.inflate(R.layout.delivery_time_slot_dialog, null);
-        final AlertDialog noteDialog = new AlertDialog.Builder(getActivity()).create();
-        noteDialog.setView(mDialogView);
-        noteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        TextView tvMessage = mDialogView.findViewById(R.id.message);
-        tvMessage.setText(message);
-
-        RecyclerView recyclerView = mDialogView.findViewById(R.id.recycler_Deliverylist);
-        RecyclerLayoutManager layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, items);
-//        recyclerView.setAdapter(adapter);
-
-        noteDialog.show();
-    }
 
     public void alertDailogConfirm(String message) {
         LayoutInflater factory = LayoutInflater.from(getActivity());
@@ -1118,8 +984,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         List<UpsellProduct> upsellProducts = db.getUpSellProducts();
 
         if (menuProducts != null && menuProducts.size() > 0) {
-            Log.e("ANAND >>", menuProducts.toString());
-
             for (MenuProduct menuProduct : menuProducts) {
                 int itemQty = menuProduct.getOriginalQuantity();
                 totalCartIterm += itemQty;
@@ -1131,7 +995,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                 for (MenuProductSize menuProductSize1 : mealProduct.getMenuProductSize()) {
                                     if (menuProductSize1.getSelected()) {
                                         if (menuProductSize1.getProductSizePrice() != null)
-//                                            totalPrice += (itemQty * Double.parseDouble(menuProductSize1.getProductSizePrice()));
                                             for (SizeModifier sizeModifier : menuProductSize1.getSizeModifiers()) {
                                                 if (sizeModifier.getModifierType().equalsIgnoreCase("free")) {
                                                     int maxAllowFree = sizeModifier.getMaxAllowedQuantity();
@@ -1257,10 +1120,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 totalPrice += (Double.parseDouble(upsellProducts.get(i).getQuantity()) * upsellProducts.get(i).getProductPrice());
                 totalCartIterm += Double.parseDouble(upsellProducts.get(i).getQuantity());
             }
-//            int totalCartIterm = specialOffers.size() + menuProducts.size();
-            Log.e("TOTAL PRICE >>", totalCartIterm + "," + totalPrice);
-//            totalCartIterm = 0;
-//            totalCartIterm = specialOffers.size() + menuProducts.size();
             setPriceCalculation(totalCartIterm);
 
         }
@@ -1291,14 +1150,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             }
 
 
-           // deliveryDate.setVisibility(View.GONE);
-
-            if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() != null && val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() > 0) {
-                deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
-            } else {
-                deliveryTime.setText("0 min");
-            }
-
             if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).isEmpty()) {
                 tvChange.setText("Add new delivery address");
                 tvDeliveryAddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
@@ -1326,15 +1177,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             llBillingAddress.setVisibility(View.GONE);
 
             llDeliveryTimeSlot.setEnabled(true);
-          //  deliveryDate.setVisibility(View.GONE);
-
-            deliveryTime.setText("");
-            if (sharedPreferencesClass.getString(sharedPreferencesClass.AVG_COLLECTION_TIME) != null && sharedPreferencesClass.getString(sharedPreferencesClass.AVG_COLLECTION_TIME).trim().length() > 0) {
-                deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgPreparationTime() + " min");
-            } else {
-                deliveryTime.setText("0 min");
-            }
-//            tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.BILLING_ADDRESS));
             deliveryFeesAmt = 0.0d;
             deliveryFees.setText("£" + String.format("%.2f", 0.00));
             netAmount = totalPrice;
@@ -1350,7 +1192,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
         /*   *//*TODO: Voucher Apply Calculation*/
         if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
-            Log.e("-------------,", "---------------");
+
             if (voucherApplicableOn != null && voucherApplicableOn.contains(orderType.toLowerCase())) {
                 if (voucherApplicableOn.contains(orderType.toLowerCase())) {
                     if (voucherType.equalsIgnoreCase("percentage")) {
@@ -1360,13 +1202,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             netAmount = netAmount - voucherCal;
                             appliedVoucherCode = voucherCode;
                             appliedVoucherPaymentType = voucherValidOn;
-//                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
                             voucherDiscount = voucherCal;
                         } else {
-//                alertDailogVoucher("Validate voucher", "Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
@@ -1379,7 +1219,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             appliedVoucherCode = voucherCode;
                             appliedVoucherPaymentType = voucherValidOn;
                             netAmount = voucherCal;
-//                          alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
                             tvVoucherStatus.setVisibility(View.VISIBLE);
                             tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherValue) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
@@ -1390,13 +1229,13 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
                         }
                     }
+
                 } else {
-//                    alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
                     tvVoucherStatus.setVisibility(View.VISIBLE);
                     tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
                 }
+
             } else {
-//                    alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
                 tvVoucherStatus.setVisibility(View.VISIBLE);
                 tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
             }
@@ -1501,7 +1340,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
             @Override
             public void onFailure(Call<VoucherApplyResponse> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
                 dialog.hide();
 
             }
@@ -1577,8 +1415,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 try {
                     if (mResponse != null && mResponse.body().getData().getUpsellsProducts().size() > 0) {
                         llRoomForMore.setVisibility(View.VISIBLE);
-                        // cartList=
-                        // initView2();
+
                         initViewRoom();
 
                         if (mRoomOrderAdapter != null) {
@@ -1598,7 +1435,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
             @Override
             public void onFailure(Call<UpSells> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
                 llRoomForMore.setVisibility(View.GONE);
 
             }
@@ -1634,7 +1470,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
     @Override
     public void OnUpSellItemRemove() {
-//        mUpSellProductAdapter.notifyDataSetChanged();
         initViewUpsell();
         initViewCart();
     }
@@ -1663,7 +1498,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         final String resID = rId;
         RestaurantDetailsInterface apiInterface = ApiClient.getClient(mContext).create(RestaurantDetailsInterface.class);
         RestaurantDetailsRequest request = new RestaurantDetailsRequest();
-//        request.setUserId(val.getLoginResponse().getData().getUserId());
         request.setUserId(sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID));
         request.setPostCode(sharedPreferencesClass.getPostalCode());
         request.setRestaurantId(resID);
@@ -1679,20 +1513,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         res = response.body();
 
                         if (res.getData().getRestaurants().getRestaurantLogo() != null) {
-                           /* Glide.with(getActivity())
-                                    .load(res.getData().getRestaurants().getRestaurantLogo())
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .into(logo);*/
 
                             Glide.with(getActivity()).load(res.getData().getRestaurants().getRestaurantLogo()).apply(new RequestOptions())
                                     .into(logo);
                         }
                         if (res.getData().getRestaurants().getRestaurantImage() != null) {
-                           /* Glide.with(getActivity())
-                                    .load(res.getData().getRestaurants().getRestaurantImage())
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .into(backImage);*/
-
                             Glide.with(getActivity()).load(res.getData().getRestaurants().getRestaurantImage()).apply(new RequestOptions())
 
                                     .into(backImage);
@@ -1706,7 +1531,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
                         sharedPreferencesClass.setString(sharedPreferencesClass.RESTAURANT_NAME_SLUG, response.body().getData().getRestaurants().getRestaurantSlug());
                         restaurantName.setText(res.getData().getRestaurants().getRestaurantName());
-                        tvDistance.setText(String.valueOf(res.getData().getRestaurants().getDistanceInMiles()) + "miles");
+                        tvDistance.setText(String.valueOf(res.getData().getRestaurants().getDistanceInMiles()) + " miles");
                         tvRestaurantAdddress.setText(res.getData().getRestaurants().getAddress());
                         mlat = Double.parseDouble(res.getData().getRestaurants().getLat());
                         mlong = Double.parseDouble(res.getData().getRestaurants().getLng());
@@ -1744,18 +1569,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
                             sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, deliveryTime.getText().toString().trim());
                             restaurantPhoneNumber = res.getData().getRestaurants().getPhoneNumber();
-                            if (val.getRestaurantDetailsResponse() != null && val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() != null && !String.valueOf(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime()).equalsIgnoreCase("")) {
-                                deliveryTime.setText(val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgDeliveryTime() + " min");
-                            } else {
-                                deliveryTime.setText("0 min");
-                            }
+
                             if (res.getData().getRestaurants().getDeliveryOptions() != null || !res.getData().getRestaurants().getDeliveryOptions().equals("")) {
                                 String[] serve_styles = res.getData().getRestaurants().getDeliveryOptions().split(",");
 
                                 int count = serve_styles.length;
                                 paths = new String[count];
-//                        paths[0] = "Please Select";
-
                                 for (int i = 0; i < (serve_styles.length); i++) {
                                     paths[i] = serve_styles[(i)].substring(0, 1).toUpperCase() + serve_styles[(i)].substring(1);
                                     if (serve_styles[i].equalsIgnoreCase("delivery")) {
@@ -1797,7 +1616,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
             @Override
             public void onFailure(Call<NewRestaurantsDetailsResponse> call, Throwable t) {
-                Log.e("ERROR 2>>", t.getMessage());
+
                 dialog.dismiss();
             }
         });
@@ -1806,18 +1625,15 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     }
 
     @Override
-    public void onDeliveryTimeSelect(String time) {
-
+    public void onDeliveryTimeSelect(String time, String isTomorrow, String dateTimeString) {
         if (!time.equalsIgnoreCase("")) {
-          //  deliveryDate.setVisibility(View.VISIBLE);
-         //   String date = time.substring(0, 10);
-            //String formatData = Constants.changeStringDateFormat(date, "yyyy-MM-dd", "dd-MM-yyyy");
-          //  deliveryDate.setText((formatData != null) ? formatData : date);
             deliveryTime.setText(time);
-            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, time);
+            sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, dateTimeString);
+            sharedPreferencesClass.setString(sharedPreferencesClass.IS_TOMORROW, isTomorrow);
             isPreOrder = false;
         } else {
             sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, "");
+            sharedPreferencesClass.setString(sharedPreferencesClass.IS_TOMORROW, isTomorrow);
         }
     }
 
@@ -1872,7 +1688,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 if (response.body().getSuccess()) {
 
                     restaurantSpecialOffers = response.body().getData().getRestaurantSpecialOffers();
-                    Log.e("Data>>>", response.body().getData().toString());
                 }
 
             }
@@ -1880,58 +1695,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             @Override
             public void onFailure(Call<RestaurantOffersResponse> call, Throwable t) {
                 Log.e("ERROR 2>>", t.getMessage());
-
-            }
-        });
-    }
-
-
-    public void getAddressListt() {
-        //   progressBar.setVisibility(View.VISIBLE);
-        AddressListInterface apiInterface = ApiClient.getClient(getActivity()).create(AddressListInterface.class);
-        AddressDeliveryListRequest request = new AddressDeliveryListRequest();
-        request.setCustomerId(val.getLoginResponse().getData().getUserId());
-        request.setRestaurant_id(sharePre.getString(sharePre.RESTUARANT_ID));
-
-        Call<AddressListResponse> call3 = apiInterface.mLogin(request);
-        call3.enqueue(new Callback<AddressListResponse>() {
-            @Override
-            public void onResponse(Call<AddressListResponse> call, Response<AddressListResponse> response) {
-                // progressBar.setVisibility(View.GONE);
-
-                try {
-
-                    if (response.body().getSuccess()) {
-                        addressList.clear();
-                        for (int i = 0; i < response.body().getData().getAddresses().size(); i++) {
-                            addressList.add(new AddressList(response.body().getData().getAddresses().get(i).getId(),
-                                    response.body().getData().getAddresses().get(i).getCustomerId(),
-                                    response.body().getData().getAddresses().get(i).getAddress1(),
-                                    response.body().getData().getAddresses().get(i).getAddress2(),
-                                    response.body().getData().getAddresses().get(i).getCity(),
-                                    response.body().getData().getAddresses().get(i).getPostCode(),
-                                    response.body().getData().getAddresses().get(i).getCountry(),
-                                    ((response.body().getData().getAddresses().get(i).getAddressType().equals("")) ? "" : (response.body().getData().getAddresses().get(i).getAddressType().substring(0, 1).toUpperCase() + response.body().getData().getAddresses().get(i).getAddressType().substring(1))),
-                                    response.body().getData().getAddresses().get(i).getIsDefault(),
-                                    response.body().getData().getAddresses().get(i).getIsDelivering()));
-
-                        }
-                        if (response.body().getData().getAddresses() != null && response.body().getData().getAddresses().size() > 0) {
-                            setSpinnerForAddressList();
-                        }
-
-                    }
-                } catch (Exception e) {
-
-                    Log.e("Exception", e.getMessage());
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<AddressListResponse> call, Throwable t) {
-
 
             }
         });

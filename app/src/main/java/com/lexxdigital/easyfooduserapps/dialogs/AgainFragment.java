@@ -32,7 +32,7 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
     List<MenuProduct> menuProduct;
     View view;
     TextView qtyTetView, tvToDelete;
-    LinearLayout llAction, llitemRemove, llItemAdd;
+    LinearLayout llAction;
     MenuCategory menuCategory;
     int itemCount;
     int action;
@@ -92,8 +92,6 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
         msg = view.findViewById(R.id.tv_msg);
         productModifierView = view.findViewById(R.id.list);
         tvToDelete = view.findViewById(R.id.tv_to_delete);
-     //   llItemAdd = view.findViewById(R.id.item_add);
-        //llitemRemove = view.findViewById(R.id.item_remove);
         llAction = view.findViewById(R.id.ll_action);
         productModifierLayoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
         productModifierLayoutManager.setScrollEnabled(true);
@@ -109,12 +107,8 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
             msg.setVisibility(View.GONE);
         }
         if (action == 1) {
-            // llitemRemove.setVisibility(View.VISIBLE);
-            //llItemAdd.setVisibility(View.GONE);
             tvToDelete.setText(" - to delete the product.");
         } else if (action == 2) {
-            //  llitemRemove.setVisibility(View.GONE);
-            //llItemAdd.setVisibility(View.VISIBLE);
             tvToDelete.setText(" + to add the product.");
         } else {
             llAction.setVisibility(View.GONE);
@@ -170,9 +164,7 @@ public class AgainFragment extends DialogFragment implements View.OnClickListene
         int dialogWindowHeight = (int) (displayHeight * 0.95f);
         layoutParams.width = dialogWindowWidth;
         layoutParams.height = dialogWindowHeight;
-
         getDialog().getWindow().setAttributes(layoutParams);
-
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
     }

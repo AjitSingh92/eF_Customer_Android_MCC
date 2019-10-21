@@ -97,46 +97,7 @@ public class AddCardFragment extends Fragment {
         return view;
     }
 
-//    public void saveCardDetail() {
-//        AddCardInterface apiInterface = ApiClient.getClient(getContext()).create(AddCardInterface.class);
-//        AddCardRequest request = new AddCardRequest();
-//        request.setUserId(val.getLoginResponse().getData().getUserId());
-//        request.setCardNo(cardNumber.getText().toString());
-//        request.setNameOnCard(nameOfCardEt.getText().toString());
-//        request.setCardExpireMonth(expireDate.getText().toString());
-//        request.setCardExpireYear(expireYear.getText().toString());
-//        request.setBillingPostcode(billingEt.getText().toString());
-//
-//        Call<AddCardResponse> call3 = apiInterface.mLogin(request);
-//        call3.enqueue(new Callback<AddCardResponse>() {
-//            @Override
-//            public void onResponse(Call<AddCardResponse> call, Response<AddCardResponse> response) {
-//                try {
-//                    dialog.hide();
-//                    if (response.body().getSuccess()) {
-//                        showDialog("Card added successfully.");
-//                    } else {
-//                        showDialog("Failed to add new card. Please try again.");
-//                    }
-//                } catch (Exception e) {
-//                    dialog.hide();
-//                    showDialog("Failed to add new card. Please try again.");
-//                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-//                    //    showDialog("Please try again.");
-////                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<AddCardResponse> call, Throwable t) {
-//                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
-//                showDialog("Failed to add new card. Please try again.");
-////                dialog.hide();
-////                showDialog("Please try again.");
-//                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+
 
     @Override
     public void onDestroyView() {

@@ -2,10 +2,12 @@
     <string name="app_name">Easy Food</string>
     <string name="currency">\u00a3</string>
 
-    <string name="facebook_app_id">1883086888469507</string>
-    <string name="fb_login_protocol_scheme">fb1883086888469507</string>
+
+    <string name="facebook_app_id">2246223352155867</string>
+    <string name="fb_login_protocol_scheme">fb2246223352155867</string>
+
     <string name="geo_api_key">AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM</string>
-    <!--<string name="geo_api_key">AIzaSyBZt8tduk1FCQCxlMm9J8EhiTCGjRvDCGw</string>-->
+
 
 
     <string name="dummy_button">Dummy Button</string>
@@ -15,7 +17,7 @@
     <string name="email_required">Email (required)</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="submit">SUBMIT</string>
-    <string name="cancel">CANCEL</string>
+    <string name="cancel">Cancel</string>
 
     <string name="sorry_we_don_t_currently_deliver_in_your_area">Sorry, we don’t currently deliver in your area</string>
     <string name="add_note">Add note</string>
@@ -62,7 +64,7 @@ ou will be sent a varification code to your mobile </string>
     <string name="your_meal_is_now_on_it_s_way_to_you_and_will_be_with_you_very_soon">Your meal is now on it’s way to you and will be with you very soon.</string>
     <string name="order_status">Your order is on the way</string>
     <string name="accepted">Accepted</string>
-    <string name="prepared">Prepared</string>
+    <string name="prepared">Preparing</string>
     <string name="on_the_way">On the way</string>
     <string name="delivered">Delivered</string>
     <string name="call_restaurant">Call restaurant</string>
@@ -142,11 +144,11 @@ ou will be sent a varification code to your mobile </string>
 
 
     <!--Todo: Order Status -->
-    <string name="order_title_0">Please wait  \nThe Restaurant is yet to accept your order.</string>
-    <string name="order_title_1">Your order has been accepted.</string>
-    <string name="order_title_2">Your order has been prepared.</string>
-    <string name="order_title_3">Your order is on the way.</string>
-    <string name="order_title_4">Your order has been delivered.</string>
+    <string name="order_title_0">Waiting for acceptance</string>
+    <string name="order_title_1">Order has been accepted</string>
+    <string name="order_title_2">Order is preparing</string>
+    <string name="order_title_3">Order has been prepared and out for delivery</string>
+    <string name="order_title_4">Order has been delivered.</string>
     <string name="restaurent_closed">This restaurant is currently closed </string>
     <string name="restaurent_closed2">This restaurant is closed </string>
     <string name="restaurent_closed3">The restaurant is temporarily closed</string>

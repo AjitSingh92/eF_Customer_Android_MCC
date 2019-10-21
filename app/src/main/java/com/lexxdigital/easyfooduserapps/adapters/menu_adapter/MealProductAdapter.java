@@ -222,7 +222,7 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 if (productSizeAndModifierTable.getMenuProductSize().size() > 0) {
                                     if (productSizeAndModifierTable.getMenuProductSize().get(0).getSizeModifiers().size() > 0) {
                                         if (itemClickListener != null) {
-                                            itemClickListener.OnMealProductClick(dialog, childParentPosition, getLayoutPosition(), parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, productSizeAndModifierTable, isSubCat);
+                                            itemClickListener.OnMealProductClick(dialog, childParentPosition, childPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, productSizeAndModifierTable, isSubCat);
                                         }
                                     }
                                 }

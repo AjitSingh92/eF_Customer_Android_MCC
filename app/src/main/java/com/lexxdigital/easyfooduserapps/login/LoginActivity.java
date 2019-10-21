@@ -63,6 +63,7 @@ import com.lexxdigital.easyfooduserapps.utility.ApiClient;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
+import com.newrelic.agent.android.NewRelic;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,7 +120,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
+        NewRelic.withApplicationToken(
+                "eu01xxae9ccb44aafd9f746b5862b2dcb19769290d"
+        ).start(this.getApplicationContext());
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         ButterKnife.bind(this);

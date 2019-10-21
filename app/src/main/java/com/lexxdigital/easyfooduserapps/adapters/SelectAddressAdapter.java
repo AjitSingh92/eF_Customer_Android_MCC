@@ -22,19 +22,18 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
     Context mContext;
     private List<AddressList> addressList = new ArrayList<AddressList>();
     ArrayList<String> check;
-    ArrayList<String> allReadyCheck;
-
     SelectAddressAdapter.PositionInterface mPositionInterface;
 
-    public  interface PositionInterface{
+    public interface PositionInterface {
         void onClickPos(int pos, ArrayList<String> check);
     }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView edit_details_tv, txtAddreddType, txtAddress;
         RelativeLayout holeItemClick;
-        ImageView rightImg,not_right_tv,iconAddressList;
-        // ImageView imageViewIcon;
+        ImageView rightImg, not_right_tv, iconAddressList;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -50,20 +49,17 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
 
     public SelectAddressAdapter(Context mContext, PositionInterface mPositionInterface, ArrayList<String> check, List<AddressList> address) {
 
-        this.mContext= mContext;
-        this.mPositionInterface= mPositionInterface;
-        this.check= check;
+        this.mContext = mContext;
+        this.mPositionInterface = mPositionInterface;
+        this.check = check;
 
     }
 
     @Override
     public SelectAddressAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
-
-
+                                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_select_address, parent, false);
-
         SelectAddressAdapter.MyViewHolder myViewHolder = new SelectAddressAdapter.MyViewHolder(view);
         return myViewHolder;
     }
@@ -77,49 +73,38 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
 
         final AddressList add = addressList.get(listPosition);
         String addressType = add.getAddressType();
-        if (addressType.equals("home")||addressType.equals("Home")) {
-
+        if (addressType.equals("home") || addressType.equals("Home")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.iconAddressList.setImageDrawable(mContext.getDrawable(R.drawable.home_5));
             }
             holder.txtAddreddType.setText(addressType);
 
 
-        }
-        else if(addressType.equals("work")||addressType.equals("Work")){
+        } else if (addressType.equals("work") || addressType.equals("Work")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.iconAddressList.setImageDrawable(mContext.getDrawable(R.drawable.ic_work_briefcase));
             }
             holder.txtAddreddType.setText(addressType);
-        }
-        else {
+        } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.iconAddressList.setImageDrawable(mContext.getDrawable(R.drawable.other_location));
             }
             holder.txtAddreddType.setText(addressType);
 
         }
-        holder.txtAddress.setText(add.getAddressOne() + " " + add.getAddressTwo()+","+add.getCity()+"\n"+add.getPostCode());
-        RelativeLayout holeItemClick = holder.holeItemClick;
-        TextView edit_details_tv = holder.edit_details_tv;
+        holder.txtAddress.setText(add.getAddressOne() + " " + add.getAddressTwo() + "," + add.getCity() + "\n" + add.getPostCode());
 
-        if(check.get(listPosition).equals("1")){
+        if (check.get(listPosition).equals("1")) {
             rightImg.setVisibility(View.VISIBLE);
             not_right_tv.setVisibility(View.GONE);
-        }else{
+        } else {
             not_right_tv.setVisibility(View.VISIBLE);
-
             rightImg.setVisibility(View.GONE);
         }
         holder.rightImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //  check.set(listPosition,"0");
-                //allReadyCheck.set(listPosition,"0");
-                //  allReadyCheck.set(0,"0");
-                mPositionInterface.onClickPos(listPosition,check);
-
+                mPositionInterface.onClickPos(listPosition, check);
                 holder.rightImg.setVisibility(View.VISIBLE);
                 holder.not_right_tv.setVisibility(View.GONE);
             }
@@ -129,12 +114,8 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
         holder.not_right_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //check.set(listPosition,"1");
-                //  allReadyCheck.set(0,"1");
-                mPositionInterface.onClickPos(listPosition,check);
+                mPositionInterface.onClickPos(listPosition, check);
                 holder.not_right_tv.setVisibility(View.GONE);
-
                 holder.rightImg.setVisibility(View.VISIBLE);
             }
         });
@@ -142,15 +123,13 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
         holder.holeItemClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.rightImg.getVisibility() == View.VISIBLE){
-                    mPositionInterface.onClickPos(listPosition,check);
-
+                if (holder.rightImg.getVisibility() == View.VISIBLE) {
+                    mPositionInterface.onClickPos(listPosition, check);
                     holder.rightImg.setVisibility(View.VISIBLE);
                     holder.not_right_tv.setVisibility(View.GONE);
-                }else{
-                    mPositionInterface.onClickPos(listPosition,check);
+                } else {
+                    mPositionInterface.onClickPos(listPosition, check);
                     holder.not_right_tv.setVisibility(View.GONE);
-
                     holder.rightImg.setVisibility(View.VISIBLE);
                 }
             }
@@ -162,4 +141,5 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
     @Override
     public int getItemCount() {
         return addressList.size();
-    }}
+    }
+}

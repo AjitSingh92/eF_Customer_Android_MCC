@@ -19,23 +19,23 @@
 
             <ImageView
                 android:id="@+id/delivering"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:background="@drawable/circle_orange"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
                 android:src="@drawable/right"
                 android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/not_delivery"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:background="@drawable/circle_with_white_border"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
                 android:src="@drawable/right"
                 android:visibility="gone" />
         </FrameLayout>
@@ -51,8 +51,8 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingLeft="@dimen/_10sdp"
             android:text="Delivery"
-            android:textColor="#828585"
-            android:textSize="@dimen/_14sdp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 
@@ -72,12 +72,12 @@
 
             <ImageView
                 android:id="@+id/dine_in"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:background="@drawable/circle_orange"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
                 android:src="@drawable/right"
                 android:visibility="visible"
 
@@ -85,12 +85,12 @@
 
             <ImageView
                 android:id="@+id/not_dine_in"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:background="@drawable/circle_with_white_border"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
                 android:src="@drawable/right"
                 android:visibility="gone" />
         </FrameLayout>
@@ -106,8 +106,8 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingLeft="@dimen/_10sdp"
             android:text="Dine In"
-            android:textColor="#828585"
-            android:textSize="@dimen/_14sdp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 
@@ -125,23 +125,23 @@
 
             <ImageView
                 android:id="@+id/collection"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:background="@drawable/circle_orange"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
                 android:src="@drawable/right"
                 android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/not_collection"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:background="@drawable/circle_with_white_border"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
                 android:src="@drawable/right"
                 android:visibility="gone" />
         </FrameLayout>
@@ -157,8 +157,8 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingLeft="@dimen/_10sdp"
             android:text="Collection"
-            android:textColor="#828585"
-            android:textSize="@dimen/_14sdp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 

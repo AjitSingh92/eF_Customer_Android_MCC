@@ -59,21 +59,13 @@ public class BillingAddressDialogFragment extends DialogFragment implements
     Boolean isAddressSelected = false;
     TextView tvEmpty;
     FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     public void onAddressSelect(int position, AddressList address) {
         val.setAddress1(address.getAddressOne());
         val.setAddress2(address.getAddressTwo());
         val.setCity(address.getCity());
         val.setPostalCode(address.getPostCode());
-        /*if (address.getIsDelivered() == 1) {
-            isAddressSelected = true;
-            if (isDelivery) {
-                sharePre.setString(sharePre.DEFAULT_ADDRESS, address.getAddressOne() + " " + address.getAddressTwo() + "," + address.getCity() + "\n" + address.getPostCode());
-            } else {
-                sharePre.setString(sharePre.BILLING_ADDRESS, address.getAddressOne() + " " + address.getAddressTwo() + "," + address.getCity() + "\n" + address.getPostCode());
-            }
-        }*/
-
         dismiss();
     }
 
@@ -83,15 +75,6 @@ public class BillingAddressDialogFragment extends DialogFragment implements
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-       /* if (!isAddressSelected) {
-            if (isDelivery) {
-                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
-            } else {
-                sharePre.setString(sharePre.BILLING_ADDRESS, null);
-
-            }
-        }*/
-
         if (onAddressDialogListener != null) {
             onAddressDialogListener.onAddressDialogDismiss(isAddressSelected);
         }
@@ -217,10 +200,6 @@ public class BillingAddressDialogFragment extends DialogFragment implements
     public void getAddressList() {
         progressBar.setVisibility(View.VISIBLE);
         AddressListInterface apiInterface = ApiClient.getClient(context).create(AddressListInterface.class);
-        /*AddressDeliveryListRequest request = new AddressDeliveryListRequest();
-        request.setCustomerId(val.getLoginResponse().getData().getUserId());
-        request.setRestaurant_id(sharePre.getString(sharePre.RESTUARANT_ID));
-       */
         AddressListRequest request = new AddressListRequest();
         request.setCustomerId(val.getLoginResponse().getData().getUserId());
 

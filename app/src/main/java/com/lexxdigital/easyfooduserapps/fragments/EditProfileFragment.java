@@ -20,14 +20,19 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -89,6 +94,7 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
     private final int PICK_IMAGE_CAMERA = 101, PICK_IMAGE_GALLERY = 102;
     private File imgFile;
     FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -149,7 +155,8 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                 try {
                     dialog.hide();
                     if (response.body().getSuccess()) {
-                        showDialog("Account details changed successfully.");
+                        successDialog();
+                        // showDialog("Account details changed successfully.");
                     } else {
 
                         showDialog(response.body().getErrors().getPhoneNumber().get(0));
@@ -157,22 +164,46 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                 } catch (Exception e) {
                     dialog.hide();
                     showDialog("Failed to change account details. Please try again.");
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<EditAccountResponse> call, Throwable t) {
-                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
                 showDialog("Failed to change account details. Please try again.");
                 dialog.hide();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
+
+
+    public void successDialog() {
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_success_dialog, null);
+        //  final LayoutReportDialogBinding dialogBinding = DataBindingUtil.bind(dialogView);
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView);
+        dialog.setCancelable(false);
+        TextView tvOk = (TextView) dialogView.findViewById(R.id.tv_ok);
+
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.seme_transparent)));
+    }
+
 
     public void showDialog(String msg) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
@@ -204,10 +235,6 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                     public void onClick(DialogInterface dialog, int item) {
                         if (options[item].equals("Take Photo")) {
                             dialog.dismiss();
-//
-//                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                            startActivityForResult(intent, PICK_IMAGE_CAMERA);
-
                             Intent m_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
                             Uri uri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", file);
@@ -215,8 +242,6 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
                             startActivityForResult(m_intent, PICK_IMAGE_CAMERA);
                         } else if (options[item].equals("Choose From Gallery")) {
                             dialog.dismiss();
-//                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                            startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY);
                             Intent intent = new Intent();
                             intent.setType("image/*");
                             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -310,9 +335,6 @@ public class EditProfileFragment extends Fragment implements EasyPermissions.Per
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        EasyPermissions.requestPermissions(this, "All permissions are required to run this application", requestCode, permissions);
-        // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 

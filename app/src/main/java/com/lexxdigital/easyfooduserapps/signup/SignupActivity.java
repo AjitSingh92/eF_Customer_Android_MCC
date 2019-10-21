@@ -16,13 +16,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -54,13 +52,11 @@ import com.lexxdigital.easyfooduserapps.search_post_code.api.SearchPostCodeInter
 import com.lexxdigital.easyfooduserapps.search_post_code.model.search_request.SearchPostCodeRequest;
 import com.lexxdigital.easyfooduserapps.search_post_code.model.search_response.SearchPostCodeResponse;
 import com.lexxdigital.easyfooduserapps.signup.api.FinalSignupInterface;
-import com.lexxdigital.easyfooduserapps.signup.api.SendAgainInterface;
+
 import com.lexxdigital.easyfooduserapps.signup.api.SignupRequestInterface;
 import com.lexxdigital.easyfooduserapps.signup.model.final_request.SignupFinalRequest;
 import com.lexxdigital.easyfooduserapps.signup.model.request.SignupRequest;
 import com.lexxdigital.easyfooduserapps.signup.model.response.SignupResponse;
-import com.lexxdigital.easyfooduserapps.signup.model.send_again_request.SendAgainRequest;
-import com.lexxdigital.easyfooduserapps.signup.model.send_again_response.SendAgainResponse;
 import com.lexxdigital.easyfooduserapps.utility.ApiClient;
 import com.lexxdigital.easyfooduserapps.utility.ApiConstants;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
@@ -70,7 +66,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -122,18 +117,13 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
     @BindView(R.id.rl_main)
     RelativeLayout rlMainLayout;
     private Dialog dialog;
-    private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private GlobalValues val;
     private String imageString = "   ";
-    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE};
-    private final int PICK_IMAGE_CAMERA = 101, PICK_IMAGE_GALLERY = 102;
-    private File imgFile;
     private boolean isPopupVisible = false;
     SharedPreferencesClass sharedPreferencesClass;
     private String profileImageString = "";
     private Uri mCropImageUri;
     LinearLayout progress;
-    boolean postcodeStatus = false;
     TextView btnContinnue;
     FirebaseAnalytics mFirebaseAnalytics;
 
@@ -147,13 +137,11 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         ButterKnife.bind(this);
         Constants.setStatusBarGradiant(SignupActivity.this);
         requestSmsPermission();
-
         val = (GlobalValues) getApplicationContext();
         dialog = new Dialog(SignupActivity.this);
         dialog.setTitle("");
         dialog.setCancelable(false);
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
-
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -165,27 +153,22 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             }
         });
 
+
         if (Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
             String[] perms = {
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_NETWORK_STATE,
                     Manifest.permission.RECEIVE_SMS,
                     Manifest.permission.READ_SMS,
-//                    Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.CAMERA
             };
-
-
             if (!EasyPermissions.hasPermissions(this, perms)) {
                 EasyPermissions.requestPermissions(this, "All permissions are required in oder to run this application", 101, perms);
             }
-
-
         }
         ActivityCompat.requestPermissions(SignupActivity.this, new String[]{android.Manifest.permission.RECEIVE_SMS}, 12);
 
     }
+
 
     private void requestSmsPermission() {
         String permission = Manifest.permission.RECEIVE_SMS;
@@ -197,6 +180,7 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         }
     }
 
+
     @OnClick({R.id.ivToolBarbackTv, R.id.add_image, R.id.sendVerivication})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -204,14 +188,11 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 Constants.back(SignupActivity.this);
                 break;
             case R.id.add_image:
-//                selectImage();
                 CropImage.startPickImageActivity(this);
                 break;
             case R.id.sendVerivication:
-                // alertDialogforgotPassword("","","","88101615248",110091);
                 if (Constants.isInternetConnectionAvailable(300)) {
                     validationVerification();
-                    //       alertDialogforgotPassword();
                 } else {
                     dialogNoInternetConnection("Please check internet connection.");
                 }
@@ -219,49 +200,42 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         }
     }
 
+
     @OnClick(R.id.cancel_action)
     public void onViewClicked() {
     }
 
 
     private void validationVerification() {
-
         if (TextUtils.isEmpty(edittextFname.getText().toString().trim())) {
             edittextFname.setError("Please enter first name.");
             edittextFname.requestFocus();
         } else if (TextUtils.isEmpty(edittextLname.getText().toString().trim())) {
             edittextLname.setError("Please enter last name.");
-            // Toast.makeText(LoginActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
             edittextLname.requestFocus();
         } else if (TextUtils.isEmpty(edittextemail.getText().toString().trim())) {
             edittextemail.setError("Please enter email address.");
-            //  Toast.makeText(LoginActivity.this, "Please enter email id.", Toast.LENGTH_SHORT).show();
             edittextemail.requestFocus();
         } else if (!Constants.isValidEmail(edittextemail.getText().toString())) {
-            //  Toast.makeText(LoginActivity.this, "Please enter valid email id.", Toast.LENGTH_SHORT).show();
             edittextemail.setError("Please enter valid email address.");
             edittextemail.requestFocus();
         } else if (TextUtils.isEmpty(edittextMobile.getText().toString().trim())) {
             edittextMobile.setError("Please enter mobile number.");
-            // Toast.makeText(LoginActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
             edittextMobile.requestFocus();
         } else if (edittextMobile.getText().toString().trim().length() < 8) {
             edittextMobile.setError("Please enter valid mobile number.");
             edittextMobile.requestFocus();
         } else if (TextUtils.isEmpty(edittextRefCode.getText().toString().trim())) {
-
             edittextRefCode.setError("Please enter Post Code.");
             edittextRefCode.requestFocus();
 
         } else {
             if (ApiClient.isConnected(getApplicationContext())) {
                 dialog.show();
-//                rlMainLayout.setVisibility(View.GONE);
                 callSearchPostAPI(edittextRefCode.getText().toString());
 
             } else {
                 showDialog("Please check internet connection.");
-                //      Toast.makeText(LoginActivity.this, "Please check internet connection.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -278,7 +252,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
 
         TextView tvPhoneEnding = mDialogView.findViewById(R.id.tv_mobileEnding);
         tvPhoneEnding.setText("Please check your text messages for phone number ending " + mobile.substring(mobile.length() - 4, mobile.length()) + " and enter the verification code");
-        //   tvPhoneEnding.setText("Please enter the verification code shared on your email and mobile");
         pin = (EditText) mDialogView.findViewById(R.id.pin_tv);
 
         SmsReceiver.bindListener(new SmsListener() {
@@ -310,7 +283,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 isPopupVisible = false;
                 mDialog.dismiss();
 
@@ -319,8 +291,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialogView.findViewById(R.id.sign_up_btn_dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
-                //   mDialog.dismiss();
                 if (pin.getText().toString().trim().length() < 4) {
                     pin.setError("Please enter 4 digit code.");
                     pin.requestFocus();
@@ -351,7 +321,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 } else if (Integer.parseInt(pin.getText().toString()) == code) {
                     isPopupVisible = false;
                     mDialog.dismiss();
-//                    callWebviewPrivacy();
                     callAPIFinalSignup(fname, lname, email, mobile, re_password.getText().toString(), password.getText().toString());
                 }
 
@@ -365,7 +334,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
     @Override
     public void onBackPressed() {
         startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-//        isPopupVisible = false;
         finish();
         super.onBackPressed();
 
@@ -387,22 +355,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         super.onStop();
         dialog.dismiss();
     }
-    /*   @Override
-    public void onResume() {
-        super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("otp"));
-        AppEventsLogger.activateApp(this);
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        AppEventsLogger.deactivateApp(this);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
-
-
-    }*/
 
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -412,7 +364,7 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 final String message = intent.getStringExtra("message");
                 Log.d("->>>>", " " + message);
                 pin.setText(message);
-                //Do whatever you want with the code here
+
             }
         }
     };
@@ -436,17 +388,11 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                     //                  //Log.e("Success ><<<<<<<", ">>>>> Success" + response.code()+"//"+response.body().getResponseCode()+"//"+response.body().getResponseMsg());
                     if (response.code() == 200 && response.body().getSuccess()) {
                         dialog.hide();
-                        Log.e("Code------> ", "" + response.body().getData().getOtp());
-                        //    showDialog(response.body().getMessage() + response.body().getData().getOtp());
-//                        if (!isPopupVisible)
+
                         alertDialogforgotPassword(edittextFname.getText().toString(), edittextLname.getText().toString(), edittextemail.getText().toString(), edittextMobile.getText().toString(), response.body().getData().getOtp());
-//                        isPopupVisible = true;
-//                        Constants.switchActivity(LoginActivity.this, DashboardActivity.class);
-//                        finish();
+//
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
                         dialog.hide();
-                        Log.e("signup", "response.body().getErrors().getEmail()" + response.body().getErrors().getEmail() + "onResponse:response.body().getErrors().getPhoneNumber() " + response.body().getErrors().getPhoneNumber());
-
                         String msg = "";
 
                         if (response.body().getErrors().getEmail() != null) {
@@ -467,16 +413,13 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 } catch (Exception e) {
                     dialog.hide();
                     showDialog("Please try again.");
-                    //    Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SignupResponse> call, Throwable t) {
-                //Log.e("Error <>>>",">>>>>"+t.getMessage());
                 dialog.hide();
                 showDialog("Please try again later. failed");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -501,8 +444,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         request.setProfilePic(imageString);
         request.setDevice_imei_number(getDeviceIMEI());
         request.setPostalcode(edittextRefCode.getText().toString().trim());
-
-        Log.e("DATA>>", "" + fname + "//" + lname + "//" + email + "//" + mobile + "//" + password + "//" + repassword);
         Call<LoginResponse> call3 = apiInterface.mLogin(request);
         call3.enqueue(new Callback<LoginResponse>() {
             @Override
@@ -510,20 +451,8 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 if (dialog.isShowing())
                     dialog.dismiss();
                 try {
-
-                    Log.e("Success ><<<<<<<", ">>>>> Success" + response.code() + "//" + response.body().getSuccess() + "//" + response.body().getMessage());
                     if (response.code() == 200 && response.body().getSuccess()) {
-                        Log.e(">>>>> ", "  " + "true");
-                        // val.setSignupResponse(response.body());
-
-
                         val.setLoginResponse(response.body());
-//                        if (response.code() == 200 && response.body().getSuccess()) {
-
-//                        forgotDialog.dismiss();
-//                        forgotDialog.cancel();
-//                        forgotDialog.hide();
-//                        val.setPostCode(response.body().getData().getPost_code());
                         val.setProfileImage(response.body().getData().getProfilePic());
                         val.setFirstName(response.body().getData().getFirstName());
                         val.setLastName(response.body().getData().getLastName());
@@ -533,56 +462,33 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                         sharedPreferencesClass.setPostalCode(edittextRefCode.getText().toString());
                         sharedPreferencesClass.setObject(sharedPreferencesClass.LoginResponseKey, new Gson().toJson(response.body()));
                         sharedPreferencesClass.setloginpref(response.body().getData().getUserId());
-                        String postcode = sharedPreferencesClass.getPostalCode();
                         sharedPreferencesClass.setString(sharedPreferencesClass.USER_ID, response.body().getData().getUserId());
                         sharedPreferencesClass.setString(sharedPreferencesClass.LOGIN_VIA, Constants.LOGIN_WITH_OTHER);
-
                         sharedPreferencesClass.setloginpref("1"); // isLogin
                         sharedPreferencesClass.setString(sharedPreferencesClass.USER_NAME, response.body().getData().getName());
                         sharedPreferencesClass.setString(sharedPreferencesClass.USER_PROFILE_IMAGE, response.body().getData().getProfilePic());
                         sharedPreferencesClass.setInt(sharedPreferencesClass.NUMBER_OF_ORDERS, response.body().getData().getPrevious_orders());
-
-
-                          /*  Intent i = new Intent(SignupActivity.this, DashboardActivity.class);
-                            startActivity(i);
-                            overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);*/
                         dialog.dismiss();
-
-                        //  finish();
-
-//                        }
-//                        showDialogSuccess(response.body().getMessage());
                         callWebviewPrivacy();
-
-                        // goBack();
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
                         dialog.dismiss();
-                        // Log.e("signup ", "onResponse: " + response.body().getErrors().getFirstName());
-                        // Log.e(">>>>> ", "  " + "false");
-
                         showDialog(response.body().getMessage());
-                        //    Toast.makeText(LoginActivity.this, response.body().getResponseMsg(), Toast.LENGTH_SHORT).show();
                     } else {
                         dialog.dismiss();
-                        Log.e(">>>>> ", "  " + "after false");
-
                         showDialog(response.body().getMessage());
-                        //         Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
                     showDialog("Please try again.");
-                    //    Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                //Log.e("Error <>>>",">>>>>"+t.getMessage());
                 if (dialog.isShowing())
                     dialog.dismiss();
                 showDialog("Please try again." + t.getMessage());
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -605,29 +511,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         alert11.show();
     }
 
-    public void showDialogSuccess(String msg) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(SignupActivity.this);
-        builder1.setMessage(msg);
-        builder1.setCancelable(false);
-
-        builder1.setPositiveButton(
-                "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog2, int id) {
-                        callWebviewPrivacy();
-                        dialog2.cancel();
-                    }
-                });
-        AlertDialog alert11 = builder1.create();
-
-
-        alert11.show();
-    }
-
-    public void goBack() {
-        Constants.switchActivity(SignupActivity.this, DashboardActivity.class);
-        finish();
-    }
 
     void dialogMarketCommunication() {
 
@@ -647,8 +530,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
 
                 Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                 alertDialog.dismiss();
-//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 sharedPreferencesClass.setloginpref(null);
                 startActivity(i);
                 finish();
@@ -660,8 +541,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(SignupActivity.this, DashboardActivity.class);
-//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 alertDialog.dismiss();
                 SignupActivity.this.finish();
@@ -674,8 +553,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             public void onClick(View v) {
                 Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                 alertDialog.dismiss();
-//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 sharedPreferencesClass.setloginpref(null);
                 startActivity(i);
                 finish();
@@ -686,112 +563,20 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         alertDialog.show();
     }
 
-    private void selectImage() {
-        try {
-            PackageManager pm = getPackageManager();
-            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getPackageName());
-            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(SignupActivity.this);
-                builder.setTitle("Select Option");
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-                        if (options[item].equals("Take Photo")) {
-                            dialog.dismiss();
-//
-//                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                            startActivityForResult(intent, PICK_IMAGE_CAMERA);
-
-                            Intent m_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-                            Uri uri = FileProvider.getUriForFile(SignupActivity.this, getApplicationContext().getPackageName() + ".provider", file);
-                            m_intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                            startActivityForResult(m_intent, PICK_IMAGE_CAMERA);
-                        } else if (options[item].equals("Choose From Gallery")) {
-                            dialog.dismiss();
-//                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                            startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY);
-                            Intent intent = new Intent();
-                            intent.setType("image/*");
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_GALLERY);
-                        } else if (options[item].equals("Cancel")) {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                builder.show();
-            } else {
-                EasyPermissions.requestPermissions(this, "All permissions are required in oder to run this application", 101, permissions);
-                Toast.makeText(this, "Camera Permission error", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Camera Permission error", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
-
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_CAMERA) {
-            try {
-                if (requestCode == 101 && resultCode == RESULT_OK) {
-                    imgFile = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
-                    //bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
-                    profileImg.setImageBitmap(bitmap);
-
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    imageString = "data:image/png;base64," + Base64.encodeToString(byteArray, Base64.DEFAULT);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        } else if (requestCode == PICK_IMAGE_GALLERY) {
-
-            try {
-                if (requestCode == 102 && resultCode == RESULT_OK) {
-                    Uri imageUri = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    profileImg.setImageBitmap(bitmap);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    imageString = "data:image/png;base64," + Base64.encodeToString(byteArray, Base64.DEFAULT);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
 
     @Override
     @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        // handle result of pick image chooser
         if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri imageUri = CropImage.getPickImageResultUri(this, data);
-
-            // For API >= 23 we need to check specifically that we have permissions to read external storage.
             if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
-                // request permissions and handle the result in onRequestPermissionsResult()
                 mCropImageUri = imageUri;
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
             } else {
-                // no permissions required or already grunted, can start crop image activity
                 startCropImageActivity(imageUri);
             }
         }
 
-        // handle result of CropImageActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
@@ -819,11 +604,9 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
         if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // required permissions granted, start crop image activity
             startCropImageActivity(mCropImageUri);
         } else {
             EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-//            Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -845,42 +628,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
                 .start(this);
-    }
-
-    public void sendOTPAgain(String email, String phone) {
-        SendAgainInterface apiInterface = ApiClient.getClient(this).create(SendAgainInterface.class);
-        SendAgainRequest request = new SendAgainRequest();
-        request.setEmail(email);
-        request.setPhoneNumber(phone);
-
-        Call<SendAgainResponse> call3 = apiInterface.mSendOTP(request);
-        call3.enqueue(new Callback<SendAgainResponse>() {
-            @Override
-            public void onResponse(Call<SendAgainResponse> call, Response<SendAgainResponse> response) {
-                try {
-                    dialog.hide();
-                    if (response.body().getSuccess()) {
-
-                        Toast.makeText(SignupActivity.this,
-                                "OPT has been sent successfully to your mail id.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(SignupActivity.this,
-                                "Failed to send. Please send again.", Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-                    dialog.hide();
-                    Toast.makeText(SignupActivity.this,
-                            "Failed to send. Please send again." + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SendAgainResponse> call, Throwable t) {
-                dialog.hide();
-                Toast.makeText(SignupActivity.this,
-                        "Failed to send. Please send again." + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     public String getDeviceIMEI() {
@@ -916,8 +663,7 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
-                dialogMarketCommunication(); // Open market Communication Dialog
+                dialogMarketCommunication();
                 mDialog.dismiss();
             }
         });
@@ -928,7 +674,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 privacyDesc.setVisibility(View.GONE);
                 btnContinnue.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
-                // privacyPolc.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
                 webView.setWebViewClient(new MyWebViewClient());
                 webView.loadUrl(ApiConstants.PRIVACY_POLICY);

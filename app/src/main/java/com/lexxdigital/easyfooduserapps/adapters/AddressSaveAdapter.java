@@ -139,14 +139,6 @@ public class AddressSaveAdapter extends RecyclerView.Adapter<AddressSaveAdapter.
             }
         });
 
-//        holder.holeItemClick.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                mPositionInterface.onClickPos(listPosition);
-//            }
-//        });
-
 
         holder.edit_details_tv.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -15,15 +15,12 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
-        // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         FirebaseMessaging.getInstance().subscribeToTopic("all");
 
         Log.e("fc_id", "Refreshed token: " + refreshedToken);
         sharedPreferences = new SharedPreferencesClass(this);
         storeRegIdInPref(refreshedToken);
-        /*If you want to send messages to this application instance or manage this apps subscriptions on the server side, send the Instance ID token to your app server.*/
-
         sendRegistrationToServer(refreshedToken);
     }
 
@@ -36,27 +33,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         if (sharedPreferences.getBoolean(sharedPreferences.IS_FB_TOKEN_UPDATE) || sharedPreferences.getString(sharedPreferences.FB_TOKEN_ID).equals("")) {
             return;
         }
-/*
-
-        API api = RestClient.getClient().create(API.class);
-        UpdateFbTokenRequest data = new UpdateFbTokenRequest("1", BaseApp.getInstance().sharedPref().getString(SharedPref.FB_TOKEN_ID));
-
-        api.updateFirebaseId(data).enqueue(new Callback<UpdateFirebaseIdResponse>() {
-            @Override
-            public void onResponse(Call<UpdateFirebaseIdResponse> call, Response<UpdateFirebaseIdResponse> response) {
-                if (response.body().getStatus() && response.body().getData().getStatus()) {
-                    BaseApp.getInstance().sharedPref().setBoolean(SharedPref.IS_FB_TOKEN_UPDATE, true);
-                    Log.e("Token", "Token UPDATED");
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UpdateFirebaseIdResponse> call, Throwable t) {
-                Log.e("onFailure", t.toString());
-            }
-        });
-*/
 
     }
 

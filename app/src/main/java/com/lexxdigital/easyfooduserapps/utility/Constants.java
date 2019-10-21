@@ -46,16 +46,13 @@ public class Constants {
 
     public static final String EDIT_ADDRESS = "EditAddress";
     public static final String ADDRESS = "address";
-    public static final String ADDRESS_TYPE = "ADDRESS_TYPE";
-    public static final String ADD_ADDRESS = "add_address";
     public static final String LOGIN_WITH_OTHER = "other";
     public static final String LOGIN_WITH_FB = "fb";
     public static final String LOGIN_WITH_GPLUS = "gplus";
 
 
-    public static final String DEVELOPER_KEY = "AIzaSyB_0zHJbmm00TBeEaSq0PXF3wUU0IGRKn4";//"AIzaSyCzSy55IUBXlKj2bgRtVpX8pSC7pbCvetU";
-    public static final String STRIPE_PUBLISH_KEY = "pk_test_DeSdrzpJiSsiGuXxZ2Id7xAV"; // For testing stripe payment
-    //    public static final String STRIPE_PUBLISH_KEY = "pk_live_KVhKkdTGEbjB20Ux6f6funsR"; // For real stripe payment
+    public static final String DEVELOPER_KEY = "AIzaSyB_0zHJbmm00TBeEaSq0PXF3wUU0IGRKn4";
+    public static final String STRIPE_PUBLISH_KEY = "pk_test_DeSdrzpJiSsiGuXxZ2Id7xAV";
     public static final String NOTIFICATION_TYPE = "NOTIFICATION_TYPE";
     public static final String NOTIFICATION_ORDER_ID = "NOTIFICATION_ORDER_ID";
     public static final int NOTIFICATION_ID = 10000;
@@ -118,33 +115,6 @@ public class Constants {
     }
 
 
-    public static String getPostalCodeByCoordinates(Context context, double lat, double lon) throws IOException {
-
-        Geocoder mGeocoder = new Geocoder(context, Locale.getDefault());
-        String zipcode = null;
-        Address address = null;
-
-        if (mGeocoder != null) {
-
-            List<Address> addresses = mGeocoder.getFromLocation(lat, lon, 5);
-
-            if (addresses != null && addresses.size() > 0) {
-
-                for (int i = 0; i < addresses.size(); i++) {
-                    address = addresses.get(i);
-                    if (address.getPostalCode() != null) {
-                        zipcode = address.getPostalCode();
-                        Log.d("Postal code", "Postal code: " + address.getPostalCode());
-                        break;
-                    }
-
-                }
-                return zipcode;
-            }
-        }
-
-        return null;
-    }
 
     public static boolean isInternetConnectionAvailable(int timeOut) {
         InetAddress inetAddress = null;

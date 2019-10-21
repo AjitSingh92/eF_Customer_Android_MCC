@@ -13,6 +13,19 @@ public class TimeSlotResponse {
     @Expose
     private String message;
 
+
+    @SerializedName("todaydate")
+    @Expose
+    private String todaydate;
+
+    @SerializedName("tomorrowdate")
+    @Expose
+    private String tomorrowdate;
+
+    @SerializedName("timenow")
+    @Expose
+    private String timenow;
+
     @SerializedName("data")
     @Expose
     private Data data;
@@ -75,6 +88,31 @@ public class TimeSlotResponse {
         this.message = message;
     }
 
+    public String getTodaydate() {
+        return todaydate;
+    }
+
+    public void setTodaydate(String todaydate) {
+        this.todaydate = todaydate;
+    }
+
+    public String getTomorrowdate() {
+        return tomorrowdate;
+    }
+
+    public void setTomorrowdate(String tomorrowdate) {
+        this.tomorrowdate = tomorrowdate;
+    }
+
+    public String getTimenow() {
+        return timenow;
+    }
+
+    public void setTimenow(String timenow) {
+        this.timenow = timenow;
+    }
+
+
     public Data getData() {
         return data;
     }
@@ -95,7 +133,10 @@ public class TimeSlotResponse {
     public String toString() {
         return "TimeSlotResponse{" +
                 "success=" + success +
-                ", message='" + message + '\'' +
+                ", message='" + message +
+                ", todaydate='" + todaydate +
+                ", tomorrowdate='" + tomorrowdate +
+                ", timenow='" + timenow + '\'' +
                 ", data=" + data +
                 ", errors=" + errors +
                 '}';

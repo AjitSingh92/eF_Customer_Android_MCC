@@ -12,25 +12,21 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_50sdp">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/fm"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
-            android:layout_gravity="center">
+            android:layout_gravity="center_horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImg"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginStart="6dp"
-                android:layout_marginLeft="6dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerInParent="true"
                 android:src="@mipmap/avatar_profile"
                 android:visibility="gone" />
 
@@ -38,7 +34,7 @@
                 android:id="@+id/image"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal"
                 fresco:actualImageScaleType="fitCenter"
                 fresco:failureImage="@mipmap/avatar_profile"
                 fresco:placeholderImage="@mipmap/avatar_profile"
@@ -46,7 +42,9 @@
                 fresco:progressBarAutoRotateInterval="5000"
                 fresco:progressBarImage="@drawable/image_loader"
                 fresco:progressBarImageScaleType="center"
-                fresco:roundAsCircle="true" />
+                fresco:roundAsCircle="true"
+                android:layout_centerInParent="true"
+                android:visibility="visible"/>
 
             <LinearLayout
                 android:id="@+id/add_image"
@@ -67,7 +65,7 @@
             </LinearLayout>
 
 
-        </LinearLayout>
+        </RelativeLayout>
     </FrameLayout>
 
     <LinearLayout

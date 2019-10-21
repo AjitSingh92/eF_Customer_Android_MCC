@@ -40,7 +40,6 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
 
     Context mContext;
     Activity mActivity;
-
     @BindView(R.id.restaurants_name)
     TextView restaurantsName;
     @BindView(R.id.about)
@@ -109,14 +108,6 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.map1);
         mapFragment.getMapAsync(this);
         areCodeList = new ArrayList<>();
-
-//        mapView = (MapView) view.findViewById(R.id.mapView2);
-//        mapView.onCreate(savedInstanceState);
-//        mapView.setClickable(true);
-//        mapView.setFocusable(true);
-//        mapView.setDuplicateParentStateEnabled(false);
-//        mapView.getMapAsync(this);
-
         setData();
         return view;
 
@@ -124,9 +115,7 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney, Australia,
-        // and move the map's camera to the same location.
-        LatLng restaurant = new LatLng(Double.parseDouble(response.getData().getRestaurants().getLat()), Double.parseDouble(response.getData().getRestaurants().getLng()));
+          LatLng restaurant = new LatLng(Double.parseDouble(response.getData().getRestaurants().getLat()), Double.parseDouble(response.getData().getRestaurants().getLng()));
         googleMap.addMarker(new MarkerOptions().position(restaurant)
                 .title(response.getData().getRestaurants().getRestaurantName()));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(restaurant));
@@ -169,10 +158,6 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             }
         } else
             lyMonday.setVisibility(View.GONE);
-
-
-        Log.e("MMMM", "///" + response.getData().getRestaurants().getInfo().getTimings().getTuesday());
-
         if (response.getData().getRestaurants().getInfo().getTimings().getTuesday() != null) {
             String times = "";
             for (int i = 0; i < response.getData().getRestaurants().getInfo().getTimings().getTuesday().size(); i++) {

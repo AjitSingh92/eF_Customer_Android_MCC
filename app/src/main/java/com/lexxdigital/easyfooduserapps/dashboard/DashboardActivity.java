@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -60,6 +62,7 @@ import com.lexxdigital.easyfooduserapps.utility.ApiConstants;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
+import com.newrelic.agent.android.NewRelic;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -178,16 +181,16 @@ public class DashboardActivity extends AppCompatActivity {
     private Dialog mDialog;
     FirebaseAnalytics mFirebaseAnalytics;
     private static DashboardActivity instance = null;
-    // private LinearLayout home, top_ac, manageAddressId, paymentId, my_basket_id, my_orderId, myfevId, privacyId, fapId, logout;
-    //   private TextView list_of_address, , tv_manageAddress, payments, my_basket, my_orders, favourites, privacy_policy, faq, tv_logout;
 
-    // FilterSortByAdapter.PositionInterface mPositionInterface2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_with_drawer);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
+        NewRelic.withApplicationToken(
+                "eu01xxae9ccb44aafd9f746b5862b2dcb19769290d"
+        ).start(this.getApplicationContext());
         instance = this;
         ButterKnife.bind(this);
         val = (GlobalValues) getApplicationContext();
@@ -205,17 +208,11 @@ public class DashboardActivity extends AppCompatActivity {
         mDialog.setContentView(R.layout.progress_dialog);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Log.e("NAMD >>> ANAND >", "" + val.getUserName());
-
 
         if (val.getUserName() == null) {
             loginResponse = (LoginResponse) sharedPreferencesClass.getObject(sharedPreferencesClass.LoginResponseKey, LoginResponse.class);
 
-            String postc = sharedPreferencesClass.getPostalCode();
-            Log.e("", "onCreate: " + loginResponse.getData().getEmail());
-            // val.setFirstName(loginResponse.getData().getFirstName());
-            // Log.e("", "onCreate: "+loginResponse.getFirstName() );
-            // val.setPostCode(loginResponse);
+
             val.setPostCode(sharedPreferencesClass.getPostalCode());
             val.setLoginResponse(loginResponse);
             val.setProfileImage(loginResponse.getData().getProfilePic());
@@ -227,23 +224,11 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-        /*
-         Intent i = new Intent(RestaurantDetailsActivity.this, DashboardActivity.class);
-                        i.putExtra("FROMMENU", "YES");
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.setAction("custom");
-                        startActivity(i);
-    */
-
-
         Constants.setStatusBarGradiant(DashboardActivity.this);
         Bundle extras = getIntent().getExtras();
-        Log.e("EXTRA>>>", "//" + extras);
-        //imTitileImage.setVisibility(View.GONE);
         ivFilter.setVisibility(View.GONE);
         if (extras != null) {
             if (extras.getString("FROMMENU").equalsIgnoreCase("YES")) {
-                // imTitileImage.setVisibility(View.VISIBLE);
 
                 etLocation.setVisibility(View.GONE);
                 setDefaultDrawer();
@@ -252,7 +237,6 @@ public class DashboardActivity extends AppCompatActivity {
                 ivFilter.setVisibility(View.GONE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
-                //  transaction.commit();
                 transaction.commitAllowingStateLoss();
             } else if (val.getPostCode() != null) {
 
@@ -265,7 +249,6 @@ public class DashboardActivity extends AppCompatActivity {
                 postCode = val.getPostCode();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode));
-                //  transaction.commit();
                 transaction.commitAllowingStateLoss();
             }
 
@@ -274,15 +257,9 @@ public class DashboardActivity extends AppCompatActivity {
             postCode = val.getPostCode();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
             transaction.replace(R.id.frameLayout, new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode));
-            //  transaction.commit();
+
             transaction.commitAllowingStateLoss();
         }
-// else {
-//            postCode = val.getPostCode();
-//            Constants.fragmentCall(new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode), getSupportFragmentManager());
-//        }
-
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -311,7 +288,6 @@ public class DashboardActivity extends AppCompatActivity {
         myAccount.setText(val.getFirstName() + " " + val.getLastName());
         String imgUrl = val.getProfileImage();
         System.out.println("imgUrl: " + imgUrl);
-        // Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
         Glide.with(this).load(val.getProfileImage()).apply(new RequestOptions()
                 .placeholder(R.mipmap.avatar_profile))
                 .into(drawer_profile_pic);
@@ -319,17 +295,9 @@ public class DashboardActivity extends AppCompatActivity {
             val.setIsFromDealPage(true);
             Intent i = new Intent(this, SearchPostCodeActivity.class);
             startActivity(i);
-//            finish();
+
             overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
         }
-
-
-      /*  ivFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(val, "Hello", Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
     }
 
@@ -350,55 +318,14 @@ public class DashboardActivity extends AppCompatActivity {
         return instance;
     }
 
-    public void slidefromRightToLeft() {
-
-        TranslateAnimation animate;
-        if (menuIdRl.getHeight() == 0) {
-            menuIdRl.getHeight(); // parent layout
-            animate = new TranslateAnimation(menuIdRl.getWidth() / 2,
-                    0, 0, 0);
-        } else {
-            animate = new TranslateAnimation(menuIdRl.getWidth(), 0, 0, 0); // View for animation
-        }
-
-        animate.setDuration(500);
-        animate.setFillAfter(true);
-        menuIdRl.startAnimation(animate);
-        menuIdRl.setVisibility(View.VISIBLE); // Change visibility VISIBLE or GONE
-    }
-
-    public void slidefromLeftToRight() {
-        TranslateAnimation animate;
-        if (menuIdRl.getHeight() == 0) {
-            menuIdRl.getHeight(); // parent layout
-            animate = new TranslateAnimation(0,
-                    menuIdRl.getWidth() / 2, 0, 0);
-        } else {
-            animate = new TranslateAnimation(0, menuIdRl.getWidth(), 0, 0); // View for animation
-        }
-
-        animate.setDuration(500);
-        animate.setFillAfter(true);
-        menuIdRl.startAnimation(animate);
-        menuIdRl.setVisibility(View.GONE); // Change visibility VISIBLE or GONE
-    }
-
 
     @OnClick({R.id.top_track_order, R.id.txt_trackorder, R.id.menuId, R.id.my_account, R.id.top_ac, R.id.manageAddressId,/* R.id.list_of_address,*/ R.id.home, R.id.add_new_address, R.id.new_address, /*R.id.payments,*/ R.id.paymentId, R.id.my_credit_debit_card, R.id.creditCardId, R.id.add_credit_debit_card, R.id.new_card,/* R.id.my_basket,*/ R.id.my_basket_id, /*R.id.my_orders,*/ R.id.my_orderId, /*R.id.favourites,*/ R.id.myfevId, /*R.id.privacy_policy,*/ R.id.privacyId, /*R.id.faq,*/ R.id.fapId, R.id.help, R.id.helpId, R.id.profileId, R.id.logout, R.id.menuIdRl, R.id.ivFilter, R.id.et_location})
     public void onViewClicked(View view) {
-        //imTitileImage.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.top_track_order:
                 ivFilter.setVisibility(View.GONE);
                 etLocation.setVisibility(View.GONE);
                 startActivity(new Intent(DashboardActivity.this, OrderStatusActivity.class));
-                //  Constants.fragmentCall(new MyAccountFragment(getApplicationContext(), tvToolbarTitle), getSupportFragmentManager());
-//                Animation RightSwipe = AnimationUtils.loadAnimation(DashboardActivity.this, R.anim.left_slide);
-//                menuIdRl.startAnimation(RightSwipe);
-//                menuIdRl.setVisibility(View.VISIBLE);
-                // setDefaultDrawer();
-                // home.setBackgroundColor(getResources().getColor(R.color.orange));
-                //  listOfAddress.setTextColor(getResources().getColor(R.color.white));
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -412,9 +339,6 @@ public class DashboardActivity extends AppCompatActivity {
                 ivFilter.setVisibility(View.GONE);
                 etLocation.setVisibility(View.GONE);
                 startActivity(new Intent(DashboardActivity.this, OrderStatusActivity.class));
-//                Animation RightSwipe = AnimationUtils.loadAnimation(DashboardActivity.this, R.anim.left_slide);
-//                menuIdRl.startAnimation(RightSwipe);
-//                menuIdRl.setVisibility(View.VISIBLE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -422,26 +346,18 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.menuId:
-//                Animation RightSwipe = AnimationUtils.loadAnimation(DashboardActivity.this, R.anim.left_slide);
-//                menuIdRl.startAnimation(RightSwipe);
-//                menuIdRl.setVisibility(View.VISIBLE);
                 etLocation.setVisibility(View.GONE);
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
                     drawer.openDrawer(Gravity.RIGHT);
                 }
-                //  Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
-
                 Glide.with(this).load(val.getProfileImage()).apply(new RequestOptions()
                         .placeholder(R.mipmap.avatar_profile))
                         .into(drawer_profile_pic);
                 myAccount.setText(val.getFirstName() + " " + val.getLastName());
                 break;
 
-            /*case R.id.imtitileIcone:
-                Toast.makeText(val, "Hello", Toast.LENGTH_SHORT).show();
-                break;*/
             case R.id.my_account:
                 etLocation.setVisibility(View.GONE);
                 break;
@@ -581,7 +497,6 @@ public class DashboardActivity extends AppCompatActivity {
                 etLocation.setVisibility(View.GONE);
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
-//                imTitileImage.setVisibility(View.VISIBLE);
                 Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -596,7 +511,6 @@ public class DashboardActivity extends AppCompatActivity {
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
-                //              imTitileImage.setVisibility(View.GONE);
                 Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -665,10 +579,6 @@ public class DashboardActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.privacyId:
-                etLocation.setVisibility(View.GONE);
-                setDefaultDrawer();
-                privacyId.setBackgroundColor(getResources().getColor(R.color.orange));
-                privacyPolicy.setTextColor(getResources().getColor(R.color.white));
                 callWebviewPrivacy();
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
@@ -754,17 +664,22 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     void callWebviewPrivacy() {
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View mDialogView = factory.inflate(R.layout.privacy_dialog, null);
-        final AlertDialog mDialog = new AlertDialog.Builder(this).create();
-        mDialog.setView(mDialogView);
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        View mDialogView = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.privacy_dialog, null);
+
+        final Dialog mDialog = new Dialog(this);
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(mDialogView.getRootView());
+        mDialog.setCancelable(false);
+
+
         final TextView privacyDesc = mDialogView.findViewById(R.id.desc_privacy);
         final TextView privacyPolc = mDialogView.findViewById(R.id.privacy_polc);
         btnContinnue = mDialogView.findViewById(R.id.btn_continue);
         progress = mDialogView.findViewById(R.id.progress);
         final WebView webView = mDialogView.findViewById(R.id.web_privacy_policy);
-        webView.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.loadUrl(ApiConstants.PRIVACY_POLICY);
 
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -773,22 +688,16 @@ public class DashboardActivity extends AppCompatActivity {
                 mDialog.dismiss();
             }
         });
-        btnContinnue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                privacyDesc.setVisibility(View.GONE);
-                btnContinnue.setVisibility(View.GONE);
-                webView.setVisibility(View.VISIBLE);
-                // privacyPolc.setVisibility(View.GONE);
-                progress.setVisibility(View.VISIBLE);
-                webView.setWebViewClient(new MyWebViewClient());
-                webView.loadUrl(ApiConstants.PRIVACY_POLICY);
 
-            }
-
-        });
 
         mDialog.show();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        mDialog.getWindow().setAttributes(lp);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
     }
 
@@ -801,14 +710,12 @@ public class DashboardActivity extends AppCompatActivity {
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         final WebView webView = mDialogView.findViewById(R.id.web_faqs);
         prDialog = mDialogView.findViewById(R.id.progressBar);
-        //  webView.loadUrl("http://13.233.171.105/easyfood_backend_api/public/api/v1/restaurant_faq");
+
         prDialog.setVisibility(View.VISIBLE);
         webView.setVisibility(View.VISIBLE);
         webView.setWebViewClient(new MyWebViewClient());
 
         String url = ApiConstants.CONSUMER_FAQ;
-        // webView.getSettings().setJavaScriptEnabled(true);
-        //  webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webView.loadUrl(url);
 
 
@@ -863,8 +770,6 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
 
 
-
-
             if (doubleBackToExitPressedOnce) {
                 finish();
                 return;
@@ -887,22 +792,17 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        //imTitileImage.setVisibility(View.GONE);
         ivFilter.setVisibility(View.GONE);
         if (intent.getAction() != null) {
             if (intent.getAction().equals("custom")) {
-
-
                 etLocation.setVisibility(View.GONE);
                 setDefaultDrawer();
                 myBasketId.setBackgroundColor(getResources().getColor(R.color.orange));
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
-                // imTitileImage.setVisibility(View.VISIBLE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
-                //  transaction.commit();
                 transaction.commitAllowingStateLoss();
             }
         } else {
@@ -915,7 +815,6 @@ public class DashboardActivity extends AppCompatActivity {
             postCode = val.getPostCode();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
             transaction.replace(R.id.frameLayout, new DealsFragment(getApplicationContext(), DashboardActivity.this, tvToolbarTitle, postCode));
-            //  transaction.commit();
             transaction.commitAllowingStateLoss();
         }
     }
@@ -923,8 +822,6 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        // Glide.with(this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(drawer_profile_pic);
-
         Glide.with(this).load(val.getProfileImage()).apply(new RequestOptions()
                 .placeholder(R.mipmap.avatar_profile))
                 .into(drawer_profile_pic);
@@ -946,70 +843,6 @@ public class DashboardActivity extends AppCompatActivity {
         super.onDestroy();
         mDialog.dismiss();
 
-    }
-
-    public void alertDialogFilter() {
-        LayoutInflater factory = LayoutInflater.from(DashboardActivity.this);
-        final View mDialogView = factory.inflate(R.layout.popup_filter, null);
-        final AlertDialog filterDialog = new AlertDialog.Builder(DashboardActivity.this).create();
-        filterDialog.setView(mDialogView);
-        filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final EditText email = (EditText) mDialogView.findViewById(R.id.email);
-        RecyclerView sortList = (RecyclerView) mDialogView.findViewById(R.id.list_sort_by);
-        //FilterSortByAdapter sortAdapter = new FilterSortByAdapter(DashboardActivity.this);
-        @SuppressLint("WrongConstant")
-        LinearLayoutManager horizontalLayoutManagaer2
-                = new LinearLayoutManager(DashboardActivity.this, LinearLayoutManager.VERTICAL, false);
-        sortList.setLayoutManager(horizontalLayoutManagaer2);
-        // sortList.setAdapter(sortAdapter);
-        mDialogView.findViewById(R.id.sign_up_btn_dialog).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                filterDialog.dismiss();
-
-            }
-        });
-        mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                filterDialog.dismiss();
-            }
-        });
-
-        filterDialog.show();
-    }
-
-
-    public void getFilters(String postCode) {
-        FilterSortInterface apiInterface = ApiClient.getClient(DashboardActivity.this).create(FilterSortInterface.class);
-        FilterSortRequest request = new FilterSortRequest();
-        request.setPostCode(postCode);
-
-        Call<FilterSortResponse> call3 = apiInterface.mGetFilters(request);
-        call3.enqueue(new Callback<FilterSortResponse>() {
-            @Override
-            public void onResponse(Call<FilterSortResponse> call, Response<FilterSortResponse> response) {
-                try {
-                    if (response.body().getSuccess()) {
-
-                    }
-                } catch (Exception e) {
-
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FilterSortResponse> call, Throwable t) {
-                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
@@ -1091,15 +924,4 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
-    public void onClickPos2(int pos, ArrayList<String> check) {
-        if(check.contains("1")){
-            for(int i=0;i<3;i++){
-                check.set(i,"0");
-            }
-            check.set(pos,"1");
-        }else{
-            check.set(pos,"0");
-        }
-    }*/
 }

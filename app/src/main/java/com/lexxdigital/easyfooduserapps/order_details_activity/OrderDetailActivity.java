@@ -155,30 +155,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         });
 
         getCardList();
-        Log.e("orderDetails", "onCreate:orderId " + orderId + " strOrderNo: " + strOrderNo + " restoName: " + restoName + " restoImage:" + restoImage);
-       /* addReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CustomerReviewProcess.class);
-                intent.putExtra("orderId", orderId);
-                intent.putExtra("restoId", restoId);
-                intent.putExtra("orderNo", strOrderNo);
-                intent.putExtra("restologo", restoLogo);
-                intent.putExtra("restoname", restoName);
-                intent.putExtra("restoimage", restoImage);
-                intent.putExtra("restoAdd", restoAddress);
-                startActivityForResult(intent, 200);
-                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-
-//                addReview.setClickable(false);
-            }
-        });*/
-        /*llCacelOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog("Are you sure Cancel order!");
-            }
-        });*/
     }
 
     @Override
@@ -351,7 +327,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                                 .into(restLogo);
 
                         //Glide.with(OrderDetailActivity.this).load(restoImage).placeholder(R.drawable.default_restaurant_image).centerCrop().into(restImage);
-                      //  Glide.with(OrderDetailActivity.this).load(restoLogo).placeholder(R.drawable.restaurant_default_logo).centerCrop().into(restLogo);
+                        //  Glide.with(OrderDetailActivity.this).load(restoLogo).placeholder(R.drawable.restaurant_default_logo).centerCrop().into(restLogo);
                         restName.setText(restoName);
                         ivToolBarTitle.setText(restoName);
                         orderNo.setText(strOrderNo);

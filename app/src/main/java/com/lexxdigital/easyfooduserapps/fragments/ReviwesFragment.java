@@ -94,7 +94,6 @@ public class ReviwesFragment extends Fragment {
 
         }
         saveCardDetail(0);
-        // initView();
         return view;
 
     }
@@ -126,7 +125,6 @@ public class ReviwesFragment extends Fragment {
                 rat_5.setVisibility(View.GONE);
                 onBased.setText("This restaurant is yet to recieve a review. Why not be the first to review this restaurant and help other customers decide where to eat?");
 
-                // tvnoRating.setVisibility(View.VISIBLE);
             }
         }
 

@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -114,9 +116,6 @@ public class AdapterCardList extends RecyclerView.Adapter<AdapterCardList.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        // holder.cardNoOne.setText(response.getData().getCards().get(listPosition).getCardNo().substring(0, 4));
-        //holder.cardNoTwo.setText(response.getData().getCards().get(listPosition).getCardNo().substring(4, 8));
-        // holder.cardNoThree.setText(response.getData().getCards().get(listPosition).getCardNo().substring(8, 12));
         cardlist = dataList.get(listPosition);
         holder.cardNofour.setText(cardlist.getLast4CardNo());
         holder.cardHolderName.setText(cardlist.getCustomerNameOnCard());
@@ -128,21 +127,6 @@ public class AdapterCardList extends RecyclerView.Adapter<AdapterCardList.MyView
         city = cardlist.getAddressCity();
         postal = cardlist.getAddressPostCode();
 
-        /*if (!address1.trim().equalsIgnoreCase("")) {
-            strBillingAddress = strBillingAddress + address1;
-        } else if (!address2.trim().equalsIgnoreCase("")) {
-            strBillingAddress = strBillingAddress + ", " + address2;
-        } else if (!city.trim().equalsIgnoreCase("")) {
-            strBillingAddress = strBillingAddress + ", " + city;
-        } else if (!postal.trim().equalsIgnoreCase("")) {
-            strBillingAddress = strBillingAddress + ", " + postal;
-        } else if (!strBillingAddress.trim().equalsIgnoreCase("")) {
-
-            holder.tvBillingAddress.setText(strBillingAddress);
-            holder.tvBillingAddress.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvBillingAddress.setVisibility(View.GONE);
-        }*/
         if (address2 != null && address2.trim().length() > 0) {
 
             strBillingAddress = address1 + ", " + address2 + (city.equals("") ? "" : ", ") + city + (postal.equals("") ? "" : ", ") + postal;
@@ -172,7 +156,7 @@ public class AdapterCardList extends RecyclerView.Adapter<AdapterCardList.MyView
             holder.tvMakeDefaultCard.setText(strMakeDefault);
 
         }
-        // moveItem= AnimationUtils.loadAnimation(mContext,R.anim.move);
+
         holder.deleteCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,13 +165,7 @@ public class AdapterCardList extends RecyclerView.Adapter<AdapterCardList.MyView
                 // holder.cardHolderName.startAnimation(moveItem);
             }
         });
-       /* holder.tvMakeDefaultCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: cardlist.getCardId():  " + dataList.get(listPosition).getCardId());
-                makeDefaultCard(holder, listPosition, dataList.get(listPosition).getCardId());
-            }
-        });*/
+
     }
 
     void makeDefaultCard(final MyViewHolder holder, final int pos, String id) {
@@ -308,5 +286,12 @@ public class AdapterCardList extends RecyclerView.Adapter<AdapterCardList.MyView
             }
         });
         dialog.show();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 }

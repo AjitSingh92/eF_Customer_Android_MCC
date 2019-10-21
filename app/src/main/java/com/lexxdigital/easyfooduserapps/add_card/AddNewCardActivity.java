@@ -578,7 +578,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         request.setCustomerId(val.getLoginResponse().getData().getUserId());
         request.setPaymentMode(paymentType);
         request.setDeliveryOption(orderType.toLowerCase());
-        request.setIsTomorrow("0");
+        request.setIsTomorrow(sharedPreferencesClass.getString(sharedPreferencesClass.IS_TOMORROW));
         request.setDeliveryCharge(deliveryFee);
         request.setDiscountAmount(voucherDiscount);
         request.setOrderTotal(totalAmount);
@@ -596,6 +596,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         request.setEmailId(val.getLoginResponse().getData().getEmail());
         request.setSaveCard(isSaveCard);
         request.setCardData(makeData());
+        request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_DATE_TIME));
        /* CartDetails detail = new CartDetails();
         Gson gson = new Gson();
         FinalNewCartDetails cartList22 = gson.fromJson(sharedPreferencesClass.getCartDetailsKey().toString(), new TypeToken<FinalNewCartDetails>() {
@@ -628,7 +629,7 @@ public class AddNewCardActivity extends AppCompatActivity {
                             if (response.code() == 200 && response.body().getSuccess()) {
                                 sharedPreferencesClass.setOrderIDKey(response.body().getData().getOrder_number());
                                 Log.e("order id", response.body().getData().getOrder_number());
-                                alertDialogOrderPlaced("Your order has been placed successfully.", true);
+                                alertDialogOrderPlaced(response.body().getMessage(), true);
                             } else if (response.code() == 200 && !response.body().getSuccess()) {
                                 alertDialogOrderPlaced(response.body().getMessage(), false);
                             } else {

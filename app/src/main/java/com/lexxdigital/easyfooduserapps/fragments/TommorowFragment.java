@@ -91,6 +91,6 @@ public class TommorowFragment extends Fragment implements RecyclerItemListener {
 
     @Override
     public void onItemClick(int position) {
-        TimeSlotDialogFragment.getInstance().setTimeSlot(tomorrowTimeSlot.get(position));
+        TimeSlotDialogFragment.getInstance().setTimeSlot(tomorrowTimeSlot.get(position), "1");
     }
 }

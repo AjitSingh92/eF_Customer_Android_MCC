@@ -17,14 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyViewHolder> {
-
-    // private ArrayList<Arraylist> dataSet;
-
-    DealCardAdapter mDealCardAdapter;
     Context mContext;
     String strBrand = "";
     ArrayList<String> check;
-    ArrayList<String> allReadyCheck;
     List<Card> dataList;
     SaveCardAdapter.PositionInterface mPositionInterface;
     Card cardlist;
@@ -35,17 +30,12 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView cardNoOne, cardNoTwo, cardNoThree, cardNofour,
-                cardHolderName, expDate, tvBillingAddress;
-        ImageView deleteCard;
-        LinearLayout layoutcard;
+        TextView cardNofour, cardHolderName, expDate, tvBillingAddress;
         FrameLayout lyCard;
         ImageView rightImg, not_right_tv;
 
-        // ImageView imageViewIcon;
         public MyViewHolder(View itemView) {
             super(itemView);
-
             this.rightImg = (ImageView) itemView.findViewById(R.id.rightImg);
             this.not_right_tv = (ImageView) itemView.findViewById(R.id.not_right_tv);
             this.lyCard = (FrameLayout) itemView.findViewById(R.id.fram_card);
@@ -67,8 +57,6 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyView
     @Override
     public SaveCardAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
-
-
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_item_row, parent, false);
 
@@ -97,8 +85,6 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyView
         address2 = cardlist.getAddressLine2();
         city = cardlist.getAddressCity();
         postal = cardlist.getAddressPostCode();
-
-
         strBillingAddress = address1 + " " + address2 + " " + city + " " + postal;
         if (!strBillingAddress.trim().equalsIgnoreCase("")) {
             holder.tvBillingAddress.setText(strBillingAddress);
@@ -112,23 +98,14 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyView
             not_right_tv.setVisibility(View.GONE);
         } else {
             not_right_tv.setVisibility(View.VISIBLE);
-
             rightImg.setVisibility(View.GONE);
         }
         /*TODO: default card selected here */
-       /* if (cardlist.getIsDefault() == 1) {
-            rightImg.setVisibility(View.VISIBLE);
-            not_right_tv.setVisibility(View.GONE);
-        }*/
+
         holder.rightImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //  check.set(listPosition,"0");
-                //allReadyCheck.set(listPosition,"0");
-                //  allReadyCheck.set(0,"0");
                 mPositionInterface.onClickPos(listPosition, check, dataList);
-
                 holder.rightImg.setVisibility(View.VISIBLE);
                 holder.not_right_tv.setVisibility(View.GONE);
             }
@@ -138,12 +115,8 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyView
         holder.not_right_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //check.set(listPosition,"1");
-                //  allReadyCheck.set(0,"1");
                 mPositionInterface.onClickPos(listPosition, check, dataList);
                 holder.not_right_tv.setVisibility(View.GONE);
-
                 holder.rightImg.setVisibility(View.VISIBLE);
             }
         });
@@ -153,13 +126,11 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyView
             public void onClick(View view) {
                 if (holder.rightImg.getVisibility() == View.VISIBLE) {
                     mPositionInterface.onClickPos(listPosition, check, dataList);
-
                     holder.rightImg.setVisibility(View.VISIBLE);
                     holder.not_right_tv.setVisibility(View.GONE);
                 } else {
                     mPositionInterface.onClickPos(listPosition, check, dataList);
                     holder.not_right_tv.setVisibility(View.GONE);
-
                     holder.rightImg.setVisibility(View.VISIBLE);
                 }
             }
@@ -168,11 +139,8 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.MyView
 
     public void setBrand(final SaveCardAdapter.MyViewHolder holder, String brand) {
         if (brand.trim().equalsIgnoreCase("Visa")) {
-            //Log.e(TAG, "setBrand: " + brand);
             holder.lyCard.setBackgroundResource(R.drawable.bg_visa_card);
-            //Glide.with(mContext).load(R.drawable.ic_visa).placeholder(R.drawable.ic_visa).into(holder.ivBrand);
         } else if (brand.trim().equalsIgnoreCase("MasterCard")) {
-            //Log.e(TAG, "setBrand: " + brand);
             holder.lyCard.setBackgroundResource(R.drawable.bg_master_card);
         } else if (brand.trim().equalsIgnoreCase("American Express")) {
             holder.lyCard.setBackgroundResource(R.drawable.bg_americanexp_card);

@@ -245,8 +245,6 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
                         mAddressSaveAdapter.removeAt(pos);
                         mAddressSaveAdapter.notifyDataSetChanged();
                         mAddressSaveAdapter.notify();
-//                        Toast.makeText(ManageAddressActivity.this,
-//                                "Your Message deleted" + pos, Toast.LENGTH_LONG).show();
                     } else {
 
                     }
@@ -270,7 +268,6 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
         if (addressList.get(pos).getIsDefault() == 0) {
             AddressList list = addressList.get(pos);
             popUpDeleteAddress(list.getID(), pos);
-            //  showDialog("Do you want to delete " + list.getAddressType() + " address?", "\n" + list.getAddressOne() + " " + list.getAddressTwo(), list.getID(), pos);
         } else {
             popUpConfirmation("Defualt address could not deleted");
         }
@@ -307,52 +304,6 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-
-
-
-
-/*
-    public void reportDialog() {
-        View dialogView = LayoutInflater.from(ProductDetailActivity.this).inflate(R.layout.layout_report_dialog, null);
-        final LayoutReportDialogBinding dialogBinding = DataBindingUtil.bind(dialogView);
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(dialogBinding.getRoot());
-        dialog.setCancelable(false);
-        reasonId = "";
-        ReasonsAdapter reasonsAdapter = new ReasonsAdapter(this, reasonListBeans, this);
-        dialogBinding.rvReasons.setLayoutManager(new LinearLayoutManager(this));
-        dialogBinding.rvReasons.setAdapter(reasonsAdapter);
-
-        dialogBinding.ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialogBinding.cvReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (reasonId.equals("")) {
-                    showSnackBar(dialogBinding.getRoot(), getResources().getString(R.string.please_select_reason_first));
-                } else {
-                    dialog.dismiss();
-                    reportPost();
-                }
-
-
-            }
-        });
-        dialog.show();
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.gravity = Gravity.CENTER;
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.seme_transparent)));
-    }
-*/
 
     public void popUpConfirmation(final String message) {
 
@@ -438,20 +389,7 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
         unbinder.unbind();
 
     }
-/*
-    @OnClick(R.id.doneLL)
-    public void onViewClicked() {
 
-        Constants.switchActivity(getActivity(), AddAddressActivity.class);
-
-    }
-
-    @OnClick(R.id.addmore_add)
-    public void onViewClicked() {
-
-        Constants.switchActivity(getActivity(), AddAddressActivity.class);
-
-    }*/
 
     @Override
     public void onRefresh() {

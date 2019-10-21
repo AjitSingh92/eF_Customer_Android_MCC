@@ -13,6 +13,7 @@ import com.lexxdigital.easyfooduserapps.restaurant_details.CartDetailsModel;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
 import com.lexxdigital.easyfooduserapps.signup.model.final_response.SignupFinalResponse;
 import com.lexxdigital.easyfooduserapps.signup.model.response.SignupResponse;
+import com.newrelic.agent.android.NewRelic;
 
 import java.util.List;
 
@@ -45,6 +46,9 @@ public class GlobalValues extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        NewRelic.withApplicationToken(
+                "eu01xxae9ccb44aafd9f746b5862b2dcb19769290d"
+        ).start(this.getApplicationContext());
         db = Room.databaseBuilder(this, MenuDataBase.class, "restaurant_menu_db").build();
     }
 

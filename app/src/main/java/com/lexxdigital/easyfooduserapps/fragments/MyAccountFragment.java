@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -60,7 +61,7 @@ public class MyAccountFragment extends Fragment {
     @BindView(R.id.profileImg)
     CircleImageView profileImg;
     @BindView(R.id.fm)
-    LinearLayout fm;
+    RelativeLayout fm;
     @BindView(R.id.btn_edit_profile)
     Button btnEditProfile;
     @BindView(R.id.wallet_balance)
@@ -93,7 +94,6 @@ public class MyAccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Fresco.initialize(mContext);
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
@@ -101,7 +101,6 @@ public class MyAccountFragment extends Fragment {
         sharePre = new SharedPreferencesClass(mContext);
         lyContainer = (LinearLayout) view.findViewById(R.id.ll_container);
         image = view.findViewById(R.id.image);
-
         val = (GlobalValues) mContext;
         dialog = new Dialog(getActivity());
         dialog.setTitle("");
@@ -126,7 +125,6 @@ public class MyAccountFragment extends Fragment {
         } catch (NullPointerException e) {
 
         }
-
 
 
         return view;
@@ -167,7 +165,6 @@ public class MyAccountFragment extends Fragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-                //Constants.switchActivity(getActivity(), ChangePasswordActivity.class);
                 break;
         }
     }
@@ -182,20 +179,16 @@ public class MyAccountFragment extends Fragment {
             @Override
             public void onResponse(Call<MyAccountResponse> call, Response<MyAccountResponse> response) {
                 try {
-
-                    Log.e("ADDRESS>>", "" + response.body().getData().getProfile().getCustomerAddress().getAddress1() + " " + response.body().getData().getProfile().getCustomerAddress().getAddress2());
                     if (response.body().getSuccess()) {
                         String strname = response.body().getData().getProfile().getFirstName() + " " + response.body().getData().getProfile().getLastName();
                         String strAddress = response.body().getData().getProfile().getCustomerAddress().getAddress1() + " " + response.body().getData().getProfile().getCustomerAddress().getAddress2();
                         String strMobile = response.body().getData().getProfile().getPhoneNumber();
-                        Log.e("my account", "onResponse: " + strAddress);
                         if (strname != null && !strname.equals("")) {
                             name.setText(strname);
                             nameStr = strname;
                         } else {
                             name.setVisibility(View.GONE);
                         }
-
                         if (strAddress != null && !strAddress.trim().equals("")) {
                             address.setText(strAddress);
                             address.setVisibility(View.VISIBLE);
@@ -210,14 +203,9 @@ public class MyAccountFragment extends Fragment {
 
                         profileImageStr = response.body().getData().getProfile().getProfilePic();
                         if (!profileImageStr.equalsIgnoreCase("http:\\/\\/35.177.163.219\\/easyfood_backend\\/public") && profileImageStr != null) {
-//                            Glide.with(mContext)
-//                                    .load(profileImageStr)
-//                                    .placeholder(R.drawable.avatar)
-//                                    .into(profileImg);
-//                            Picasso.with(mContext).load(profileImageStr).placeholder(R.drawable.avatar).into(profileImg);
                             Uri uri = Uri.parse(profileImageStr);
 
-                            if (uri!=null){
+                            if (uri != null) {
                                 image.setImageURI(uri);
 
                             }

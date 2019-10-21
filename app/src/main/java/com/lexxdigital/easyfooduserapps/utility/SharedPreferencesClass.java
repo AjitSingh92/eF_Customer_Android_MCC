@@ -40,6 +40,7 @@ public class SharedPreferencesClass {
     public static final String BILLING_ADDRESS = "BILLING_ADDRESS";
     public static final String RESTAURANT_NAME_SLUG = "RESTAURANT_NAME_SLUG";
     public static final String DELIVERY_DATE_TIME = "DELIVERY_DATE_TIME";
+    public static final String IS_TOMORROW = "IS_TOMORROW";
     public static final String AVG_COLLECTION_TIME = "AVG_COLLECTION_TIME";
     public static final String ORDER_TYPE = "ORDER_TYPE";
     public static final String CUSTOMER_ID = "CUSTOMER_ID";
@@ -262,26 +263,7 @@ public class SharedPreferencesClass {
         return getUserSharedPreferences(mContext).getBoolean(key, false);
     }
 
-/*    public void setLoginResponseKey(LoginResponse resp) {
-        initPreferences();
-        editor = sharedpreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(resp);
-        editor.putString(LoginResponseKey, json);
-        editor.commit();
-        editor.apply();
-    }
-    public void getLoginResponseKey() {
-        initPreferences();
-        val = (GlobalValues) mContext;
-        Gson gson = new Gson();
-        String json = sharedpreferences.getString(LoginResponseKey, "");
-        LoginResponse objResp = gson.fromJson(json, LoginResponse.class);
-        //val.setLoginUserMobile(objResp.getHostDescription().getMobile());
-        ///val.setLoginResponse(objResp);
-        val.setLoginResponse(objResp);
-      //  return objResp;
-    }*/
+
 
     public void setLoginResponseDataKey(Data resp) {
         initPreferences();

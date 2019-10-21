@@ -1,56 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_white"
-    android:layout_margin="@dimen/_20sdp"
-    android:padding="@dimen/_20sdp"
-    >
-    <TextView
-        android:id="@+id/txt_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/avenir_medium"
-        android:layout_gravity="center"
-        android:padding="@dimen/_5sdp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:text="@string/are_you_sure_you_want_to_remove_this_favourite"
-        style="@style/TextAppearance.AppCompat.Medium"
-        />
-    <TextView
-        android:id="@+id/btn_confirm"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/seme_transparent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/avenir_medium"
-        android:gravity="center"
-        android:background="@drawable/rounded_orange"
-        android:padding="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Confirm"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:textColor="@color/white"
-        style="@style/TextAppearance.AppCompat.Medium"
-        />
-    <TextView
-        android:id="@+id/btn_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/avenir_medium"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:background="@drawable/btn_grey_corn30"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="Cancel"
-        android:textColor="@color/white"
-        style="@style/TextAppearance.AppCompat.Medium"
-        />
-</LinearLayout>
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:background="@drawable/bg_white"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:text="easyFood"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/txt_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/avenir_roman"
+            android:gravity="center_horizontal"
+            android:text="@string/are_you_sure_you_want_to_remove_this_favourite"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@color/gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp">
+
+            <TextView
+                android:id="@+id/btn_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/vw_center"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="@dimen/_12sdp" />
+
+            <View
+                android:id="@+id/vw_center"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/vw_center"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="center"
+                android:text="@string/confirm"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="@dimen/_12sdp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>

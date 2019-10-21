@@ -463,19 +463,19 @@ public class AddAddressManualActivity extends AppCompatActivity {
 
                             } else {
                                 dialog.dismiss();
-                                showDialog("We are not here yet, Please change post code");
+                                showDialog("We are not here yet, Please change postcode");
 
                             }
 
 
                         } else {
                             dialog.dismiss();
-                            showDialog("We are not here yet, Please change post code");
+                            showDialog("We are not here yet, Please change postcode");
 
                         }
                     } else {
                         dialog.dismiss();
-                        showDialog("We are not here yet, Please change post code");
+                        showDialog("We are not here yet, Please change postcode");
 
                     }
                 } catch (Exception e) {

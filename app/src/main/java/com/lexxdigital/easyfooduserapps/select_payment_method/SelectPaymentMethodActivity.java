@@ -89,7 +89,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     private GlobalValues val;
     private Double totalAmount = 0.0d;
     private Double subTotalAmount = 0.0d;
-    private Double netAmount = 0.0d;
+
     private Double deliveryFee = 0.0d;
     private String orderType;
     private Double voucherDiscount = 0.0d;
@@ -117,6 +117,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         Constants.setStatusBarGradiant(SelectPaymentMethodActivity.this);
         ButterKnife.bind(this);
         mContext = this;
+
+
         db = new DatabaseHelper(this);
         val = (GlobalValues) getApplicationContext();
         dialog = new Dialog(SelectPaymentMethodActivity.this);
@@ -125,14 +127,11 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
-
         mProgressDialog = new ProgressDialog(SelectPaymentMethodActivity.this);
         mProgressDialog.requestWindowFeature(1);
         mProgressDialog.setMessage("Please wait");
         mProgressDialog.setCanceledOnTouchOutside(false);
-//                    mProgressDialog.show();
         Bundle extras = getIntent().getExtras();
-        Log.e("EXTRA>>>", "//" + extras);
         if (extras != null) {
             totalAmount = extras.getDouble("ORDER_TOTAL");
             subTotalAmount = extras.getDouble("ORDER_SUB_TOTAL");
@@ -143,16 +142,19 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             voucherCode = extras.getString("appliedVoucherCode");
             voucherAmount = extras.getDouble("appliedVoucherAmount");
             voucherPaymentType = extras.getString("appliedVoucherPaymentType");
-
-            Log.e("order data", totalAmount + "," + subTotalAmount + "," + deliveryFee);
         }
+
+        if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
+            payWithCash.setVisibility(View.VISIBLE);
+        } else {
+            payWithCash.setVisibility(View.GONE);
+        }
+
         if (Constants.isInternetConnectionAvailable(300)) {
             getCardList();
         } else {
             dialogNoInternetConnection("Please check internet connection.", 1);
         }
-
-//        initView(dataList);
 
 
         findViewById(R.id.btn_backToMenu).setOnClickListener(new View.OnClickListener() {
@@ -167,7 +169,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }
                 } catch (NullPointerException e) {
-                    Log.e("NullPointerException", e.getLocalizedMessage());
+                    e.printStackTrace();
 
                 }
             }
@@ -175,16 +177,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     }
 
     private CartDatRequest makeData() {
-        /*Gson gson = new Gson();
-        JSONObject data = new JSONObject();*/
         CartDatRequest cartDatRequest = new CartDatRequest();
         try {
-/*
-            JSONObject menu = new JSONObject();
-            String sss = gson.toJson(db.getCartData());
-            JSONObject ddd = new JSONObject(sss);
-            data.put("menu", ddd);
-*/
             cartDatRequest.setCartData(db.getCartData());
             cartDatRequest.setRestaurantId(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
             cartDatRequest.setRestaurantName(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantName());
@@ -196,10 +190,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             cartDatRequest.setVoucherDiscount(voucherDiscount);
             cartDatRequest.setVoucherCode(voucherCode);
             cartDatRequest.setRestaurantSlug(sharedPreferencesClass.getString(sharedPreferencesClass.RESTAURANT_NAME_SLUG));
-
-
-//            Log.e("COMPLITE DATA", data.toString());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -266,13 +256,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     errorTxt.setVisibility(View.VISIBLE);
                 } else {
                     errorTxt.setVisibility(View.GONE);
-                  /*  mProgressDialog = new ProgressDialog(SelectPaymentMethodActivity.this);
-                    mProgressDialog.requestWindowFeature(1);
-                    mProgressDialog.setMessage("Please wait");
-                    mProgressDialog.setCanceledOnTouchOutside(false);
-//                    mProgressDialog.show();*/
-//                    callAPI("", "card", exDate.getText().toString(), exYear.getText().toString());
-
                     if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAddress() != null) {
                         if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("card")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
@@ -328,7 +311,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 cardDialog.dismiss();
                 alertDialogCVV(null);
 
@@ -337,7 +319,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.cancelTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 cardDialog.dismiss();
             }
         });
@@ -345,11 +326,11 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         cardDialog.show();
     }
 
+
     @OnClick({R.id.add_new_card, R.id.paywith_card_tv, R.id.pay_with_cash})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.add_new_card:
-
                 if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("card")) {
                     Intent i = new Intent(this, AddNewCardActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -381,21 +362,11 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                 } else {
                     alertVoucherApply(voucherPaymentType, true);
                 }
-
                 break;
             case R.id.paywith_card_tv:
-//                if(isCardSelected) {
-//
-//                    callAPI("", "card");
-//                }else {
-//                    alertDialogSelectCard();
-//                }
                 break;
             case R.id.pay_with_cash:
-                //  Toast.makeText(SelectPaymentMethodActivity.this, "Proccess", Toast.LENGTH_SHORT).show();
-
                 try {
-//                    callAPI("", "cash", "", "");
                     if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
                         if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("cash")) {
                             if (Constants.isInternetConnectionAvailable(300)) {
@@ -439,7 +410,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
     @OnClick(R.id.back)
     public void onViewClicked() {
-//        startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
         finish();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
@@ -447,23 +417,11 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     @Override
     public void onBackPressed() {
         return;
-       /* super.onBackPressed();
-        //startActivity(new Intent(SelectPaymentMethodActivity.this, DashboardActivity.class));
-        finish();
-        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-        // Toast.makeText(val, "", Toast.LENGTH_SHORT).show();*/
     }
 
     public void callAPI(String token, String paymentType, String exDate, String exYear) {
         mProgressDialog.show();
         CheckoutRequestInterface apiInterface = ApiClient.getClient(getApplicationContext()).create(CheckoutRequestInterface.class);
-//        if (!exDate.equalsIgnoreCase("")) {
-//            Toast.makeText(this, "Please enter correct data", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
-
-        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         if (!paymentType.equalsIgnoreCase("cash"))
             detail = dataList.get(position);
 
@@ -471,7 +429,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         request.setRestaurantId(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
         request.setCustomerId(sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID));
         request.setPaymentMode(paymentType);
-        request.setIsTomorrow("0");
+        request.setIsTomorrow(sharedPreferencesClass.getString(sharedPreferencesClass.IS_TOMORROW));
         request.setDeliveryOption(orderType.toLowerCase());
         request.setDeliveryCharge(deliveryFee);
         request.setDiscountAmount(voucherDiscount);
@@ -485,11 +443,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         request.setOrderNotes(notes);
         request.setStripeToken(token);
         request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_DATE_TIME));
-        /*if (orderType.toLowerCase().equalsIgnoreCase("collection"))
-            request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.AVG_COLLECTION_TIME));
-        else*/
-       // request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_DATE_TIME));
-
         if (!exYear.equalsIgnoreCase("") && !exDate.equalsIgnoreCase("")) {
             request.setExpMonth(Integer.parseInt(exDate));
             request.setExpYear(Integer.parseInt(exYear));
@@ -506,44 +459,20 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         }
         request.setEmailId(val.getLoginResponse().getData().getEmail());
         request.setCardData(makeData());
-
-        /*CartDetails detail = new CartDetails();
-        Gson gson = new Gson();
-        FinalNewCartDetails cartList22 = gson.fromJson(sharedPreferencesClass.getCartDetailsKey().toString(), new TypeToken<FinalNewCartDetails>() {
-        }.getType());
-
-        Gson gson2 = new Gson();
-        String json22 = gson2.toJson(cartList22.getData());
-
-        List<Datum> cartList = gson.fromJson(json22, new TypeToken<List<Datum>>() {
-        }.getType());
-
-//        Type type = new TypeToken<List<ShowMenuCartDetails>>() {
-//        }.getType();
-
-
-        detail.setData(cartList);
-//        request.setCartDetails(detail);
-        Gson gson23 = new Gson();
-        String json23 = gson23.toJson(request);
-        logLargeString(json23);*/
         Call<CheckoutResponse> call3 = apiInterface.mCheckout(request);
         call3.enqueue(new Callback<CheckoutResponse>() {
             @Override
             public void onResponse(Call<CheckoutResponse> call, Response<CheckoutResponse> response) {
                 mProgressDialog.dismiss();
                 try {
-                    Log.e("Success ><<<<<<<", ">>>>> Success" + response.code() + "//" + response.body().getSuccess() + "//" + response.body().getData().getOrder_number());
                     if (response.code() == 200 && response.body().getSuccess()) {
                         sharedPreferencesClass.setOrderIDKey(response.body().getData().getOrder_number());
-                        Log.e("order id", response.body().getData().getOrder_number());
                         sharedPreferencesClass.setInt(sharedPreferencesClass.NUMBER_OF_ORDERS, (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) + 1));
                         Constants.MAX_LENGTH = 0;
-                        alertDialogOrderPlaced("Your order has been placed successfully.", true);
+                        alertDialogOrderPlaced(response.body().getMessage(), true);
 
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
                         Toast.makeText(val, "", Toast.LENGTH_SHORT).show();
-//                        alertDialogOrderPlaced(response.body().getMessage(), false);
                         alertDialogCVV("Please enter valid expiry date");
                     } else {
                         alertDialogOrderPlaced("Transaction Failed\n" +
@@ -557,7 +486,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     mProgressDialog.dismiss();
                     alertDialogOrderPlaced("Transaction Failed\n" +
                             "Your Order could not be processed", false);
-                    Log.e("Error1 <>>>", ">>>>>" + e.getMessage());
                     address1 = "";
                     address2 = "";
                     addressCity = "";
@@ -568,7 +496,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             @Override
             public void onFailure(Call<CheckoutResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Log.e("Error <>>>", ">>>>>" + t.getMessage());
                 alertDialogOrderPlaced("Transaction Failed\n" +
                         "Your Order could not be processed", false);
                 address1 = "";
@@ -579,18 +506,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         });
     }
 
-    public void logLargeString(String str) {
-        if (str.length() > 3000) {
-            Log.e("CART Final>>", str.substring(0, 3000));
-            logLargeString(str.substring(3000));
-        } else {
-            Log.e("CART Final>>", str); // continuation
-        }
-    }
-
 
     public void getCardList() {
-        //   swipreferesh.setRefreshing(true);
         CardListInterface apiInterface = ApiClient.getClient(SelectPaymentMethodActivity.this).create(CardListInterface.class);
         CardListRequest request = new CardListRequest();
         request.setUserId(sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID));
@@ -611,105 +528,21 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             noCards.setVisibility(View.GONE);
                         }
                         initView(dataList);
-                        Log.e("Success <>>>", ">>>>>" + response.body().getMessage() + "//");
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
                     noCards.setVisibility(View.VISIBLE);
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<CardListResponse> call, Throwable t) {
-                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
                 noCards.setVisibility(View.VISIBLE);
-//                dialog.dismiss();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
-    public void paymentStart(String cardNumber, int cardExpMonth, int cardExpYear, String cardCVC) {
-        card = new com.stripe.android.model.Card(
-                cardNumber,
-                cardExpMonth,
-                cardExpYear,
-                cardCVC
-        );
-
-        if (!card.validateCVC()) {
-
-        } else if (!card.validateCard()) {
-            Toast.makeText(SelectPaymentMethodActivity.this, "Enter valid card number", Toast.LENGTH_SHORT).show();
-
-        } else if (!card.validateExpiryDate()) {
-            Toast.makeText(SelectPaymentMethodActivity.this, "Enter valid expiry date", Toast.LENGTH_SHORT).show();
-
-        } else if (!card.validateExpMonth()) {
-            Toast.makeText(SelectPaymentMethodActivity.this, "Enter valid expiry month", Toast.LENGTH_SHORT).show();
-
-        } else {
-            mProgressDialog = new ProgressDialog(SelectPaymentMethodActivity.this);
-            mProgressDialog.requestWindowFeature(1);
-            mProgressDialog.setMessage("Please wait");
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.show();
-            /* paymentProcess();*/
-        }
-    }
-/*
-
-    public void paymentProcess() {
-
-
-        Stripe stripe = new Stripe(getApplicationContext(), Constants.STRIPE_PUBLISH_KEY);
-        stripe.createToken(
-                card,
-                new TokenCallback() {
-                    public void onSuccess(Token token) {
-                        // Send token to your server
-                        //   Toast.makeText(getApplicationContext(),
-//                                "Success",
-//                                Toast.LENGTH_LONG
-//                        ).show();
-                        // Log.e("TOKEN", "" + token.getCard().getCVC());
-//                        callAPI(token.getId(), "card", "", "");
-
-                        if (val.getRestaurantDetailsResponse().getData().getRestaurants().getAddress() != null) {
-                            if (voucherPaymentType.equalsIgnoreCase("card")) {
-                                alertVoucherApply("", "card", "", "", "card");
-                            } else if (voucherPaymentType.equalsIgnoreCase("")) {
-                                alertVoucherApply("", "card", "", "", "card");
-                            } else {
-                                alertVoucherApply(token.getId(), "card", "", "", "card");
-                            }
-                        } else {
-                            Intent intent = new Intent(SelectPaymentMethodActivity.this, AddAddressManualActivity.class);
-                            startActivity(intent);
-                        }
-                        mProgressDialog.dismiss();
-                    }
-
-                    public void onError(Exception error) {
-                        // Show localized error message
-                        Toast.makeText(getApplicationContext(),
-                                "Failed",
-                                Toast.LENGTH_LONG
-                        ).show();
-                        mProgressDialog.dismiss();
-                    }
-                }
-        );
-
-
-    }
-*/
 
     @Override
     public void onClickPos(int pos, ArrayList<String> check, List<Card> dataList) {
@@ -722,7 +555,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         address2 = dataList.get(pos).getAddressLine2();
         addressCity = dataList.get(pos).getAddressCity();
         postalCode = dataList.get(pos).getAddressPostCode();
-
         isCardSelected = true;
         check.set(pos, "1");
         position = pos;
@@ -745,7 +577,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 cardDialog.dismiss();
                 if (isSuccess) {
                     int fragSize = getSupportFragmentManager().getBackStackEntryCount() - 1;
@@ -753,12 +584,10 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                         getSupportFragmentManager().popBackStack();
                     }
                     db.deleteCart();
-
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.DEFAULT_ADDRESS, null);
-
                     Constants.ORDER_STATUS = 1;
 
                     Constants.switchActivity(SelectPaymentMethodActivity.this, OrderStatusActivity.class);
@@ -783,13 +612,10 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         final AlertDialog noteDialog = new AlertDialog.Builder(this).create();
         noteDialog.setView(mDialogView);
         noteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         TextView tvMessage, noTv;
-
         mDialogView.findViewById(R.id.view).setVisibility(View.VISIBLE);
         noTv = mDialogView.findViewById(R.id.noTv);
         noTv.setVisibility(View.VISIBLE);
-
         tvMessage = mDialogView.findViewById(R.id.message);
         tvMessage.setText("This voucher is valid for " + paymentType + " only." + "\nDo you want to proceed?");
         tvMessage.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen._14sdp));
@@ -798,27 +624,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//
-//                if (!voucherCode.equalsIgnoreCase(paymentType)) {
-//                    totalAmount = totalAmount + voucherAmount;
-//                }
-
-                /*if (paymentType.equalsIgnoreCase("cash")) {
-
-                    noteDialog.dismiss();
-                } else {
-                    totalAmount = totalAmount + voucherDiscount;
-                    voucherDiscount = 0.d;
-                    voucherAmount = 0.d;
-                    voucherCode = "";
-
-                    if (Constants.isInternetConnectionAvailable(300)) {
-                        callAPI("", "cash", "", "");
-                    } else {
-                        dialogNoInternetConnection("Please check internet connection.", 0);
-                    }
-
-                }*/
                 totalAmount = subTotalAmount;
                 voucherDiscount = 0.d;
                 voucherAmount = 0.d;
@@ -911,7 +716,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.tv_Cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 cardDialog.dismiss();
             }
         });

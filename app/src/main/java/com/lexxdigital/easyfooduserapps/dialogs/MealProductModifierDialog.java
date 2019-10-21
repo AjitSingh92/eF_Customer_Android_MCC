@@ -63,10 +63,9 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
     View qtyLayout;
     Boolean isSubCat;
     ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable;
-    Double totalPayPrice = 0d;
     Double modifierPrice = 0d;
     FirebaseAnalytics mFirebaseAnalytics;
-    
+
     public static MealProductModifierDialog newInstance(Context context, int childParentPosition, int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable, ItemClickListener itemClickListener) {
         MealProductModifierDialog c = new MealProductModifierDialog();
         c.context = context;
@@ -157,13 +156,6 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
             productSizeAdapter.addItem(productSizeAndModifierTable.getMenuProductSize());
         }
 
-//        if (productSizeAdapter.getItemCount() > 1) {
-//            view.findViewById(R.id.size_lable).setVisibility(View.VISIBLE);
-//        } else {
-//            view.findViewById(R.id.size_lable).setVisibility(View.GONE);
-//        }
-
-
         productModifierView = view.findViewById(R.id.product_modifier);
         productModifierLayoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
         productModifierLayoutManager.setScrollEnabled(false);
@@ -193,7 +185,7 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
         updatePrice(false);
-//        updatePrice();
+
     }
 
     @Override
@@ -205,7 +197,6 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cross_tv:
-//                menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).setSelected(false);
                 dismiss();
                 break;
             case R.id.sign_up_btn_dialog:
@@ -253,8 +244,6 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
         if (productSizeAdapter != null) {
             if (productSizeAdapter.getItemCount() > 1) {
                 netPrice += Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice());
-//                int itemQty = menuCategory.getMeal().get(childPosition).getOriginalQuantity();
-
                 List<MenuProductSize> menuProductSizes = productSizeAdapter.getSelectedItem(isSelect);
                 if (menuProductSizes.size() != 0) {
                     basePrice += Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice());

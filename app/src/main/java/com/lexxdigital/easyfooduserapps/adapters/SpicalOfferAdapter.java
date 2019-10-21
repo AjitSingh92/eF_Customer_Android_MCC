@@ -5,25 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.lexxdigital.easyfooduserapps.R;
 
 public class SpicalOfferAdapter extends RecyclerView.Adapter<SpicalOfferAdapter.MyViewHolder> {
 
-    // private ArrayList<Arraylist> dataSet;
-
     public static class
 
     MyViewHolder extends RecyclerView.ViewHolder {
-
-        TextView textViewname;
-
-        // ImageView imageViewIcon;
-
         public MyViewHolder(View itemView) {
             super(itemView);
-
-        //    this.textViewname = (TextView) itemView.findViewById(R.id.textViewname);
-
         }
     }
 
@@ -33,11 +24,9 @@ public class SpicalOfferAdapter extends RecyclerView.Adapter<SpicalOfferAdapter.
 
     @Override
     public SpicalOfferAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                            int viewType) {
+                                                              int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.offer_item_list, parent, false);
-
-        //view.setOnClickListener(MainActivity.myOnClickListener);
 
         SpicalOfferAdapter.MyViewHolder myViewHolder = new SpicalOfferAdapter.MyViewHolder(view);
         return myViewHolder;
@@ -46,18 +35,10 @@ public class SpicalOfferAdapter extends RecyclerView.Adapter<SpicalOfferAdapter.
     @Override
     public void onBindViewHolder(final SpicalOfferAdapter.MyViewHolder holder, final int listPosition) {
 
-       // TextView textViewname = holder.textViewname;
-       // textViewname.setText(Html.fromHtml("<b>" + "Frank’s Hot Sauce Chicken Wings  "+"</b>"+"3 x fried chicken wings in Franks hot sauce"));
-        // textViewname.setText();
-//        // TextView textViewVersion = holder.textViewVersion;
-//        ImageView imageView = holder.imageViewIcon;
-//
-//        textViewName.setText(dataSet.get(listPosition).getName());
-//        //textViewVersion.setText(dataSet.get(listPosition).getVersion());
-//        imageView.setImageResource(dataSet.get(listPosition).getImage());
     }
 
     @Override
     public int getItemCount() {
         return 10;
-    }}
+    }
+}

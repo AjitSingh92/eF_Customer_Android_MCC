@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -147,14 +148,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         }
 
         userPhone.setText("Tel: " + val.getMobileNo());
-      /*  Glide.with(EditMyAccountActivity.this)
-                .load(val.getProfileImage())
-                .placeholder(R.mipmap.avatar_profile)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.mipmap.avatar_profile)
-                .into(profileImg);*/
-
-
         Glide.with(EditMyAccountActivity.this).load(val.getProfileImage()).apply(new RequestOptions()
                 .placeholder(R.mipmap.avatar_profile))
                 .into(profileImg);
@@ -181,9 +174,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_NETWORK_STATE,
-//                    Manifest.permission.RECEIVE_SMS,
-//                    Manifest.permission.READ_SMS,
-//                    Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.CAMERA
             };
 
@@ -205,7 +195,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                 overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 break;
             case R.id.add_image:
-                //selectImage();
                 CropImage.startPickImageActivity(this);
                 break;
             case R.id.btn_confirm:
@@ -223,8 +212,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                     editMobile.setError("Please Enter valid Mobile No.");
                     editMobile.requestFocus();
                 } else {
-
-
                     dialog.show();
                     if (editMobile.getText().toString().equalsIgnoreCase(previousMobileNo)) {
                         updateAccountDetail();
@@ -253,9 +240,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                 try {
                     dialog.hide();
                     if (response.body().getSuccess()) {
-
-                        //   if (editMobile.getText().toString().equalsIgnoreCase(previousMobileNo)) {
-                        showDialog("Account details changed successfully.");
+                        successDialog();
                         val.setUserName(response.body().getData().getFirstName() + " " + response.body().getData().getLastName());
                         val.setMobileNo(response.body().getData().getPhoneNumber());
                         val.setProfileImage(response.body().getData().getProfilePic());
@@ -263,15 +248,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                         val.setLastName(response.body().getData().getLastName());
                         val.setProfileImage(response.body().getData().getProfilePic());
                         sharePre.setString(sharePre.USER_PROFILE_IMAGE, response.body().getData().getProfilePic());
-                        Log.e("URL>>", "" + response.body().getData().getProfilePic());
-//                        Glide.with(EditMyAccountActivity.this)
-//                                .load(response.body().getData().getProfilePic())
-//                                .placeholder(R.drawable.ellipse)
-//                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                                .into(profileImg);
-                       /* } else {
 
-                        }*/
                     } else {
 
                         showDialog(response.body().getErrors().getPhoneNumber().get(0));
@@ -279,9 +256,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                 } catch (Exception e) {
                     dialog.hide();
                     showDialog("Failed to change account details. Please try again.");
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -290,8 +264,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                 Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
                 showDialog("Failed to change account details. Please try again.");
                 dialog.hide();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -314,81 +286,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         alert11.show();
     }
 
-    private void selectImage() {
-        try {
-            PackageManager pm = getPackageManager();
-            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getPackageName());
-            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-                builder.setTitle("Select Option");
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-                        if (options[item].equals("Take Photo")) {
-                            dialog.dismiss();
-//
-//                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                            startActivityForResult(intent, PICK_IMAGE_CAMERA);
-
-                            Intent m_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-                            Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
-                            m_intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                            startActivityForResult(m_intent, PICK_IMAGE_CAMERA);
-                        } else if (options[item].equals("Choose From Gallery")) {
-                            dialog.dismiss();
-//                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                            startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY);
-                            Intent intent = new Intent();
-                            intent.setType("image/*");
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_GALLERY);
-                        } else if (options[item].equals("Cancel")) {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                builder.show();
-            } else {
-                EasyPermissions.requestPermissions(this, "All permissions are required in oder to run this application", 101, permissions);
-                Toast.makeText(this, "Camera Permission error", Toast.LENGTH_SHORT).show();
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-                    String[] perms = {
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.ACCESS_NETWORK_STATE,
-                            Manifest.permission.CAMERA
-                    };
-
-
-                    if (!EasyPermissions.hasPermissions(this, perms)) {
-                        EasyPermissions.requestPermissions(this, "All permissions are required in oder to run this application", 101, perms);
-                    }
-
-
-                }
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Camera Permission error" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-                String[] perms = {
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.CAMERA
-                };
-
-
-                if (!EasyPermissions.hasPermissions(this, perms)) {
-                    EasyPermissions.requestPermissions(this, "All permissions are required in oder to run this application", 101, perms);
-                }
-
-
-            }
-            e.printStackTrace();
-        }
-    }
 
 
     @Override
@@ -501,24 +398,18 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
             public void onResponse(Call<EditAccountResponse> call, Response<EditAccountResponse> response) {
                 try {
                     dialog.hide();
-
                     alertOtpVerification();
                 } catch (Exception e) {
                     dialog.hide();
                     showDialog("Failed to change account details. Please try again.");
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<EditAccountResponse> call, Throwable t) {
-                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
                 showDialog("Failed to change account details. Please try again.");
                 dialog.hide();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -536,15 +427,9 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         lp.gravity = Gravity.CENTER;
         mDialog.getWindow().setAttributes(lp);
-
-
-
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         TextView tvPhoneEnding = mDialogView.findViewById(R.id.tv_mobileEnding);
-      tvPhoneEnding.setText("For security reason we need you to verify your new mobile number. Please check your text messages on phone number ending "+ editMobile.getText().toString().trim().substring(editMobile.getText().toString().trim().length() - 4, editMobile.getText().toString().trim().length()) + " and enter the verification code below");
-   //     tvPhoneEnding.setText("Please check your text messages for phone number ending " + editMobile.getText().toString().trim().substring(editMobile.getText().toString().trim().length() - 4, editMobile.getText().toString().trim().length()) + " and enter the verification code");
-        //   tvPhoneEnding.setText("Please enter the verification code shared on your email and mobile");
+        tvPhoneEnding.setText("For security reason we need you to verify your new mobile number. Please check your text messages on phone number ending " + editMobile.getText().toString().trim().substring(editMobile.getText().toString().trim().length() - 4, editMobile.getText().toString().trim().length()) + " and enter the verification code below");
         pin = (EditText) mDialogView.findViewById(R.id.pin_tv);
 
         SmsReceiver.bindListener(new SmsListener() {
@@ -573,8 +458,6 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
-                //  isPopupVisible = false;
                 mDialog.dismiss();
 
             }
@@ -582,8 +465,7 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
         mDialogView.findViewById(R.id.sign_up_btn_dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
-                //   mDialog.dismiss();
+
                 if (pin.getText().toString().trim().length() < 4) {
                     pin.setError("Please enter 4 digit code.");
                     pin.requestFocus();
@@ -618,23 +500,45 @@ public class EditMyAccountActivity extends AppCompatActivity implements EasyPerm
                 } catch (Exception e) {
                     dialog.hide();
                     showDialog("Failed to change account details. Please try again.");
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<EditAccountResponse> call, Throwable t) {
-                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
                 showDialog("Failed to change account details. Please try again.");
                 dialog.hide();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+
+    public void successDialog() {
+        View dialogView = LayoutInflater.from(EditMyAccountActivity.this).inflate(R.layout.layout_success_dialog, null);
+        final Dialog dialog = new Dialog(EditMyAccountActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView);
+        dialog.setCancelable(false);
+        TextView tvOk = (TextView) dialogView.findViewById(R.id.tv_ok);
+
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                finish();
+                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+
+            }
+        });
+
+        dialog.show();
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
 
 }
 

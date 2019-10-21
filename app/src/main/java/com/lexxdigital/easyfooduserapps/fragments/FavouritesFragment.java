@@ -13,9 +13,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -100,11 +103,8 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         relativeLayout = view.findViewById(R.id.rel_fav_layout);
         emptFav = view.findViewById(R.id.emptyfav);
-
         dialog.show();
 
-
-        //initView();
         swipreferesh.setOnRefreshListener(this);
         swipreferesh.setColorSchemeResources(R.color.orange,
                 android.R.color.holo_green_dark,
@@ -149,7 +149,6 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
     private void initView(List<FavouriteList> list_Favourites) {
 
         if (list_Favourites.size() <= 0) {
-            //alertDialogEmptyBasket();
             emptyScreen();
         } else {
 
@@ -174,7 +173,6 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
         FavouristeListRequest request = new FavouristeListRequest();
         request.setUserId(val.getLoginResponse().getData().getUserId());
         request.setFavouriteType("restaurant");
-        Log.e("POSTal Code Fav", "" + sharedPreferencesClass.getPostalCode());
         request.setPostCode(sharedPreferencesClass.getPostalCode());
         request.setOffset(0);
         request.setLimit(100);
@@ -191,11 +189,9 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
                             for (int j = 0; j < response.body().getData().getFavourites().get(i).getRestaurantTiming().size(); j++) {
                                 restaurantTimingLists.add(new FavouriteList.RestaurantTimingList(response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getId(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getRestaurant_id(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getDay(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getOpening_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getOpening_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getCollection_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getCollection_end_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getDelivery_start_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getDelivery_end_time(), response.body().getData().getFavourites().get(i).getRestaurantTiming().get(j).getStatus()));
                             }
-                            listFavourites.add(new FavouriteList(response.body().getData().getFavourites().get(i).getEntityId(), response.body().getData().getFavourites().get(i).getRestaurantName(), response.body().getData().getFavourites().get(i).getLogo(), response.body().getData().getFavourites().get(i).getBackgroundImage(), response.body().getData().getFavourites().get(i).getCuisines(), response.body().getData().getFavourites().get(i).getMinOderValue(), response.body().getData().getFavourites().get(i).getDeliveryCharge(), response.body().getData().getFavourites().get(i).getOverallRating(), response.body().getData().getFavourites().get(i).getRestaurantStatus(),response.body().getData().getFavourites().get(i).getDistance_in_miles() ,restaurantTimingLists));
+                            listFavourites.add(new FavouriteList(response.body().getData().getFavourites().get(i).getEntityId(), response.body().getData().getFavourites().get(i).getRestaurantName(), response.body().getData().getFavourites().get(i).getLogo(), response.body().getData().getFavourites().get(i).getBackgroundImage(), response.body().getData().getFavourites().get(i).getCuisines(), response.body().getData().getFavourites().get(i).getMinOderValue(), response.body().getData().getFavourites().get(i).getDeliveryCharge(), response.body().getData().getFavourites().get(i).getOverallRating(), response.body().getData().getFavourites().get(i).getRestaurantStatus(), response.body().getData().getFavourites().get(i).getDistance_in_miles(), restaurantTimingLists));
                         }
 
-                        Log.e("fav", "onResponse:listFavourites size " + listFavourites.size());
-                        //  mFavouritesAdapter.notifyDataSetChanged();
                         initView(listFavourites);
                     } else {
 
@@ -222,26 +218,8 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
         getActivity().overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
-    public void alertDialogEmptyBasket() {
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        final View mDialogView = factory.inflate(R.layout.favourites_empty_design, null);
-        final AlertDialog emptyDialog = new AlertDialog.Builder(getActivity()).create();
-        emptyDialog.setView(mDialogView);
-        emptyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mDialogView.findViewById(R.id.add_favourite).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                emptyDialog.dismiss();
-                Constants.switchActivity(getActivity(), DashboardActivity.class);
-                getActivity().overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-            }
-        });
-        emptyDialog.show();
-    }
-
 
     void emptyScreen() {
-        // below code for display empty Screen
         if (listFavourites.size() > 0) {
             relativeLayout.setVisibility(View.VISIBLE);
             emptFav.setVisibility(View.GONE);
@@ -275,7 +253,6 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public void onclickedFav(int pos) {
         String id = listFavourites.get(pos).getEntityID();
-        //sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID);
         popUpDeleteFavourite(pos, id, sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID), listFavourites.get(pos).getRestaurantName());
     }
 
@@ -283,7 +260,7 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.favourite_remove_popup);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         TextView confirm = dialog.findViewById(R.id.btn_confirm);
         TextView cancel = dialog.findViewById(R.id.btn_cancel);
         TextView txtMsg = dialog.findViewById(R.id.txt_msg);
@@ -303,7 +280,16 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
             }
         });
         dialog.show();
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
     }
+
+
 
     public void addFavourites(final int position, String id, String userID) {
 
@@ -317,7 +303,6 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void onResponse(Call<AddFavouristeResponse> call, Response<AddFavouristeResponse> response) {
                 try {
-                    //    Log.e("Error11 <>>>",">>>>>"+response.body().getMessage()+"//"+response.body().getData().getFavouriteStatus());
                     if (response.body().getSuccess()) {
                         listFavourites.remove(position);
                         mFavouritesAdapter.notifyItemChanged(position);
@@ -328,18 +313,12 @@ public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.O
                         }
                     }
                 } catch (Exception e) {
-                    //    Log.e("Error11 <>>>",">>>>>"+e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<AddFavouristeResponse> call, Throwable t) {
-                //   Log.e("Error12 <>>>",">>>>>"+t.getMessage());
-//                dialog.hide();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

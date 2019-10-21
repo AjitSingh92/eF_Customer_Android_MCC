@@ -80,9 +80,8 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     boolean isLoading = false;
     OrderPositionListner orderPositionListner;
     SharedPreferencesClass sharePre;
-    //private List<PreviousOrderResponse.Data.PreviousOrderDetail> previousOrderDetailList=new ArrayList<>();
-    // private List<DataList> previousOrderDetails = new ArrayList<DataList>();
-    FirebaseAnalytics mFirebaseAnalytics;
+     FirebaseAnalytics mFirebaseAnalytics;
+
     public PreviousOrderFragment() {
         // Required empty public constructor
 
@@ -98,7 +97,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_previous_order, container, false);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
@@ -108,8 +106,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
         sharePre = new SharedPreferencesClass(mContext);
         val = (GlobalValues) mContext;
         orderPositionListner = this;
@@ -118,7 +114,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
 
         swipreferesh.setOnRefreshListener(this);
         swipreferesh.setColorSchemeResources(R.color.orange,
@@ -129,9 +124,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         swipreferesh.post(new Runnable() {
             @Override
             public void run() {
-              /*  if (swipreferesh != null) {
-                    swipreferesh.setRefreshing(true);
-                }*/
                 try {
                     if (Constants.isInternetConnectionAvailable(300)) {
                         getCardList();
@@ -144,8 +136,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                 }
             }
         });
-        // getCardList();
-        //initView(previousOrderDetails);
         previousList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -160,8 +150,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
 
                 if (!isLoading) {
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == previousOrderDetails.size() - 1) {
-                        //bottom of list!
-                        //loadMore();
                         if (Constants.isInternetConnectionAvailable(300)) {
                             getCardList();
                             isLoading = true;
@@ -184,9 +172,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
 
     private void initView(List<PreviousOrderDetail> previousOrderDetaillist) {
         try {
-            // mPreviousAdapter = new PreviousAdapter(previousOrderDetaillist, mContext);
             myorderAdapter = new MyorderAdapter(previousOrderDetaillist, mContext, (DashboardActivity) getActivity(), orderPositionListner);
-
             @SuppressLint("WrongConstant")
             LinearLayoutManager horizontalLayoutManagaer
                     = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -203,27 +189,22 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         swipreferesh.setRefreshing(true);
         PreviousOrderInterface apiInterface = ApiClient.getClient(getContext()).create(PreviousOrderInterface.class);
         String custId = val.getLoginResponse().getData().getUserId();
-        //Log.d("previous order", "getCardList: customerId:" + customerId + " custId: " + custId);
         int offset = 0, limit = 50;
         final ReqstPrevOrder request = new ReqstPrevOrder(custId, offset, limit);
-        // request.setUserId(val.getLoginResponse().getData().getUserId());
         Call<PreviousOrderResponse> call = apiInterface.mLogin(request);
         call.enqueue(new Callback<PreviousOrderResponse>() {
             @Override
             public void onResponse(Call<PreviousOrderResponse> call, Response<PreviousOrderResponse> response) {
-                //List<Data> previousOrderList = (List<Data>) response.body();
                 try {
                     dialog.dismiss();
                     if (response.body().getSuccess()) {
-
                         for (int i = 0; i < response.body().getData().getPreviousOrderDetails().size(); i++) {
                             previousOrderDetails = response.body().getData().getPreviousOrderDetails();
                         }
-                        Log.e(TAG, "onResponse:list sizeeeeeeee: " + previousOrderDetails.size());
+
                         if (response.body().getData().getTotalRecords() > 0) {
                             sharePre.setInt(sharePre.NUMBER_OF_ORDERS, response.body().getData().getTotalRecords());
                         }
-                        //mPreviousAdapter.notifyDataSetChanged();
                         initView(previousOrderDetails);
                         emptyScreen();
                     } else {
@@ -233,9 +214,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                 } catch (Exception e) {
                     dialog.dismiss();
                     emptyScreen();
-                    Log.e("Error11 <>>>", ">>>>>" + e.getMessage());
-                    //    showDialog("Please try again.");
-//                       Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                 }
                 if (swipreferesh != null) {
                     swipreferesh.setRefreshing(false);
@@ -244,14 +222,10 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
 
             @Override
             public void onFailure(Call<PreviousOrderResponse> call, Throwable t) {
-                Log.e("Error12 <>>>", ">>>>>" + t.getMessage());
                 if (swipreferesh != null) {
                     swipreferesh.setRefreshing(false);
                 }
                 emptyScreen();
-//                dialog.dismiss();
-//                showDialog("Please try again.");
-                //    Toast.makeText(LoginActivity.this, "Please try again 2."+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -266,7 +240,6 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         CancelInterface apiInterface = ApiClient.getClient(mContext).create(CancelInterface.class);
-        Log.e("canorder", "cancelOrder:  order no:" + orderNo);
         CancelRequest request = new CancelRequest();
         request.setOrderNumber(orderNo);
         Call<CancelOrderResponse> call = apiInterface.mCancelOrder(request);
@@ -341,11 +314,9 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onClickPosition(int pos, String order_number) {
         showDialog("Are you sure Cancel order!", order_number);
-        // cancelOrder(order_number);
     }
 
     void emptyScreen() {
-        // below code for display empty Screen
         try {
             if (previousOrderDetails.size() > 0) {
                 if (llMain != null) {
@@ -358,7 +329,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
                 llMain.setVisibility(View.GONE);
             }
         } catch (NullPointerException e) {
-            Log.e("PreviousOrderFrag", e.getLocalizedMessage());
+            e.printStackTrace();
         }
 
 

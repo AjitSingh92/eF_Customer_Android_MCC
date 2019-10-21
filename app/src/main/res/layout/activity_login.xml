@@ -15,17 +15,18 @@
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_15sdp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/ll"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_260sdp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_gradient"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/_5sdp">
+                android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -51,7 +52,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Email"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <EditText
@@ -84,7 +85,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Password"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <EditText
@@ -110,7 +111,7 @@
                     android:id="@+id/sendVerivication"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:gravity="center"
                     android:visibility="visible">
 
@@ -124,7 +125,7 @@
                         android:gravity="center"
                         android:text="Sign in"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -136,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
@@ -149,7 +150,7 @@
                     android:gravity="center"
                     android:text="Forgot password?"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -161,7 +162,7 @@
                     android:gravity="center"
                     android:text=" Reset"
                     android:textColor="@color/orange"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -173,7 +174,7 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_7sdp"
                 android:orientation="horizontal">
 
                 <View
@@ -195,7 +196,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="or"
                     android:textColor="#646363"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
 
                 <View
@@ -211,18 +212,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/llview"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/btn_facebook"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_below="@+id/ll"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/rounded_rectangle"
@@ -231,7 +232,7 @@
 
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="left|center_vertical"
                         android:layout_marginLeft="@dimen/_25sdp"
                         android:background="@drawable/facebook"
@@ -250,7 +251,7 @@
                         android:paddingRight="@dimen/_20sdp"
                         android:text="Log in with Facebook"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_13sdp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
 
@@ -259,11 +260,11 @@
                 <LinearLayout
                     android:id="@+id/btn_google_plus"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_below="@+id/ll"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/rounded_rectangle"
@@ -289,7 +290,7 @@
                         android:paddingRight="@dimen/_20sdp"
                         android:text="Log in with Google"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_13sdp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -301,7 +302,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lll"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -314,7 +315,7 @@
                     android:gravity="end|right"
                     android:text="Don’t have an account? "
                     android:textColor="#646363"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -325,7 +326,7 @@
                     android:gravity="left|start"
                     android:text=" Create Account"
                     android:textColor="#ff5200"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:textStyle="bold" />
             </LinearLayout>
 

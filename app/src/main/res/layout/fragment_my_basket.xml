@@ -144,7 +144,6 @@
                             android:id="@+id/tv_distance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:fontFamily="@font/avenir_roman"
@@ -159,6 +158,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:orientation="horizontal"
                         android:visibility="visible">
 
@@ -172,9 +172,9 @@
 
                             <ImageView
                                 android:id="@+id/delivery"
-                                android:layout_width="@dimen/_14sdp"
-                                android:layout_height="@dimen/_14sdp"
-                                android:src="@drawable/closed" />
+                                android:layout_width="@dimen/_12sdp"
+                                android:layout_height="@dimen/_12sdp"
+                                android:src="@drawable/ic_orage_tick" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -198,9 +198,9 @@
 
                             <ImageView
                                 android:id="@+id/dine_in"
-                                android:layout_width="@dimen/_14sdp"
-                                android:layout_height="@dimen/_14sdp"
-                                android:src="@drawable/closed" />
+                                android:layout_width="@dimen/_12sdp"
+                                android:layout_height="@dimen/_12sdp"
+                                android:src="@drawable/ic_orage_tick" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -224,9 +224,9 @@
 
                             <ImageView
                                 android:id="@+id/collection"
-                                android:layout_width="@dimen/_14sdp"
-                                android:layout_height="@dimen/_14sdp"
-                                android:src="@drawable/closed" />
+                                android:layout_width="@dimen/_12sdp"
+                                android:layout_height="@dimen/_12sdp"
+                                android:src="@drawable/ic_orage_tick" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -242,7 +242,7 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_10sdp"
@@ -251,39 +251,47 @@
                         android:paddingTop="@dimen/_5sdp"
                         android:paddingBottom="@dimen/_5sdp">
 
-                        <ImageView
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="@dimen/_25sdp"
-                            android:background="@drawable/peanut_icon"
-                            android:padding="@dimen/_5sdp" />
-
-                        <TextView
-                            android:id="@+id/allergy_click"
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:fontFamily="@font/avenir_medium"
-                            android:gravity="center"
-                            android:text="@string/do_you_have_an_allergy_tap_for_info"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_13sdp" />
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center_horizontal">
 
-                        <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:background="@drawable/ic_info"
-                            android:padding="@dimen/_5sdp" />
-                    </LinearLayout>
+                            <ImageView
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/peanut_icon"
+                                android:padding="@dimen/_5sdp" />
+
+                            <TextView
+                                android:id="@+id/allergy_click"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:fontFamily="@font/avenir_medium"
+                                android:gravity="center"
+                                android:text="@string/do_you_have_an_allergy_tap_for_info"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_13sdp" />
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:background="@drawable/ic_info"
+                                android:padding="@dimen/_5sdp" />
+                        </LinearLayout>
+                    </RelativeLayout>
 
                     <LinearLayout
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@drawable/rounded_white"
                         android:orientation="horizontal">
 
@@ -926,8 +934,7 @@
                                 <android.support.v7.widget.RecyclerView
                                     android:id="@+id/recyclerview_order_items"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                   />
+                                    android:layout_height="wrap_content" />
 
                                 <android.support.v7.widget.RecyclerView
                                     android:id="@+id/recyclerview_menu_items"
@@ -1062,7 +1069,7 @@
                                         android:layout_marginLeft="@dimen/_20sdp"
                                         android:fontFamily="@font/avenir_medium"
                                         android:text="Discount"
-                                        android:textColor="@color/black"
+                                        android:textColor="@color/descolor"
                                         android:textSize="@dimen/_12sdp" />
 
                                     <TextView
@@ -1070,10 +1077,10 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_20sdp"
-                                        android:fontFamily="@font/avenir_black"
+                                        android:fontFamily="@font/avenir_medium"
                                         android:gravity="right|end"
                                         android:text="£0.00"
-                                        android:textColor="@color/black"
+                                        android:textColor="@color/descolor"
                                         android:textSize="@dimen/_12sdp" />
 
                                 </LinearLayout>
@@ -1225,8 +1232,9 @@
                         android:layout_marginTop="@dimen/_15sdp"
                         android:background="#706f6f"
                         android:orientation="vertical"
-                        android:padding="@dimen/_15sdp"
-                        android:visibility="gone">
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_15sdp"
+                        android:visibility="visible">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -1251,7 +1259,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_10sdp" />
+                            android:clipToPadding="false"
+                            android:paddingStart="@dimen/_15sdp"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingEnd="@dimen/_15sdp" />
 
 
                     </LinearLayout>
@@ -1264,7 +1275,10 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@drawable/cardview"
                         android:orientation="vertical"
-                        android:padding="@dimen/_5sdp">
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:paddingBottom="@dimen/_10sdp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1281,7 +1295,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
-                                    android:fontFamily="@font/avenir_black"
+                                    android:fontFamily="@font/avenir_medium"
                                     android:gravity="center_vertical"
                                     android:text="@string/add_voucher_code"
                                     android:textColor="@color/descolor"
@@ -1312,7 +1326,10 @@
                                 android:background="@color/orange"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="center"
-                                android:padding="@dimen/_5sdp"
+                                android:paddingStart="@dimen/_5sdp"
+                                android:paddingTop="@dimen/_3sdp"
+                                android:paddingEnd="@dimen/_5sdp"
+                                android:paddingBottom="@dimen/_3sdp"
                                 android:tag="apply"
                                 android:text="Apply"
                                 android:textColor="@color/white" />
@@ -1425,8 +1442,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -1436,12 +1453,11 @@
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginRight="@dimen/_10sdp"
                             android:layout_weight=".75"
-                            android:fontFamily="@font/avenir_roman"
+                            android:fontFamily="@font/avenir_medium"
                             android:gravity="left"
                             android:text="@string/add_a_note_to_the_restaurant"
                             android:textColor="@color/orange"
-                            android:textSize="@dimen/_14sdp"
-                            />
+                            android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/btn_addNoteEdit"
@@ -1452,7 +1468,10 @@
                             android:background="@color/orange"
                             android:fontFamily="@font/avenir_medium"
                             android:gravity="center"
-                            android:padding="@dimen/_5sdp"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:paddingTop="@dimen/_3sdp"
+                            android:paddingEnd="@dimen/_5sdp"
+                            android:paddingBottom="@dimen/_3sdp"
                             android:text="Edit"
                             android:textColor="@color/white" />
                     </LinearLayout>
@@ -1562,7 +1581,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="@dimen/_15sdp">
+                            android:paddingStart="@dimen/_15sdp"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:paddingEnd="@dimen/_15sdp"
+                            android:paddingBottom="@dimen/_10sdp">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -1578,9 +1600,9 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/avenir_medium"
                                 android:text=""
-                                android:visibility="gone"
                                 android:textColor="@color/item_name"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_12sdp"
+                                android:visibility="gone" />
 
                             <RelativeLayout
                                 android:id="@+id/rl_cat"
@@ -1594,8 +1616,7 @@
                                 <TextView
                                     android:id="@+id/tv_cat"
                                     style="@style/filter_text_theme"
-                                    android:layout_toStartOf="@+id/iv_cat_down"
-                                    />
+                                    android:layout_toStartOf="@+id/iv_cat_down" />
 
                                 <ImageView
                                     android:id="@+id/iv_cat_down"

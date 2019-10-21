@@ -18,20 +18,18 @@ public class AdapterSizeModifier extends RecyclerView.Adapter<AdapterSizeModifie
 
     // private ArrayList<Arraylist> dataSet;
     ChooseAdapter mChooseAdapter;
-    ArrayList<String> check2 ;
+    ArrayList<String> check2;
     ChooseAdapter.PositionInterface mPositionInterface;
     Context mContext;
     MenuProduct mProduct;
     int possition;
     double totalPrice;
-    ArrayList<com.lexxdigital.easyfooduserapps.restaurant_details.model.show_menu_category.SizeModifierProduct> showCartSizeModifierPproduct ;
-            ;
+    ArrayList<com.lexxdigital.easyfooduserapps.restaurant_details.model.show_menu_category.SizeModifierProduct> showCartSizeModifierPproduct;
     ArrayList<com.lexxdigital.easyfooduserapps.restaurant_details.model.show_menu_category.SizeModifier> showCartSizeModifier;
     TextView popupTotalPrice;
+
     @Override
     public void onClickPos(int pos, int lpos) {
-     //   Toast.makeText(mContext, "Clicked > "+pos+"//"+lpos, Toast.LENGTH_SHORT).show();
-     //   popupTotalPrice.setText("+ £"+mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(lpos).getSizeModifierProducts().get(pos).getModifierProductPrice());
         mChooseAdapter.notifyDataSetChanged();
     }
 
@@ -40,6 +38,7 @@ public class AdapterSizeModifier extends RecyclerView.Adapter<AdapterSizeModifie
 
         TextView modifireName;
         RecyclerView listModifiers;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             this.listModifiers = itemView.findViewById(R.id.modifiers_list);
@@ -49,7 +48,7 @@ public class AdapterSizeModifier extends RecyclerView.Adapter<AdapterSizeModifie
 
     public AdapterSizeModifier(Context mContext, MenuProduct product, int pos, TextView price, ArrayList<com.lexxdigital.easyfooduserapps.restaurant_details.model.show_menu_category.SizeModifier> cartSizeModifier, double tPrice) {
 
-        this.mContext= mContext;
+        this.mContext = mContext;
         this.mProduct = product;
         this.possition = pos;
         this.popupTotalPrice = price;
@@ -71,23 +70,17 @@ public class AdapterSizeModifier extends RecyclerView.Adapter<AdapterSizeModifie
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-      //  holder.cardNoOne.setText(response.getData().getCards().get(listPosition).getCardNo().substring(0,4));
-        mPositionInterface=this;
+        mPositionInterface = this;
         check2 = new ArrayList<>();
         check2.clear();
-        for(int i=0;i<mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getSizeModifierProducts().size();i++){
+        for (int i = 0; i < mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getSizeModifierProducts().size(); i++) {
             check2.add("0");
         }
-
-       // showCartSizeModifier.clear();
-
-       // showCartSizeModifier = new ArrayList<>();
         showCartSizeModifierPproduct = new ArrayList<>();
-        showCartSizeModifier.add(new com.lexxdigital.easyfooduserapps.restaurant_details.model.show_menu_category.SizeModifier(mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getModifierName(),mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getModifierType(),mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getModifierId(),mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getMinAllowedQuantity(),mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getMaxAllowedQuantity(),showCartSizeModifierPproduct));
+        showCartSizeModifier.add(new com.lexxdigital.easyfooduserapps.restaurant_details.model.show_menu_category.SizeModifier(mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getModifierName(), mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getModifierType(), mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getModifierId(), mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getMinAllowedQuantity(), mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getMaxAllowedQuantity(), showCartSizeModifierPproduct));
 
         holder.modifireName.setText(mProduct.getMenuProductSize().get(possition).getSizeModifiers().get(listPosition).getModifierName());
-//
-        mChooseAdapter = new ChooseAdapter(mContext, mPositionInterface,check2,mProduct,possition,listPosition,popupTotalPrice,showCartSizeModifierPproduct,showCartSizeModifier,totalPrice);
+        mChooseAdapter = new ChooseAdapter(mContext, mPositionInterface, check2, mProduct, possition, listPosition, popupTotalPrice, showCartSizeModifierPproduct, showCartSizeModifier, totalPrice);
         @SuppressLint("WrongConstant")
         LinearLayoutManager horizontalLayoutManagaer2
                 = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -99,4 +92,5 @@ public class AdapterSizeModifier extends RecyclerView.Adapter<AdapterSizeModifie
     @Override
     public int getItemCount() {
         return mProduct.getMenuProductSize().get(possition).getSizeModifiers().size();
-    }}
+    }
+}

@@ -79,7 +79,6 @@ public class ManageAddressActivity extends AppCompatActivity implements AddressS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_address);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Constants.setStatusBarGradiant(ManageAddressActivity.this);
@@ -113,10 +112,7 @@ public class ManageAddressActivity extends AppCompatActivity implements AddressS
     }
 
     private void initView() {
-
         mAddressSaveAdapter = new AddressSaveAdapter(getApplicationContext(), mPositionInterface, mDeletePositionInterface, addressList);
-
-
         @SuppressLint("WrongConstant")
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -131,7 +127,6 @@ public class ManageAddressActivity extends AppCompatActivity implements AddressS
         intent.putExtra(Constants.EDIT_ADDRESS, Constants.EDIT_ADDRESS);
         intent.putExtra(Constants.ADDRESS, (Serializable) addressList.get(pos));
         Constants.switchActivityWithIntent(ManageAddressActivity.this, intent);
-
     }
 
     public void getAddressList() {
@@ -183,8 +178,6 @@ public class ManageAddressActivity extends AppCompatActivity implements AddressS
                         mAddressSaveAdapter.removeAt(pos);
                         mAddressSaveAdapter.notifyDataSetChanged();
                         mAddressSaveAdapter.notify();
-//                        Toast.makeText(ManageAddressActivity.this,
-//                                "Your Message deleted" + pos, Toast.LENGTH_LONG).show();
                         sharePre.clear(sharePre.DEFAULT_ADDRESS);
                         sharePre.clear(sharePre.BILLING_ADDRESS);
 
@@ -207,8 +200,6 @@ public class ManageAddressActivity extends AppCompatActivity implements AddressS
 
     @Override
     public void onClickDel(int pos) {
-
-
         AddressList list = addressList.get(pos);
         showDialog("Do you want to delete " + list.getAddressType() + " address?", "\n" + list.getAddressOne() + " " + list.getAddressTwo(), list.getID(), pos);
     }

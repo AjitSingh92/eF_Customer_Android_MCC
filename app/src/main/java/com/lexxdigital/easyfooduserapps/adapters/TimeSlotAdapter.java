@@ -55,8 +55,6 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ViewRe
                 selectedPos = position;
                 if (selectedPos >= 0)
                     notifyDataSetChanged();
-
-                //   holder.rlMainSlot.setBackground(activity.getResources().getDrawable(R.drawable.recatangle_orange));
                 recyclerItemListener.onItemClick(position);
 
             }

@@ -147,14 +147,7 @@ public class AddressDialogAdapter extends RecyclerView.Adapter<AddressDialogAdap
             edit_details_tv.setText("Delivery to this");
         }
 
-       /* holder.edit_details_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (addressList.get(listPosition).getIsDelivered() == 1) {
-                    onAddressSelected.onAddressSelect(listPosition, addressList.get(listPosition));
-                }
-            }
-        });*/
+
 
     }
 

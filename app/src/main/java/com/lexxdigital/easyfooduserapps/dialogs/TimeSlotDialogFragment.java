@@ -94,10 +94,14 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     OnDeliveryTimeSelectedListener onDeliveryTimeSelectedListener;
     FirebaseAnalytics mFirebaseAnalytics;
     private String finalSlot = "";
+    private String isTommorow = "0";
+    private String dateString = "";
     private static TimeSlotDialogFragment instance = null;
 
+    private String todayDate, tomorrowDate, nowDate;
+
     public interface OnDeliveryTimeSelectedListener {
-        void onDeliveryTimeSelect(String time);
+        void onDeliveryTimeSelect(String time, String isTomorrow, String timeDate);
     }
 
     @Override
@@ -134,9 +138,6 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //  return inflater.inflate(R.layout.time_slot_dialog, container, false);
-
         instance = this;
         return inflater.inflate(R.layout.time_slot_popup, container, false);
 
@@ -153,11 +154,6 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         pager = view.findViewById(R.id.pager);
         progressBar = view.findViewById(R.id.progressBar);
         sharePre = new SharedPreferencesClass(context);
-        // ivLcose = view.findViewById(R.id.iv_close);
-        //  todaySpinner = view.findViewById(R.id.spinner_day);
-        //  tomorrowSpinner = view.findViewById(R.id.spinner_tomorrow);
-        //  view.findViewById(R.id.cross_tv).setOnClickListener(this);
-        // view.findViewById(R.id.btn_ok).setOnClickListener(this);
         view.findViewById(R.id.iv_close).setOnClickListener(this);
         view.findViewById(R.id.tv_confirm).setOnClickListener(this);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE");
@@ -200,8 +196,26 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     }
 
 
-    public void setTimeSlot(String timeSlotttt) {
+    public void setTimeSlot(String timeSlotttt, String isTommoroww) {
         finalSlot = timeSlotttt;
+        isTommorow = isTommoroww;
+
+        // 2019-09-23 10:15:20
+
+
+        if (isTommoroww.equalsIgnoreCase("0") && timeSlotttt.equalsIgnoreCase("Now")) {
+            dateString = todayDate + " " + nowDate;
+        } else if (isTommoroww.equalsIgnoreCase("1") && timeSlotttt.equalsIgnoreCase("Now")) {
+            dateString = tomorrowDate + " " + nowDate;
+        } else if (isTommoroww.equalsIgnoreCase("0") && !timeSlotttt.equalsIgnoreCase("Now")) {
+            int n = timeSlotttt.indexOf("-");
+            dateString = todayDate + " " + timeSlotttt.substring(0, n).trim();
+        } else if (isTommoroww.equalsIgnoreCase("1") && !timeSlotttt.equalsIgnoreCase("Now")) {
+            int n = timeSlotttt.indexOf("-");
+            dateString = tomorrowDate + " " + timeSlotttt.substring(0, n).trim();
+        }
+
+
     }
 
     private void setupViewPager(ViewPager viewPager, String currentDay, String nextDay) {
@@ -243,6 +257,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+
     }
 
 
@@ -314,7 +329,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
             case R.id.tv_confirm:
 
                 if (!finalSlot.isEmpty() && finalSlot != "") {
-                    onDeliveryTimeSelectedListener.onDeliveryTimeSelect(finalSlot);
+                    onDeliveryTimeSelectedListener.onDeliveryTimeSelect(finalSlot, isTommorow, dateString);
                 }
 
 /*
@@ -397,18 +412,22 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
 
                 try {
                     if (response.body().getSuccess()) {
-
+                        todayDate = response.body().getTodaydate();
+                        tomorrowDate = response.body().getTodaydate();
+                        nowDate = response.body().getTimenow();
 
                         if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
                             toDayDataList = response.body().getData().getToday();
                             for (int i = 0; i < toDayDataList.size(); i++) {
                                 todayList.add(toDayDataList.get(i));
+                                // dateString = response.body().getTodaydate();
                             }
                         }
                         if (response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() > 0) {
                             tomorrowDataList = response.body().getData().getTomorrow();
                             for (int i = 0; i < response.body().getData().getTomorrow().size(); i++) {
                                 tommorowList.add(tomorrowDataList.get(i));
+                                // dateString = response.body().getTodaydate();
                             }
                         }
 

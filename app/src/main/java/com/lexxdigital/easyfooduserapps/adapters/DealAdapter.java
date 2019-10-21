@@ -104,7 +104,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             this.btnPreOrder = (LinearLayout) itemView.findViewById(R.id.layout_btnPreOrder);
             this.layoutDeliveryPrice = (LinearLayout) itemView.findViewById(R.id.layout_deliveryPrice);
             this.layoutDeliveryTime = (LinearLayout) itemView.findViewById(R.id.layout_deliveryTime);
-
             this.dealcard_list_id = (RecyclerView) itemView.findViewById(R.id.dealcard_list_id);
             this.name = (TextView) itemView.findViewById(R.id.restaurant_name);
             this.cuisines = (TextView) itemView.findViewById(R.id.restaurant_cuisines);
@@ -139,8 +138,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 } else {
                     List<RestaurantsDealResponse.Data.Restaurant> filteredList = new ArrayList<>();
                     for (RestaurantsDealResponse.Data.Restaurant row : responseDeals) {
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         if (row.getRestaurantName() != null) {
                             if (row.getCuisines().toLowerCase().contains(charString.toLowerCase())) {
                                 filteredList.add(row);
@@ -176,7 +173,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
 
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dealrecycleviewitem, parent, false);
-
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -198,7 +194,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         } else {
             holder.cuisines.setText(Html.fromHtml(respNameFilter.get(listPosition).getCuisines()));
         }
-//        holder.cuisines.setText(respNameFilter.get(listPosition).getCuisines());
+
 
         if (respNameFilter.get(listPosition).getOverallRating() != null) {
             if (respNameFilter.get(listPosition).getOverallRating().equalsIgnoreCase("0")) {
@@ -220,7 +216,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 holder.llClosed.setVisibility(View.VISIBLE);
                 holder.preOrder.setVisibility(View.VISIBLE);
                 holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed));
-
             } else if (status.trim().equalsIgnoreCase("not_serving")) {
                 holder.preOrder.setVisibility(View.GONE);
                 holder.llClosed.setVisibility(View.VISIBLE);
@@ -229,15 +224,15 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 holder.llClosed.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            Log.e("DealAdapter", "onBindViewHolder<<Exception>>: " + e.getMessage());
+            e.printStackTrace();
         }
 
         holder.llCollection.setVisibility(View.GONE);
         holder.llDelivery.setVisibility(View.GONE);
         holder.llDinein.setVisibility(View.GONE);
 
-        if (respNameFilter.get(listPosition).getServe_style() != null || !respNameFilter.get(listPosition).getServe_style().equals("")) {
-            String[] serve_styles = respNameFilter.get(listPosition).getServe_style().split(",");
+        if (respNameFilter.get(listPosition).getDelivery_options() != null || !respNameFilter.get(listPosition).getDelivery_options().equals("")) {
+            String[] serve_styles = respNameFilter.get(listPosition).getDelivery_options().split(",");
 
             if (Arrays.asList(serve_styles).contains("collection")) {
                 holder.llCollection.setVisibility(View.VISIBLE);
@@ -247,18 +242,12 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 holder.llDelivery.setVisibility(View.VISIBLE);
                 holder.delivery.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_orage_tick));
             }
-            if (Arrays.asList(serve_styles).contains("dine_in")) {
+            if (Arrays.asList(serve_styles).contains("dinein")) {
                 holder.llDinein.setVisibility(View.VISIBLE);
                 holder.dine_in.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_orage_tick));
             }
 
-           /* if (!Arrays.asList(serve_styles).contains("delivery")) {
-                holder.layoutDeliveryPrice.setVisibility(View.VISIBLE);
-                holder.layoutDeliveryTime.setVisibility(View.VISIBLE);
-            } else {
-                holder.layoutDeliveryPrice.setVisibility(View.VISIBLE);
-                holder.layoutDeliveryTime.setVisibility(View.VISIBLE);
-            }*/
+
         }
         holder.preOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,28 +265,12 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 preOrderForLetter = view.findViewById(R.id.tv_pre_order_for_later);
                 im_cross = view.findViewById(R.id.cross_tv);
                 tvDay = view.findViewById(R.id.tv_day);
-
                 String startDelTime = "", endDelTime = "", startCollTime = "", endCollTime = "";
-
-                String todayDay = Constants.getTodayDay();
-
                 tvDay.setText(respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDay());
                 startDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryStartTime();
                 endDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryEndTime();
                 startCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getCollectionStartTime();
                 endCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getCollectionEndTime();
-
-               /* for (int i = 0; i < respNameFilter.get(mListPosition).getRestaurantTiming().size(); i++) {
-
-                    if (todayDay.equalsIgnoreCase(respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getDay())) {
-                        startDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getDeliveryStartTime();
-                        endDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getDeliveryEndTime();
-                        startCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getCollectionStartTime();
-                        endCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(i).getCollectionEndTime();
-                    }
-
-                }*/
-
                 deliveryTime.setText(startDelTime + " - " + endDelTime);
                 collectionTime.setText(startCollTime + " - " + endCollTime);
                 minOrderForDelivery.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(mListPosition).getMin_order_value() + " min order");
@@ -318,9 +291,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                         if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
                             if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(respNameFilter.get(mListPosition).getId())) {
                                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-//                                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
-//                                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
-
                                 i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
                                 i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -328,13 +298,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             } else {
                                 if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                    // String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + respNameFilter.get(mListPosition).getRestaurantName() + "\"";
                                     String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
-
                                     alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
-
-                                    // alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
-
                                 } else {
                                     new Thread(new Runnable() {
                                         @Override
@@ -344,12 +309,10 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                                             sharePre.setString(sharePre.NOTEPAD, "");
-
                                             db.getCartData();
                                             Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                                             sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
                                             sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
-
                                             i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
                                             i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
                                             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -396,16 +359,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         holder.llClosed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (respNameFilter.get(mListPosition).getStatus().equalsIgnoreCase("not_serving")) {
-                    return;
-                }*/
-
                 if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
                     if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(respNameFilter.get(mListPosition).getId())) {
                         Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-//                                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
-//                                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
-
                         i.putExtra("RESTAURANTID", respNameFilter.get(mListPosition).getId());
                         i.putExtra("RESTAURANTNAME", respNameFilter.get(mListPosition).getRestaurantName());
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -413,12 +369,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                         activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                     } else {
                         if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                            // String msg = "You have items in your basket from \"" + sharePre.getString(sharePre.RESTUARANT_NAME) + "\" would you like to disregard and move to \"" + respNameFilter.get(mListPosition).getRestaurantName() + "\"";
                             String msg = "You have already placing and order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
-
-                            //alertDialogNoRestaurant(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
                             alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
-
                         } else {
                             new Thread(new Runnable() {
                                 @Override
@@ -473,8 +425,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         /***********************************************************************************************************************/
 
 
-        // if (respNameFilter.get(listPosition).getRestaurantDeliveryCharge().size() > 0)
-        //  holder.deliveryMin.setText("£" + respNameFilter.get(listPosition).getRestaurantDeliveryCharge().get(0).getDeliveryCharge() + " delivery  •  £" + respNameFilter.get(listPosition).getRestaurantDeliveryCharge().get(0).getMinOrderValue() + " min order");
         holder.deliveryMin.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getDelivery_charge() + " delivery ");
         holder.deliveryVal.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getMin_order_value() + " min order");
         holder.deliveryTime.setText(respNameFilter.get(listPosition).getAvgDeliveryTime() + " min");
@@ -498,7 +448,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
      * Here is the key method to apply the animation
      */
     private void setAnimation(View viewToAnimate, int position) {
-        // If the bound view wasn't previously displayed on screen, it's animated
+
         if (position > lastPosition) {
             Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
             viewToAnimate.startAnimation(animation);
@@ -512,59 +462,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             this.respNameFilter.add(res.get(i));
         }
         this.notifyItemRangeInserted(offset, res.size());
-    }
-
-    public void alertDialogNoRestaurant(String message, String oldRest, final String currentRestuarant, final String currentRestId) {
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-        alertDialogBuilder.setMessage(message);
-        alertDialogBuilder.setCancelable(true);
-
-        alertDialogBuilder.setPositiveButton("Continue with " + oldRest, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-//                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
-//                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
-
-                i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
-                i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);
-                dialog.dismiss();
-            }
-        });
-        alertDialogBuilder.setNegativeButton("Start new order with " + currentRestuarant, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GlobalValues.getInstance().getDb().menuMaster().nuke();
-                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
-                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
-                    }
-                }).start();
-                sharePre.setString(sharePre.RESTUARANT_ID, currentRestId);
-                sharePre.setString(sharePre.RESTUARANT_NAME, currentRestuarant);
-                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
-                sharePre.setString(sharePre.NOTEPAD, "");
-                db.deleteCart();
-                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                i.putExtra("RESTAURANTID", currentRestId);
-                i.putExtra("RESTAURANTNAME", currentRestuarant);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);
-
-            }
-        });
-
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
     }
 
 
@@ -587,9 +484,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-//                sharePre.setString(sharePre.RESTUARANT_ID, respNameFilter.get(mListPosition).getId());
-//                sharePre.setString(sharePre.RESTUARANT_NAME, respNameFilter.get(mListPosition).getRestaurantName());
-
                 i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
                 i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

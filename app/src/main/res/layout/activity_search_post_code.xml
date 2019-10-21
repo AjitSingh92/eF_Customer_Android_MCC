@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context=".search_post_code.SearchPostCodeActivity">
 
-    <Button
+   <!-- <Button
         android:id="@+id/btn_search_cancel"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
@@ -17,12 +17,28 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/ic_close_black_24dp"
+        android:background="@drawable/ic_arrow_back_black_24dp"
         android:text=""
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_14sdp"
-        android:visibility="invisible" />
+        android:visibility="visible" />-->
+
+    <ImageView
+        android:id="@+id/btn_search_cancel"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="start|left"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/ic_arrow_back_black_24dp"
+        android:text=""
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14sdp"
+        android:visibility="visible" />
 
     <ImageView
         android:layout_width="@dimen/_180sdp"

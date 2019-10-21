@@ -91,7 +91,6 @@ public class OrderStatusActivity extends AppCompatActivity {
                 {
                     if (intent.getStringExtra("order_id") != null && OrderId != null && (intent.getStringExtra("order_id").equals(OrderId))) {
                         setUi(Integer.parseInt(intent.getStringExtra("status")));
-//                    getStatus(intent.getStringExtra("number"));
                     } else {
                         if (intent.getStringExtra("order_id") != null) {
                             OrderId = intent.getStringExtra("order_id");
@@ -210,12 +209,6 @@ public class OrderStatusActivity extends AppCompatActivity {
                 }
             }
         });
-       /* handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getStatus();
-            }
-        }, 100000);*/
 
 
         callRestaurant.setOnClickListener(new View.OnClickListener() {
@@ -319,8 +312,6 @@ public class OrderStatusActivity extends AppCompatActivity {
                                         tvDeliveredText.setVisibility(View.VISIBLE);
                                     }
                                     setUi(data.getData().getOrder_status());
-                                    //Toast.makeText(val, data.getMessage(), Toast.LENGTH_SHORT).show();
-                                    //  setUi(data.getData().getOrder_status());
                                 } else {
 
                                 }
@@ -332,8 +323,6 @@ public class OrderStatusActivity extends AppCompatActivity {
                         @Override
                         public void onError(Throwable e) {
                             dialog.dismiss();
-                            Log.e("Exception ", e.getMessage());
-                            ///Toast.makeText(val, "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
                     }));
 
@@ -379,9 +368,8 @@ public class OrderStatusActivity extends AppCompatActivity {
         switch (status) {
             case 0:
                 mainImg.setImageResource(R.drawable.ic_order_status_0);
-//                Glide.with(OrderStatusActivity.this).load(R.drawable.ssssss).asGif().into(mainImg);
                 tvTitileText.setText(getResources().getString(R.string.order_title_0));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_0) + " " + restaurant_name + " accepts your order.");
+                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_0) + " " + restaurant_name + " accept your order.");
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.border_circle_white));
 
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.gray));
@@ -409,9 +397,9 @@ public class OrderStatusActivity extends AppCompatActivity {
                 mainImg.setBackground(getResources().getDrawable(R.drawable.circle_shape));
                 tvTitileText.setText(getResources().getString(R.string.order_title_1));
                 if (order_type.equalsIgnoreCase("collection")) {
-                    tvDetailsMsg.setText(restaurant_name + " " + "" + "has accepted your order, which will be ready to collect at " + orderDeliveryTime);
+                    tvDetailsMsg.setText(" Your order has been accepted and will take " + prepared_time + " mins to prepare");
                 } else {
-                    tvDetailsMsg.setText(restaurant_name + " " + "" + "has accepted your order, which will be delivered at " + orderDeliveryTime);
+                    tvDetailsMsg.setText(" Your order has been accepted and will take " + prepared_time + " mins to prepare");
                 }
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
 
@@ -463,9 +451,9 @@ public class OrderStatusActivity extends AppCompatActivity {
 
                 break;
             case 3:
-                mainImg.setImageResource(R.drawable.ic_order_status_3);
+                mainImg.setImageResource(R.drawable.bike);
                 tvTitileText.setText(getResources().getString(R.string.order_title_3));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_1) + " " + average_delivery_time + " min " + "to delivery.");
+                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_1) + " " + average_delivery_time + " min " + "to deliver.");
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
 
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -490,7 +478,7 @@ public class OrderStatusActivity extends AppCompatActivity {
 
                 break;
             case 4:
-                mainImg.setImageResource(R.drawable.bike);
+                mainImg.setImageResource(R.drawable.ic_order_status_3);
                 tvTitileText.setText(getResources().getString(R.string.order_title_4));
                 tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_4));
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
@@ -523,26 +511,6 @@ public class OrderStatusActivity extends AppCompatActivity {
         }
     }
 
-    public void alertDialogEmptyBasket() {
-        LayoutInflater factory = LayoutInflater.from(OrderStatusActivity.this);
-        final View mDialogView = factory.inflate(R.layout.bucket_is_empty, null);
-        final AlertDialog emptyDialog = new AlertDialog.Builder(OrderStatusActivity.this).create();
-        emptyDialog.setView(mDialogView);
-        emptyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                Constants.switchActivity(OrderStatusActivity.this, DashboardActivity.class);
-                //  getActivity().finish();
-                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                emptyDialog.dismiss();
-                //    dialog2.show();
-
-            }
-        });
-        emptyDialog.show();
-    }
 
 
     public void dialogOrderRejected() {

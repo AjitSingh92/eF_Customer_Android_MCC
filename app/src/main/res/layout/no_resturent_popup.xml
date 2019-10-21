@@ -1,87 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="@dimen/_15sdp"
-    android:background="@drawable/cardview"
-    android:orientation="vertical">
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <ImageView
-        android:id="@+id/cross_tv"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_gravity="right"
-        android:layout_margin="@dimen/_5sdp"
-
-        android:background="@drawable/circle_gray"
-        android:padding="@dimen/_10sdp"
-        android:src="@mipmap/x_copy"
-
-        />
-
-
-    <ImageView
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/scooter" />
-
-    <TextView
-        android:id="@+id/tv.msg1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fm"
-        android:fontFamily="@font/avenir_black"
-        android:gravity="center"
-        android:padding="@dimen/_5sdp"
-        android:text="@string/sorry_we_don_t_currently_deliver_in_your_area"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/_18sdp"
-        android:textStyle="bold" />
-
-
-    <TextView
-        android:id="@+id/tv.msg2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoText="true"
-        android:fontFamily="@font/avenir_medium"
-        android:gravity="center"
-        android:text="We’re expanding fast, so please check back soon "
-        android:textColor="@color/descolor"
-        android:textSize="@dimen/_14sdp"
-        android:textStyle="bold" />
+    android:layout_height="match_parent"
+    android:background="@color/seme_transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:gravity="center"
-        android:visibility="visible">
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/_25sdp"
+        android:background="@drawable/cardview"
+        android:orientation="vertical">
+
+        <!-- TODO: Update blank fragment layout -->
+
+
+        <ImageView
+            android:id="@+id/cross_tv"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/circle_gray"
+            android:padding="@dimen/_10sdp"
+            android:src="@mipmap/x_copy"
+            android:visibility="gone"
+
+            />
+
+
+        <ImageView
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_20sdp"
+
+            android:adjustViewBounds="true"
+            android:background="@drawable/scooter" />
 
         <TextView
-            android:id="@+id/okTv"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:id="@+id/tv.msg1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/fm"
-
-            android:background="@drawable/rounded_orange"
-            android:fontFamily="@font/avenir_medium"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/avenir_black"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
-            android:text="@string/cancel"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp" />
+            android:text="@string/sorry_we_don_t_currently_deliver_in_your_area"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_16sdp" />
+
+
+        <TextView
+            android:id="@+id/tv.msg2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoText="true"
+            android:fontFamily="@font/avenir_medium"
+            android:gravity="center"
+            android:text="We’re expanding fast, so please check back soon "
+            android:textColor="@color/descolor"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/okTv"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_below="@+id/fm"
+                android:background="@drawable/bg_color_btn_repeat_order"
+                android:fontFamily="@font/avenir_black"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

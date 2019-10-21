@@ -22,8 +22,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -88,7 +91,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
     @BindView(R.id.btn_search)
     Button btnSearch;
     @BindView(R.id.btn_search_cancel)
-    Button btnSearchCancel;
+    ImageView btnSearchCancel;
     private Dialog dialog;
     SharedPreferencesClass sharedPreferencesClass;
     String postalCode;
@@ -145,7 +148,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         });
         sharedPreferencesClass = new SharedPreferencesClass(this);
         String postalcodePref = sharedPreferencesClass.getPostalCode();
-        Log.e(TAG, "onCreate: postalcodePrefffffffffff: " + postalcodePref);
         if (postalcodePref != null) {
             searchPostEt.setText(postalcodePref);
         }
@@ -157,35 +159,17 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         searchPostEt.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-//        searchPostEt.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                // TODO Auto-generated method stub
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                // TODO Auto-generated method stub
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//                // TODO Auto-generated method stub
-//            }
-//        });
+
         permissionUtils = new PermissionUtils(SearchPostCodeActivity.this);
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
 
         permissionUtils.check_permission(permissions, "Need GPS permission for getting your location", 1);
-        // check availability of play services
+
         if (checkPlayServices()) {
 
-            // Building the GoogleApi client
+
             buildGoogleApiClient();
         }
     }
@@ -209,14 +193,10 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
                     } else {
                         dialog.hide();
-                        //val.setPostCode(null);
-
                         errorDialog("Invalid Postcode", null);
                     }
                 } catch (Exception e) {
                     dialog.hide();
-                    Log.e("Error <>>>", ">>>>>" + e.getMessage());
-                    // val.setPostCode(null);
                     alertDialogNoRestaurant();
                 }
             }
@@ -264,7 +244,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                     address = addresses.get(i);
                     if (address.getPostalCode() != null) {
                         zipcode = address.getPostalCode();
-                        Log.d("Post Code", "Postal code: " + address.getPostalCode());
 
                         break;
                     }
@@ -350,11 +329,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                 if (!TextUtils.isEmpty(country))
                     currentLocation += "\n" + country;
 
-//                tvEmpty.setVisibility(View.GONE);
-//                tvAddress.setText(currentLocation);
-//                tvAddress.setVisibility(View.VISIBLE);
-
-                //       Log.e("Location",">>//"+postalCode);
                 searchPostEt.setText(postalCode);
 
 
@@ -400,8 +374,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         try {
-                            // Show the dialog by calling startResolutionForResult(),
-                            // and check the result in onActivityResult().
                             status.startResolutionForResult(SearchPostCodeActivity.this, REQUEST_CHECK_SETTINGS);
 
                         } catch (IntentSender.SendIntentException e) {
@@ -519,7 +491,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
     @Override
     public void PermissionGranted(int request_code) {
-        Log.i("PERMISSION", "GRANTED");
         isPermissionGranted = true;
     }
 
@@ -598,14 +569,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                 startActivity(new Intent(SearchPostCodeActivity.this, DashboardActivity.class));
                 finish();
                 overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-               /* if (validPostcode) {
-                    val.setIsFromDealPage(false);
-                    startActivity(new Intent(SearchPostCodeActivity.this, DashboardActivity.class));
-                    finish();
-                    overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                } else {
-                    Toast.makeText(this, "oops! Postcode is not valid, Please update valid postcode.", Toast.LENGTH_LONG).show();
-                }*/
                 break;
             case R.id.searchicon:
                 getLocation();
@@ -624,9 +587,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                         buildGoogleApiClient();
                     }
 
-//                    Toast.makeText(this, "Please enable to high location from mobile setting or enable to GPS", Toast.LENGTH_SHORT).show();
-//                    alertDialogLocation();
-                    // showToast("Couldn't get the location. Make sure location is enabled on the device");
                 }
                 break;
         }
@@ -663,19 +623,20 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
     }
 
     public void errorDialog(String msg1, String msg2) {
-        LayoutInflater factory = LayoutInflater.from(SearchPostCodeActivity.this);
-        final View mDialogView = factory.inflate(R.layout.no_resturent_popup, null);
-        final AlertDialog allergyDialog = new AlertDialog.Builder(SearchPostCodeActivity.this).create();
-        allergyDialog.setView(mDialogView);
-        allergyDialog.setCancelable(false);
-        allergyDialog.setCanceledOnTouchOutside(false);
-        allergyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        View dialogView = LayoutInflater.from(SearchPostCodeActivity.this).inflate(R.layout.no_resturent_popup, null);
+        //  dialogBinding = DataBindingUtil.bind(dialogView);
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView.getRootView());
+        dialog.setCancelable(false);
 
 
         TextView tvMsg1, tvMsg2;
 
-        tvMsg1 = mDialogView.findViewById(R.id.tv_msg1);
-        tvMsg2 = mDialogView.findViewById(R.id.tv_msg2);
+        tvMsg1 = dialogView.findViewById(R.id.tv_msg1);
+        tvMsg2 = dialogView.findViewById(R.id.tv_msg2);
 
         tvMsg1.setText(msg1);
         tvMsg2.setText(msg2);
@@ -684,62 +645,33 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         }
 
         //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
-        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //your business logic
-                allergyDialog.dismiss();
+                dialog.dismiss();
                 validPostcode = false;
 
             }
         });
-        mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //your business logic
-                allergyDialog.dismiss();
+                dialog.dismiss();
                 validPostcode = false;
             }
         });
 
-        allergyDialog.show();
+        dialog.show();
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public void alertDialogLocation() {
-        LayoutInflater factory = LayoutInflater.from(SearchPostCodeActivity.this);
-        final View mDialogView = factory.inflate(R.layout.custom_location_dialog, null);
-        final AlertDialog allergyDialog = new AlertDialog.Builder(SearchPostCodeActivity.this).create();
-        allergyDialog.setView(mDialogView);
-        allergyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
-        mDialogView.findViewById(R.id.not_allow_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                allergyDialog.dismiss();
-                //    dialog2.show();
-
-            }
-        });
-        mDialogView.findViewById(R.id.allow_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                permissionUtils.check_permission(permissions, "Need GPS permission for getting your location", 1);
-                allergyDialog.dismiss();
-
-            }
-        });
-        mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                allergyDialog.dismiss();
-            }
-        });
-
-        allergyDialog.show();
-    }
 
     public void updateAccountDetail() {
         EditProfileInterface apiInterface = ApiClient.getClient(this).create(EditProfileInterface.class);

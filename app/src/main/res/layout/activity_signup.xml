@@ -132,7 +132,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <EditText
@@ -145,7 +145,7 @@
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/edit_bg_forgot"
                     android:ems="10"
-                    android:fontFamily="@font/avenir_medium"
+                    android:fontFamily="@font/avenir_roman"
                     android:hint="First name"
                     android:inputType="textCapSentences"
                     android:maxLength="60"
@@ -153,7 +153,7 @@
                     android:paddingLeft="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="#9d9d9c"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
 
                 <EditText
@@ -168,7 +168,7 @@
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/edit_bg_forgot"
                     android:ems="10"
-                    android:fontFamily="@font/avenir_medium"
+                    android:fontFamily="@font/avenir_roman"
                     android:hint="Last name"
                     android:inputType="textCapSentences"
                     android:maxLength="60"
@@ -176,7 +176,7 @@
                     android:paddingLeft="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="#9d9d9c"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <EditText
                     android:id="@+id/edittextemail"
@@ -190,7 +190,7 @@
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/edit_bg_forgot"
                     android:ems="10"
-                    android:fontFamily="@font/avenir_medium"
+                    android:fontFamily="@font/avenir_roman"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:maxLength="60"
@@ -198,7 +198,7 @@
                     android:paddingLeft="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="#9d9d9c"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
 
                 <EditText
@@ -213,7 +213,7 @@
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/edit_bg_forgot"
                     android:ems="10"
-                    android:fontFamily="@font/avenir_medium"
+                    android:fontFamily="@font/avenir_roman"
                     android:hint="Mobile No"
                     android:inputType="number"
                     android:maxLength="14"
@@ -221,7 +221,7 @@
                     android:singleLine="true"
                     android:text=""
                     android:textColor="#9d9d9c"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <EditText
                     android:id="@+id/edittextRefCode"
@@ -235,14 +235,14 @@
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/edit_bg_forgot"
                     android:ems="10"
-                    android:fontFamily="@font/avenir_medium"
-                    android:hint="Post Code"
+                    android:fontFamily="@font/avenir_roman"
+                    android:hint="Postcode"
                     android:inputType="textCapCharacters"
                     android:maxLength="14"
                     android:padding="@dimen/_5sdp"
                     android:singleLine="true"
                     android:textColor="#9d9d9c"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="@dimen/_12sdp"
 
 
                     />
@@ -253,7 +253,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/edittextMobile"
                     android:layout_margin="@dimen/_15sdp"
-                    android:fontFamily="@font/avenir_black"
+                    android:fontFamily="@font/avenir_medium"
                     android:gravity="center_horizontal"
                     android:text="For your security, you will be sent a verification code to your mobile and email"
                     android:textColor="@color/black"
@@ -270,14 +270,14 @@
 
                     <TextView
                         android:layout_width="@dimen/_150sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="@dimen/_35sdp"
                         android:layout_below="@+id/fm"
                         android:background="@drawable/btn_intro_bg"
                         android:fontFamily="@font/avenir_medium"
                         android:gravity="center"
                         android:text="Send Verification"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
                 </LinearLayout>

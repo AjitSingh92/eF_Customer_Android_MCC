@@ -1,6 +1,6 @@
 package com.lexxdigital.easyfooduserapps.dialogs;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,12 +52,11 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
     RecyclerView recyclerViewList;
     RecyclerLayoutManager recyclerLayoutManager;
     SharedPreferencesClass sharePre;
-    Activity activity;
     OnAddressDialogListener onAddressDialogListener;
     LinearLayout llAddAddress;
     ProgressBar progressBar;
     Boolean isDelivery = true;
-    Boolean isAddressSelected = false;
+
     TextView tvEmpty;
     FirebaseAnalytics mFirebaseAnalytics;
 
@@ -176,7 +175,6 @@ public class AddressDialogFragment extends DialogFragment implements View.OnClic
                 break;
             case R.id.doneLL:
                 startActivityForResult(new Intent(context, AddAddressManualActivity.class).putExtra("callfrom", "Basket"), 105);
-
                 break;
 
 

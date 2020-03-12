@@ -102,7 +102,7 @@ public class PostalAddressListDialogFragment extends DialogFragment implements
 
         this.position = position;
         this.postalAddres = postalAddres;
-       // Log.e(TAG, "onAddressSelect fragment: "+postalAddres.get(position).getPostcode() );
+
         String selectAddress = postalAddres.get(position).getLine1()+","+postalAddres.get(position).getPostcode();
 
         Log.e("postAddressFragment", "onFragmentInteraction: "+ postalAddres.size()+"//> "+selectAddress);

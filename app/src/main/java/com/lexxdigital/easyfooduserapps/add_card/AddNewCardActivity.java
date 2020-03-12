@@ -597,22 +597,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         request.setSaveCard(isSaveCard);
         request.setCardData(makeData());
         request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_DATE_TIME));
-       /* CartDetails detail = new CartDetails();
-        Gson gson = new Gson();
-        FinalNewCartDetails cartList22 = gson.fromJson(sharedPreferencesClass.getCartDetailsKey().toString(), new TypeToken<FinalNewCartDetails>() {
-        }.getType());
-
-        Gson gson2 = new Gson();
-        String json22 = gson2.toJson(cartList22.getData());
-
-        List<Datum> cartList = gson.fromJson(json22, new TypeToken<List<Datum>>() {
-        }.getType());
-        detail.setData(cartList);
-//        request.setCartDetails(detail);
-        Gson gson222 = new Gson();
-        String json222 = gson222.toJson(request);
-        logLargeString(json222);*/
-
         Call<CheckoutResponse> call3 = apiInterface.mCheckout(request);
         call3.enqueue(new Callback<CheckoutResponse>() {
             @Override

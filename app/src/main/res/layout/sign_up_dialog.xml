@@ -100,7 +100,7 @@
                 android:textSize="@dimen/_14sdp" />
 
 
-            <EditText
+           <!-- <EditText
                 android:id="@+id/re_password_tv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
@@ -117,8 +117,9 @@
                 android:maxLength="20"
                 android:padding="@dimen/_5sdp"
                 android:textColor="#9d9d9c"
-                android:textSize="@dimen/_14sdp" />
-
+                android:textSize="@dimen/_14sdp"
+                android:visibility="gone"/>
+-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

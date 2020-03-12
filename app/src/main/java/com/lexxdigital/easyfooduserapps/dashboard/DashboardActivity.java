@@ -1,6 +1,5 @@
 package com.lexxdigital.easyfooduserapps.dashboard;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -15,15 +14,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -39,7 +35,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
-import com.lexxdigital.easyfooduserapps.api.FilterSortInterface;
 import com.lexxdigital.easyfooduserapps.api.LogoutApiInterface;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
 import com.lexxdigital.easyfooduserapps.fragments.CardsListFragment;
@@ -51,8 +46,6 @@ import com.lexxdigital.easyfooduserapps.fragments.MyBasketFragment;
 import com.lexxdigital.easyfooduserapps.fragments.PreviousOrderFragment;
 import com.lexxdigital.easyfooduserapps.login.LoginActivity;
 import com.lexxdigital.easyfooduserapps.login.model.response.LoginResponse;
-import com.lexxdigital.easyfooduserapps.model.filter_request.FilterSortRequest;
-import com.lexxdigital.easyfooduserapps.model.filter_response.FilterSortResponse;
 import com.lexxdigital.easyfooduserapps.model.logout.LogoutRequest;
 import com.lexxdigital.easyfooduserapps.model.logout.LogoutResponse;
 import com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity;
@@ -72,13 +65,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity.getActivity;
-
 public class DashboardActivity extends AppCompatActivity {
     @BindView(R.id.tvToolbarTitle)
     TextView tvToolbarTitle;
-    //    @BindView(R.id.imtitileIcone)
-    //  ImageView imTitileImage;
     @BindView(R.id.ivFilter)
     ImageView ivFilter;
     @BindView(R.id.et_location)
@@ -229,14 +218,14 @@ public class DashboardActivity extends AppCompatActivity {
         ivFilter.setVisibility(View.GONE);
         if (extras != null) {
             if (extras.getString("FROMMENU").equalsIgnoreCase("YES")) {
-
+                boolean isFavorite = extras.getBoolean(getString(R.string.isFavorate));
                 etLocation.setVisibility(View.GONE);
                 setDefaultDrawer();
                 myBasketId.setBackgroundColor(getResources().getColor(R.color.orange));
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
+                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(),isFavorite));
                 transaction.commitAllowingStateLoss();
             } else if (val.getPostCode() != null) {
 
@@ -497,7 +486,7 @@ public class DashboardActivity extends AppCompatActivity {
                 etLocation.setVisibility(View.GONE);
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
-                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
+                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext(),false), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -511,7 +500,7 @@ public class DashboardActivity extends AppCompatActivity {
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
-                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext()), getSupportFragmentManager());
+                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext(),false), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -797,12 +786,13 @@ public class DashboardActivity extends AppCompatActivity {
             if (intent.getAction().equals("custom")) {
                 etLocation.setVisibility(View.GONE);
                 setDefaultDrawer();
+                boolean isFavorite = intent.getBooleanExtra(getString(R.string.isFavorate),false);
                 myBasketId.setBackgroundColor(getResources().getColor(R.color.orange));
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext()));
+                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(),isFavorite));
                 transaction.commitAllowingStateLoss();
             }
         } else {

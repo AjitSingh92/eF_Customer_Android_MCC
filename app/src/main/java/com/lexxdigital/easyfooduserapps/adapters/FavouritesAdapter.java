@@ -226,8 +226,8 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                     tvDay = view.findViewById(R.id.tv_day);
                     String startDelTime = "", endDelTime = "", startCollTime = "", endCollTime = "";
                     String todayDay = Constants.getTodayDay();
-
-                    tvDay.setText(listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDay());
+                    String upperString = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDay().substring(0, 1).toUpperCase() + listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDay().substring(1);
+                    tvDay.setText(upperString);
                     startDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDelivery_start_time();
                     endDelTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getDelivery_end_time();
                     startCollTime = listFavourites.get(listPosition).getRestaurantTimingLists().get(0).getCollection_start_time();

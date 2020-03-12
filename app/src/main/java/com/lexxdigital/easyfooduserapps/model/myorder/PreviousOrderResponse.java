@@ -19,6 +19,7 @@ public class PreviousOrderResponse {
     @Expose
     private Errors errors;
 
+
     public Boolean getSuccess() {
         return success;
     }

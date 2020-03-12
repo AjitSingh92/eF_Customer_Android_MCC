@@ -32,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -52,7 +53,6 @@ import com.lexxdigital.easyfooduserapps.search_post_code.api.SearchPostCodeInter
 import com.lexxdigital.easyfooduserapps.search_post_code.model.search_request.SearchPostCodeRequest;
 import com.lexxdigital.easyfooduserapps.search_post_code.model.search_response.SearchPostCodeResponse;
 import com.lexxdigital.easyfooduserapps.signup.api.FinalSignupInterface;
-
 import com.lexxdigital.easyfooduserapps.signup.api.SignupRequestInterface;
 import com.lexxdigital.easyfooduserapps.signup.model.final_request.SignupFinalRequest;
 import com.lexxdigital.easyfooduserapps.signup.model.request.SignupRequest;
@@ -116,6 +116,13 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
     EditText edittextemail;
     @BindView(R.id.rl_main)
     RelativeLayout rlMainLayout;
+
+    @BindView(R.id.cb_terms)
+    CheckBox cb_terms;
+
+    @BindView(R.id.tv_term_condition)
+    TextView tv_term_condition;
+
     private Dialog dialog;
     private GlobalValues val;
     private String imageString = "   ";
@@ -148,7 +155,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         SmsReceiver.bindListener(new SmsListener() {
             @Override
             public void messageReceived(String messageText) {
-                Log.d("Text", messageText);
                 Toast.makeText(SignupActivity.this, "Message: " + messageText, Toast.LENGTH_LONG).show();
             }
         });
@@ -181,7 +187,7 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
     }
 
 
-    @OnClick({R.id.ivToolBarbackTv, R.id.add_image, R.id.sendVerivication})
+    @OnClick({R.id.ivToolBarbackTv, R.id.add_image, R.id.sendVerivication, R.id.tv_term_condition})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivToolBarbackTv:
@@ -190,6 +196,11 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             case R.id.add_image:
                 CropImage.startPickImageActivity(this);
                 break;
+
+            case R.id.tv_term_condition:
+                callWebviewPrivacy();
+                break;
+
             case R.id.sendVerivication:
                 if (Constants.isInternetConnectionAvailable(300)) {
                     validationVerification();
@@ -228,19 +239,17 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         } else if (TextUtils.isEmpty(edittextRefCode.getText().toString().trim())) {
             edittextRefCode.setError("Please enter Post Code.");
             edittextRefCode.requestFocus();
-
+        } else if (!cb_terms.isChecked()) {
+            Toast.makeText(this, "Please agree term & condition.", Toast.LENGTH_SHORT).show();
         } else {
             if (ApiClient.isConnected(getApplicationContext())) {
                 dialog.show();
                 callSearchPostAPI(edittextRefCode.getText().toString());
-
             } else {
                 showDialog("Please check internet connection.");
             }
         }
-
     }
-
 
     public void alertDialogforgotPassword(final String fname, final String lname, final String email, final String mobile, final int code) {
         LayoutInflater factory = LayoutInflater.from(this);
@@ -249,20 +258,17 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialog.setView(mDialogView);
         mDialog.setCancelable(false);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         TextView tvPhoneEnding = mDialogView.findViewById(R.id.tv_mobileEnding);
-        tvPhoneEnding.setText("Please check your text messages for phone number ending " + mobile.substring(mobile.length() - 4, mobile.length()) + " and enter the verification code");
-        pin = (EditText) mDialogView.findViewById(R.id.pin_tv);
 
+        tvPhoneEnding.setText("For security reason we need you to verify your new mobile number. Please check your text messages on phone number ending " + mobile.substring(mobile.length() - 4, mobile.length()) + " and enter the verification code below");
+        pin = (EditText) mDialogView.findViewById(R.id.pin_tv);
         SmsReceiver.bindListener(new SmsListener() {
             @Override
             public void messageReceived(String messageText) {
                 pin.setText(messageText);
             }
         });
-
         final EditText password = (EditText) mDialogView.findViewById(R.id.password_tv);
-        final EditText re_password = (EditText) mDialogView.findViewById(R.id.re_password_tv);
         TextView sendOTP = (TextView) mDialogView.findViewById(R.id.send_again);
         sendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,11 +281,12 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 dialog.show();
                 pin.setText("");
                 password.setText("");
-                re_password.setText("");
                 callAPIVerification();
                 mDialog.dismiss();
             }
         });
+
+
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,23 +312,10 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 } else if (password.getText().toString().trim().length() < 6 || password.getText().toString().trim().length() > 20) {
                     password.setError("Password must contain 6 to 20 characters.");
                     password.requestFocus();
-                } else if (TextUtils.isEmpty(re_password.getText().toString())) {
-                    re_password.setError("Please enter confirm password.");
-                    re_password.requestFocus();
-
-                } else if (re_password.getText().toString().trim().length() < 6 || re_password.getText().toString().trim().length() > 20) {
-                    re_password.setError("Confirm password must contain 6 to 20 characters.");
-                    re_password.requestFocus();
-
-                } else if (!re_password.getText().toString().trim().equals(password.getText().toString().trim())) {
-                    re_password.setError("Password mismatch.");
-                    re_password.requestFocus();
-
-
                 } else if (Integer.parseInt(pin.getText().toString()) == code) {
                     isPopupVisible = false;
                     mDialog.dismiss();
-                    callAPIFinalSignup(fname, lname, email, mobile, re_password.getText().toString(), password.getText().toString());
+                    callAPIFinalSignup(fname, lname, email, mobile, password.getText().toString(), password.getText().toString());
                 }
 
             }
@@ -330,13 +324,10 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialog.show();
     }
 
-
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(SignupActivity.this, LoginActivity.class));
         finish();
         super.onBackPressed();
-
     }
 
     @Override
@@ -356,7 +347,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         dialog.dismiss();
     }
 
-
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -368,7 +358,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             }
         }
     };
-
 
     public void callAPIVerification() {
         SignupRequestInterface apiInterface = ApiClient.getClient(getApplicationContext()).create(SignupRequestInterface.class);
@@ -385,30 +374,23 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
                 try {
                     val.setSignupResponse(response.body());
-                    //                  //Log.e("Success ><<<<<<<", ">>>>> Success" + response.code()+"//"+response.body().getResponseCode()+"//"+response.body().getResponseMsg());
                     if (response.code() == 200 && response.body().getSuccess()) {
                         dialog.hide();
-
                         alertDialogforgotPassword(edittextFname.getText().toString(), edittextLname.getText().toString(), edittextemail.getText().toString(), edittextMobile.getText().toString(), response.body().getData().getOtp());
-//
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
                         dialog.hide();
                         String msg = "";
-
                         if (response.body().getErrors().getEmail() != null) {
                             msg = msg + response.body().getErrors().getEmail().toString().replaceAll("[\\[,\\]]", "") + "\n";
                         }
                         if (response.body().getErrors().getPhoneNumber() != null) {
                             msg = msg + response.body().getErrors().getPhoneNumber().toString().replaceAll("[\\[,\\]]", "");
                         }
-
                         showDialog(msg);
-                        //    Toast.makeText(LoginActivity.this, response.body().getResponseMsg(), Toast.LENGTH_SHORT).show();
                     } else {
                         dialog.hide();
                         showDialog(response.body().getMessage());
 
-                        //         Toast.makeText(LoginActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     dialog.hide();
@@ -423,7 +405,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             }
         });
     }
-
 
     public void callAPIFinalSignup(String fname, String lname, String email, String mobile, String repassword, String password) {
         dialog = new Dialog(SignupActivity.this);
@@ -469,7 +450,10 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                         sharedPreferencesClass.setString(sharedPreferencesClass.USER_PROFILE_IMAGE, response.body().getData().getProfilePic());
                         sharedPreferencesClass.setInt(sharedPreferencesClass.NUMBER_OF_ORDERS, response.body().getData().getPrevious_orders());
                         dialog.dismiss();
-                        callWebviewPrivacy();
+                        Intent i = new Intent(SignupActivity.this, DashboardActivity.class);
+                        startActivity(i);
+                        SignupActivity.this.finish();
+                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
                         dialog.dismiss();
                         showDialog(response.body().getMessage());
@@ -493,7 +477,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         });
     }
 
-
     public void showDialog(String msg) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(SignupActivity.this);
         builder1.setMessage(msg);
@@ -511,57 +494,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         alert11.show();
     }
 
-
-    void dialogMarketCommunication() {
-
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View mDialogView = factory.inflate(R.layout.pop_market_communication, null);
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setView(mDialogView);
-        alertDialog.setCancelable(false);
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        ((TextView) mDialogView.findViewById(R.id.tv_message)).setText(this.getString(R.string.market_communication));
-
-
-        mDialogView.findViewById(R.id.tv_DontAllow).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
-                alertDialog.dismiss();
-                sharedPreferencesClass.setloginpref(null);
-                startActivity(i);
-                finish();
-                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-            }
-        });
-
-        mDialogView.findViewById(R.id.tv_Allow).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignupActivity.this, DashboardActivity.class);
-                startActivity(i);
-                alertDialog.dismiss();
-                SignupActivity.this.finish();
-                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-            }
-        });
-
-        mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
-                alertDialog.dismiss();
-                sharedPreferencesClass.setloginpref(null);
-                startActivity(i);
-                finish();
-                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-            }
-        });
-
-        alertDialog.show();
-    }
 
 
     @Override
@@ -598,7 +530,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
             }
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -647,7 +578,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         return deviceUniqueIdentifier;
     }
 
-
     void callWebviewPrivacy() {
         LayoutInflater factory = LayoutInflater.from(this);
         final View mDialogView = factory.inflate(R.layout.privacy_dialog, null);
@@ -659,14 +589,21 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         btnContinnue = mDialogView.findViewById(R.id.btn_continue);
         progress = mDialogView.findViewById(R.id.progress);
         final WebView webView = mDialogView.findViewById(R.id.web_privacy_policy);
-        webView.setVisibility(View.GONE);
+        webView.setVisibility(View.VISIBLE);
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogMarketCommunication();
+                //  dialogMarketCommunication();
                 mDialog.dismiss();
             }
         });
+
+        privacyDesc.setVisibility(View.GONE);
+        btnContinnue.setVisibility(View.GONE);
+        webView.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.VISIBLE);
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.loadUrl(ApiConstants.PRIVACY_POLICY);
 
         btnContinnue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -684,7 +621,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialog.show();
 
     }
-
 
     private class MyWebViewClient extends WebViewClient {
 

@@ -12,9 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,11 +27,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.DeliveryAreaAdapter;
+import com.lexxdigital.easyfooduserapps.restaurant_details.HygieneRatingModel;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,12 +63,9 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
     TextView timeSunday;
     @BindView(R.id.list_postcode)
     TextView listDeliveryArea;
-
     @BindView(R.id.rv_delivery_areas)
     RecyclerView rvDeliverAreas;
-
     Unbinder unbinder;
-
     NewRestaurantsDetailsResponse response;
     @BindView(R.id.ly_monday)
     LinearLayout lyMonday;
@@ -81,21 +81,31 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
     LinearLayout lySaturday;
     @BindView(R.id.ly_sunday)
     LinearLayout lySunday;
+
+    @BindView(R.id.iv_hygiene)
+    ImageView iv_hygiene;
+
+    @BindView(R.id.hygine_text)
+    TextView hygine_text;
+
     FirebaseAnalytics mFirebaseAnalytics;
 
     private List<String> areCodeList;
+    private HygieneRatingModel hygieneRatingModel;
 
     public InfoFragment() {
         // Required empty public constructor
     }
 
     @SuppressLint("ValidFragment")
-    public InfoFragment(Activity activity, Context context, NewRestaurantsDetailsResponse res) {
+    public InfoFragment(Activity activity, Context context, NewRestaurantsDetailsResponse res, HygieneRatingModel hygieneRatingModel) {
         // Required empty public constructor
         this.mContext = context;
         this.mActivity = activity;
         this.response = res;
+        this.hygieneRatingModel = hygieneRatingModel;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,7 +125,7 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-          LatLng restaurant = new LatLng(Double.parseDouble(response.getData().getRestaurants().getLat()), Double.parseDouble(response.getData().getRestaurants().getLng()));
+        LatLng restaurant = new LatLng(Double.parseDouble(response.getData().getRestaurants().getLat()), Double.parseDouble(response.getData().getRestaurants().getLng()));
         googleMap.addMarker(new MarkerOptions().position(restaurant)
                 .title(response.getData().getRestaurants().getRestaurantName()));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(restaurant));
@@ -134,7 +144,7 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         restaurantsName.setText("About " + response.getData().getRestaurants().getRestaurantName());
 
         about.setText(response.getData().getRestaurants().getInfo().getAbout());
-        areCodeList = Arrays.asList(response.getData().getRestaurants().getDeliveryAreas().split("\\s*,\\s*"));
+
         setAreaAdapter();
 
         String todayDay = Constants.getTodayDay();
@@ -288,17 +298,30 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
             }
         } else
             lySunday.setVisibility(View.GONE);
+// shakti make a change check object
 
-        String[] array = response.getData().getRestaurants().getDeliveryAreas().split(",");
-        String dArea = "";
-        for (int i = 0; i < array.length; i++) {
-            if (dArea.equalsIgnoreCase("")) {
-                dArea = array[i];
-            } else {
-                dArea = dArea + "\n" + array[i];
+        if (response.getData().getRestaurants().getDeliveryAreas() != null && response.getData().getRestaurants().getDeliveryAreas().size() > 0) {
+            String dArea = "";
+            for (int i = 0; i < response.getData().getRestaurants().getDeliveryAreas().size(); i++) {
+                {
+                    dArea = dArea + "\n" + response.getData().getRestaurants().getDeliveryAreas().get(i).getPostcode();
+                }
             }
+            listDeliveryArea.setText(dArea);
         }
-        listDeliveryArea.setText(dArea);
+        if (hygieneRatingModel != null ) {
+            if (hygieneRatingModel.getData() != null) {
+                iv_hygiene.setVisibility(View.VISIBLE);
+                hygine_text.setText(mActivity.getString(R.string.hygiene_rating));
+                Glide.with(mActivity).load(hygieneRatingModel.getData()).apply(new RequestOptions()
+                        .placeholder(R.drawable.easy_food_image))
+                        .into(iv_hygiene);
+            }
+        }else {
+            hygine_text.setText(mActivity.getString(R.string.hygiene_rating_is_pending));
+            iv_hygiene.setVisibility(View.INVISIBLE);
+        }
+
 
     }
 

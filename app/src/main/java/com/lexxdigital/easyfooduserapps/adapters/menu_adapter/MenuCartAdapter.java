@@ -117,7 +117,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
             }*/
             if (mItem.get(position).getMealProducts() != null && mItem.get(position).getMealProducts().size() > 0) {
                 title.setText(/*itemQty + "x " +*/ mItem.get(position).getProductName());
-                totalPrice += mItem.get(position).getOriginalAmount1();
+                totalPrice += (Double.parseDouble(mItem.get(position).getMenuProductPrice()) * itemQty);
             } else {
                 if (mItem.get(position).getMenuProductSize().size() > 0) {
                     title.setText(/*itemQty + "x " +*/ mItem.get(position).getMenuProductSize().get(0).getProductSizeName() + " " + mItem.get(position).getProductName());
@@ -128,6 +128,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                     totalPrice += (itemQty * Double.parseDouble(mItem.get(position).getMenuProductPrice()));
                 }
             }
+
             price.setText("£" + String.format("%.2f", totalPrice));
 
             if (mItem.get(position).getMenuProductSize() != null && mItem.get(position).getMenuProductSize().size() > 0) {
@@ -161,7 +162,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
 
                                             if (nQty == 0) {
                                                 ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
-                                                ((TextView) view.findViewById(R.id.tv_price)).setText("Free");
+                                                ((TextView) view.findViewById(R.id.tv_price)).setText("£ 0.00");
 
                                             } else if (nQty > 0) {
                                                 ((TextView) view.findViewById(R.id.tv_title)).setText(_qtyy + "x " + sizeModifier.getModifier().get(i).getProductName());
@@ -169,7 +170,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
 
                                                 View viewFree = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
                                                 ((TextView) viewFree.findViewById(R.id.tv_title)).setText(maxAllowFree + "x " + sizeModifier.getModifier().get(i).getProductName());
-                                                ((TextView) viewFree.findViewById(R.id.tv_price)).setText("Free");
+                                                ((TextView) viewFree.findViewById(R.id.tv_price)).setText("£ 0.00");
 
                                                 modifiers.addView(viewFree);
 
@@ -178,7 +179,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                                         } else {
                                             ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
 
-                                            ((TextView) view.findViewById(R.id.tv_price)).setText("free");
+                                            ((TextView) view.findViewById(R.id.tv_price)).setText("£ 0.00");
                                             free++;
                                         }
                                     }
@@ -205,7 +206,8 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                     for (int p = 0; p < mItem.get(position).getMealProducts().size(); p++) {
                         View _view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
 //                        ((TextView) _view.findViewById(R.id.tv_title)).setText(mItem.get(position).getMealProducts().get(p).getQuantity() + "x " +  mItem.get(position).getMealProducts().get(p).getProductName()+" "+mItem.get(position).getMealProducts().get(p).getProductSizeName());
-                        ((TextView) _view.findViewById(R.id.tv_title)).setText(itemQty + "x " + mItem.get(position).getMealProducts().get(p).getProductName() + " " + mItem.get(position).getMealProducts().get(p).getProductSizeName());
+                        ((TextView) _view.findViewById(R.id.tv_title)).setText(itemQty + "x " + mItem.get(position).getMealProducts().get(p).getProductSizeName() + " " + mItem.get(position).getMealProducts().get(p).getProductName());
+                        ((TextView) _view.findViewById(R.id.tv_title)).setTextColor(context.getResources().getColor(R.color.black));
                         ((TextView) _view.findViewById(R.id.tv_price)).setVisibility(View.VISIBLE);
                         ((TextView) _view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
 
@@ -228,7 +230,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                                                 if (free == maxAllowFree) {
                                                     ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
                                                     ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
-
+                                                    totalPrice += (qty * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
                                                 } else {
                                                     int qtyy = Integer.parseInt(sizeModifier.getModifier().get(i).getOriginalQuantity());
                                                     if (qtyy >= maxAllowFree) {
@@ -240,37 +242,47 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
 
                                                         if (nQty == 0) {
                                                             ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + sizeModifier.getModifier().get(i).getProductName());
-                                                            ((TextView) view.findViewById(R.id.tv_price)).setText("Free");
+                                                            ((TextView) view.findViewById(R.id.tv_price)).setText("£ 0.00");
 
                                                         } else if (nQty > 0) {
                                                             ((TextView) view.findViewById(R.id.tv_title)).setText(_qtyy + "x " + sizeModifier.getModifier().get(i).getProductName());
                                                             ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (_qtyy * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()))));
+                                                            totalPrice += (_qtyy * Double.parseDouble(sizeModifier.getModifier().get(i).getModifierProductPrice()));
 
                                                             View viewFree = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
                                                             ((TextView) viewFree.findViewById(R.id.tv_title)).setText(maxAllowFree + "x " + sizeModifier.getModifier().get(i).getProductName());
-                                                            ((TextView) viewFree.findViewById(R.id.tv_price)).setText("Free");
+                                                            ((TextView) viewFree.findViewById(R.id.tv_price)).setText("£ 0.00");
                                                             modifiers.addView(viewFree);
 
                                                         }
 
                                                     } else {
 //                                            ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
-                                                        ((TextView) view.findViewById(R.id.tv_price)).setText("free");
+                                                        ((TextView) view.findViewById(R.id.tv_price)).setText("£ 0.00");
                                                         free++;
                                                     }
                                                 }
                                                 modifiers.addView(view);
                                             }
                                         } else {
+
                                             for (Modifier modifier : sizeModifier.getModifier()) {
                                                 int qty = Integer.parseInt(modifier.getOriginalQuantity());
                                                 qty = (qty * itemQty);
 
                                                 View view = LayoutInflater.from(context).inflate(R.layout.item_modifier, null);
                                                 ((TextView) view.findViewById(R.id.tv_title)).setText(qty + "x " + modifier.getProductName());
-                                                ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
+
+                                                if (sizeModifier.getMaxAllowedQuantity() != 1) {
+//                                                    totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                    ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qty * Double.parseDouble(modifier.getModifierProductPrice()))));
+                                                }else{
+                                                    ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", 0f));
+
+                                                }
                                                 modifiers.addView(view);
                                             }
+
                                         }
                                     }
                                 }
@@ -280,6 +292,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                 } else {
                 }
             }
+
 
             if (mItem.get(position).getProductModifiers() != null) {
                 if (mItem.get(position).getProductModifiers().size() > 0) {
@@ -306,7 +319,7 @@ public class MenuCartAdapter extends RecyclerView.Adapter<MenuCartAdapter.Catego
                                         ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + String.format("%.2f", (qtyy * Double.parseDouble(productModifier.getModifier().get(i).getModifierProductPrice()))));
                                     } else {
 //                                    ((TextView) view.findViewById(R.id.tv_price)).setText(context.getResources().getString(R.string.currency) + "0.00");
-                                        ((TextView) view.findViewById(R.id.tv_price)).setText("free");
+                                        ((TextView) view.findViewById(R.id.tv_price)).setText("£ 0.00");
                                         free++;
                                     }
                                 }

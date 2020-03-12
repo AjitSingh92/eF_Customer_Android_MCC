@@ -53,8 +53,8 @@
         android:id="@+id/mainRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbarhide"
         android:layout_above="@+id/close_tv"
+        android:layout_below="@+id/toolbarhide"
         android:orientation="vertical">
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -357,30 +357,28 @@
                                 android:id="@+id/tv.orderId"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.5"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/avenir_black"
                                 android:paddingLeft="@dimen/_10sdp"
                                 android:paddingTop="@dimen/_5sdp"
                                 android:paddingBottom="@dimen/_5sdp"
-                                android:text="Order Id:"
+                                android:text="Order ID:"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_10sdp" />
 
                             <TextView
                                 android:id="@+id/tv.payMode"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".5"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/avenir_black"
                                 android:gravity="right"
                                 android:inputType="textCapCharacters"
-                                android:paddingLeft="@dimen/_10sdp"
-                                android:paddingTop="@dimen/_5sdp"
-                                android:paddingRight="@dimen/_10sdp"
-                                android:paddingBottom="@dimen/_5sdp"
+                                android:paddingStart="@dimen/_5sdp"
+                                android:paddingEnd="@dimen/_3sdp"
                                 android:text="Cash"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_10sdp" />
                         </LinearLayout>
 
 
@@ -440,11 +438,26 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/_10sdp">
 
+
+                        <!-- <com.lexxdigital.easyfooduserapps.utility.PlayGifView
+                             android:id="@+id/iv_loader"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_centerInParent="true"
+                             android:src="@drawable/circle_loader" />
+ -->
+                        <pl.droidsonroids.gif.GifImageView
+                            android:id="@+id/iv_loader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/circle_loader" />
+
                         <ImageView
                             android:id="@+id/bikeimg"
                             android:layout_width="@dimen/_60sdp"
                             android:layout_height="@dimen/_60sdp"
                             android:padding="@dimen/_10sdp"
+                            android:visibility="gone"
                             android:src="@drawable/ic_order_status_0" />
 
                         <ImageView
@@ -482,6 +495,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/fl"
+                        android:layout_marginTop="@dimen/_15sdp"
                         android:fontFamily="@font/avenir_black"
                         android:gravity="center"
                         android:text="@string/order_title_0"

@@ -1050,6 +1050,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     data.setMealProducts(mealProducts);
 
                 } else {
+                    List<MealProduct> mealProducts = gson.fromJson(cursor.getString(cursor.getColumnIndex("meal_products")), new TypeToken<List<MealProduct>>() {
+                    }.getType());
+                    data.setMealProducts(mealProducts);
+
                     List<MenuProductSize> menuProductSize = gson.fromJson(cursor.getString(cursor.getColumnIndex("menu_product_size")), new TypeToken<List<MenuProductSize>>() {
                     }.getType());
                     data.setMenuProductSize(menuProductSize);

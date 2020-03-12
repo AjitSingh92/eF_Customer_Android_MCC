@@ -397,22 +397,18 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
-
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:background="@drawable/bg_white_two"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_marginRight="@dimen/_10sdp"
                             android:fontFamily="@font/avenir_medium"
                             android:gravity="left|start"
                             android:text="Delivery Areas"
@@ -425,15 +421,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:fontFamily="@font/avenir_medium"
+                            android:layout_marginBottom="@dimen/_10sdp"
                             android:gravity="left|start"
                             android:text="Delivery Areas"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_15sdp" />
+                            android:fontFamily="@font/avenir_medium"
+                            android:textColor="#3c3c3b"
+                            android:textSize="@dimen/_11sdp"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -444,6 +438,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 android:elevation="@dimen/_4sdp"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/white"
                 app:cardElevation="@dimen/_4sdp">
 
@@ -516,18 +511,18 @@
                         android:fontFamily="@font/avenir_roman"
                         android:gravity="left|start"
                         android:inputType="textMultiLine"
-                        android:text="The hygiene rating below is given by the Food Standards Agency and your local authority:"
+                        android:text=""
                         android:textColor="#3c3c3b"
                         android:textSize="@dimen/_13sdp" />
 
                     <ImageView
+                        android:id="@+id/iv_hygiene"
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_60sdp"
                         android:layout_below="@+id/hygine_text"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:src="@drawable/img_hygine" />
+                        android:layout_marginTop="@dimen/_10sdp" />
 
 
                 </RelativeLayout>

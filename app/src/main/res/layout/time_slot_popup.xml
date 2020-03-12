@@ -8,10 +8,9 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_minus10sdp"
         android:elevation="@dimen/_4sdp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_10sdp"
@@ -19,24 +18,37 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_350sdp">
+            android:layout_height="@dimen/_350sdp"
+            android:layout_marginBottom="@dimen/_20sdp">
 
             <RelativeLayout
                 android:id="@+id/rl_top"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/background_color">
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_van"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:src="@drawable/scooter"
+                    android:tint="@color/black" />
 
                 <TextView
                     android:id="@+id/tv_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_van"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
                     android:fontFamily="@font/avenir_medium"
-                    android:text="When do you want your delivery?"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sdp" />
+                    android:gravity="center"
+                    android:text="Please confirm your Delivery/Collection time"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_12sdp" />
 
                 <ImageView
                     android:id="@+id/iv_close"
@@ -46,7 +58,8 @@
                     android:layout_margin="@dimen/_3sdp"
                     android:background="@drawable/circle_orange"
                     android:padding="@dimen/_5sdp"
-                    android:src="@mipmap/x_copy" />
+                    android:src="@mipmap/x_copy"
+                    android:visibility="gone" />
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabs"
@@ -54,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_label"
+                    android:visibility="gone"
                     app:tabIndicatorColor="@color/orange"
                     app:tabIndicatorHeight="@dimen/_4sdp" />
 
@@ -64,22 +78,111 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/tv_confirm"
-                android:layout_below="@+id/rl_top" />
+                android:layout_below="@+id/rl_top"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_collection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_top"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/border_black_transparent"
+                android:fontFamily="@font/avenir_roman"
+                android:drawableEnd="@mipmap/arrow_right"
+                android:drawableTint="@color/black"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_20sdp"
+
+                android:paddingBottom="@dimen/_5sdp"
+
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/tv_day_of_delivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_collection"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/border_black_transparent"
+                android:fontFamily="@font/avenir_roman"
+                android:drawableEnd="@mipmap/arrow_right"
+                android:drawableTint="@color/black"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="TODAY"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_day_of_delivery"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/border_black_transparent"
+                android:fontFamily="@font/avenir_roman"
+                android:drawableEnd="@mipmap/arrow_right"
+                android:drawableTint="@color/black"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="@string/now"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
 
             <TextView
                 android:id="@+id/tv_confirm"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/_20sdp"
-                android:background="@drawable/recatangle_orange"
+                android:layout_above="@+id/tv_cancel"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/bg_orange_rect"
                 android:fontFamily="@font/avenir_roman"
+                android:gravity="center"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingTop="@dimen/_7sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:paddingBottom="@dimen/_7sdp"
-                android:text="@string/confirm"
+                android:text="@string/update"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sdp" />
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/btn_grey_corn30"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="center"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingTop="@dimen/_7sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:text="@string/cancel"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sdp" />
 
@@ -88,6 +191,7 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_centerInParent="true" />
 
         </RelativeLayout>

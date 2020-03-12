@@ -1,5 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/sign_up_btn_dialog"
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@drawable/halfwhitup"
+    android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/_5sdp"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/txt_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/helvetica_neue_medium"
+                android:gravity="left|start|center_vertical"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/cross_tv"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginEnd="@dimen/_35sdp"
+                    android:layout_marginRight="@dimen/_35sdp"
+                    android:background="@drawable/circle_gray"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@mipmap/x_copy" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="@color/gray"
+            android:padding="@dimen/_2sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv.BasePrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:fontFamily="@font/helvetica_neue_medium"
+            android:paddingBottom="@dimen/_10sdp"
+            android:text="Base Price \n"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tv.AmountToPay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/helvetica_neue_medium"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_10sdp"
+            android:text="Amount to pay \n"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv.validationError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/helvetica_neue_medium"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/_12sdp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/halfwhitup"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_20sdp">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/size_lable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoText="true"
+            android:fontFamily="@font/helvetica_neue_medium"
+            android:gravity="left"
+            android:padding="@dimen/_5sdp"
+            android:text="What size would you like?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_meal_category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sign_up_btn_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:fontFamily="@font/avenir_medium"
+            android:gravity="right"
+            android:padding="@dimen/_10sdp"
+            android:text="Add to order"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right|end"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="right"
+                android:text="£"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="right"
+                android:text="0.00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout><!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -70,7 +262,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/head"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingTop="10dp"
         android:visibility="visible">
 
@@ -78,11 +270,10 @@
             android:id="@+id/tv.BasePrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:fontFamily="@font/helvetica_neue_medium"
-            android:gravity="center"
             android:paddingBottom="@dimen/_10sdp"
             android:text="Base Price \n"
+            android:layout_margin="@dimen/_5sdp"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -95,6 +286,7 @@
             android:paddingBottom="@dimen/_10sdp"
             android:text="Amount to pay \n"
             android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="@dimen/_12sdp" />
     </LinearLayout>
     <TextView
@@ -128,7 +320,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/_20sdp">
 
-            <!-- TODO: Update blank fragment layout -->
+            &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;
             <TextView
                 android:id="@+id/size_lable"
                 android:layout_width="match_parent"
@@ -203,4 +395,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</RelativeLayout>-->

@@ -6,6 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class DiscountOffer {
 
+    @SerializedName("minvalue")
+    @Expose
+    private String min_value;
+
     @SerializedName("offer_id")
     @Expose
     private String offerId;
@@ -27,6 +31,67 @@ public class DiscountOffer {
     @SerializedName("offer_price_label")
     @Expose
     private String offerPriceLabel;
+
+    @SerializedName("combo_discount")
+    @Expose
+    private String combo_discount;
+
+    @SerializedName("offer_available")
+    @Expose
+    private String offer_available;
+
+     @SerializedName("offer_image")
+    @Expose
+    private String offer_image;
+
+ @SerializedName("terms_conditions")
+    @Expose
+    private String terms_conditions;
+
+
+ @SerializedName("offer_title_label")
+    @Expose
+    private String offer_title_label;
+
+    public String getCombo_discount() {
+        return combo_discount;
+    }
+
+    public void setCombo_discount(String combo_discount) {
+        this.combo_discount = combo_discount;
+    }
+
+    public String getOffer_available() {
+        return offer_available;
+    }
+
+    public void setOffer_available(String offer_available) {
+        this.offer_available = offer_available;
+    }
+
+    public String getOffer_image() {
+        return offer_image;
+    }
+
+    public void setOffer_image(String offer_image) {
+        this.offer_image = offer_image;
+    }
+
+    public String getTerms_conditions() {
+        return terms_conditions;
+    }
+
+    public void setTerms_conditions(String terms_conditions) {
+        this.terms_conditions = terms_conditions;
+    }
+
+    public String getOffer_title_label() {
+        return offer_title_label;
+    }
+
+    public void setOffer_title_label(String offer_title_label) {
+        this.offer_title_label = offer_title_label;
+    }
 
     public String getOfferId() {
         return offerId;
@@ -82,5 +147,13 @@ public class DiscountOffer {
 
     public void setOfferPriceLabel(String offerPriceLabel) {
         this.offerPriceLabel = offerPriceLabel;
+    }
+
+    public String getMin_value() {
+        return min_value;
+    }
+
+    public void setMin_value(String min_value) {
+        this.min_value = min_value;
     }
 }

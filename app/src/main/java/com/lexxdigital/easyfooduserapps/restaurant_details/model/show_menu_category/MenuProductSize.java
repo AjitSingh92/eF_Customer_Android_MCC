@@ -10,20 +10,10 @@ public class MenuProductSize {
     private String productSizePrice;
     private List<SizeModifier> sizeModifiers = null;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public MenuProductSize() {
     }
 
-    /**
-     * 
-     * @param productSizeName
-     * @param sizeModifiers
-     * @param productSizePrice
-     * @param productSizeId
-     */
     public MenuProductSize(String productSizeId, String productSizeName, String productSizePrice, List<SizeModifier> sizeModifiers) {
         super();
         this.productSizeId = productSizeId;

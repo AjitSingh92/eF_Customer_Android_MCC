@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +40,13 @@ import com.lexxdigital.easyfooduserapps.model.card_list_response.CardListRespons
 import com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.CartDatRequest;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.CartData;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MealProduct;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategoryCart;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuProductSize;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.Modifier;
+import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.SizeModifier;
 import com.lexxdigital.easyfooduserapps.select_payment_method.api.CheckoutRequestInterface;
 import com.lexxdigital.easyfooduserapps.select_payment_method.model.checkout_request.CheckoutRequest;
 import com.lexxdigital.easyfooduserapps.select_payment_method.model.checkout_response.CheckoutResponse;
@@ -50,6 +56,7 @@ import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -105,6 +112,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     private String addressCity = "";
     private String postalCode = "";
     private FirebaseAnalytics mFirebaseAnalytics;
+    private String deliveryTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +125,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         Constants.setStatusBarGradiant(SelectPaymentMethodActivity.this);
         ButterKnife.bind(this);
         mContext = this;
-
 
         db = new DatabaseHelper(this);
         val = (GlobalValues) getApplicationContext();
@@ -142,6 +149,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             voucherCode = extras.getString("appliedVoucherCode");
             voucherAmount = extras.getDouble("appliedVoucherAmount");
             voucherPaymentType = extras.getString("appliedVoucherPaymentType");
+
+            deliveryTime = extras.getString(Constants.ORDER_TIME);
         }
 
         if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
@@ -174,9 +183,13 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                 }
             }
         });
+
+        makeData2();
     }
 
-    private CartDatRequest makeData() {
+
+
+    private CartDatRequest makeData2() {
         CartDatRequest cartDatRequest = new CartDatRequest();
         try {
             cartDatRequest.setCartData(db.getCartData());
@@ -190,6 +203,108 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             cartDatRequest.setVoucherDiscount(voucherDiscount);
             cartDatRequest.setVoucherCode(voucherCode);
             cartDatRequest.setRestaurantSlug(sharedPreferencesClass.getString(sharedPreferencesClass.RESTAURANT_NAME_SLUG));
+
+
+            /*----------------------------------*/
+            HashMap<Integer, List<SizeModifier>> sizeModifiersDataMap = new HashMap<>();
+            CartData cartDataForRequest = new CartData();
+
+
+            CartData cartData = db.getCartData();
+            cartDataForRequest.setSpecialOffers(cartData.getSpecialOffers());
+            cartDataForRequest.setUpsellProducts(cartData.getUpsellProducts());
+
+            int count = 0;
+            for (MenuCategoryCart menuCategoryCart : cartData.getMenuCategoryCarts()) {
+                List<MenuProduct> menuProducts = menuCategoryCart.getMenuProducts();
+                for (MenuProduct menuProduct : menuProducts) {
+                    List<MealProduct> mealProducts = menuProduct.getMealProducts();
+                    if (mealProducts != null) {
+                        for (MealProduct mealProduct : mealProducts) {
+                            List<MenuProductSize> menuProductSize = mealProduct.getMenuProductSize();
+                            if (menuProductSize != null) {
+                                for (MenuProductSize productSize : menuProductSize) {
+                                    sizeModifiersDataMap.put(count, productSize.getSizeModifiers());
+                                }
+                            }
+
+                        }
+                    }
+                }
+                count++;
+            }
+
+            count = 0;
+            List<MenuCategoryCart> menuCategoryCartsRequest = new ArrayList<>();
+            for (MenuCategoryCart menuCategoryCart : cartData.getMenuCategoryCarts()) {
+                MenuCategoryCart menuCategoryCartRequest = menuCategoryCart;
+
+                List<MenuProduct> menuProductsRequest = new ArrayList<>();
+
+                for (MenuProduct menuProduct : menuCategoryCart.getMenuProducts()) {
+                    MenuProduct menuProductRequest = menuProduct;
+
+                    List<MealProduct> mealProducts = menuProduct.getMealProducts();
+                    if (mealProducts != null) {
+                        List<Modifier> mealProductNoMenuProductSize = new ArrayList<>();
+
+                        for (int i = 0; i < mealProducts.size(); i++) {
+                            if (mealProducts.get(i).getMenuProductSize() == null) {
+                                Modifier modifier = new Modifier();
+                                modifier.setAmount(0d);
+                                modifier.setModifierProductPrice("0");
+                                modifier.setOriginalAmount1(0d);
+                                modifier.setOriginalQuantity(String.valueOf(mealProducts.get(i).getQuantity()));
+                                modifier.setProductId(mealProducts.get(i).getProductId());
+                                modifier.setProductName(mealProducts.get(i).getProductName());
+                                modifier.setQuantity(String.valueOf(mealProducts.get(i).getQuantity()));
+                                modifier.setUnit("");
+
+                                mealProductNoMenuProductSize.add(modifier);
+                            }
+                        }
+
+                        List<SizeModifier> sizeModifiers = sizeModifiersDataMap.get(count);
+                        for (int i = 0; i < sizeModifiers.size(); i++) {
+                            if (i + 1 == sizeModifiers.size()) {
+                                List<Modifier> modifier = sizeModifiers.get(i).getModifier();
+                                modifier.addAll(mealProductNoMenuProductSize);
+                                sizeModifiers.get(i).setModifier(modifier);
+                            }
+                        }
+                        List<MealProduct> mealProductsRequest = new ArrayList<>();
+                        for (int i = 0; i < mealProducts.size(); i++) {
+                            if (i + 1 == mealProducts.size()) {
+                                MealProduct mealProduct = mealProducts.get(0);
+                                mealProduct.setSizeModifiers(sizeModifiers);
+                                mealProductsRequest.add(mealProduct);
+                            } else {
+                                MealProduct mealProduct = mealProducts.get(i);
+                                if (mealProducts.get(i).getMenuProductSize() != null && mealProducts.get(i).getMenuProductSize().size() > 0) {
+                                    mealProduct.setSizeModifiers(mealProducts.get(i).getMenuProductSize().get(0).getSizeModifiers());
+                                }
+                                mealProductsRequest.add(mealProduct);
+                            }
+                        }
+                        List<MealProduct> mealProductsRequests = new ArrayList<>();
+                        if (mealProductsRequest.size() > 0) {
+                            mealProductsRequests.add(mealProductsRequest.get(0));
+                        }
+                        menuProductRequest.setMealProducts(mealProductsRequests);
+
+                    }
+                    menuProductsRequest.add(menuProductRequest);
+                }
+                menuCategoryCartRequest.setMenuProducts(menuProductsRequest);
+                menuCategoryCartsRequest.add(menuCategoryCartRequest);
+                count++;
+            }
+
+            cartDataForRequest.setMenuCategoryCarts(menuCategoryCartsRequest);
+
+            cartDatRequest.setCartData(cartDataForRequest);
+
+            Log.e("SIZE MODIFIER", cartDatRequest.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,7 +351,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                 if (s.length() == 2) {
                     exYear.requestFocus();
                 }
-                // TODO Auto-generated method stub
+
             }
         });
         mDialogView.findViewById(R.id.submit_tv).setOnClickListener(new View.OnClickListener() {
@@ -287,7 +402,6 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         mDialogView.findViewById(R.id.cancel_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 cvvDialog.dismiss();
                 address1 = "";
                 address2 = "";
@@ -405,6 +519,14 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         LinearLayoutManager horizontalLayoutManagaer2 = new LinearLayoutManager(SelectPaymentMethodActivity.this, LinearLayoutManager.VERTICAL, false);
         showCardList.setLayoutManager(horizontalLayoutManagaer2);
         showCardList.setAdapter(mDealCardAdapter);
+
+        if (orderType.length() > 0) {
+            for (int i = 0; i < dataList.size() - 1; i++) {
+                if (dataList.get(i).getIsDefault() == 1)
+                    alertDialogSelectCard("Do you want to procceed\nwith card ending by\n" + dataList.get(i).getLast4CardNo());
+            }
+
+        }
     }
 
 
@@ -425,7 +547,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         if (!paymentType.equalsIgnoreCase("cash"))
             detail = dataList.get(position);
 
-        CheckoutRequest request = new CheckoutRequest();
+        final CheckoutRequest request = new CheckoutRequest();
         request.setRestaurantId(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
         request.setCustomerId(sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID));
         request.setPaymentMode(paymentType);
@@ -458,7 +580,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             request.setSavedCardId("");
         }
         request.setEmailId(val.getLoginResponse().getData().getEmail());
-        request.setCardData(makeData());
+        request.setCardData(makeData2());
         Call<CheckoutResponse> call3 = apiInterface.mCheckout(request);
         call3.enqueue(new Callback<CheckoutResponse>() {
             @Override
@@ -469,14 +591,14 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                         sharedPreferencesClass.setOrderIDKey(response.body().getData().getOrder_number());
                         sharedPreferencesClass.setInt(sharedPreferencesClass.NUMBER_OF_ORDERS, (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) + 1));
                         Constants.MAX_LENGTH = 0;
-                        alertDialogOrderPlaced(response.body().getMessage(), true);
+                        alertDialogOrderPlaced(response.body().getMessage(), true, request, response.body().getData().getOrder_number());
 
                     } else if (response.code() == 200 && !response.body().getSuccess()) {
                         Toast.makeText(val, "", Toast.LENGTH_SHORT).show();
                         alertDialogCVV("Please enter valid expiry date");
                     } else {
                         alertDialogOrderPlaced("Transaction Failed\n" +
-                                "Your Order could not be processed", false);
+                                "Your Order could not be processed", false, request, "");
                         address1 = "";
                         address2 = "";
                         addressCity = "";
@@ -485,7 +607,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                 } catch (Exception e) {
                     mProgressDialog.dismiss();
                     alertDialogOrderPlaced("Transaction Failed\n" +
-                            "Your Order could not be processed", false);
+                            "Your Order could not be processed", false, request, "");
                     address1 = "";
                     address2 = "";
                     addressCity = "";
@@ -497,7 +619,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             public void onFailure(Call<CheckoutResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
                 alertDialogOrderPlaced("Transaction Failed\n" +
-                        "Your Order could not be processed", false);
+                        "Your Order could not be processed", false, request, "");
                 address1 = "";
                 address2 = "";
                 addressCity = "";
@@ -564,7 +686,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     }
 
 
-    public void alertDialogOrderPlaced(final String msg, final boolean isSuccess) {
+    public void alertDialogOrderPlaced(final String msg, final boolean isSuccess, final CheckoutRequest request, final String orderNum) {
         LayoutInflater factory = LayoutInflater.from(this);
         final View mDialogView = factory.inflate(R.layout.popoup_order_fail_success, null);
         final AlertDialog cardDialog = new AlertDialog.Builder(this).create();
@@ -583,14 +705,24 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     for (int i = 0; i < fragSize; i++) {
                         getSupportFragmentManager().popBackStack();
                     }
+
+                    String restaurentName = sharedPreferencesClass.getString(sharedPreferencesClass.RESTUARANT_NAME);
                     db.deleteCart();
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.DEFAULT_ADDRESS, null);
                     Constants.ORDER_STATUS = 1;
-
-                    Constants.switchActivity(SelectPaymentMethodActivity.this, OrderStatusActivity.class);
+                    Intent intent = new Intent(SelectPaymentMethodActivity.this, OrderStatusActivity.class);
+                    intent.putExtra("order_no", orderNum);
+                    intent.putExtra(Constants.PAYMENT_MODE, request.getPaymentMode());
+                    intent.putExtra(Constants.RESTAURENT_NAME, restaurentName);
+                    intent.putExtra(Constants.TOTAL_COST, String.valueOf(request.getOrderTotal()));
+                    intent.putExtra(Constants.PHONE_NUMBER, "9876543210");
+                    intent.putExtra(Constants.CUSTOMER_ID, request.getCustomerId());
+                    intent.putExtra(Constants.ORDER_TIME, deliveryTime);
+                    intent.putExtra(Constants.ORDER_TYPE, request.getDeliveryOption());
+                    startActivity(intent);
                     if (RestaurantDetailsActivity.restaurantDetailsActivity != null) {
                         RestaurantDetailsActivity.restaurantDetailsActivity.finish();
                     }

@@ -215,13 +215,11 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
                     menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).setProductModifiers(productModifierAdapter.getSelectedProductModifier());
                 }
                 if (itemClickListener != null) {
-                    itemClickListener.OnMealProductModifierSelected(true, childParentPosition, selectedChildPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat);
+                    itemClickListener.OnMealProductModifierSelected(true, childParentPosition, selectedChildPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat,true);
                 }
                 dismiss();
-
                 break;
         }
-
     }
 
     @Override
@@ -259,17 +257,19 @@ public class MealProductModifierDialog extends DialogFragment implements View.On
 
                                 if (allCount > menuProductSizes.get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) {
 
-
                                     netPrice += ((allCount - menuProductSizes.get(i).getSizeModifiers().get(j).getMaxAllowedQuantity()) * Double.parseDouble(menuProductSizes.get(i).getSizeModifiers().get(j).getModifier().get(0).getModifierProductPrice()));
                                     modifierPrice = netPrice - basePrice;
                                 }
                             } else {
+
                                 for (Modifier modifier : menuProductSizes.get(i).getSizeModifiers().get(j).getModifier()) {
                                     int qty = Integer.parseInt(modifier.getOriginalQuantity());
-
-                                    netPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
-                                    modifierPrice = netPrice - basePrice;
+                                    if (menuProductSizes.get(i).getSizeModifiers().get(j).getMaxAllowedQuantity() != 1) {
+                                        netPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                        modifierPrice = netPrice - basePrice;
+                                    }
                                 }
+
                             }
                         }
                     }

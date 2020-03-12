@@ -10,20 +10,11 @@ public class SizeModifierProduct {
     private String productName;
     private Integer quantity;
     private Double totalPrice;
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public SizeModifierProduct() {
     }
 
-    /**
-     * 
-     * @param unit
-     * @param modifierProductPrice
-     * @param productName
-     * @param productId
-     */
+
     public SizeModifierProduct(String productId, String unit, String modifierProductPrice, String productName, Integer qty, Double tPrice) {
         super();
         this.productId = productId;

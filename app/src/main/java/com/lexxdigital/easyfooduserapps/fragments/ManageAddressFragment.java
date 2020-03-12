@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -80,6 +81,8 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
     SwipeRefreshLayout swipreferesh;
     @BindView(R.id.tv_Empty)
     TextView tvEmpty;
+
+
     private GlobalValues val;
     private Dialog dialog;
     private List<AddressList> addressList = new ArrayList<AddressList>();
@@ -138,6 +141,9 @@ public class ManageAddressFragment extends Fragment implements AddressSaveAdapte
                 Constants.switchActivity(getActivity(), AddAddressActivity.class);
             }
         });
+
+
+
 
         return view;
     }

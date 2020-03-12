@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lexxdigital.easyfooduserapps.cart_db.tables.MenuProducts;
 import com.lexxdigital.easyfooduserapps.R;
@@ -170,46 +171,31 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
             layoutManager.setScrollEnabled(false);
             childItemView.setLayoutManager(layoutManager);
 
-
-            if (dataItem.getMenuCategoryName().equalsIgnoreCase("MEAL")) {
-
-                RestaurantMealCategoryAdapter restaurantMealCategoryAdapter = new RestaurantMealCategoryAdapter(context, getLayoutPosition(), menuItemClickListener, isClosed);
-                restaurantMealCategoryAdapter.setHideDetail(true);
-                childItemView.setAdapter(restaurantMealCategoryAdapter);
-
-                final RestaurantMealCategoryAdapter mRestaurantMealCategoryAdapter = restaurantMealCategoryAdapter;
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MenuProducts.MenuProductsTable menuProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(mMenuDataItem.get(mPosition).getMenuCategories().getMenuCategoryId());
-                        if (menuProducts != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MenuProducts.MenuProductsTable menuProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(mMenuDataItem.get(mPosition).getMenuCategories().getMenuCategoryId());
+                    if (menuProducts != null) {
+                        if (menuProducts.getMeal() != null && menuProducts.getMeal().size() > 0) {
                             dataItem.setMeal(menuProducts.getMeal());
-
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mRestaurantMealCategoryAdapter.addItem(dataItem);
+                                    RestaurantMealCategoryAdapter restaurantMealCategoryAdapter = new RestaurantMealCategoryAdapter(context, getLayoutPosition(), menuItemClickListener, isClosed);
+                                    restaurantMealCategoryAdapter.setHideDetail(false);
+                                    childItemView.setAdapter(restaurantMealCategoryAdapter);
+                                    final RestaurantMealCategoryAdapter mRestaurantMealCategoryAdapter = restaurantMealCategoryAdapter;
+
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mRestaurantMealCategoryAdapter.addItem(dataItem);
+                                        }
+                                    });
                                 }
                             });
-                        }
-                    }
-                }).start();
-
-            } else {
-
-                RestaurantCategoryAdapter restaurantCategoryAdapter = new RestaurantCategoryAdapter(context, getLayoutPosition(), menuItemClickListener, isClosed);
-                restaurantCategoryAdapter.setHideDetail(true);
-                childItemView.setAdapter(restaurantCategoryAdapter);
-                final RestaurantCategoryAdapter mRestaurantCategoryAdapter = restaurantCategoryAdapter;
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MenuProducts.MenuProductsTable menuProducts = GlobalValues.getInstance().getDb().menuProductMaster().getMenuProduct(mMenuDataItem.get(mPosition).getMenuCategories().getMenuCategoryId());
-                        if (menuProducts != null) {
+                        } else {
                             dataItem.setMenuProducts(menuProducts.getMenuProducts());
-
                             /*----------------------------------*/
                             if (dataItem.getMenuSubCategory() != null) {
                                 for (int i = 0; i < dataItem.getMenuSubCategory().size(); i++) {
@@ -224,36 +210,24 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    RestaurantCategoryAdapter restaurantCategoryAdapter = new RestaurantCategoryAdapter(context, getLayoutPosition(), menuItemClickListener, isClosed);
+                                    restaurantCategoryAdapter.setHideDetail(true);
+                                    childItemView.setAdapter(restaurantCategoryAdapter);
+                                    final RestaurantCategoryAdapter mRestaurantCategoryAdapter = restaurantCategoryAdapter;
                                     mRestaurantCategoryAdapter.addItem(dataItem);
                                 }
                             });
                         }
                     }
-                }).start();
-
-            }
-
-           /* menuProductViewModel.getMenuProductList(mMenuDataItem.get(position).getMenuCategories().getMenuCategoryId()).observe((FragmentActivity)context, new Observer<MenuProducts.MenuProductsTable>() {
-                @Override
-                public void onChanged(@Nullable MenuProducts.MenuProductsTable menuProducts) {
-                    dataItem.setMenuProducts(menuProducts.getMenuProducts());
-                    RestaurantCategoryAdapter restaurantCategoryAdapter = new RestaurantCategoryAdapter(context, getLayoutPosition(), dataItem, menuItemClickListener);
-                    restaurantCategoryAdapter.setHideDetail(true);
-                    childItemView.setAdapter(restaurantCategoryAdapter);
                 }
-            });*/
+            }).start();
 
-
-//            restaurantCategoryAdapter.addItem(dataItem.getMenuProducts());
             progressBar.setVisibility(View.GONE);
             long id = db.getMenuCategoryIfExit(dataItem.getMenuCategoryId());
             if (id != -1) {
                 childItemView.setVisibility(View.VISIBLE);
                 dropdownImg.setRotation(360f);
             } else {
-//                childItemView.setVisibility(View.GONE);
-//                dropdownImg.setRotation(270f);
-
                 if (isItemVisible.get(mPosition) != null && isItemVisible.get(mPosition)) {
                     childItemView.setVisibility(View.VISIBLE);
                     dropdownImg.setRotation(360f);
@@ -269,9 +243,6 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
         @Override
         public void onClick(View view) {
 
-           /* if (isClosed) {
-                restaurantClosedDialog();
-            } else {*/
             if (menuItemClickListener != null) {
                 menuItemClickListener.LoadMenuProduct(getLayoutPosition(), mMenuDataItem.get(getLayoutPosition()).getMenuCategories().getMenuCategoryId(), progressBar);
 
@@ -287,27 +258,7 @@ public class RestaurantMenuListAdapter extends RecyclerView.Adapter<RecyclerView
                 }
             }
         }
-        //}
+
     }
 
-
-    public void restaurantClosedDialog() {
-        LayoutInflater factory = LayoutInflater.from(RestaurantDetailsActivity.restaurantDetailsActivity);
-        final View mDialogVieww = factory.inflate(R.layout.layout_closed_dialog, null);
-        final AlertDialog alertClodseDialog = new AlertDialog.Builder(RestaurantDetailsActivity.restaurantDetailsActivity).create();
-        alertClodseDialog.setView(mDialogVieww);
-        alertClodseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
-
-        mDialogVieww.findViewById(R.id.tv_btn_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //your business logic
-                alertClodseDialog.dismiss();
-            }
-        });
-
-
-        alertClodseDialog.show();
-    }
 }

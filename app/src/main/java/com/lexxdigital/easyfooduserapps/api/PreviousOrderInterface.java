@@ -12,5 +12,4 @@ public interface PreviousOrderInterface {
     @Headers("Content-Type: application/json")
     @POST("previous_order_history")
     Call<PreviousOrderResponse> mLogin(@Body ReqstPrevOrder previousOrder);
-
 }

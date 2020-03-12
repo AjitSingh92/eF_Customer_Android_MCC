@@ -17,10 +17,7 @@ public class MenuProduct {
     private Upsells upsells;
     private Double totalAmmount;
     private Integer quantity;
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public MenuProduct() {
     }
 

@@ -319,7 +319,7 @@
                     android:padding="@dimen/_10sdp"
                     android:text="Make default address"
                     android:textSize="@dimen/_14sdp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/addAddress"

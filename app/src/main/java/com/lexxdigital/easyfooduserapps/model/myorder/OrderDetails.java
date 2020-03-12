@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.CartData;
 
 public class OrderDetails {
-
     @SerializedName("menu")
     @Expose
     private CartData data = null;

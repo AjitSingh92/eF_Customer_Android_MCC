@@ -82,10 +82,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         sharePre = new SharedPreferencesClass(ChangePasswordActivity.this);
 
-        // name = sharePre.getString(sharePre.USER_NAME);
         pic = sharePre.getString(sharePre.USER_PROFILE_IMAGE);
         String strname = sharePre.getString(sharePre.USER_NAME);
-        ;
+
         String strAddress = val.getDefaltAddress();
         String strMobile = val.getMobileNo();
 
@@ -111,30 +110,20 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         if (sharePre.getString(sharePre.USER_PROFILE_IMAGE) != null) {
 
-    /*        Glide.with(ChangePasswordActivity.this)
-                    .load(sharePre.getString(sharePre.USER_PROFILE_IMAGE))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.mipmap.avatar_profile)
-                    .into(profileImg);*/
 
 
             Glide.with(ChangePasswordActivity.this).load(sharePre.getString(sharePre.USER_PROFILE_IMAGE)).apply(new RequestOptions()
                     .placeholder(R.mipmap.avatar_profile))
                     .into(profileImg2);
-//            Picasso.with(ChangePasswordActivity.this).load(pic).placeholder(R.drawable.avatar).into(profileImg2);
+
         }
 
         if (extras != null) {
             customerid = extras.getString("customer_id");
 
-          /*  Glide.with(ChangePasswordActivity.this)
-                    .load(pic)
-                    .placeholder(R.drawable.avatar)
-                    .error(R.drawable.avatar)
-                    .into(profileImg2);*/
-            // and get whatever type user account id is
+
         }
-//        getUserdDetail();
+
     }
 
     void validField() {
@@ -205,77 +194,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
     }
 
-    public void getUserdDetail() {
-        MyAccountInterface apiInterface = ApiClient.getClient(this).create(MyAccountInterface.class);
-        final MyAccountRequest request = new MyAccountRequest();
-        request.setCustomerId(val.getLoginResponse().getData().getUserId());
 
-        Call<MyAccountResponse> call3 = apiInterface.mGetProfile(request);
-        call3.enqueue(new Callback<MyAccountResponse>() {
-            @Override
-            public void onResponse(Call<MyAccountResponse> call, Response<MyAccountResponse> response) {
-                try {
-                    dialog.hide();
-                    Log.e("ADDRESS>>", "" + response.body().getData().getProfile().getCustomerAddress().getAddress1() + " " + response.body().getData().getProfile().getCustomerAddress().getAddress2());
-                    if (response.body().getSuccess()) {
-                        String strname = response.body().getData().getProfile().getFirstName() + " " + response.body().getData().getProfile().getLastName();
-                        String strAddress = response.body().getData().getProfile().getCustomerAddress().getAddress1() + " " + response.body().getData().getProfile().getCustomerAddress().getAddress2();
-                        String strMobile = response.body().getData().getProfile().getPhoneNumber();
-                        Log.e("my account", "onResponse: " + strAddress);
-                        if (strname != null && !strname.equals("")) {
-                            userName.setText(strname);
-                        } else {
-                            userName.setVisibility(View.GONE);
-                        }
-
-                        if (strAddress != null && !strAddress.trim().equals("")) {
-                            userAddress.setText(strAddress);
-                            userAddress.setVisibility(View.VISIBLE);
-                        } else {
-                            userAddress.setVisibility(View.GONE);
-                        }
-                        if (strMobile != null && !strMobile.equals("")) {
-                            userPhone.setText(strMobile);
-                        } else {
-                            userPhone.setVisibility(View.GONE);
-                        }
-                       /* userName.setText(response.body().getData().getProfile().getFirstName() + " " + response.body().getData().getProfile().getLastName());
-                        userAddress.setText(response.body().getData().getProfile().getCustomerAddress().getAddress1() + " " + response.body().getData().getProfile().getCustomerAddress().getAddress2());
-                        userPhone.setText(response.body().getData().getProfile().getPhoneNumber());
-                       */
-                       /*Glide.with(ChangePasswordActivity.this)
-                                .load(response.body().getData().getProfile().getProfilePic())
-                                .placeholder(R.drawable.avatar)
-                                .into(profileImg);*/
-
-                      /*  Glide.with(ChangePasswordActivity.this)
-                                .load(response.body().getData().getProfile().getProfilePic())
-                                .placeholder(R.mipmap.avatar_profile)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .error(R.mipmap.avatar_profile)
-                                .into(profileImg2);*/
-
-
-                        Glide.with(ChangePasswordActivity.this).load(response.body().getData().getProfile().getProfilePic()).apply(new RequestOptions()
-                                .placeholder(R.mipmap.avatar_profile))
-                                .into(profileImg2);
-                        Log.e("image url", "onResponse: " + response.body().getData().getProfile().getProfilePic());
-                    } else {
-
-                    }
-                } catch (Exception e) {
-                    dialog.hide();
-                    Log.e("Error", e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MyAccountResponse> call, Throwable t) {
-                dialog.hide();
-                Log.e("Error", t.getMessage());
-            }
-        });
-    }
 
     @OnClick({R.id.back, R.id.btn_confirm})
     public void onViewClicked(View view) {
@@ -301,8 +220,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onResume();
 
         userName.setText(val.getUserName());
-//        Picasso.with(ChangePasswordActivity.this).load(val.getProfileImage()).placeholder(R.mipmap.avatar_profile).into(profileImg2);
-    }
+  }
 
     @Override
     protected void onPause() {

@@ -31,7 +31,6 @@ public class FetchAddressIntentService extends IntentService {
 
 
     public FetchAddressIntentService() {
-        // Use the TAG to name the worker thread.
         super(TAG);
     }
 
@@ -99,9 +98,7 @@ public class FetchAddressIntentService extends IntentService {
         }
     }
 
-    /**
-     * Sends a resultCode and message to the receiver.
-     */
+
     private void deliverResultToReceiver(int resultCode, String message, String postCode) {
         Bundle bundle = new Bundle();
         bundle.putString(RESULT_DATA_KEY, message);

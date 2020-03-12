@@ -9,19 +9,11 @@ public class MenuCategory {
     private String menuCategoryName;
     private List<MenuProduct> menuProducts = null;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public MenuCategory() {
     }
 
-    /**
-     * 
-     * @param menuCategoryId
-     * @param menuCategoryName
-     * @param menuProducts
-     */
+
     public MenuCategory(String menuCategoryId, String menuCategoryName, List<MenuProduct> menuProducts) {
         super();
         this.menuCategoryId = menuCategoryId;

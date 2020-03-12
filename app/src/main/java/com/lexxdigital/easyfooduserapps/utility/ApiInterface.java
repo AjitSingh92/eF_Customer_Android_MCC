@@ -16,6 +16,9 @@ public interface ApiInterface
     Single<AddressResponseModel> manageAddress(@Body AddressRequestModel address);
     @POST("editCustomerAddress")
     Single<AddressResponseModel> editAddress(@Body EditAddressRequest address);
-    @POST("order_payment_status")
+   /* @POST("order_payment_status")
+    Single<OrderStatusResponseModel> getOrderStatus(@Body OrderStatusRequestModel orderStatusRequestModel);*/
+
+    @POST("check_order_status")
     Single<OrderStatusResponseModel> getOrderStatus(@Body OrderStatusRequestModel orderStatusRequestModel);
 }

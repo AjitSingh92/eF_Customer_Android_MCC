@@ -15,6 +15,18 @@ public class VoucherApplyRequest {
     @Expose
     private String restaurant_id;
 
+    @SerializedName("cart_subtotal")
+    @Expose
+    private String cart_subtotal;
+
+    public String getCart_subTotal() {
+        return cart_subtotal;
+    }
+
+    public void setCart_subTotal(String cart_subTotal) {
+        this.cart_subtotal = cart_subTotal;
+    }
+
     public String getCustomer_id() {
         return customer_id;
     }

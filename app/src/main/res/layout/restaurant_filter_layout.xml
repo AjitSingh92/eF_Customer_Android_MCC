@@ -55,7 +55,7 @@
             android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
-
+<!--
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/lldinein"
         android:layout_width="match_parent"
@@ -109,7 +109,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/llcollection"

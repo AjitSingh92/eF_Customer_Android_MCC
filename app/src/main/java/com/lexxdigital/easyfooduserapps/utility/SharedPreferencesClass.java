@@ -44,6 +44,17 @@ public class SharedPreferencesClass {
     public static final String AVG_COLLECTION_TIME = "AVG_COLLECTION_TIME";
     public static final String ORDER_TYPE = "ORDER_TYPE";
     public static final String CUSTOMER_ID = "CUSTOMER_ID";
+
+
+   /* public static final String OFFERR_ID_DFG            = "OFFERR_ID_DFG";
+    public static final String RESTUARANT_ID_DFG        = "RESTUARANT_ID_DFG";
+    public static final String OFFERR_TYPE_DFG          = "OFFERR_TYPE_DFG";
+    public static final String OFFERR_TITLE_DFG         = "OFFERR_TITLE_DFG";*/
+    public static final String OFFERR_DETAL_DFG         = "OFFERR_DETAL_DFG";
+  /*  public static final String OFFERR_PRICE_LEBEL_DFG  = "OFFERR_PRICE_LEBEL_DFG";
+    public static final String OFFERR_PRICE_DFG         = "OFFERR_PRICE_DFG";
+*/
+
     public SharedPreferencesClass(Context mContext) {
         this.mContext = mContext;
     }

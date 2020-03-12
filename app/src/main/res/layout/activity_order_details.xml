@@ -137,6 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -153,10 +154,10 @@
                     style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/avenir_roman"
-                    android:gravity="center"
+                    android:gravity="right"
                     android:text="Order Time "
                     android:textColor="@color/orange" />
 
@@ -182,11 +183,12 @@
                 <TextView
                     android:id="@+id/order_date"
                     style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_weight="1"
                     android:fontFamily="@font/avenir_roman"
+                    android:gravity="right"
                     android:text=""
                     android:textColor="@color/price_color" />
 
@@ -207,7 +209,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
-                android:layout_margin="@dimen/_15sdp"
+                android:layout_margin="@dimen/_10sdp"
                 android:background="@color/gray_light" />
 
             <TextView
@@ -233,7 +235,6 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:layout_weight="1"
                 android:fontFamily="@font/avenir_roman"
-                android:text=""
                 android:textColor="@color/item_name"
                 android:visibility="gone" />
 
@@ -243,6 +244,15 @@
                 android:layout_height="@dimen/_1sdp"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@color/gray_light" />
+
+            <LinearLayout
+                android:id="@+id/orderItemList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:orientation="vertical"></LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_order_details_sub"

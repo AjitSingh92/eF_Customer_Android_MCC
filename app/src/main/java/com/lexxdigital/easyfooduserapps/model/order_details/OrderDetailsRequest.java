@@ -8,8 +8,12 @@ public class OrderDetailsRequest {
     @Expose
     private String orderNumber;
 
-    public OrderDetailsRequest(String orderNumber) {
+    @SerializedName("customer_id")
+    String customer_id;
+
+    public OrderDetailsRequest(String orderNumber, String customer_id) {
         this.orderNumber = orderNumber;
+        this.customer_id = customer_id;
     }
 
     public String getOrderNumber() {
@@ -18,5 +22,13 @@ public class OrderDetailsRequest {
 
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    public String getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(String customer_id) {
+        this.customer_id = customer_id;
     }
 }

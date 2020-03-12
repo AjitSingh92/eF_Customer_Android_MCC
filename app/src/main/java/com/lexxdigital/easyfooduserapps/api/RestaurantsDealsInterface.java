@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 public interface RestaurantsDealsInterface {
 
     @Headers("Content-Type: application/json")
-    @POST("landingPage")
+    @POST("getRestauratList")
     Call<RestaurantsDealResponse> mLogin(@Body RestaurantsDealRequest request);
 
     @Headers("Content-Type: application/json")

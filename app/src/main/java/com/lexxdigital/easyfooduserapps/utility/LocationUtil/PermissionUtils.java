@@ -47,24 +47,10 @@ public class PermissionUtils
 
     }
 
-    public PermissionUtils(Context context, PermissionResultCallback callback)
-    {
-        this.context=context;
-        this.current_activity= (Activity) context;
-
-        permissionResultCallback= callback;
 
 
-    }
 
 
-    /**
-     * Check the API Level & Permission
-     *
-     * @param permissions
-     * @param dialog_content
-     * @param request_code
-     */
 
     public void check_permission(ArrayList<String> permissions, String dialog_content, int request_code)
     {
@@ -92,13 +78,7 @@ public class PermissionUtils
     }
 
 
-    /**
-     * Check and request the Permissions
-     *
-     * @param permissions
-     * @param request_code
-     * @return
-     */
+
 
     private  boolean checkAndRequestPermissions(ArrayList<String> permissions, int request_code) {
 
@@ -126,13 +106,7 @@ public class PermissionUtils
         return true;
     }
 
-    /**
-     *
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
+
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
     {
         switch (requestCode)
@@ -207,12 +181,7 @@ public class PermissionUtils
     }
 
 
-    /**
-     * Explain why the app needs permissions
-     *
-     * @param message
-     * @param okListener
-     */
+
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(current_activity)
                 .setMessage(message)

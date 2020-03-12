@@ -48,7 +48,6 @@ import retrofit2.Response;
 import static com.facebook.AccessTokenManager.TAG;
 
 
-
 @SuppressLint("ValidFragment")
 public class CardsListFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener, AdapterCardList.PositionSortInterface {
@@ -78,7 +77,6 @@ public class CardsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cards_list, container, false);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
@@ -110,8 +108,6 @@ public class CardsListFragment extends Fragment
     private void initView(List<Card> dataList) {
 
         mAdapter = new AdapterCardList(getContext(), dataList, positionSortInterface);
-
-
         @SuppressLint("WrongConstant")
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -164,7 +160,8 @@ public class CardsListFragment extends Fragment
 
             @Override
             public void onFailure(Call<CardListResponse> call, Throwable t) {
-                swipreferesh.setRefreshing(false); }
+                swipreferesh.setRefreshing(false);
+            }
         });
     }
 

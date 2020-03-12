@@ -95,7 +95,7 @@ public class AddressSaveAdapter extends RecyclerView.Adapter<AddressSaveAdapter.
 
         } else if (addressType.equals("work") || addressType.equals("Work")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                holder.iconAddressList.setImageDrawable(mContext.getDrawable(R.drawable.ic_work_briefcase));
+                holder.iconAddressList.setImageDrawable(mContext.getDrawable(R.drawable.office_location));
             }
             holder.txtAddreddType.setText(addressType);
         } else {
@@ -119,7 +119,7 @@ public class AddressSaveAdapter extends RecyclerView.Adapter<AddressSaveAdapter.
         Log.e(TAG, "onBindViewHolder: address id: " + add.getID());
 
         if (add.getIsDefault() == 1) {
-            holder.tvDefault.setVisibility(View.GONE); // hide default default option
+            holder.tvDefault.setVisibility(View.VISIBLE); // hide default default option
             holder.tvDefault.setText("Default");
             sharePre.setString(sharePre.DEFAULT_ADDRESS, address);
         } else {

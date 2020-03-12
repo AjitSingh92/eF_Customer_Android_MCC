@@ -23,6 +23,8 @@ public class SizeModifierAdapter extends RecyclerView.Adapter<SizeModifierAdapte
     SizeModifierSelectListener sizeModifierSelectListener;
     List<ModifierProductAdapter> productAdaptersList;
 
+    int showNextCount = 1;
+
     public interface SizeModifierSelectListener {
         void onSizeSelected(List<SizeModifier> mItemList);
     }
@@ -73,7 +75,7 @@ public class SizeModifierAdapter extends RecyclerView.Adapter<SizeModifierAdapte
 
     @Override
     public int getItemCount() {
-        return mItem.size();
+        return (mItem.size()==0)?mItem.size():showNextCount;//mItem.size();
     }
 
 
@@ -107,6 +109,9 @@ public class SizeModifierAdapter extends RecyclerView.Adapter<SizeModifierAdapte
             layoutManager.setScrollEnabled(false);
             modifierList.setLayoutManager(layoutManager);
             ModifierProductAdapter modifierProductAdapter = new ModifierProductAdapter(context, position, this);
+            if (mItem.get(position).getMaxAllowedQuantity() == 1) {
+                modifierProductAdapter.setViewType(R.layout.meal_product_row);
+            }
             modifierList.setAdapter(modifierProductAdapter);
             productAdaptersList.add(modifierProductAdapter);
             modifierProductAdapter.addItem(mItem.get(position).getModifier());
@@ -125,10 +130,14 @@ public class SizeModifierAdapter extends RecyclerView.Adapter<SizeModifierAdapte
 
             mFinalItem.add(parentPosition, mItem.get(parentPosition));*/
 
-
             if (sizeModifierSelectListener != null) {
                 sizeModifierSelectListener.onSizeSelected(mItem);
             }
+            if (showNextCount < mItem.size()) {
+                showNextCount++;
+                notifyDataSetChanged();
+            }
+
         }
     }
 }

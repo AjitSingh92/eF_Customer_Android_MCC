@@ -52,9 +52,18 @@ public class Constants {
 
 
     public static final String DEVELOPER_KEY = "AIzaSyB_0zHJbmm00TBeEaSq0PXF3wUU0IGRKn4";
-    public static final String STRIPE_PUBLISH_KEY = "pk_test_DeSdrzpJiSsiGuXxZ2Id7xAV";
+    //public static final String STRIPE_PUBLISH_KEY = "pk_test_DeSdrzpJiSsiGuXxZ2Id7xAV";
+    public static final String STRIPE_PUBLISH_KEY = "pk_live_KVhKkdTGEbjB20Ux6f6funsR";
+
     public static final String NOTIFICATION_TYPE = "NOTIFICATION_TYPE";
     public static final String NOTIFICATION_ORDER_ID = "NOTIFICATION_ORDER_ID";
+    public static final String PAYMENT_MODE = "PAYMENT_MODE";
+    public static final String RESTAURENT_NAME = "RESTAURENT_NAME";
+    public static final String PHONE_NUMBER = "PHONE_NUMBER";
+    public static final String CUSTOMER_ID = "CUSTOMER_ID";
+    public static final String TOTAL_COST = "TOTAL_COST";
+    public static final String ORDER_TYPE = "ORDER_TYPE";
+    public static final String ORDER_TIME = "ORDER_TIME";
     public static final int NOTIFICATION_ID = 10000;
     public static final int NOTIFICATION_ID_BIG_IMAGE = 10000;
     public static int ORDER_STATUS = 0;
@@ -68,7 +77,6 @@ public class Constants {
             Drawable background = activity.getResources().getDrawable(R.drawable.bg_gradient);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(activity.getResources().getColor(android.R.color.transparent));
-            //  window.setNavigationBarColor(activity.getResources().getColor(android.R.color.transparent));
             window.setBackgroundDrawable(background);
         }
     }
@@ -100,7 +108,6 @@ public class Constants {
             FragmentTransaction transaction = fm.beginTransaction().addToBackStack(null);
             transaction.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
             transaction.replace(R.id.frameLayout, fragment);
-            //  transaction.commit();
             transaction.commitAllowingStateLoss();
         }
     }
@@ -113,7 +120,6 @@ public class Constants {
 
         return dayofweek;
     }
-
 
 
     public static boolean isInternetConnectionAvailable(int timeOut) {
@@ -158,45 +164,9 @@ public class Constants {
 
     public static void hideKeyboard(Context activity, View view) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static String changeStringDateFormat(String input, String formatFrom, String formatTo) {
-        String strDate = null;
-        SimpleDateFormat mFormatFrom = new SimpleDateFormat(formatFrom);
-        SimpleDateFormat mFormatTo = new SimpleDateFormat(formatTo);
-        if (null == input) {
-            return null;
-        }
-        try {
-            Date date = mFormatFrom.parse(input);
-            strDate = mFormatTo.format(date);
-        } catch (ParseException e) {
-//                Log.e("Date Parse Exception", "Shhh.. try other formats");
-        }
-
-
-        return strDate;
-    }
-
-    public static String getDayMonth(String date) {
-
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-
-        Date readDate = null;
-        try {
-            readDate = df.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String dayMonth = readDate.toString().substring(0, 10);
-
-        return dayMonth;
-    }
 
     public static String capitalize(String line) {
 

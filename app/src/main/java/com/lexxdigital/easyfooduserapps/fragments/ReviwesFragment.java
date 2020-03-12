@@ -82,7 +82,7 @@ public class ReviwesFragment extends Fragment {
         try {
             overallRating.setText(String.format("%.1f", val.getRestaurantDetailsResponse().getData().getRestaurants().getAvgRating()));
             if (val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount() > 1) {
-                onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
+                onBased.setText("Based on " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
             } else {
                 overallRating.setVisibility(View.GONE);
                 rat_5.setVisibility(View.GONE);
@@ -109,7 +109,7 @@ public class ReviwesFragment extends Fragment {
                 tvnoRating.setVisibility(View.GONE);
                 overallRating.setVisibility(View.VISIBLE);
                 rat_5.setVisibility(View.VISIBLE);
-                onBased.setText("Based On " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
+                onBased.setText("Based on " + val.getRestaurantDetailsResponse().getData().getRestaurants().getRatingCount().intValue() + " Reviews");
 
                 mReatingAdapter = new ReatingAdapter(mContext, res);
 

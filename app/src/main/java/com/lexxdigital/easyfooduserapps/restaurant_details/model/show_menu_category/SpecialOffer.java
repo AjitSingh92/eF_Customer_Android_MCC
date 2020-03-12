@@ -17,10 +17,7 @@ public class SpecialOffer {
     private String ProductQty;
     private String TotalAmmount;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public SpecialOffer() {
     }
 

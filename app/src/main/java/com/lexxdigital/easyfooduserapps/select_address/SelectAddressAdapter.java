@@ -34,7 +34,6 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
         TextView edit_details_tv, txtAddreddType, txtAddress;
         RelativeLayout holeItemClick;
         ImageView rightImg,not_right_tv,iconAddressList;
-        // ImageView imageViewIcon;
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -115,11 +114,7 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
             @Override
             public void onClick(View view) {
 
-                //  check.set(listPosition,"0");
-                //allReadyCheck.set(listPosition,"0");
-                //  allReadyCheck.set(0,"0");
                 mPositionInterface.onClickPos(listPosition,check);
-
                 holder.rightImg.setVisibility(View.VISIBLE);
                 holder.not_right_tv.setVisibility(View.GONE);
             }
@@ -129,9 +124,6 @@ public class SelectAddressAdapter extends RecyclerView.Adapter<SelectAddressAdap
         holder.not_right_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //check.set(listPosition,"1");
-                //  allReadyCheck.set(0,"1");
                 mPositionInterface.onClickPos(listPosition,check);
                 holder.not_right_tv.setVisibility(View.GONE);
 

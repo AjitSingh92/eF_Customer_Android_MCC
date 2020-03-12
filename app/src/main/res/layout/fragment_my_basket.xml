@@ -48,6 +48,14 @@
                             android:adjustViewBounds="true"
                             android:scaleType="fitXY" />
 
+                        <ImageView
+                            android:id="@+id/favourites"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="right"
+                            android:layout_margin="20dp"
+                            android:src="@drawable/favourite_white" />
+
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/logo"
                             android:layout_width="@dimen/_160sdp"
@@ -98,7 +106,7 @@
                                 android:layout_marginRight="@dimen/_10sdp"
                                 android:fontFamily="@font/avenir_black"
                                 android:text="New"
-                                android:textColor="@color/black"
+                                android:textColor="@color/orange"
                                 android:textSize="@dimen/_14sdp" />
 
                             <ImageView
@@ -1062,14 +1070,12 @@
                                     </LinearLayout>
 
                                     <TextView
-
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-
                                         android:layout_marginLeft="@dimen/_20sdp"
                                         android:fontFamily="@font/avenir_medium"
                                         android:text="Discount"
-                                        android:textColor="@color/descolor"
+                                        android:textColor="@color/orange"
                                         android:textSize="@dimen/_12sdp" />
 
                                     <TextView
@@ -1080,7 +1086,7 @@
                                         android:fontFamily="@font/avenir_medium"
                                         android:gravity="right|end"
                                         android:text="£0.00"
-                                        android:textColor="@color/descolor"
+                                        android:textColor="@color/orange"
                                         android:textSize="@dimen/_12sdp" />
 
                                 </LinearLayout>
@@ -1345,10 +1351,10 @@
                             android:maxLines="3"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text=""
+                            android:text="Applicable on"
                             android:textColor="@color/com_facebook_blue"
                             android:textSize="@dimen/_11sdp"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
                         <!-- <LinearLayout
 
                              android:layout_width="match_parent"
@@ -1873,7 +1879,6 @@
                 android:id="@+id/btn_checkout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/_15sdp">

@@ -42,6 +42,9 @@ public class PreviousOrderDetail {
     @SerializedName("is_paid")
     @Expose
     private Integer isPaid;
+    @SerializedName("is_tomorrow")
+    @Expose
+    private Integer isTomorrow;
     @SerializedName("payment_mode")
     @Expose
     private String paymentMode;

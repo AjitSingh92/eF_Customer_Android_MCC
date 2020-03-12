@@ -106,8 +106,7 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:layout_marginRight="@dimen/_20sdp"
-                            android:src="@drawable/favourite_active"
-                            android:visibility="gone" />
+                            android:src="@drawable/favourite_white" />
 
 
                     </FrameLayout>
@@ -152,7 +151,7 @@
                                 android:layout_marginRight="@dimen/_10sdp"
                                 android:fontFamily="@font/avenir_black"
                                 android:text="New"
-                                android:textColor="@color/black"
+                                android:textColor="@color/orange"
                                 android:textSize="@dimen/_12sdp" />
 
                             <ImageView
@@ -481,11 +480,10 @@
         android:id="@+id/llbotom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-
         android:layout_alignParentBottom="true"
         android:background="@color/gray_light"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/ly_footer_details"
@@ -506,7 +504,6 @@
                 android:paddingEnd="@dimen/_8sdp"
                 android:paddingBottom="@dimen/_2sdp"
                 android:text="0"
-
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_14sdp"
                 android:textStyle="bold"

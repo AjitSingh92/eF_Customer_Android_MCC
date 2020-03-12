@@ -4,8 +4,11 @@ package com.lexxdigital.easyfooduserapps.fragments;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -14,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -80,7 +84,8 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     boolean isLoading = false;
     OrderPositionListner orderPositionListner;
     SharedPreferencesClass sharePre;
-     FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics mFirebaseAnalytics;
+    //BroadcastReceiver broadcastReceiver;
 
     public PreviousOrderFragment() {
         // Required empty public constructor
@@ -100,6 +105,8 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         View view = inflater.inflate(R.layout.fragment_previous_order, container, false);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
+        IntentFilter intentFilter = new IntentFilter("status");
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
         return view;
     }
 
@@ -163,6 +170,23 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         });
 
     }
+
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Constants.isInternetConnectionAvailable(300)) {
+                isLoading = false;
+                previousOrderDetails.clear();
+                getCardList();
+            } else {
+                if (swipreferesh != null)
+                    swipreferesh.setRefreshing(false);
+                dialogNoInternetConnection("Please check internet connection.");
+            }
+
+        }
+    };
 
     @Override
     public void onDestroyView() {

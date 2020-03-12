@@ -40,14 +40,11 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
     public RestaurantCategoryAdapter(Context context, int parentPosition, ItemClickListener menuItemClickListener, boolean isClosed) {
         this.context = context;
         this.menuItemClickListener = menuItemClickListener;
-
-//        this.menuSubCategory = RestaurantDetailsActivity.completeData.getMenu().getMenuCategory().get(parentPosition).getMenuSubCategory();
         this.parentPosition = parentPosition;
 
         inflater = LayoutInflater.from(context);
         menuSubCategory = new ArrayList<>();
         mItem = new ArrayList<>();
-//        this.mItem = RestaurantDetailsActivity.completeData.getMenu().getMenuCategory().get(parentPosition).getMenuProducts();
         db = new DatabaseHelper(context);
         this.isClosed = isClosed;
     }
@@ -66,7 +63,6 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
         this.menuCategory = menuCategory;
         this.mItem.addAll(menuCategory.getMenuProducts());
         notifyItemChanged(this.mItem.size());
-        Log.e("4444444444", "44444444444444");
 
     }
 
@@ -157,7 +153,7 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView txt_menu_title, txt_price, txt_items_detail, item_count;
+        private final TextView txt_menu_title, txt_price, txt_items_detail, item_count, txtCount;
         private final LinearLayout clickCount, item_remove, item_add;
         private final ProgressBar progressBar;
 
@@ -168,6 +164,7 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
             progressBar.setVisibility(View.GONE);
             txt_menu_title = itemView.findViewById(R.id.txt_menu_title);
             txt_price = itemView.findViewById(R.id.txt_price);
+            txtCount = itemView.findViewById(R.id.txt_count);
             txt_items_detail = itemView.findViewById(R.id.txt_items_detail);
             clickCount = itemView.findViewById(R.id.clickCount);
             item_remove = itemView.findViewById(R.id.item_remove);
@@ -183,10 +180,11 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
             txt_price.setText("£" + mItem.get(position).getMenuProductPrice());
             item_count.setText("0");
             if (hideDetail) {
-                txt_items_detail.setVisibility(View.GONE);
+                txt_items_detail.setVisibility(View.VISIBLE);
+                txt_items_detail.setText(mItem.get(position).getDescription());
             } else {
                 txt_items_detail.setVisibility(View.VISIBLE);
-                txt_items_detail.setText(mItem.get(position).getProductName());
+                txt_items_detail.setText(mItem.get(position).getDescription());
             }
             List<MenuProduct> products = db.getMenuProduct(menuCategory.getMenuCategoryId(), mItem.get(position).getMenuProductId());
             int qtyCount = 0;
@@ -196,10 +194,14 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
             }
 
             if (qtyCount == 0) {
+                txtCount.setVisibility(View.GONE);
                 clickCount.setVisibility(View.GONE);
                 item_count.setText(String.valueOf(qtyCount));
             } else {
+                txtCount.setText(String.valueOf(qtyCount));
+                txtCount.setVisibility(View.VISIBLE);
                 clickCount.setVisibility(View.VISIBLE);
+                txtCount.setText(String.valueOf(qtyCount));
                 item_count.setText(String.valueOf(qtyCount));
             }
         }
@@ -210,19 +212,19 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
 
             switch (v.getId()) {
                 case R.id.item_add:
-//                    item_count.setText(String.valueOf((Integer.parseInt(item_count.getText().toString()) + 1)));
                     itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
+                    txtCount.setText(String.valueOf(itemQty));
                     if (menuItemClickListener != null) {
-//                        getItemData(getLayoutPosition());
                         menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
                     }
                     break;
                 case R.id.item_remove:
-//                    item_count.setText(String.valueOf((Integer.parseInt(item_count.getText().toString()) - 1)));
                     itemQty = (Integer.parseInt(item_count.getText().toString()) - 1);
                     if (itemQty == 0) {
-//                        item_count.setText(String.valueOf(itemQty));
+                        txtCount.setVisibility(View.GONE);
                         clickCount.setVisibility(View.GONE);
+                    } else {
+                        txtCount.setText(String.valueOf(itemQty));
                     }
                     if (menuItemClickListener != null) {
                         List<MenuProduct> mItemNew = mItem;
@@ -234,9 +236,8 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RecyclerView
                         restaurantClosedDialog();
                     } else {
                         if (clickCount.getVisibility() == View.GONE) {
-//                        clickCount.setVisibility(View.VISIBLE);
-//                        item_count.setText("1");
                             itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
+                            txtCount.setVisibility(View.VISIBLE);
                             if (menuItemClickListener != null) {
                                 List<MenuProduct> mItemNew = mItem;
 

@@ -16,6 +16,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:padding="@dimen/_5sdp">
 
             <ImageView
@@ -23,30 +27,54 @@
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/circle_gray"
                 android:padding="@dimen/_7sdp"
+                android:visibility="gone"
                 android:src="@mipmap/x_copy" />
+            <ImageView
+                android:id="@+id/iv_symbol"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentTop="true"
+                android:padding="@dimen/_7sdp"
+                android:src="@drawable/already_order" />
 
+            <TextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_symbol"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:text="Do you want to\n start a new order?"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_14sdp" />
 
             <TextView
                 android:id="@+id/tv_closed_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/tv_confirm"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_toStartOf="@+id/cross_tv"
+                android:gravity="center"
                 android:fontFamily="@font/avenir_roman"
-                android:text="You have already placing an order with DENA PIZZA"
+                android:text="You have item in your basket from"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
             <TextView
                 android:id="@+id/tv_do_you"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_closed_title"
+                android:gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
@@ -57,21 +85,22 @@
 
             <TextView
                 android:id="@+id/tv_go_to_old"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_do_you"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/avenir_black"
-                android:gravity="end"
+                android:gravity="center"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="GO TO DENA pizza"
+                android:text="OK"
                 android:textAllCaps="true"
-                android:textColor="@color/orange"
+                android:background="@drawable/bg_orange_rect"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
@@ -79,18 +108,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_go_to_old"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/avenir_black"
-                android:gravity="end"
+                android:gravity="center"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="GO TO NEW restaurantwithout kyc"
+                android:text="Cancel"
+                android:background="@drawable/btn_grey_corn30"
                 android:textAllCaps="true"
-                android:textColor="@color/orange"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
 
 

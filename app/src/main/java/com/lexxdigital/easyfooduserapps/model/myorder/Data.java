@@ -15,6 +15,7 @@ public class Data {
     @Expose
     private Integer totalRecords;
 
+
     public List<PreviousOrderDetail> getPreviousOrderDetails() {
         return previousOrderDetails;
     }

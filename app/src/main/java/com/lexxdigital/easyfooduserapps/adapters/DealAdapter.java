@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.api.OnBottomReachedListener;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
@@ -37,6 +38,8 @@ import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass.OFFERR_DETAL_DFG;
 
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> implements Filterable {
 
@@ -100,20 +103,24 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            this.dealcard_list_id = (RecyclerView) itemView.findViewById(R.id.dealcard_list_id);
+            this.preOrder = (TextView) itemView.findViewById(R.id.pre_order);
             this.tvPreOrderMsg = (TextView) itemView.findViewById(R.id.tv_PreOrderMsg);
+            this.llClosed = (LinearLayout) itemView.findViewById(R.id.closed_design);
+            /*
             this.btnPreOrder = (LinearLayout) itemView.findViewById(R.id.layout_btnPreOrder);
             this.layoutDeliveryPrice = (LinearLayout) itemView.findViewById(R.id.layout_deliveryPrice);
             this.layoutDeliveryTime = (LinearLayout) itemView.findViewById(R.id.layout_deliveryTime);
-            this.dealcard_list_id = (RecyclerView) itemView.findViewById(R.id.dealcard_list_id);
+
             this.name = (TextView) itemView.findViewById(R.id.restaurant_name);
             this.cuisines = (TextView) itemView.findViewById(R.id.restaurant_cuisines);
             this.rating = (TextView) itemView.findViewById(R.id.restaurant_rating);
             this.deliveryMin = (TextView) itemView.findViewById(R.id.restaurant_delivery_min_order);
             this.deliveryTime = (TextView) itemView.findViewById(R.id.restaurant_delivery_time);
             this.deliveryVal = (TextView) itemView.findViewById(R.id.restaurant_delivery_value);
-            this.preOrder = (TextView) itemView.findViewById(R.id.pre_order);
+
             this.llMain = (LinearLayout) itemView.findViewById(R.id.ll_main);
-            this.llClosed = (LinearLayout) itemView.findViewById(R.id.closed_design);
+
             this.tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
 
             this.imRatingImage = itemView.findViewById(R.id.im_ratingImage);
@@ -122,7 +129,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             this.llDinein = itemView.findViewById(R.id.ll_dinein);
             this.dine_in = itemView.findViewById(R.id.dine_in);
             this.llCollection = itemView.findViewById(R.id.ll_collection);
-            this.collection = itemView.findViewById(R.id.collection);
+            this.collection = itemView.findViewById(R.id.collection);*/
 
         }
     }
@@ -168,17 +175,14 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
-
-
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dealrecycleviewitem, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int listPosition) {
+    public void onBindViewHolder( MyViewHolder holder, int listPosition) {
         sharePre = new SharedPreferencesClass(mContext);
         db = new DatabaseHelper(mContext);
         final int mListPosition = listPosition;
@@ -186,7 +190,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             onBottomReachedListener.onBottomReached(listPosition);
         }
         RecyclerView dealcard_list_id = holder.dealcard_list_id;
-        holder.name.setText(respNameFilter.get(listPosition).getRestaurantName());
+       /* holder.name.setText(respNameFilter.get(listPosition).getRestaurantName());
         holder.tvDistance.setText(respNameFilter.get(listPosition).getDistance_in_miles() + " miles");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -194,9 +198,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         } else {
             holder.cuisines.setText(Html.fromHtml(respNameFilter.get(listPosition).getCuisines()));
         }
+*/
 
-
-        if (respNameFilter.get(listPosition).getOverallRating() != null) {
+        /*if (respNameFilter.get(listPosition).getOverallRating() != null) {
             if (respNameFilter.get(listPosition).getOverallRating().equalsIgnoreCase("0")) {
                 holder.rating.setText("New");
                 holder.imRatingImage.setVisibility(View.GONE);
@@ -208,10 +212,10 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
             holder.rating.setText("New");
             holder.imRatingImage.setVisibility(View.GONE);
         }
+*/
+//        String status = respNameFilter.get(listPosition).getStatus();
 
-        String status = respNameFilter.get(listPosition).getStatus();
-
-        try {
+        /*try {
             if (status.trim().equalsIgnoreCase("closed")) {
                 holder.llClosed.setVisibility(View.VISIBLE);
                 holder.preOrder.setVisibility(View.VISIBLE);
@@ -230,7 +234,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         holder.llCollection.setVisibility(View.GONE);
         holder.llDelivery.setVisibility(View.GONE);
         holder.llDinein.setVisibility(View.GONE);
-
+*//*
         if (respNameFilter.get(listPosition).getDelivery_options() != null || !respNameFilter.get(listPosition).getDelivery_options().equals("")) {
             String[] serve_styles = respNameFilter.get(listPosition).getDelivery_options().split(",");
 
@@ -246,9 +250,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 holder.llDinein.setVisibility(View.VISIBLE);
                 holder.dine_in.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_orage_tick));
             }
-
-
         }
+        */
         holder.preOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,7 +269,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 im_cross = view.findViewById(R.id.cross_tv);
                 tvDay = view.findViewById(R.id.tv_day);
                 String startDelTime = "", endDelTime = "", startCollTime = "", endCollTime = "";
-                tvDay.setText(respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDay());
+                String upperString = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDay().substring(0, 1).toUpperCase() + respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDay().substring(1);
+                tvDay.setText(upperString);
                 startDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryStartTime();
                 endDelTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getDeliveryEndTime();
                 startCollTime = respNameFilter.get(mListPosition).getRestaurantTiming().get(0).getCollectionStartTime();
@@ -298,12 +302,15 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                                 activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             } else {
                                 if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                    String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                                    String msg = "You have item in your basket from\n" + sharePre.getString(sharePre.RESTUARANT_NAME);
                                     alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
                                 } else {
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
+
+                                            sharePre.setString(OFFERR_DETAL_DFG, null);
+
                                             GlobalValues.getInstance().getDb().menuMaster().nuke();
                                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
@@ -351,11 +358,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 dialog.show();
             }
         });
-
-
         /***********************************************************************************************************************/
-
-
         holder.llClosed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -369,12 +372,14 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                         activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                     } else {
                         if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                            String msg = "You have already placing and order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                            String msg = "You have item in your basket from\n" + sharePre.getString(sharePre.RESTUARANT_NAME);
                             alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), respNameFilter.get(mListPosition).getRestaurantName(), respNameFilter.get(mListPosition).getId());
                         } else {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
+
+                                    sharePre.setString(OFFERR_DETAL_DFG, null);
                                     GlobalValues.getInstance().getDb().menuMaster().nuke();
                                     GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                                     GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
@@ -425,11 +430,11 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         /***********************************************************************************************************************/
 
 
-        holder.deliveryMin.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getDelivery_charge() + " delivery ");
+       /* holder.deliveryMin.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getDelivery_charge() + " delivery ");
         holder.deliveryVal.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getMin_order_value() + " min order");
         holder.deliveryTime.setText(respNameFilter.get(listPosition).getAvgDeliveryTime() + " min");
-
-        mDealCardAdapter = new DealCardAdapter(mContext, respNameFilter, respNameFilter.get(listPosition).getDiscountOffers().size(), listPosition, userID, activity);
+*/
+        mDealCardAdapter = new DealCardAdapter(mContext, respNameFilter.get(listPosition), respNameFilter.get(listPosition).getDiscountOffers().size(), listPosition, userID, activity);
         @SuppressLint("WrongConstant")
         LinearLayoutManager horizontalLayoutManagaer2 = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         dealcard_list_id.setLayoutManager(horizontalLayoutManagaer2);
@@ -456,14 +461,12 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         }
     }
 
-
     public void addLazyLoadedData(List<RestaurantsDealResponse.Data.Restaurant> res, int offset) {
         for (int i = 0; i < res.size(); i++) {
             this.respNameFilter.add(res.get(i));
         }
         this.notifyItemRangeInserted(offset, res.size());
     }
-
 
     public void alreadyAlertDialog(String message, String oldRest, final String currentRestuarant, final String currentRestId) {
         LayoutInflater factory = LayoutInflater.from(mContext);
@@ -474,15 +477,19 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         final TextView tvTitle = (TextView) mDialogVieww.findViewById(R.id.tv_closed_title);
         final TextView tvGoOld = (TextView) mDialogVieww.findViewById(R.id.tv_go_to_old);
         final TextView tvGoNew = (TextView) mDialogVieww.findViewById(R.id.tv_go_to_new);
+        final TextView tv_do_you = (TextView) mDialogVieww.findViewById(R.id.tv_do_you);
         tvTitle.setText(message);
-
 
         tvGoOld.setText("GO TO " + oldRest);
         tvGoNew.setText("GO TO " + currentRestuarant);
-
+        tv_do_you.setText("Do you want to remove those and start a new order with" + currentRestuarant+"?");
         tvGoOld.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                sharePre.setString(OFFERR_DETAL_DFG, null);
+
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                 i.putExtra("RESTAURANTID", sharePre.getString(sharePre.RESTUARANT_ID));
                 i.putExtra("RESTAURANTNAME", sharePre.getString(sharePre.RESTUARANT_NAME));
@@ -495,6 +502,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         tvGoNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sharePre.setString(OFFERR_DETAL_DFG, null);
                 alertDialog.dismiss();
                 new Thread(new Runnable() {
                     @Override

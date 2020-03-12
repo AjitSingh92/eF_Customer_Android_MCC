@@ -3,8 +3,14 @@
     <string name="currency">\u00a3</string>
 
 
-    <string name="facebook_app_id">2246223352155867</string>
-    <string name="fb_login_protocol_scheme">fb2246223352155867</string>
+   <!-- <string name="facebook_app_id">2246223352155867</string>
+    <string name="fb_login_protocol_scheme">fb2246223352155867</string>-->
+
+
+    <string name="facebook_app_id">535154387295634</string>
+    <string name="fb_login_protocol_scheme">fb535154387295634</string>
+
+
 
     <string name="geo_api_key">AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM</string>
 
@@ -22,7 +28,7 @@
     <string name="sorry_we_don_t_currently_deliver_in_your_area">Sorry, we don’t currently deliver in your area</string>
     <string name="add_note">Add note</string>
     <string name="No_items_added">No items added</string>
-    <string name="your_basket_is_empty_add_items_to_your_order_before_accessing_your_basket">Your basket is empty. Add items to your order before accessing your basket.</string>
+    <string name="your_basket_is_empty_add_items_to_your_order_before_accessing_your_basket">Your basket is empty. Please add items to you order to view your basket</string>
     <string name="are_you_sure_you_want_to_remove_this_address">Are you sure, you want to remove this address?</string>
     <string name="voucher_code_n_has_now_expired">Voucher code has now expired</string>
     <string name="unfortunately_discount_code_has_expired_please_try_again_with_a_valid_code">Unfortunately [Discount Code] has expired. Please try again with a valid code.</string>
@@ -92,19 +98,20 @@ ou will be sent a varification code to your mobile </string>
     <string name="click_the_link_below_to_review_our_privacy_policy_regarding_the_collection_of_device_information_in_connection_with_the_use_of_this_app">Click the link below to review our Privacy Policy regarding the collection of device information in connection with the use of this app.</string>
     <string name="privacypolicy">Privacy Policy</string>
     <string name="forgat_pass">Forgot Password</string>
-
+    <string name="pound">\u00a3</string>
     <string name="easyfood_will_receive_your_name_and_email_address">easyFood will receive: your name and email address.</string>
     Currently you have no cards saved. Add your debit or credit cardsfor faster payments.
     <string name="easyfood">easyFood</string>
     <string name="continue_as_spencer">Continue as Spencer</string>
     <string name="do_you_have_an_allergy_tap_for_info">Do you have an allergy? Tap for info</string>
+    <string name="do_you_want_to_remove_those_and_start_a_new_order_with">Do you want to remove those and start a new order with</string>
     <string name="big_burger">Big Burger</string>
     <string name="total">TOTAL</string>
     <string name="checkout_now">Checkout now</string>
     <string name="room_for_more">Room for more?</string>
     <string name="frank_s_hot_sauce_chicken_wings_3_x_fried_chicken_wings_in_franks_hot_sauce">Frank’s Hot Sauce Chicken Wings 3 x fried chicken wings in Franks hot sauce</string>
     <string name="add_voucher_code">Add Voucher Code</string>
-    <string name="add_a_note_to_the_restaurant">Add a note to the restaurant</string>
+    <string name="add_a_note_to_the_restaurant">Add a note to your order</string>
     <string name="collect_from_this_restaurant">Collect from this restaurant</string>
     <string name="view_map">View map</string>
     <string name="your_basket_is_empty">Your basket is empty</string>
@@ -145,7 +152,7 @@ ou will be sent a varification code to your mobile </string>
 
     <!--Todo: Order Status -->
     <string name="order_title_0">Waiting for acceptance</string>
-    <string name="order_title_1">Order has been accepted</string>
+    <string name="order_title_1">Your order has been accepted.</string>
     <string name="order_title_2">Order is preparing</string>
     <string name="order_title_3">Order has been prepared and out for delivery</string>
     <string name="order_title_4">Order has been delivered.</string>
@@ -158,7 +165,7 @@ ou will be sent a varification code to your mobile </string>
     <string name="order_title_Details_1">Your order has been accepted and will take </string>
     <string name="order_title_Details_2">Your order has been accepted and will take </string>
     <string name="order_title_Details_3">Your order is out for delivery and will reach you in  </string>
-    <string name="order_title_Details_4">Thank you ! \nYour order has been delivered \nPlease give your feedback  </string>
+    <string name="order_title_Details_4">Your order has been delivered. Enjoy your meal.</string>
     <string name="having_no_orders">Having no orders</string>
     <string name="note_added_successfully">Note Added \nSuccessfully</string>
     <string name="market_communication">We’d like to send you discount coupons, exclusive offers and promotions by email, SMS and push notifications.\nYou can change these prefrerences anytime within this app.</string>
@@ -188,6 +195,13 @@ ou will be sent a varification code to your mobile </string>
     <string name="no_address">No address found. \nPlease add a new address</string>
     <string name="restaurant_closed_msg">This restaurant is currently closed.</string>
     <string name="ok">OK</string>
-    <string name="view_basket">View basket</string>
+    <string name="view_basket">View Order</string>
+    <string name="collection">collection</string>
+    <string name="now">Now</string>
+    <string name="update">Confirm</string>
+    <string name="term">I agree to terms and condition.</string>
+    <string name="hygiene_rating_is_pending">Hygiene rating is pending</string>
+    <string name="hygiene_rating">The hygiene rating below is given by the Food Standards Agency and your local authority:</string>
+    <string name="isFavorate">IS_FAVORITE</string>
 
 </resources>

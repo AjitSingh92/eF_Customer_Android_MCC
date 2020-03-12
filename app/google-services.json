@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1028511164813-fgu5f4t2k7uf1sgkk97737qvioe3ka72.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lexxdigital.easyfooduserapps",
+            "certificate_hash": "352c4a1ce35111fea27090795771e759c433ab98"
+          }
+        },
+        {
+          "client_id": "1028511164813-ksbopo20icuec05s5q9lqrvc6lkgutpt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lexxdigital.easyfooduserapps",
+            "certificate_hash": "1a65756a1e651e82554f9e2dd6831e95718d343b"
+          }
+        },
+        {
           "client_id": "1028511164813-sp2p43t68mc7gf9796tgn8ka5b84c5tm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -29,7 +45,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBPNFDzp6lYJza7GVuEKpJX4OZiExhFs1g"
+          "current_key": "AIzaSyBZt8tduk1FCQCxlMm9J8EhiTCGjRvDCGw"
         }
       ],
       "services": {
@@ -38,6 +54,13 @@
             {
               "client_id": "1028511164813-2cae9ktgtlnslk7s34f9ik8v3s43s7no.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1028511164813-q3hc83m5vvi7gbda9drk0jroofe1rbl5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lexxd.easyfood"
+              }
             }
           ]
         }

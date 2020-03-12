@@ -86,8 +86,6 @@ public class CustomerReviewProcess extends AppCompatActivity {
             strRestoLogo = extras.getString("restologo");
             strRestoImage = extras.getString("restoimage");
             strRestoAddress = extras.getString("restoAdd");
-            // and get whatever type user account id is
-            Log.e("review:", "onCreate:strRestoId " + strRestoId + "strOrderId:" + strOrderId + " strOrderNo: " + strOrderNo + " strRestoName: " + strRestoName + "strRestoLogo:" + strRestoLogo + " strRestoImage: " + strRestoImage);
 
         }
 
@@ -110,16 +108,12 @@ public class CustomerReviewProcess extends AppCompatActivity {
                     .centerCrop())
                     .into(crlRestoLogo);
 
-          //  Glide.with(this).load(strRestoImage).centerCrop().into(imgRestoImage);
-         //   Glide.with(this).load(strRestoLogo).centerCrop().into(crlRestoLogo);
-
         } catch (Exception e) {
 
         }
         ratFoodQuality.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Log.e("rating", "onRatingChanged food: " + rating);
                 if (rating < 1.0f) {
                     ratingBar.setRating(1.0f);
                     rating = 1.0f;
@@ -131,7 +125,7 @@ public class CustomerReviewProcess extends AppCompatActivity {
         ratDelivery.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Log.e("rating", "onRatingChanged delv: " + rating);
+
                 if (rating < 1.0f) {
                     ratingBar.setRating(1.0f);
                     rating = 1.0f;
@@ -143,7 +137,6 @@ public class CustomerReviewProcess extends AppCompatActivity {
         ratLikeOrderAgain.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Log.e("rating", "onRatingChanged order again: " + rating);
                 if (rating < 1.0f) {
                     ratingBar.setRating(1.0f);
                     rating = 1.0f;
@@ -156,7 +149,6 @@ public class CustomerReviewProcess extends AppCompatActivity {
         ratLikeRecom.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Log.e("rating", "onRatingChanged recom: " + rating);
                 if (rating < 1.0f) {
                     ratingBar.setRating(1.0f);
                     rating = 1.0f;
@@ -179,23 +171,20 @@ public class CustomerReviewProcess extends AppCompatActivity {
                 strOrderagain = String.valueOf(orderAgain);
                 strRecommend = String.valueOf(recommed);
                 strOverAll = String.valueOf(overAllRating);
-                Log.e("Review: ", "onClick:strOverAll " + strOverAll + " " + strRatfood + " " + strRatdelv + " " + strOrderagain + " " + strRecommend);
-                if (food > 0 && delivery > 0) {
+                 if (food > 0 && delivery > 0) {
                     dialog.show();
                     ratingSubmit(strOverAll, strRatfood, strRatdelv, strOrderagain, strRecommend);
 
                 } else {
                     Toast.makeText(CustomerReviewProcess.this, "Please Share your feed back", Toast.LENGTH_LONG).show();
                 }
-                // Toast.makeText(this, strRatfood, Toast.LENGTH_LONG).show();
+
             }
         });
         imgBackTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Constants.switchActivity(CustomerReviewProcess.this, OrderDetailActivity.class);
-                // finish();
-                //overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             }
         });
     }
@@ -211,7 +200,6 @@ public class CustomerReviewProcess extends AppCompatActivity {
     }
 
     void ratingSubmit(String overAll, String ratFood, String ratDelv, String ratOrdAgn, String strRecommend) {
-        Log.e("Review: ", "onClick:ratingSubmit " + strRestoId + "strCustomerId " + strCustomerId + strRatfood + " " + strRatdelv + " " + strOrderagain + " " + strRecommend);
 
         RestaurentReviewInterface apiInterface = ApiClient.getClient(this).create(RestaurentReviewInterface.class);
         final RestoReviewRequest request = new RestoReviewRequest(strRestoId, strCustomerId, strOrderId, overAll, ratFood, ratDelv, ratOrdAgn, strRecommend);
@@ -246,26 +234,7 @@ public class CustomerReviewProcess extends AppCompatActivity {
                         }
                     });
                     forgotDialog.show();
-//                    btnOk.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            try {
-//                                aldialog.hide();
-//                                Intent intent = new Intent(CustomerReviewProcess.this, OrderDetailActivity.class);
-//                                intent.putExtra("order_no", strOrderNo);
-//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                startActivity(intent);
-//                                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-//                            } catch (Exception e) {
-//                                Log.e("Review:", "Dialog: " + e.getMessage());
-//                            }
-//                        }
-//                    });
 
-                    //    aldialog.show();
-
-
-                    Log.e("CustomerReviewProcess", "onResponse: " + response.body().getMessage());
                 } else {
                     Toast.makeText(CustomerReviewProcess.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                     dialog.hide();
@@ -283,47 +252,12 @@ public class CustomerReviewProcess extends AppCompatActivity {
 
     }
 
-    void successDialog() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        final View viewCustom = inflater.inflate(R.layout.ratingsuccess_dialog, null);
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        dialog.setView(viewCustom);
-        // dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        btnOk = (TextView) dialog.findViewById(R.id.okTv);
-        try {
-            btnOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.hide();
-                    overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                }
-            });
-        } catch (Exception e) {
-            Log.e("Review:", "successDialog: " + e.getMessage());
-        }
 
-        /* LayoutInflater factory = LayoutInflater.from(this);
-    final View mDialogView = factory.inflate(R.layout.sign_up_dialog, null);
-    final AlertDialog mDialog = new AlertDialog.Builder(this).create();
-    mDialog.setView(mDialogView);
-    mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    */
-
-
-        dialog.show();
-
-    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-
-
-        // Constants.switchActivity(CustomerReviewProcess.this, OrderDetailActivity.class);
-
-        //overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 
 
     }

@@ -37,12 +37,14 @@ import com.lexxdigital.easyfooduserapps.utility.ApiClient;
 import com.lexxdigital.easyfooduserapps.utility.ApiInterface;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
+import com.lexxdigital.easyfooduserapps.utility.PlayGifView;
 import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import pl.droidsonroids.gif.GifImageView;
 
 public class OrderStatusActivity extends AppCompatActivity {
     static OrderStatusActivity orderStatusActivity;
@@ -60,16 +62,18 @@ public class OrderStatusActivity extends AppCompatActivity {
     SharedPreferencesClass sharedPreferencesClass;
     String order_type;
     String order_id;
+    String customerId;
     String restaurant_name;
-    String prepared_time, average_delivery_time;
     String phone_number;
     String payment_mode;
-    String orderDeliveryTime;
     BroadcastReceiver broadcastReceiver;
     String OrderId = null;
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
     FirebaseAnalytics mFirebaseAnalytics;
+    private String OrderAmount, time;
+
+    private GifImageView ivLoader;
 
     public static OrderStatusActivity getActivity() {
         return orderStatusActivity;
@@ -84,13 +88,29 @@ public class OrderStatusActivity extends AppCompatActivity {
         orderStatusActivity = this;
         val = (GlobalValues) getApplication();
         dialog = new ProgressDialog(this);
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equalsIgnoreCase("status")) ;
                 {
+
+
+                    if (getIntent().hasExtra("or")) {
+                        OrderId = getIntent().getStringExtra("or");
+                        getStatus(OrderId);
+
+                    } else {
+                        getDataFromIntent();
+                        OrderId = sharedPreferencesClass.getOrderIDKey();
+                        restaurant_name = getIntent().getStringExtra(Constants.RESTAURENT_NAME);
+                        payment_mode = getIntent().getStringExtra(Constants.PAYMENT_MODE);
+
+                        getStatus(OrderId);
+                    }
+                    getStatus(OrderId);
                     if (intent.getStringExtra("order_id") != null && OrderId != null && (intent.getStringExtra("order_id").equals(OrderId))) {
-                        setUi(Integer.parseInt(intent.getStringExtra("status")));
+                        getStatus(OrderId);
                     } else {
                         if (intent.getStringExtra("order_id") != null) {
                             OrderId = intent.getStringExtra("order_id");
@@ -105,6 +125,7 @@ public class OrderStatusActivity extends AppCompatActivity {
 
         swipeRefreshLayout = findViewById(R.id.swipreferesh);
         mainImg = findViewById(R.id.bikeimg);
+        ivLoader = (GifImageView) findViewById(R.id.iv_loader);
         tvTitileText = findViewById(R.id.disTv);
         tvDetailsMsg = findViewById(R.id.tv_DetailsMsg);
 
@@ -182,6 +203,8 @@ public class OrderStatusActivity extends AppCompatActivity {
         } else {
             getDataFromIntent();
             OrderId = sharedPreferencesClass.getOrderIDKey();
+            restaurant_name = getIntent().getStringExtra(Constants.RESTAURENT_NAME);
+            payment_mode = getIntent().getStringExtra(Constants.PAYMENT_MODE);
 
             getStatus(OrderId);
         }
@@ -237,12 +260,24 @@ public class OrderStatusActivity extends AppCompatActivity {
             if (intent != null) {
                 order_type = intent.getStringExtra(Constants.NOTIFICATION_TYPE);
                 order_id = intent.getStringExtra(Constants.NOTIFICATION_ORDER_ID);
-                payment_mode = intent.getStringExtra(Constants.NOTIFICATION_ORDER_ID);
+                payment_mode = intent.getStringExtra(Constants.PAYMENT_MODE);
+                order_type = intent.getStringExtra(Constants.ORDER_TYPE);
+                OrderAmount = intent.getStringExtra(Constants.TOTAL_COST);
+                tvOrderAmount.setText("£" + String.format("%.2f", Double.parseDouble(OrderAmount)));
+                restaurant_name = intent.getStringExtra(Constants.RESTAURENT_NAME);
+                customerId = intent.getStringExtra(Constants.CUSTOMER_ID);
+                phone_number = intent.getStringExtra(Constants.PHONE_NUMBER);
 
-                if (payment_mode != null) {
-                    tvPaymentMode.setText("Payment Mode: " + payment_mode.toUpperCase());
+                time = intent.getStringExtra(Constants.ORDER_TIME);
+                if (time.length() > 5) {
+                    tvOrderTimeStamp.setText(time);
                 } else {
-                    tvPaymentMode.setText("Payment Mode: Cash");
+                    tvOrderTimeStamp.setText(time + " min");
+                }
+                if (payment_mode != null) {
+                    tvPaymentMode.setText(payment_mode.toUpperCase());
+                } else {
+                    tvPaymentMode.setText("Cash");
                 }
             }
 
@@ -251,7 +286,7 @@ public class OrderStatusActivity extends AppCompatActivity {
         }
     }
 
-    //TODO:  Methode to call an api.....
+
     public void getStatus(String orderIDKey) {
 
         if (isFirstTime) {
@@ -262,8 +297,7 @@ public class OrderStatusActivity extends AppCompatActivity {
         try {
             OrderStatusRequestModel requestModel = new OrderStatusRequestModel();
             requestModel.setOrder_number(orderIDKey);
-
-            Log.e("request", requestModel.toString());
+            requestModel.setCustomer_id(customerId);
             ApiInterface apiService = ApiClient.getClient(this).create(ApiInterface.class);
             CompositeDisposable disposable = new CompositeDisposable();
             disposable.add(apiService.getOrderStatus(requestModel)
@@ -281,25 +315,18 @@ public class OrderStatusActivity extends AppCompatActivity {
 
                                 if (data.getSuccess()) {
                                     mainRL_.setVisibility(View.VISIBLE);
-                                    tvOrderId.setText("Order Id: " + data.getData().getOrder_number());
-                                    tvOrderTimeStamp.setText(data.getData().getOrder_date_time());
-                                    tvOrderAmount.setText("£" + String.format("%.2f", Double.parseDouble(data.getData().getOrder_total())));
-                                    restaurant_name = data.getData().getRestaurant_name();
-                                    prepared_time = data.getData().getPrepare_time();
-                                    average_delivery_time = data.getData().getAverage_delivery_time();
-                                    phone_number = data.getData().getPhone_number();
-                                    tvPaymentMode.setText(data.getData().getPayment_mode().toUpperCase());
-                                    orderDeliveryTime = data.getData().getOrder_delivery_collection_time();
-                                    order_type = data.getData().getOrder_type();
-
-                                    if (data.getData().getOrder_type().equalsIgnoreCase("collection")) {
-                                        view2.setVisibility(View.INVISIBLE);
-                                        view3.setVisibility(View.INVISIBLE);
-                                        linearLayout_3.setVisibility(View.INVISIBLE);
-                                        linearLayout_4.setVisibility(View.INVISIBLE);
-
-                                        tvOnTheWayText.setVisibility(View.INVISIBLE);
-                                        tvDeliveredText.setVisibility(View.INVISIBLE);
+                                    tvOrderId.setText("Order ID: " + data.getData().getOrder_num());
+                                    if (order_type.equalsIgnoreCase("collection")) {
+                                        view2.setVisibility(View.VISIBLE);
+                                        view3.setVisibility(View.VISIBLE);
+                                        linearLayout_3.setVisibility(View.VISIBLE);
+                                        linearLayout_4.setVisibility(View.VISIBLE);
+                                        tvOnTheWayText.setVisibility(View.VISIBLE);
+                                        tvDeliveredText.setVisibility(View.VISIBLE);
+                                        tvAcceptedText.setText("Order Accepted");
+                                        tvPreparedText.setText("Being Prepared");
+                                        tvOnTheWayText.setText("Ready for Collection");
+                                        tvDeliveredText.setText("Collected");
 
 
                                     } else {
@@ -311,7 +338,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                                         tvOnTheWayText.setVisibility(View.VISIBLE);
                                         tvDeliveredText.setVisibility(View.VISIBLE);
                                     }
-                                    setUi(data.getData().getOrder_status());
+                                    setUi(data.getData().getOrder_status(), data.getData().getMessage());
                                 } else {
 
                                 }
@@ -355,23 +382,18 @@ public class OrderStatusActivity extends AppCompatActivity {
         super.onPause();
 
     }
-    //TODO: -------------- Notes --------------
-    //TODO:    0   ---> Order Pending
-    //TODO:    1   ---> Order Accepted
-    //TODO:    2   ---> Order Prepared
-    //TODO:    3   ---> Order Out for Delivery
-    //TODO:    4   ---> Order Delivered
-    //TODO:    5   ---> Order Canceled
 
 
-    private void setUi(int status) {
+    private void setUi(String status, final String orderTitle) {
+        tvTitileText.setText(orderTitle);
+
         switch (status) {
-            case 0:
+            case "pending":
+                ivLoader.setVisibility(View.VISIBLE);
+                mainImg.setVisibility(View.GONE);
                 mainImg.setImageResource(R.drawable.ic_order_status_0);
-                tvTitileText.setText(getResources().getString(R.string.order_title_0));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_0) + " " + restaurant_name + " accept your order.");
+                tvDetailsMsg.setText("Thank you for placing your order. We will update you once " + restaurant_name + " accepts your order.");
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.border_circle_white));
-
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.gray));
                 tvPreparedText.setTextColor(getResources().getColor(R.color.gray));
                 tvOnTheWayText.setTextColor(getResources().getColor(R.color.gray));
@@ -392,17 +414,20 @@ public class OrderStatusActivity extends AppCompatActivity {
                 view3.setBackgroundColor(getResources().getColor(R.color.gray_light));
 
                 break;
-            case 1:
-                mainImg.setImageResource(R.drawable.ic_order_status_1);
-                mainImg.setBackground(getResources().getDrawable(R.drawable.circle_shape));
-                tvTitileText.setText(getResources().getString(R.string.order_title_1));
+            case "accepted":
                 if (order_type.equalsIgnoreCase("collection")) {
-                    tvDetailsMsg.setText(" Your order has been accepted and will take " + prepared_time + " mins to prepare");
+                    mainImg.setImageResource(R.drawable.ic_colll_accept);
+                    tvDetailsMsg.setText("The restaurant has accepted your order.\nYour meal is now being prepared.");
+                    mainImg.setBackground(null);
+                    mainImg.setPadding(0, 0, 0, 0);
                 } else {
-                    tvDetailsMsg.setText(" Your order has been accepted and will take " + prepared_time + " mins to prepare");
+                    mainImg.setImageResource(R.drawable.ic_order_status_1);
+                    mainImg.setBackground(getResources().getDrawable(R.drawable.circle_shape));
+                    tvDetailsMsg.setText("Your order has been accepted and is being prepared");
                 }
+                ivLoader.setVisibility(View.GONE);
+                mainImg.setVisibility(View.VISIBLE);
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
-
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 tvPreparedText.setTextColor(getResources().getColor(R.color.gray));
                 tvOnTheWayText.setTextColor(getResources().getColor(R.color.gray));
@@ -421,13 +446,20 @@ public class OrderStatusActivity extends AppCompatActivity {
                 view1.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 view2.setBackgroundColor(getResources().getColor(R.color.gray_light));
                 view3.setBackgroundColor(getResources().getColor(R.color.gray_light));
-
-
                 break;
-            case 2:
-                mainImg.setImageResource(R.drawable.ic_order_status_2);
-                tvTitileText.setText(getResources().getString(R.string.order_title_2));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_1) + " " + prepared_time + " min " + "to prepare.");
+            case "preparing":
+                if (order_type.equalsIgnoreCase("collection")) {
+                    mainImg.setImageResource(R.drawable.ic_col_prepare);
+                    mainImg.setBackground(null);
+                    mainImg.setPadding(0, 0, 0, 0);
+                    tvDetailsMsg.setText("Your meal is now being prepared.\nIt will be on its way very soon.");
+                } else {
+                    mainImg.setImageResource(R.drawable.ic_order_status_2);
+                    mainImg.setBackground(getResources().getDrawable(R.drawable.circle_shape));
+                    tvDetailsMsg.setText("Your order is being prepared and will be delivered soon.");
+                }
+                ivLoader.setVisibility(View.GONE);
+                mainImg.setVisibility(View.VISIBLE);
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
 
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -450,10 +482,19 @@ public class OrderStatusActivity extends AppCompatActivity {
                 view3.setBackgroundColor(getResources().getColor(R.color.gray_light));
 
                 break;
-            case 3:
-                mainImg.setImageResource(R.drawable.bike);
-                tvTitileText.setText(getResources().getString(R.string.order_title_3));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_1) + " " + average_delivery_time + " min " + "to deliver.");
+            case "out_for_delivery":
+                if (order_type.equalsIgnoreCase("collection")) {
+                    mainImg.setImageResource(R.drawable.ic_coll_ready);
+                    mainImg.setBackground(null);
+                    mainImg.setPadding(0, 0, 0, 0);
+                    tvDetailsMsg.setText("You can now collect your\nfood from the restaurant.");
+                } else {
+                    mainImg.setImageResource(R.drawable.bike);
+                    mainImg.setBackground(getResources().getDrawable(R.drawable.circle_shape));
+                    tvDetailsMsg.setText("Your order is with our driver and will be with you shortly.");
+                }
+                ivLoader.setVisibility(View.GONE);
+                mainImg.setVisibility(View.VISIBLE);
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
 
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -477,12 +518,20 @@ public class OrderStatusActivity extends AppCompatActivity {
 
 
                 break;
-            case 4:
-                mainImg.setImageResource(R.drawable.ic_order_status_3);
-                tvTitileText.setText(getResources().getString(R.string.order_title_4));
-                tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_4));
+            case "delivered":
+                if (order_type.equalsIgnoreCase("collection")) {
+                    mainImg.setImageResource(R.drawable.ic_coll_collected);
+                    mainImg.setBackground(null);
+                    mainImg.setPadding(0, 0, 0, 0);
+                    tvDetailsMsg.setText("You have collected your food.\nEnjoy your meal.");
+                } else {
+                    mainImg.setImageResource(R.drawable.ic_order_status_3);
+                    mainImg.setBackground(getResources().getDrawable(R.drawable.circle_shape));
+                    tvDetailsMsg.setText(getResources().getString(R.string.order_title_Details_4));
+                }
+                ivLoader.setVisibility(View.GONE);
+                mainImg.setVisibility(View.VISIBLE);
                 linearLayout_1.setBackground(getResources().getDrawable(R.drawable.circle_orange));
-
                 tvAcceptedText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 tvPreparedText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 tvOnTheWayText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -503,36 +552,39 @@ public class OrderStatusActivity extends AppCompatActivity {
                 view3.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
                 break;
-            case 5:
-                dialogOrderRejected();
+            case "rejected":
+                mainImg.setImageResource(R.drawable.img_new_rejected);
+                ivLoader.setVisibility(View.GONE);
+                mainImg.setVisibility(View.VISIBLE);
+                tvDetailsMsg.setText("You haven't been charged for this.\nPlease try again with a new restaurant.");
+
                 break;
             default:
-                //TODO: Order cancelled..
+                  mainImg.setImageResource(R.drawable.ic_order_status_0);
+                tvDetailsMsg.setText("Thank you for placing your order. We will update you once " + restaurant_name + " accepts your order.");
+                linearLayout_1.setBackground(getResources().getDrawable(R.drawable.border_circle_white));
+                tvAcceptedText.setTextColor(getResources().getColor(R.color.gray));
+                tvPreparedText.setTextColor(getResources().getColor(R.color.gray));
+                tvOnTheWayText.setTextColor(getResources().getColor(R.color.gray));
+                tvDeliveredText.setTextColor(getResources().getColor(R.color.gray));
+                acceptTv.setVisibility(View.VISIBLE);
+                preparedTv.setVisibility(View.VISIBLE);
+                onwayTv.setVisibility(View.VISIBLE);
+                deliveredTv.setVisibility(View.VISIBLE);
+                acceptImg.setVisibility(View.GONE);
+                preparedImg.setVisibility(View.GONE);
+                onwayImg.setVisibility(View.GONE);
+                deliveredImg.setVisibility(View.GONE);
+                view1.setBackgroundColor(getResources().getColor(R.color.gray_light));
+                view2.setBackgroundColor(getResources().getColor(R.color.gray_light));
+                view3.setBackgroundColor(getResources().getColor(R.color.gray_light));
+                break;
+
         }
     }
 
 
 
-    public void dialogOrderRejected() {
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View mDialogView = factory.inflate(R.layout.order_rejected_popup, null);
-        final AlertDialog noteDialog = new AlertDialog.Builder(this).create();
-        noteDialog.setView(mDialogView);
-        noteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        noteDialog.setCancelable(false);
-        noteDialog.setCanceledOnTouchOutside(false);
-
-        mDialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OrderStatusActivity.this, DashboardActivity.class));
-                noteDialog.dismiss();
-                finish();
-            }
-        });
-
-        noteDialog.show();
-    }
 
     @Override
     public void onBackPressed() {

@@ -13,7 +13,6 @@ public class Rough {
     @SerializedName("data")
     @Expose
     private Data data;
-
     public Rough(Boolean success, String message, Data data) {
         this.success = success;
         this.message = message;

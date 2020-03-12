@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -38,17 +39,11 @@ import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AddressDialogAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.api.VoucherApplyInterface;
-import com.lexxdigital.easyfooduserapps.fragments.InfoFragment;
-import com.lexxdigital.easyfooduserapps.fragments.MenuFragment;
-import com.lexxdigital.easyfooduserapps.fragments.ReviwesFragment;
 import com.lexxdigital.easyfooduserapps.fragments.TodayFragment;
 import com.lexxdigital.easyfooduserapps.fragments.TommorowFragment;
 import com.lexxdigital.easyfooduserapps.model.AddressList;
 import com.lexxdigital.easyfooduserapps.model.restuarant_time_slot.TimeSlotRequest;
 import com.lexxdigital.easyfooduserapps.model.restuarant_time_slot.TimeSlotResponse;
-import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
-import com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
-import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.Menu;
 import com.lexxdigital.easyfooduserapps.utility.ApiClient;
 import com.lexxdigital.easyfooduserapps.utility.Constants;
 import com.lexxdigital.easyfooduserapps.utility.HeightWrappingViewPager;
@@ -56,6 +51,7 @@ import com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -93,15 +89,24 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     SharedPreferencesClass sharePre;
     OnDeliveryTimeSelectedListener onDeliveryTimeSelectedListener;
     FirebaseAnalytics mFirebaseAnalytics;
-    private String finalSlot = "";
+    private String finalSlot = "Now";
     private String isTommorow = "0";
+    private String deliveryOption;
     private String dateString = "";
     private static TimeSlotDialogFragment instance = null;
 
     private String todayDate, tomorrowDate, nowDate;
+    private TextView tv_collection, tv_day_of_delivery, tv_time;
 
+    private boolean isPopup;
+    private ListPopupWindow popupWindow;
+    private String todayOrtommorow = "TODAY";
+    private boolean isCheckOut = false;
+    private int oderTypePos = 0;
+
+    // private String isTommorow = "0";
     public interface OnDeliveryTimeSelectedListener {
-        void onDeliveryTimeSelect(String time, String isTomorrow, String timeDate);
+        void onDeliveryTimeSelect(String time, String isTomorrow, String timeDate, String collectionType, boolean isCheckOut, int ordTypePos);
     }
 
     @Override
@@ -122,10 +127,12 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     }
 
     // TODO: Rename and change types and number of parameters
-    public static TimeSlotDialogFragment newInstance(Context context, OnDeliveryTimeSelectedListener onDeliveryTimeSelectedListener) {
+    public static TimeSlotDialogFragment newInstance(Context context, OnDeliveryTimeSelectedListener onDeliveryTimeSelectedListener, String delivertyOption, boolean isCheckOut) {
         TimeSlotDialogFragment f = new TimeSlotDialogFragment();
         f.context = context;
         f.onDeliveryTimeSelectedListener = onDeliveryTimeSelectedListener;
+        f.deliveryOption = delivertyOption;
+        f.isCheckOut = isCheckOut;
         return f;
     }
 
@@ -153,9 +160,21 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         tabs = view.findViewById(R.id.tabs);
         pager = view.findViewById(R.id.pager);
         progressBar = view.findViewById(R.id.progressBar);
+        List<String> items = Arrays.asList(deliveryOption.split("\\s*,\\s*"));
+        tv_collection = view.findViewById(R.id.tv_collection);
+        if (items != null && items.size() > 0) {
+            tv_collection.setText(items.get(0));
+        }
+        tv_day_of_delivery = view.findViewById(R.id.tv_day_of_delivery);
+        tv_time = view.findViewById(R.id.tv_time);
+
         sharePre = new SharedPreferencesClass(context);
         view.findViewById(R.id.iv_close).setOnClickListener(this);
+        view.findViewById(R.id.tv_cancel).setOnClickListener(this);
         view.findViewById(R.id.tv_confirm).setOnClickListener(this);
+        tv_day_of_delivery.setOnClickListener(this);
+        tv_time.setOnClickListener(this);
+        tv_collection.setOnClickListener(this);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE");
         Calendar calendar = Calendar.getInstance();
         Date d = new Date();
@@ -326,29 +345,58 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
             case R.id.iv_close:
                 dismiss();
                 break;
-            case R.id.tv_confirm:
+            case R.id.tv_cancel:
+                dismiss();
+                break;
+            case R.id.tv_collection:
+                setCollectionSpinner();
+                break;
+            case R.id.tv_day_of_delivery:
 
-                if (!finalSlot.isEmpty() && finalSlot != "") {
-                    onDeliveryTimeSelectedListener.onDeliveryTimeSelect(finalSlot, isTommorow, dateString);
+
+                if (isPopup) {
+                    popupWindow.dismiss();
+                    isPopup = false;
+                } else {
+                    setDaySpinner();
+                    isPopup = true;
                 }
 
-/*
 
-                if (toDay != null && !toDay.equalsIgnoreCase("Select Delivery Time")) {
-                    if (todaySpinner != null && todaySpinner.getSelectedItemPosition() != 0) {
-                        if (dateTimeDataList != null) {
-                            if (onDeliveryTimeSelectedListener != null) {
-                                onDeliveryTimeSelectedListener.onDeliveryTimeSelect(dateTimeDataList.get((todaySpinner.getSelectedItemPosition() - 1)));
-                            }
-                        }
-                    } else if (tomorrowSpinner != null && tomorrowSpinner.getSelectedItemPosition() != 0) {
-                        if (tomorrowList != null) {
-                            if (onDeliveryTimeSelectedListener != null) {
-                                onDeliveryTimeSelectedListener.onDeliveryTimeSelect(tomorrowDataList.get((tomorrowSpinner.getSelectedItemPosition() - 1)));
-                            }
-                        }
+                break;
+
+            case R.id.tv_time:
+
+
+                if (tv_day_of_delivery.getText().toString().equalsIgnoreCase("TODAY")) {
+
+                    if (isPopup) {
+                        popupWindow.dismiss();
+                        isPopup = false;
+                    } else {
+                        setTimeSpinner(todayList);
+                        isPopup = true;
                     }
-                }*/
+
+
+                } else {
+                    if (isPopup) {
+                        popupWindow.dismiss();
+                        isPopup = false;
+                    } else {
+                        setTimeSpinner(tommorowList);
+                        isPopup = true;
+                    }
+                }
+
+
+                break;
+            case R.id.tv_confirm:
+
+                if (!tv_time.getText().toString().isEmpty() && tv_time.getText().toString() != "") {
+                    onDeliveryTimeSelectedListener.onDeliveryTimeSelect(finalSlot, isTommorow, dateString, tv_collection.getText().toString().trim(), isCheckOut, oderTypePos);
+                }
+
 
                 dismiss();
 
@@ -362,9 +410,7 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
     public void onDetach() {
         super.onDetach();
 
-
     }
-
 
     @Override
     public void onResume() {
@@ -381,19 +427,6 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
         getDialog().getWindow().setAttributes(lp);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-
-
-    /*    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        layoutParams.copyFrom(getDialog().getWindow().getAttributes());
-        int dialogWindowWidth = (int) (displayWidth * 0.90f);
-        int dialogWindowHeight = (int) (displayHeight * 0.90f);
-        layoutParams.width = dialogWindowWidth;
-        layoutParams.height = dialogWindowHeight;
-
-        getDialog().getWindow().setAttributes(layoutParams);
-
-        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);*/
     }
 
 
@@ -415,131 +448,23 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
                         todayDate = response.body().getTodaydate();
                         tomorrowDate = response.body().getTodaydate();
                         nowDate = response.body().getTimenow();
+                        dateString = todayDate + " " + nowDate;
 
                         if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
                             toDayDataList = response.body().getData().getToday();
                             for (int i = 0; i < toDayDataList.size(); i++) {
                                 todayList.add(toDayDataList.get(i));
-                                // dateString = response.body().getTodaydate();
                             }
                         }
                         if (response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() > 0) {
                             tomorrowDataList = response.body().getData().getTomorrow();
                             for (int i = 0; i < response.body().getData().getTomorrow().size(); i++) {
                                 tommorowList.add(tomorrowDataList.get(i));
-                                // dateString = response.body().getTodaydate();
                             }
                         }
 
                         setupViewPager(pager, dayOfTheWeek, nextDay);
 
-
-                        /* Start========================================*/
-                      /*  todaySpinner.setVisibility(View.VISIBLE);
-                        int size = 0;
-                        if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
-                            size = response.body().getData().getToday().size();
-                        }
-                        if (response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() > 0) {
-                            size += response.body().getData().getTomorrow().size();
-                        }
-
-                        toDayDataList = response.body().getData().getToday();
-                        tomorrowDataList = response.body().getData().getTomorrow();
-
-                        dateTimeDataList = new ArrayList<>();
-                        dateTimeDataList.addAll(response.body().getData().getToday());
-                        dateTimeDataList.addAll(response.body().getData().getTomorrow());
-
-
-                        toDayList = new String[(size + 1)];
-                        toDayList[0] = "Select Delivery Time";
-
-                        int i;
-                        for (i = 0; i < response.body().getData().getToday().size(); i++) {
-                            String data = response.body().getData().getToday().get(i);
-                            if (data != null) {
-
-                                String dateString = data.substring(0, 10).replace("-", "/");
-
-
-                                String[] str = data.split(" ");
-                                if (str.length >= 2) {
-                                    toDayList[(i + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
-                                }
-                            }
-                        }
-
-
-                        for (int j = 0; j < response.body().getData().getTomorrow().size(); j++) {
-                            String data1 = response.body().getData().getTomorrow().get(j);
-                            if (data1 != null) {
-
-                                String dateString = data1.substring(0, 10).replace("-", "/");
-
-                                String[] str = data1.split(" ");
-                                if (str.length >= 2) {
-                                    toDayList[(i + j + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
-                                }
-                            }
-                        }
-
-                        *//*End*//*
-
-                         *//*
-                        if (response.body().getData().getToday() != null && response.body().getData().getToday().size() > 0) {
-                            todaySpinner.setVisibility(View.VISIBLE);
-                            toDayList = new String[(response.body().getData().getToday().size() + 1)];
-                            toDayList[0] = "Select Delivery Time";
-
-                            toDayDataList = response.body().getData().getToday();
-
-                            for (int i = 0; i < response.body().getData().getToday().size(); i++) {
-                                String data = response.body().getData().getToday().get(i);
-                                if (data != null) {
-
-                                    String dateString = data.substring(0, 10).replace("-", "/");
-
-
-                                    String[] str = data.split(" ");
-                                    if (str.length >= 2) {
-                                        toDayList[(i + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
-                                    }
-                                }
-                            }
-
-
-                        } else {
-                            todaySpinner.setVisibility(View.GONE);
-                        }
-
-                        if (response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() > 0) {
-                            tomorrowSpinner.setVisibility(View.VISIBLE);
-                            tomorrowList = new String[(response.body().getData().getTomorrow().size() + 1)];
-                            tomorrowList[0] = "Tomorrow";
-
-                            tomorrowDataList = response.body().getData().getTomorrow();
-
-                            for (int i = 0; i < response.body().getData().getTomorrow().size(); i++) {
-                                String data = response.body().getData().getTomorrow().get(i);
-                                if (data != null) {
-
-                                    String dateString = data.substring(0, 10).replace("-", "/");
-
-                                    String[] str = data.split(" ");
-                                    if (str.length >= 2) {
-                                        tomorrowList[(i + 1)] = str[1] + " (" + Constants.getDayMonth(dateString) + " )";
-                                    }
-                                }
-                            }
-                        } else {
-                            tomorrowSpinner.setVisibility(View.GONE);
-                        }*//*
-
-                        if (response.body().getData().getToday() != null && response.body().getData().getToday().size() == 0 && response.body().getData().getTomorrow() != null && response.body().getData().getTomorrow().size() == 0) {
-                            dismiss();
-                        }
-                        initView();*/
 
                     } else {
 
@@ -584,5 +509,117 @@ public class TimeSlotDialogFragment extends DialogFragment implements View.OnCli
 
         alertDialog.show();
     }
+
+
+    public void setCollectionSpinner() {
+        try {
+            popupWindow = new ListPopupWindow(context);
+            List<String> items = Arrays.asList(deliveryOption.split("\\s*,\\s*"));
+            final ArrayList<String> stringArrayList = new ArrayList<>();
+            for (int i = 0; i < items.size(); i++) {
+                stringArrayList.add(items.get(i));
+                //  stringArrayList.add("Delivery");
+            }
+//            for (int i = 0; i < currencyListBean.size() - 1; i++) {
+
+//            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringArrayList/*todayList*/);
+            popupWindow.setAdapter(adapter);
+            popupWindow.setAnchorView(tv_collection);
+            popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    oderTypePos = position;
+//                    tv_day.setText(stringArrayList.get(position));
+                    tv_collection.setText(stringArrayList.get(position)/*.get().toString()*/);
+//                    currency = currencyListBean.get(position).get_id();
+                    popupWindow.dismiss();
+                    isPopup = false;
+                }
+            });
+            popupWindow.show();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    public void setDaySpinner() {
+        try {
+            popupWindow = new ListPopupWindow(context);
+            final ArrayList<String> stringArrayList = new ArrayList<>();
+//            for (int i = 0; i < currencyListBean.size() - 1; i++) {
+            stringArrayList.add("TODAY");
+            stringArrayList.add("TOMORROW");
+//            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringArrayList);
+            popupWindow.setAdapter(adapter);
+            popupWindow.setAnchorView(tv_day_of_delivery);
+            popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    tv_day.setText(stringArrayList.get(position));
+                    tv_day_of_delivery.setText(stringArrayList.get(position)/*.get().toString()*/);
+                    todayOrtommorow = stringArrayList.get(position);
+                    popupWindow.dismiss();
+                    isPopup = false;
+                    if (tv_day_of_delivery.getText().toString().equalsIgnoreCase("TODAY")) {
+                        isTommorow = "0";
+
+                        if (isPopup) {
+                            popupWindow.dismiss();
+                            isPopup = false;
+                        } else {
+                            setTimeSpinner(todayList);
+                            isPopup = true;
+                        }
+
+
+                    } else {
+                        isTommorow = "1";
+                        if (isPopup) {
+                            popupWindow.dismiss();
+                            isPopup = false;
+                        } else {
+                            setTimeSpinner(tommorowList);
+                            isPopup = true;
+                        }
+                    }
+
+                }
+            });
+            popupWindow.show();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    public void setTimeSpinner(final List<String> list) {
+        try {
+            popupWindow = new ListPopupWindow(context);
+            /*final ArrayList<String> stringArrayList = new ArrayList<>();
+            for (int i = 0; i < currencyListBean.size() - 1; i++) {
+                stringArrayList.add(currencyListBean.get(i).getName());
+            }*/
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, list/*todayList*/);
+            popupWindow.setAdapter(adapter);
+            popupWindow.setAnchorView(tv_time);
+            popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    tv_day.setText(stringArrayList.get(position));
+                    tv_time.setText(list.get(position));
+                    setTimeSlot(list.get(position), isTommorow);
+                    /*.get().toString()*/
+//                    currency = currencyListBean.get(position).get_id();
+                    popupWindow.dismiss();
+                    isPopup = false;
+                }
+            });
+            popupWindow.show();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
 
 }

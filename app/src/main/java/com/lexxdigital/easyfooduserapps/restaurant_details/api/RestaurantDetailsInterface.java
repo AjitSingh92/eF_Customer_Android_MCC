@@ -6,6 +6,7 @@ import com.lexxdigital.easyfooduserapps.model.order_again.OrderAgainRequest;
 import com.lexxdigital.easyfooduserapps.model.order_again.OrderAgainResponse;
 import com.lexxdigital.easyfooduserapps.model.restaurant_offers.RestaurantOffersRequest;
 import com.lexxdigital.easyfooduserapps.model.restaurant_offers.RestaurantOffersResponse;
+import com.lexxdigital.easyfooduserapps.restaurant_details.HygieneRatingModel;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.request.RestaurantDetailsRequest;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.Rough;
@@ -31,6 +32,11 @@ public interface RestaurantDetailsInterface {
     @Headers("Content-Type: application/json")
     @POST("get_restaurant_menu_category")
     Call<Rough> mRestaurantCategory(@Body RestaurantDetailsRequest request);
+
+    @Headers("Content-Type: application/json")
+    @POST("restaurant_hygiene_rating")
+    Call<HygieneRatingModel> getRestaurantHygieneRating(@Body RestaurantDetailsRequest request);       ///    Get Hygiene rating
+
 
     @Headers("Content-Type: application/json")
     @POST("get_menu_category_products")

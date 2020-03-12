@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/head"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingTop="10dp"
         android:visibility="visible">
 
@@ -76,11 +76,9 @@
             android:id="@+id/tv.BasePrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:fontFamily="@font/helvetica_neue_medium"
-            android:gravity="center"
-            android:paddingBottom="@dimen/_10sdp"
-            android:text="Base Price \n"
+            android:padding="@dimen/_10sdp"
+            android:text="Base Price"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -93,6 +91,7 @@
             android:paddingBottom="@dimen/_10sdp"
             android:text="Amount to pay \n"
             android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="@dimen/_12sdp" />
     </LinearLayout>
 

@@ -114,7 +114,7 @@ public class FilterByCuisinerAdapter extends RecyclerView.Adapter<FilterByCuisin
     }
 
     @Override
-    public void onBindViewHolder(final FilterByCuisinerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(FilterByCuisinerAdapter.MyViewHolder holder, int position) {
 
         Cuisine sortBy = cuisineList.get(position);
         ImageView rightImg = holder.rightImg;

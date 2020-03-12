@@ -30,6 +30,7 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //    List<ModifierProductAdapter> productAdaptersList;
     OnProductModifierSelected onProductModifierSelected;
     private Boolean checkedFirstItem = false;
+    private Boolean showAll = false;
 
     public void setCheckedFirstItem(Boolean checked) {
         this.checkedFirstItem = checked;
@@ -217,6 +218,7 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             layoutManager.setScrollEnabled(false);
             sizeModifierList.setLayoutManager(layoutManager);
             sizeModifierAdapter = new SizeModifierAdapter(context, this);
+
             sizeModifierList.setAdapter(sizeModifierAdapter);
 //            sizeModifierAdapter.clearData();
             if (checkedFirstItem) {

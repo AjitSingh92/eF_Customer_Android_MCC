@@ -42,7 +42,9 @@ public class OrderStatusResponseModel implements Serializable {
 
     public class Data implements Serializable {
         String order_number;
-        int order_status;
+        String order_num;
+        String message;
+        String order_status;
         String delivery_date_time;
         String order_date_time;
         String order_total;
@@ -62,12 +64,25 @@ public class OrderStatusResponseModel implements Serializable {
         public void setOrder_number(String order_number) {
             this.order_number = order_number;
         }
+        public String getOrder_num() {
+            return order_num;
+        }
 
-        public int getOrder_status() {
+        public void setOrder_num(String order_num) {
+            this.order_num = order_num;
+        }
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+        public String getOrder_status() {
             return order_status;
         }
 
-        public void setOrder_status(int order_status) {
+        public void setOrder_status(String order_status) {
             this.order_status = order_status;
         }
 

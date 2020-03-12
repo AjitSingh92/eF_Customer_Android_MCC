@@ -1,42 +1,29 @@
+package com.lexxdigital.easyfooduserapps.model.previous_order.datamodel;
 
-package com.lexxdigital.easyfooduserapps.cart_model.final_cart;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class SizeModifier_ {
-
+public class SizeModifier {
+    @SerializedName("maxAllowedQuantity")
+    @Expose
     private String maxAllowedQuantity;
+    @SerializedName("minAllowedQuantity")
+    @Expose
     private String minAllowedQuantity;
+    @SerializedName("modifierId")
+    @Expose
     private String modifierId;
+    @SerializedName("modifierName")
+    @Expose
     private String modifierName;
+    @SerializedName("modifierType")
+    @Expose
     private String modifierType;
-    private List<SizeModifierProduct_> sizeModifierProducts = null;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public SizeModifier_() {
-    }
-
-    /**
-     * 
-     * @param maxAllowedQuantity
-     * @param modifierId
-     * @param modifierName
-     * @param modifierType
-     * @param sizeModifierProducts
-     * @param minAllowedQuantity
-     */
-    public SizeModifier_(String maxAllowedQuantity, String minAllowedQuantity, String modifierId, String modifierName, String modifierType, List<SizeModifierProduct_> sizeModifierProducts) {
-        super();
-        this.maxAllowedQuantity = maxAllowedQuantity;
-        this.minAllowedQuantity = minAllowedQuantity;
-        this.modifierId = modifierId;
-        this.modifierName = modifierName;
-        this.modifierType = modifierType;
-        this.sizeModifierProducts = sizeModifierProducts;
-    }
+    @SerializedName("sizeModifierProducts")
+    @Expose
+    private List<SizeModifierProduct> sizeModifierProducts = null;
 
     public String getMaxAllowedQuantity() {
         return maxAllowedQuantity;
@@ -78,12 +65,13 @@ public class SizeModifier_ {
         this.modifierType = modifierType;
     }
 
-    public List<SizeModifierProduct_> getSizeModifierProducts() {
+    public List<SizeModifierProduct> getSizeModifierProducts() {
         return sizeModifierProducts;
     }
 
-    public void setSizeModifierProducts(List<SizeModifierProduct_> sizeModifierProducts) {
+    public void setSizeModifierProducts(List<SizeModifierProduct> sizeModifierProducts) {
         this.sizeModifierProducts = sizeModifierProducts;
     }
+
 
 }

@@ -43,7 +43,6 @@ public class MenuFragment extends Fragment {
     Context mContext;
     Activity mActivity;
     Menu DATA;
-
     ItemClickListener menuItemClickListener;
     RecyclerLayoutManager layoutManager;
     @BindView(R.id.list_restaurantMenuList)

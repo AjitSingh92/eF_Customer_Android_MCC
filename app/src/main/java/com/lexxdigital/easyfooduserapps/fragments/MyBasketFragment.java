@@ -17,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -41,14 +40,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.adapters.AdapterBasketOrderItems;
-import com.lexxdigital.easyfooduserapps.adapters.AddressDialogAdapter;
-import com.lexxdigital.easyfooduserapps.adapters.MenuAdapterItems;
 import com.lexxdigital.easyfooduserapps.adapters.RecyclerLayoutManager;
 import com.lexxdigital.easyfooduserapps.adapters.RoomOrderAdapter;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.MenuCartAdapter;
@@ -56,27 +52,29 @@ import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.MenuSpecialOfferAd
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.OnUpsellProductItemClick;
 import com.lexxdigital.easyfooduserapps.adapters.menu_adapter.UpSellProductAdapter;
 import com.lexxdigital.easyfooduserapps.add_address.AddAddressActivity;
+import com.lexxdigital.easyfooduserapps.api.AddFavouritesInterface;
 import com.lexxdigital.easyfooduserapps.api.AddressListInterface;
 import com.lexxdigital.easyfooduserapps.api.VoucherApplyInterface;
 import com.lexxdigital.easyfooduserapps.cart_db.DatabaseHelper;
 import com.lexxdigital.easyfooduserapps.cart_model.final_cart.FinalNewCartDetails;
 import com.lexxdigital.easyfooduserapps.dashboard.DashboardActivity;
-import com.lexxdigital.easyfooduserapps.dialogs.AddressDialogFragment;
 import com.lexxdigital.easyfooduserapps.dialogs.RestaurantOffersDialogFragment;
 import com.lexxdigital.easyfooduserapps.dialogs.TimeSlotDialogFragment;
 import com.lexxdigital.easyfooduserapps.model.AddressList;
 import com.lexxdigital.easyfooduserapps.model.VoucherApplyRequest;
 import com.lexxdigital.easyfooduserapps.model.VoucherApplyResponse;
-import com.lexxdigital.easyfooduserapps.model.address_list_request.AddressDeliveryListRequest;
+import com.lexxdigital.easyfooduserapps.model.add_favourites_request.AddFavouristeResquest;
+import com.lexxdigital.easyfooduserapps.model.add_favourites_response.AddFavouristeResponse;
 import com.lexxdigital.easyfooduserapps.model.address_list_request.AddressListRequest;
 import com.lexxdigital.easyfooduserapps.model.address_list_response.AddressListResponse;
+import com.lexxdigital.easyfooduserapps.model.landing_page_response.DiscountOffer;
 import com.lexxdigital.easyfooduserapps.model.restaurant_offers.RestaurantOffersRequest;
 import com.lexxdigital.easyfooduserapps.model.restaurant_offers.RestaurantOffersResponse;
 import com.lexxdigital.easyfooduserapps.model.restaurant_offers.RestaurantSpecialOffers;
+import com.lexxdigital.easyfooduserapps.order_status.OrderStatusActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.RestaurantDetailsActivity;
 import com.lexxdigital.easyfooduserapps.restaurant_details.api.RestaurantDetailsInterface;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant_response.NewRestaurantsDetailsResponse;
-
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.request.RestaurantDetailsRequest;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.CartData;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MealProduct;
@@ -108,6 +106,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.lexxdigital.easyfooduserapps.utility.SharedPreferencesClass.OFFERR_DETAL_DFG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -223,8 +223,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     ImageView collection;
     @BindView(R.id.ll_CollectionFromRestaurant)
     LinearLayout llCollectionFromRestaurant;
+
     @BindView(R.id.ll_RoomForMore)
     LinearLayout llRoomForMore;
+
+    @BindView(R.id.favourites)
+    ImageView favourites;
 
     @BindView(R.id.ll_Address)
     LinearLayout llDeliveryAddress;
@@ -303,10 +307,16 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     String restuarantOpenStatus;
     List<RestaurantSpecialOffers> restaurantSpecialOffers = null;
     FirebaseAnalytics mFirebaseAnalytics;
+    private DiscountOffer discountOffer;
+    private String PERCENTAGE_OFFERS = "discount_percentage";
+    private String FLAT_OFFERS = "flat_offer";
+    private boolean isFavorite;
+    private boolean orderId;
 
-    public MyBasketFragment(Activity mActivity, Context mContext) {
+    public MyBasketFragment(Activity mActivity, Context mContext, boolean isFavorite) {
         this.mActivity = mActivity;
         this.mContext = mContext;
+        this.isFavorite = isFavorite;
     }
 
     public MyBasketFragment() {
@@ -323,6 +333,10 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         unbinder = ButterKnife.bind(this, view);
         val = (GlobalValues) getActivity().getApplication();
         sharePre = new SharedPreferencesClass(getActivity());
+
+        ///////////////////// get if any offer are selected from restaurant....
+        String offer_detail = sharePre.getString(OFFERR_DETAL_DFG);
+        discountOffer = new Gson().fromJson(offer_detail, DiscountOffer.class);
 
         dialog = new Dialog(getActivity());
         dialog.setTitle("");
@@ -370,6 +384,18 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
 
         DashboardActivity.getInstance().locationVisibility(false, "");
+
+        if (isFavorite) {
+            favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_active));
+        } else {
+            favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_white));
+        }
+        favourites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addFavourites();
+            }
+        });
         return view;
     }
 
@@ -437,14 +463,14 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 setPriceCalculation(totalCartIterm);
                 if (voucherApplicableOn != null) {
                     if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-                        if (voucherType.equalsIgnoreCase("percentage")) {
+                        if (voucherType.equalsIgnoreCase(PERCENTAGE_OFFERS)) {
                             if (totalPrice >= minOrderValue) {
                                 Double voucherCal = (netAmount * voucherValue) / 100;
                                 alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", netAmount) + " has been applied to your order.");
                             } else {
                                 alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + String.format("%.2f", minOrderValue));
                             }
-                        } else if (voucherType.equalsIgnoreCase("flat")) {
+                        } else if (voucherType.equalsIgnoreCase(FLAT_OFFERS)) {
                             if (totalPrice >= minOrderValue) {
                                 alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
                             } else {
@@ -561,7 +587,6 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
         }
 
-
     }
 
     private void initViewSpecialOffer() {
@@ -627,71 +652,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 }
                 break;
             case R.id.btn_checkout:
-                if (deliveryTime.getText().toString().contains("min")) {
-                    if (orderType.equalsIgnoreCase("collection")) {
-                        alertDailogConfirm("Please selected collection time");
-                    } else {
-                        alertDailogConfirm("Please selected delivery time");
-                    }
-
-                } else {
-                    try {
-
-                        if (orderType == null || orderType.equalsIgnoreCase("Please Select")) {
-                            scroll.fullScroll(ScrollView.FOCUS_UP);
-                            spinner.performClick();
-
-                        } else {
-                            if (orderType.equalsIgnoreCase("Delivery")) {
-                                if (totalPrice >= Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())) {
-                                    if (!isPreOrder) {
-                                        if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).equals("")) {
-                                            Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            intent.putExtra("orderType", orderType);
-                                            intent.putExtra("deliveryCharge", deliveryFeesAmt);
-                                            intent.putExtra("ORDER_TOTAL", netAmount);
-                                            intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                                            intent.putExtra("voucherDiscount", voucherDiscount);
-                                            intent.putExtra("notes", tvAddNoteData.getText().toString());
-                                            intent.putExtra("appliedVoucherCode", appliedVoucherCode);
-                                            intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
-                                            intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
-                                            startActivity(intent);
-                                            getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-                                        } else {
-                                            alertDailogConfirm("Please select or add delivery address");
-
-                                        }
-                                    } else {
-                                        timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this);
-                                        timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
-                                    }
-                                } else {
-                                    alertDailogConfirm("Order value must be greater than minimum order value.");
-                                }
-                            } else {
-                                Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("orderType", orderType);
-                                intent.putExtra("deliveryCharge", deliveryFeesAmt);
-                                intent.putExtra("ORDER_TOTAL", netAmount);
-                                intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                                intent.putExtra("voucherDiscount", voucherDiscount);
-                                intent.putExtra("notes", tvAddNoteData.getText().toString());
-                                intent.putExtra("appliedVoucherCode", appliedVoucherCode);
-                                intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
-                                intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
-                                startActivity(intent);
-                                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-
-
-                            }
-                        }
-                    } catch (Exception e) {
-                        Log.e("Exception", e.toString());
-                    }
-                }
+                checkOut();
                 break;
             case R.id.tv_viewMap:
                 try {
@@ -747,7 +708,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 break;
 
             case R.id.ll_DeliveryTimeSlot:
-                timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this);
+                timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this, res.getData().getRestaurants().getDeliveryOptions(), false);
                 timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
                 break;
 
@@ -755,6 +716,74 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 offersDialogFragment = RestaurantOffersDialogFragment.newInstance(mContext, restaurantSpecialOffers);
                 offersDialogFragment.show(getFragmentManager(), "offers");
                 break;
+        }
+    }
+
+    private void checkOut() {
+
+        if (deliveryTime.getText().toString().contains("min")) {
+            timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this, res.getData().getRestaurants().getDeliveryOptions(), true);
+            timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
+
+
+        } else {
+            try {
+
+                if (orderType == null || orderType.equalsIgnoreCase("Please Select")) {
+                    scroll.fullScroll(ScrollView.FOCUS_UP);
+                    spinner.performClick();
+
+                } else {
+                    if (orderType.equalsIgnoreCase("Delivery")) {
+                        if (totalPrice >= Double.parseDouble(res.getData().getRestaurants().getMinOrderValue())) {
+                            if (!isPreOrder) {
+                                if (tvCat.getText().toString().trim().length() != 0 && sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).equals("")) {
+                                    Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("orderType", orderType);
+                                    intent.putExtra("deliveryCharge", deliveryFeesAmt);
+                                    intent.putExtra("ORDER_TOTAL", netAmount);
+                                    intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
+                                    intent.putExtra("voucherDiscount", voucherDiscount);
+                                    intent.putExtra("notes", tvAddNoteData.getText().toString());
+                                    intent.putExtra("appliedVoucherCode", appliedVoucherCode);
+                                    intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
+                                    intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
+                                    intent.putExtra(Constants.ORDER_TIME, deliveryTime.getText().toString());
+                                    startActivity(intent);
+                                    getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                                } else {
+                                    alertDailogConfirm("Please select or add delivery address");
+
+                                }
+                            } else {
+                                timeSlotDialogFragment = TimeSlotDialogFragment.newInstance(mContext, this, res.getData().getRestaurants().getDeliveryOptions(), true);
+                                timeSlotDialogFragment.show(getFragmentManager(), "timeSlot");
+                            }
+                        } else {
+                            alertDailogConfirm("Order value must be greater than minimum order value.");
+                        }
+                    } else {
+                        Intent intent = new Intent(getContext(), SelectPaymentMethodActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("orderType", orderType);
+                        intent.putExtra("deliveryCharge", deliveryFeesAmt);
+                        intent.putExtra("ORDER_TOTAL", netAmount);
+                        intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
+                        intent.putExtra("voucherDiscount", voucherDiscount);
+                        intent.putExtra("notes", tvAddNoteData.getText().toString());
+                        intent.putExtra("appliedVoucherCode", appliedVoucherCode);
+                        intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
+                        intent.putExtra("appliedVoucherPaymentType", appliedVoucherPaymentType);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+
+
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("Exception", e.toString());
+            }
         }
     }
 
@@ -1017,10 +1046,12 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                                                         }
                                                     }
                                                 } else {
-                                                    for (Modifier modifier : sizeModifier.getModifier()) {
-                                                        int qty = Integer.parseInt(modifier.getOriginalQuantity());
-                                                        qty = (qty * itemQty);
-                                                        totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                    if (sizeModifier.getMaxAllowedQuantity() != 1) {
+                                                        for (Modifier modifier : sizeModifier.getModifier()) {
+                                                            int qty = Integer.parseInt(modifier.getOriginalQuantity());
+                                                            qty = (qty * itemQty);
+                                                            totalPrice += (qty * Double.parseDouble(modifier.getModifierProductPrice()));
+                                                        }
                                                     }
                                                 }
                                             }
@@ -1195,61 +1226,77 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
             if (voucherApplicableOn != null && voucherApplicableOn.contains(orderType.toLowerCase())) {
                 if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-                    if (voucherType.equalsIgnoreCase("percentage")) {
+                    if (voucherType.equalsIgnoreCase(PERCENTAGE_OFFERS)) {
                         if (totalPrice >= minOrderValue) {
                             Double voucherCal = (netAmount * voucherValue) / 100;
                             appliedVoucherAmount = voucherCal;
                             netAmount = netAmount - voucherCal;
                             appliedVoucherCode = voucherCode;
                             appliedVoucherPaymentType = voucherValidOn;
-                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setVisibility(View.GONE);
                             tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
                             voucherDiscount = voucherCal;
                         } else {
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
-                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setVisibility(View.GONE);
                             tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
 
                         }
-                    } else if (voucherType.equalsIgnoreCase("flat")) {
+                    } else if (voucherType.equalsIgnoreCase(FLAT_OFFERS)) {
                         if (totalPrice >= minOrderValue) {
                             Double voucherCal = netAmount - voucherValue;
                             appliedVoucherAmount = voucherCal;
                             appliedVoucherCode = voucherCode;
                             appliedVoucherPaymentType = voucherValidOn;
                             netAmount = voucherCal;
-                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setVisibility(View.GONE);
                             tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherValue) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
                             voucherDiscount = voucherValue;
                         } else {
                             tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
-                            tvVoucherStatus.setVisibility(View.VISIBLE);
+                            tvVoucherStatus.setVisibility(View.GONE);
                             tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
                         }
                     }
 
                 } else {
-                    tvVoucherStatus.setVisibility(View.VISIBLE);
+                    tvVoucherStatus.setVisibility(View.GONE);
                     tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
                 }
 
             } else {
-                tvVoucherStatus.setVisibility(View.VISIBLE);
+                tvVoucherStatus.setVisibility(View.GONE);
                 tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
             }
 
         } else {
             tvVoucherStatus.setVisibility(View.GONE);
         }
-        Constants.MAX_LENGTH = totalCartIterm;
+
+        if (discountOffer != null) {
+
+            if (totalPrice > Double.parseDouble(discountOffer.getMin_value())) {
+
+                if (discountOffer.getOfferType().equalsIgnoreCase(PERCENTAGE_OFFERS)) {
+                    double percentDisc = (netAmount * Double.parseDouble(discountOffer.getOfferPrice())) / 100;
+                    netAmount = netAmount - percentDisc;
+                    tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", percentDisc));
+                } else if (discountOffer.getOfferType().equalsIgnoreCase(FLAT_OFFERS) && totalPrice > Double.parseDouble(discountOffer.getMin_value())) {
+                    double flatDisc = Double.parseDouble(discountOffer.getOfferPrice());
+                    netAmount = netAmount - flatDisc;
+                    tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", flatDisc));
+                }
+            } else {
+                tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", 0f));
+            }
+        }
         totalCount.setText(String.valueOf(totalCartIterm));
         footerTotalCount.setText(String.valueOf(totalCartIterm));
         totalAmmount.setText(String.format("%.2f", netAmount));
         footerTotalAmount.setText(String.format("%.2f", netAmount));
         init();
-
     }
 
     VoucherApplyResponse.Data voucherData;
@@ -1258,9 +1305,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         dialog.show();
         VoucherApplyInterface apiInterface = ApiClient.getClient(mContext).create(VoucherApplyInterface.class);
         VoucherApplyRequest request = new VoucherApplyRequest();
+        request.setVoucher_code(voucher_code);
         request.setCustomer_id(sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID));
         request.setRestaurant_id(res.getData().getRestaurants().getRestaurantId());
-        request.setVoucher_code(voucher_code);
+        request.setCart_subTotal(String.valueOf(netAmount));  //// check this key if not work
+
         Call<VoucherApplyResponse> call3 = apiInterface.voucherApply(request);
         call3.enqueue(new Callback<VoucherApplyResponse>() {
             @Override
@@ -1268,7 +1317,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 try {
                     dialog.hide();
                     if (response.body().getSuccess()) {
-
+                        discountOffer = new DiscountOffer();
                         voucherData = response.body().getData();
                         /*TODO: Voucher Apply Calculation*/
                         coponcode.setEnabled(false);
@@ -1276,53 +1325,60 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                         btnApplyVoucherCode.setText("Remove");
 
                         minOrderValue = Double.parseDouble(response.body().getData().getMinimum_order_value());
-                        voucherApplicableOn = response.body().getData().getVoucher_applicable_on();
                         voucherType = response.body().getData().getVoucher_type();
                         voucherValue = Double.parseDouble(response.body().getData().getVoucher_value());
                         voucherCode = voucher_code;
                         voucherValidOn = response.body().getData().getVoucher_valid_on();
 
-                        if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-                            if (voucherType.equalsIgnoreCase("percentage")) {
-                                if (totalPrice >= minOrderValue) {
-                                    Double voucherCal = (netAmount * voucherValue) / 100;
-                                    appliedVoucherAmount = voucherCal;
-                                    netAmount = netAmount - voucherCal;
-                                    appliedVoucherCode = voucherCode;
-                                    appliedVoucherPaymentType = voucherValidOn;
-                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\n" + getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " has been applied to your order.");
-                                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                                    voucherCodeUsed = voucher_code;
-                                } else {
-                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
-                                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
-                                }
-                            } else if (voucherType.equalsIgnoreCase("flat")) {
 
-                                if (totalPrice >= minOrderValue) {
-                                    Double voucherCal = netAmount - voucherValue;
-                                    appliedVoucherAmount = voucherCal;
-                                    appliedVoucherCode = voucherCode;
-                                    appliedVoucherPaymentType = voucherValidOn;
-                                    netAmount = voucherCal;
-                                    alertDailogVoucher("Voucher code has been accepted", "Congratulations!" + "\nDiscount of " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " has been applied to your order.");
-                                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
-                                    voucherCodeUsed = voucher_code;
+                        if (voucherType.equalsIgnoreCase(PERCENTAGE_OFFERS)) {
+                            if (totalPrice >= minOrderValue) {
+                                Double voucherCal = (netAmount * voucherValue) / 100;
+                                appliedVoucherAmount = voucherCal;
+                                netAmount = netAmount - voucherCal;
+                                appliedVoucherCode = voucherCode;
+                                appliedVoucherPaymentType = voucherValidOn;
+                                alertDailogVoucher("Voucher code has been accepted", "You got " + voucherValue + "% Off");
+                                tvVoucherStatus.setVisibility(View.VISIBLE);
+                                tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                voucherCodeUsed = voucher_code;
 
-                                } else {
-                                    alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + String.format("%.2f", minOrderValue));
-                                    tvVoucherStatus.setVisibility(View.VISIBLE);
-                                    tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + voucherApplicableOn);
-                                }
+                                discountOffer.setOfferType(voucherType);
+                                discountOffer.setMin_value(String.valueOf(minOrderValue));
+                                discountOffer.setOfferPrice(String.valueOf(voucherValue));
+
+                                showPriceAndView();
+                            } else {
+                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
+                                tvVoucherStatus.setVisibility(View.VISIBLE);
+                                tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
                             }
-                        } else {
-                            alertDailogVoucher("Validate voucher", "Voucher applicable on " + voucherApplicableOn);
-                            tvVoucherStatus.setVisibility(View.VISIBLE);
-                            tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                        } else if (voucherType.equalsIgnoreCase(FLAT_OFFERS)) {
+
+                            if (totalPrice >= minOrderValue) {
+                                Double voucherCal = netAmount - voucherValue;
+                                appliedVoucherAmount = voucherCal;
+                                appliedVoucherCode = voucherCode;
+                                appliedVoucherPaymentType = voucherValidOn;
+                                netAmount = voucherCal;
+                                alertDailogVoucher("Voucher code has been accepted", "You got  " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " Off.");
+                                tvVoucherStatus.setVisibility(View.VISIBLE);
+                                tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
+                                voucherCodeUsed = voucher_code;
+
+
+                                discountOffer.setOfferType(voucherType);
+                                discountOffer.setMin_value(String.valueOf(minOrderValue));
+                                discountOffer.setOfferPrice(String.valueOf(voucherValue));
+
+                                showPriceAndView();
+                            } else {
+                                alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + String.format("%.2f", minOrderValue));
+                                tvVoucherStatus.setVisibility(View.VISIBLE);
+                                tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + voucherApplicableOn);
+                            }
                         }
+
 
                         setPriceCalculation(totalCartIterm);
                     } else {
@@ -1449,13 +1505,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 if (val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId() != null && !val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId().equalsIgnoreCase("")) {
                     i.putExtra("RESTAURANTID", val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                     db.deleteCart();
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.DEFAULT_ADDRESS, null);
-
                     startActivity(i);
                     getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
@@ -1625,16 +1679,27 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     }
 
     @Override
-    public void onDeliveryTimeSelect(String time, String isTomorrow, String dateTimeString) {
+    public void onDeliveryTimeSelect(String time, String isTomorrow, String dateTimeString, String CollectionType, boolean isCheckOut, int orderTypePos) {
+
+
         if (!time.equalsIgnoreCase("")) {
             deliveryTime.setText(time);
+            orderType = CollectionType;
+            sharedPreferencesClass.setString(sharedPreferencesClass.ORDER_TYPE, CollectionType);
             sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, dateTimeString);
             sharedPreferencesClass.setString(sharedPreferencesClass.IS_TOMORROW, isTomorrow);
+            Log.e("Time Datestr", "" + dateTimeString);
+            spinner.setSelection(orderTypePos);
             isPreOrder = false;
+            if (isCheckOut) {
+                checkOut();
+            }
         } else {
             sharedPreferencesClass.setString(sharedPreferencesClass.DELIVERY_DATE_TIME, "");
             sharedPreferencesClass.setString(sharedPreferencesClass.IS_TOMORROW, isTomorrow);
         }
+
+
     }
 
     public void dialogNoInternetConnection(String message, final int status) {
@@ -1685,7 +1750,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         call3.enqueue(new Callback<RestaurantOffersResponse>() {
             @Override
             public void onResponse(Call<RestaurantOffersResponse> call, Response<RestaurantOffersResponse> response) {
-                if (response.body().getSuccess()) {
+                if (response.isSuccessful() && response.body().getSuccess()) {
 
                     restaurantSpecialOffers = response.body().getData().getRestaurantSpecialOffers();
                 }
@@ -1700,5 +1765,33 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         });
     }
 
+    public void addFavourites() {
 
+        AddFavouritesInterface apiInterface = ApiClient.getClient(mContext).create(AddFavouritesInterface.class);
+        final AddFavouristeResquest request = new AddFavouristeResquest();
+        request.setUserId(sharedPreferencesClass.getString(sharedPreferencesClass.USER_ID));
+        request.setEntityId(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
+        request.setEntityType("restaurant");
+        Call<AddFavouristeResponse> call3 = apiInterface.mAddFavourites(request);
+        call3.enqueue(new Callback<AddFavouristeResponse>() {
+            @Override
+            public void onResponse(Call<AddFavouristeResponse> call, Response<AddFavouristeResponse> response) {
+                try {
+                    if (response.body().getSuccess()) {
+                        if (response.body().getData().getFavouriteStatus() == 1) {
+                            favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_active));
+                        } else if (response.body().getData().getFavouriteStatus() == 0) {
+                            favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_white));
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFavouristeResponse> call, Throwable t) {
+            }
+        });
+    }
 }

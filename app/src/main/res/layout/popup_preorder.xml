@@ -26,7 +26,7 @@
             android:fontFamily="@font/avenir_black"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Restaurant Opening"
+            android:text="Restaurant opening time"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 
@@ -51,6 +51,7 @@
         android:gravity="center"
         android:inputType="textCapWords"
         android:text=""
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_16sdp" />
 

@@ -27,6 +27,7 @@ public class MealProduct {
     @SerializedName("quantity")
     @Expose
     private int quantity;
+
     @SerializedName("menuProductSize")
     @Expose
     private List<MenuProductSize> menuProductSize;
@@ -36,7 +37,9 @@ public class MealProduct {
 
     @Expose
     public Boolean isSelected = false;
-
+    @SerializedName("sizeModifiers")
+    @Expose
+    private List<SizeModifier> sizeModifiers = null;
     public MealProduct() {
     }
 
@@ -128,6 +131,14 @@ public class MealProduct {
 
     public void setSelected(Boolean selected) {
         isSelected = selected;
+    }
+
+    public List<SizeModifier> getSizeModifiers() {
+        return sizeModifiers;
+    }
+
+    public void setSizeModifiers(List<SizeModifier> sizeModifiers) {
+        this.sizeModifiers = sizeModifiers;
     }
 
     @Override

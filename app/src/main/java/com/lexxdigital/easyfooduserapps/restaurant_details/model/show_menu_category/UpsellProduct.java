@@ -9,20 +9,10 @@ public class UpsellProduct {
     private String unit;
     private Integer productPrice;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public UpsellProduct() {
     }
 
-    /**
-     * 
-     * @param unit
-     * @param productPrice
-     * @param productName
-     * @param productId
-     */
     public UpsellProduct(String productId, String productName, String unit, Integer productPrice) {
         super();
         this.productId = productId;

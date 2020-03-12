@@ -12,22 +12,10 @@ public class SizeModifier {
     private Integer maxAllowedQuantity;
     private List<SizeModifierProduct> sizeModifierProducts = null;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public SizeModifier() {
     }
 
-    /**
-     * 
-     * @param maxAllowedQuantity
-     * @param modifierId
-     * @param modifierName
-     * @param modifierType
-     * @param sizeModifierProducts
-     * @param minAllowedQuantity
-     */
     public SizeModifier(String modifierName, String modifierType, String modifierId, Integer minAllowedQuantity, Integer maxAllowedQuantity, List<SizeModifierProduct> sizeModifierProducts) {
         super();
         this.modifierName = modifierName;

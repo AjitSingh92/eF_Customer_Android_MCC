@@ -28,14 +28,6 @@ public class PlaceArrayAdapter
     private LatLngBounds mBounds;
     private ArrayList<PlaceAutocomplete> mResultList;
 
-    /**
-     * Constructor
-     *
-     * @param context  Context
-     * @param resource Layout resource
-     * @param bounds   Used to specify the search bounds
-     * @param filter   Used to specify place types
-     */
     public PlaceArrayAdapter(Context context, int resource, LatLngBounds bounds,
                              AutocompleteFilter filter) {
         super(context, resource);
@@ -68,7 +60,7 @@ public class PlaceArrayAdapter
                     Places.GeoDataApi
                             .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
                                     mBounds, mPlaceFilter);
-            // Wait for predictions, set the timeout.
+
             AutocompletePredictionBuffer autocompletePredictions = results
                     .await(60, TimeUnit.SECONDS);
             final Status status = autocompletePredictions.getStatus();
@@ -90,7 +82,6 @@ public class PlaceArrayAdapter
                 resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
                         prediction.getFullText(null)));
             }
-            // Buffer release
             autocompletePredictions.release();
             return resultList;
         }
@@ -105,10 +96,8 @@ public class PlaceArrayAdapter
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 if (constraint != null) {
-                    // Query the autocomplete API for the entered constraint
                     mResultList = getPredictions(constraint);
                     if (mResultList != null) {
-                        // Results
                         results.values = mResultList;
                         results.count = mResultList.size();
                     }
@@ -119,10 +108,8 @@ public class PlaceArrayAdapter
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
-                    // The API returned at least one result, update the data.
                     notifyDataSetChanged();
                 } else {
-                    // The API did not return any results, invalidate the data set.
                     notifyDataSetInvalidated();
                 }
             }
@@ -130,7 +117,7 @@ public class PlaceArrayAdapter
         return filter;
     }
 
-  public  class PlaceAutocomplete {
+    public class PlaceAutocomplete {
 
         public CharSequence placeId;
         public CharSequence description;

@@ -80,7 +80,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  *
  */
 @SuppressLint("ValidFragment")
-public class DealsFragment extends Fragment implements FilterSortByAdapter.PositionSortInterface, /*SwipeRefreshLayout.OnRefreshListener,*/ FilterByOfferAdapter.PositionByOfferInterface, FilterByCuisinerAdapter.PositionInterface {
+public class DealsFragment extends Fragment implements FilterSortByAdapter.PositionSortInterface, FilterByOfferAdapter.PositionByOfferInterface, FilterByCuisinerAdapter.PositionInterface {
     @BindView(R.id.restaurant_list)
     RecyclerView restaurantList;
     Unbinder unbinder;
@@ -193,7 +193,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
         restFilter = new ArrayList<>();
         restFilter.add("delivery");
-        restFilter.add("dinein");
+        //restFilter.add("dinein");
         restFilter.add("collection");
         filterRestaurantTyped.addAll(restFilter);
         clear = view.findViewById(R.id.clear);
@@ -356,10 +356,15 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                                                           handler.postDelayed(callback = new Runnable() {
                                                               @Override
                                                               public void run() {
-                                                                  if (mDealAdapter.getItemCount() > 1) {
-                                                                      restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurants delivering to");
-                                                                  } else {
-                                                                      restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurant delivering to");
+                                                                  try {
+
+                                                                      if (mDealAdapter.getItemCount() > 1) {
+                                                                          restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurants delivering to");
+                                                                      } else {
+                                                                          restaurauntCount.setText(mDealAdapter.getItemCount() + " Restaurant delivering to");
+                                                                      }
+                                                                  } catch (Exception e) {
+                                                                      e.printStackTrace();
                                                                   }
                                                               }
                                                           }, SPLASH_TIME_OUT);
@@ -555,14 +560,14 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         sortList = (RecyclerView) mDialogView.findViewById(R.id.list_sort_by);
         sortListCousin = (RecyclerView) mDialogView.findViewById(R.id.list_by_cuisins);
         sortListByOffer = (RecyclerView) mDialogView.findViewById(R.id.list_by_offers);
-        final Boolean filter[] = new Boolean[]{true, true, true};
+        final Boolean filter[] = new Boolean[]{true, true};
         //TODO Restaurant filter
 
         final LinearLayout lldelivery = mDialogView.findViewById(R.id.lldeivery);
-        final LinearLayout lldinin = mDialogView.findViewById(R.id.lldinein);
+        // final LinearLayout lldinin = mDialogView.findViewById(R.id.lldinein);
         final LinearLayout llcollection = mDialogView.findViewById(R.id.llcollection);
         final ImageView delivering = mDialogView.findViewById(R.id.delivering);
-        final ImageView dine_in = mDialogView.findViewById(R.id.dine_in);
+        // final ImageView dine_in = mDialogView.findViewById(R.id.dine_in);
         final ImageView collectionl = mDialogView.findViewById(R.id.collection);
         final ImageView not_delivering = mDialogView.findViewById(R.id.not_delivery);
         final ImageView not_dine_in = mDialogView.findViewById(R.id.not_dine_in);
@@ -580,11 +585,9 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
         filterByOfferAdapter = new FilterByOfferAdapter(getActivity(), checkOffer, filterByList, positionByOfferInterface);
         @SuppressLint("WrongConstant")
-        LinearLayoutManager linearLayoutManageroffer
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManageroffer = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         sortListByOffer.setLayoutManager(linearLayoutManageroffer);
         sortListByOffer.setAdapter(filterByOfferAdapter);
-
 
         filterByCuisinerAdapter = new FilterByCuisinerAdapter(getActivity(), checkCuisine, cuisineList, positionInterfaceCoisine);
         @SuppressLint("WrongConstant")
@@ -592,7 +595,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         sortListCousin.setLayoutManager(linearLayoutManagercuisine);
         sortListCousin.setAdapter(filterByCuisinerAdapter);
-
 
         if (cuisineList.size() > 0) {
             dialog.dismiss();
@@ -621,28 +623,28 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                 collectionl.setVisibility(View.VISIBLE);
                 not_collectionl.setVisibility(View.GONE);
                 isCollectionSelected = true;
-                filter[2] = true;
+                filter[1] = true;
                 llcollection.setTag("enable");
 
             } else {
                 collectionl.setVisibility(View.GONE);
                 not_collectionl.setVisibility(View.VISIBLE);
-                filter[2] = false;
+                filter[1] = false;
                 isCollectionSelected = false;
                 llcollection.setTag("disable");
             }
             if (isDineSelected) {
-                dine_in.setVisibility(View.VISIBLE);
-                not_dine_in.setVisibility(View.GONE);
+                //  dine_in.setVisibility(View.VISIBLE);
+                //  not_dine_in.setVisibility(View.GONE);
                 filter[1] = true;
                 isDineSelected = true;
-                lldinin.setTag("enable");
+                //  lldinin.setTag("enable");
             } else {
-                dine_in.setVisibility(View.GONE);
-                not_dine_in.setVisibility(View.VISIBLE);
+                // dine_in.setVisibility(View.GONE);
+                //not_dine_in.setVisibility(View.VISIBLE);
                 filter[1] = false;
                 isDineSelected = false;
-                lldinin.setTag("disable");
+                //  lldinin.setTag("disable");
             }
         }
         isFirstOpen = true;
@@ -652,7 +654,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             public void onClick(View v) {
 
 
-                if (!llcollection.getTag().equals("enable") && !lldinin.getTag().equals("enable")) {
+                if (!llcollection.getTag().equals("enable") /*&& !lldinin.getTag().equals("enable")*/) {
 
                 } else {
                     if (lldelivery.getTag().equals("enable")) {
@@ -676,26 +678,26 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
             @Override
             public void onClick(View v) {
 
-                if (!lldelivery.getTag().equals("enable") && !lldinin.getTag().equals("enable")) {
+                if (!lldelivery.getTag().equals("enable") /*&& !lldinin.getTag().equals("enable")*/) {
                     //Nothing will change
                 } else {
                     if (llcollection.getTag().equals("enable")) {
                         collectionl.setVisibility(View.GONE);
                         not_collectionl.setVisibility(View.VISIBLE);
-                        filter[2] = false;
+                        filter[1] = false;
                         isCollectionSelected = false;
                         llcollection.setTag("disable");
                     } else {
                         collectionl.setVisibility(View.VISIBLE);
                         not_collectionl.setVisibility(View.GONE);
                         isCollectionSelected = true;
-                        filter[2] = true;
+                        filter[1] = true;
                         llcollection.setTag("enable");
                     }
                 }
 
             }
-        });
+        });/*
         lldinin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -722,7 +724,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
 
         });
-
+*/
 
         mDialogView.findViewById(R.id.apply_filter_btn_dialog).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -844,7 +846,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
         }
     }
 
-
     @Override
     public void onClickSortBy(int pos, ArrayList<String> check, List<SortBy> sortByList) {
         SortBy sBy = sortByList.get(pos);
@@ -897,7 +898,6 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
 
     }
-
 
     public void dialogNoInternetConnection(String message) {
         LayoutInflater factory = LayoutInflater.from(getActivity());

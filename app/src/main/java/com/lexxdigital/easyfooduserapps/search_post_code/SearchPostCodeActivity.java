@@ -104,15 +104,11 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
     private final static int REQUEST_CHECK_SETTINGS = 2000;
 
     private Location mLastLocation;
-
-    // Google client to interact with Google API
-
     private GoogleApiClient mGoogleApiClient;
 
     double latitude;
     double longitude;
     private GlobalValues val;
-    // list of permissions
 
     ArrayList<String> permissions = new ArrayList<>();
     PermissionUtils permissionUtils;
@@ -168,8 +164,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         permissionUtils.check_permission(permissions, "Need GPS permission for getting your location", 1);
 
         if (checkPlayServices()) {
-
-
             buildGoogleApiClient();
         }
     }
@@ -205,7 +199,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
             public void onFailure(Call<SearchPostCodeResponse> call, Throwable t) {
                 Log.e("Error <>>>", ">>>>>" + t.getMessage());
                 dialog.hide();
-                // val.setPostCode(null);
                 alertDialogNoRestaurant();
             }
         });
@@ -228,37 +221,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         alert11.show();
     }
 
-    public static String getPostalCodeByCoordinates(Context context, double lat, double lon) throws IOException {
-
-        Geocoder mGeocoder = new Geocoder(context, Locale.getDefault());
-        String zipcode = null;
-        Address address = null;
-
-        if (mGeocoder != null) {
-
-            List<Address> addresses = mGeocoder.getFromLocation(lat, lon, 5);
-
-            if (addresses != null && addresses.size() > 0) {
-
-                for (int i = 0; i < addresses.size(); i++) {
-                    address = addresses.get(i);
-                    if (address.getPostalCode() != null) {
-                        zipcode = address.getPostalCode();
-
-                        break;
-                    }
-
-                }
-                return zipcode;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Method to display the location on UI
-     */
 
     private void getLocation() {
 
@@ -338,9 +300,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
     }
 
-    /**
-     * Creating google api client object
-     */
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -369,7 +328,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
-                        // All location settings are satisfied. The client can initialize location requests here
+
                         getLocation();
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -377,7 +336,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                             status.startResolutionForResult(SearchPostCodeActivity.this, REQUEST_CHECK_SETTINGS);
 
                         } catch (IntentSender.SendIntentException e) {
-                            // Ignore the error.
+
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
@@ -423,11 +382,9 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
-                        // All required changes were successfully made
                         getLocation();
                         break;
                     case Activity.RESULT_CANCELED:
-                        // The user was asked to change settings, but chose not to
                         break;
                     default:
                         break;
@@ -466,8 +423,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
     @Override
     public void onConnected(Bundle arg0) {
-
-        // Once connected with google api, get the location
         getLocation();
     }
 
@@ -476,14 +431,9 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         mGoogleApiClient.connect();
     }
 
-
-    // Permission check functions
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        // redirects to utils
         permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }
@@ -496,22 +446,16 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
     @Override
     public void PartialPermissionGranted(int request_code, ArrayList<String> granted_permissions) {
-        Log.i("PERMISSION PARTIALLY", "GRANTED");
     }
 
     @Override
     public void PermissionDenied(int request_code) {
-        Log.i("PERMISSION", "DENIED");
     }
 
     @Override
     public void NeverAskAgain(int request_code) {
-        Log.i("PERMISSION", "NEVER ASK AGAIN");
     }
 
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 
     @OnClick(R.id.btn_search)
     public void onViewClicked() {
@@ -521,9 +465,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
             if (Constants.isInternetConnectionAvailable(3000)) {
                 dialog.show();
                 callSearchPostAPI(searchPostEt.getText().toString());
-//                Log.e(TAG, "onViewClicked: searchPostEt.getText().toString(): " + searchPostEt.getText().toString());
-//                sharedPreferencesClass.setPostalCode(searchPostEt.getText().toString());
-
             } else {
                 Constants.showDialog(SearchPostCodeActivity.this, "Please check internet connection.");
             }
@@ -582,8 +523,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                     mLastLocation = appLocationService.getLocation(LocationManager.NETWORK_PROVIDER);
 
                     if (checkPlayServices()) {
-
-                        // Building the GoogleApi client
                         buildGoogleApiClient();
                     }
 
@@ -613,7 +552,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         mDialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 allergyDialog.dismiss();
                 validPostcode = false;
             }
@@ -623,10 +561,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
     }
 
     public void errorDialog(String msg1, String msg2) {
-
-
         View dialogView = LayoutInflater.from(SearchPostCodeActivity.this).inflate(R.layout.no_resturent_popup, null);
-        //  dialogBinding = DataBindingUtil.bind(dialogView);
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(dialogView.getRootView());
@@ -644,11 +579,10 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
             tvMsg2.setVisibility(View.GONE);
         }
 
-        //   final TextView ok_tv = (TextView)  mDialogView.findViewById(R.id.okTv);
         dialogView.findViewById(R.id.okTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
+
                 dialog.dismiss();
                 validPostcode = false;
 
@@ -657,7 +591,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
         dialogView.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //your business logic
                 dialog.dismiss();
                 validPostcode = false;
             }
@@ -725,11 +658,10 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
 
                             sharedPreferencesClass.setPostalCode(postcode);
 
-                            updateAccountDetail(); // Update Postal code
+                            updateAccountDetail();
                             Intent i = new Intent(SearchPostCodeActivity.this, DashboardActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            //i.putExtra("POSTCODE", pstcode);
                             startActivity(i);
                             overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                             finish();
@@ -748,7 +680,7 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
             public void onFailure(Call<CheckDeliveryPostcodeResponse> call, Throwable t) {
                 dialog.hide();
                 alertDialogNoRestaurant();
-                Log.e("Error <>>>", ">>>>>" + t.getMessage());
+
             }
         });
     }
@@ -768,7 +700,6 @@ public class SearchPostCodeActivity extends AppCompatActivity implements GoogleA
                     Intent i = new Intent(SearchPostCodeActivity.this, DashboardActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //i.putExtra("POSTCODE", pstcode);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     finish();

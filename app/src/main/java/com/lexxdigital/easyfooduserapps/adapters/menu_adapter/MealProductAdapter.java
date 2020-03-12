@@ -3,6 +3,7 @@ package com.lexxdigital.easyfooduserapps.adapters.menu_adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.lexxdigital.easyfooduserapps.R;
 import com.lexxdigital.easyfooduserapps.cart_db.tables.ProductSizeAndModifier;
+import com.lexxdigital.easyfooduserapps.dialogs.MenuMealDialog;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MealProduct;
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 import com.lexxdigital.easyfooduserapps.utility.GlobalValues;
@@ -43,6 +45,12 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     OnMealProductItemSelect onMealProductItemSelect;
     OnMealProductClickListener onMealProductClickListener;
     Boolean openOnClick;
+
+    int totalItem = 1;
+
+    public void setTotalItem(int totalItem) {
+        this.totalItem = totalItem;
+    }
 
     public interface OnMealProductClickListener {
         void OnMealProductClick(int position, Boolean showMsg, String message);
@@ -111,6 +119,7 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemCount() {
         return mItem.size();
+//        return totalItem;
     }
 
     class MealProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -192,10 +201,15 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     lastSelectedPosition = getLayoutPosition();
                     mItem.get(getLayoutPosition()).setSelected(false);
                     tvModifier.setText(null);
-                    menuCategory.getMeal().get(parentPosition).getMealCategories().get(childPosition).getMealProducts().get(getLayoutPosition()).setSelected(false);
+                    if (onMealProductItemSelect != null) {
+                        onMealProductItemSelect.OnMealProductItemSelect(false);
+                    }
+//                    menuCategory.getMeal().get(parentPosition).getMealCategories().get(childPosition).getMealProducts().get(getLayoutPosition()).setSelected(false);
+                    menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(getLayoutPosition()).setSelected(false);
 
                 } else {
-                    menuCategory.getMeal().get(parentPosition).getMealCategories().get(childPosition).getMealProducts().get(getLayoutPosition()).setSelected(true);
+//                    menuCategory.getMeal().get(parentPosition).getMealCategories().get(childPosition).getMealProducts().get(getLayoutPosition()).setSelected(true);
+                    menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(getLayoutPosition()).setSelected(true);
                     if (onMealProductItemSelect != null) {
                         onMealProductItemSelect.OnMealProductItemSelect(true);
                     }
@@ -210,7 +224,7 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         onMealProductItemSelect.OnMealProductItemSelect(true);
                     }
 //                categoryName.setText(menuCategory.getMeal().get(childPosition).getMealCategories().get(childParentPosition).getMealProducts().get(selectedChildPosition).getProductId());
-                    new Thread(new Runnable() {
+                   /* new Thread(new Runnable() {
                         @Override
                         public void run() {
                             ProductSizeAndModifier.ProductSizeAndModifierTable productSizeAndModifierTable = GlobalValues.getInstance().getDb().productSizeAndModifierMaster().getProductSizeAndModifierList(mItem.get(getLayoutPosition()).getProductId());
@@ -222,15 +236,26 @@ public class MealProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 if (productSizeAndModifierTable.getMenuProductSize().size() > 0) {
                                     if (productSizeAndModifierTable.getMenuProductSize().get(0).getSizeModifiers().size() > 0) {
                                         if (itemClickListener != null) {
-                                            itemClickListener.OnMealProductClick(dialog, childParentPosition, childPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, productSizeAndModifierTable, isSubCat);
+                                            itemClickListener.OnMealProductClick(dialog, childParentPosition, getLayoutPosition(), parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, productSizeAndModifierTable, isSubCat);
                                         }
                                     }
+                                }else{
+                                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (MenuMealDialog.getInstance().mealProductCategoryAdapter != null)
+                                                MenuMealDialog.getInstance().mealProductCategoryAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+
                                 }
 
                             }
                         }
-                    }).start();
-
+                    }).start();*/
+                    if (itemClickListener != null) {
+                        itemClickListener.loadMealProductData(dialog, mItem.get(getLayoutPosition()).getProductId(), mItem.get(getLayoutPosition()).getProductSizeId(), progressBar, childParentPosition, getLayoutPosition(), parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat);
+                    }
                 }
             }
 

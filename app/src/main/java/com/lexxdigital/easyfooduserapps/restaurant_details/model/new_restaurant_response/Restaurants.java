@@ -4,6 +4,8 @@ package com.lexxdigital.easyfooduserapps.restaurant_details.model.new_restaurant
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Restaurants {
 
     @SerializedName("restaurant_cuisines")
@@ -50,7 +52,8 @@ public class Restaurants {
     private String lng;
     @SerializedName("delivery_areas")
     @Expose
-    private String deliveryAreas;
+    private List<DeliveryAreasBean> deliveryAreas;
+
     @SerializedName("distance_in_miles")
     @Expose
     private double distanceInMiles;
@@ -213,11 +216,11 @@ public class Restaurants {
         this.lng = lng;
     }
 
-    public String getDeliveryAreas() {
+    public List<DeliveryAreasBean> getDeliveryAreas() {
         return deliveryAreas;
     }
 
-    public void setDeliveryAreas(String deliveryAreas) {
+    public void setDeliveryAreas(List<DeliveryAreasBean> deliveryAreas) {
         this.deliveryAreas = deliveryAreas;
     }
 
@@ -384,5 +387,111 @@ public class Restaurants {
                 ", status='" + status + '\'' +
                 ", restaurantSlug='" + restaurantSlug + '\'' +
                 '}';
+    }
+
+    public static class DeliveryAreasBean {
+        /**
+         * id : 1ffada62-27c7-11ea-8f25-0657952ed75a
+         * parent_id : 0
+         * restaurant_id : 2a46ae2e-8dda-11e9-a995-0657952ed75a
+         * postcode : b13
+         * delivery_min_value : 5.00
+         * ship_cost : 2.00
+         * free_delivery_over : 15.00
+         * is_primary : 1
+         * created_at : 2019-12-26 10:04:37
+         * updated_at : 2019-12-26 10:04:59
+         */
+
+        private String id;
+        private String parent_id;
+        private String restaurant_id;
+        private String postcode;
+        private String delivery_min_value;
+        private String ship_cost;
+        private String free_delivery_over;
+        private int is_primary;
+        private String created_at;
+        private String updated_at;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getParent_id() {
+            return parent_id;
+        }
+
+        public void setParent_id(String parent_id) {
+            this.parent_id = parent_id;
+        }
+
+        public String getRestaurant_id() {
+            return restaurant_id;
+        }
+
+        public void setRestaurant_id(String restaurant_id) {
+            this.restaurant_id = restaurant_id;
+        }
+
+        public String getPostcode() {
+            return postcode;
+        }
+
+        public void setPostcode(String postcode) {
+            this.postcode = postcode;
+        }
+
+        public String getDelivery_min_value() {
+            return delivery_min_value;
+        }
+
+        public void setDelivery_min_value(String delivery_min_value) {
+            this.delivery_min_value = delivery_min_value;
+        }
+
+        public String getShip_cost() {
+            return ship_cost;
+        }
+
+        public void setShip_cost(String ship_cost) {
+            this.ship_cost = ship_cost;
+        }
+
+        public String getFree_delivery_over() {
+            return free_delivery_over;
+        }
+
+        public void setFree_delivery_over(String free_delivery_over) {
+            this.free_delivery_over = free_delivery_over;
+        }
+
+        public int getIs_primary() {
+            return is_primary;
+        }
+
+        public void setIs_primary(int is_primary) {
+            this.is_primary = is_primary;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
+        }
     }
 }

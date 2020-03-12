@@ -136,7 +136,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         Log.e(TAG, "onBindViewHolder: order status: " + strOrderStatus);
         // status will be 'new','pending','rejected','accepted','out_of_delivery','delivered','preparing'-------------
         if (strOrderStatus.equalsIgnoreCase("new") || strOrderStatus.equalsIgnoreCase("pending")) {
-            holder.orderStatus.setText("Pending");
+            holder.orderStatus.setText("New");
             holder.orderStatus.setTextColor(context.getResources().getColor(R.color.price_color));
             holder.cancelOrder.setVisibility(View.GONE);
             holder.layoutTrackOrder.setVisibility(View.GONE);
@@ -144,7 +144,15 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         } else if (strOrderStatus.equalsIgnoreCase("accepted") || strOrderStatus.equalsIgnoreCase("preparing") || strOrderStatus.equalsIgnoreCase("out_for_delivery")) {
             String ordStatus = strOrderStatus;
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
-            holder.orderStatus.setText(status);
+            if (strOrderStatus.equalsIgnoreCase("out_for_delivery")) {
+                if (dataList.getDeliveryOption().equalsIgnoreCase("collection")) {
+                    holder.orderStatus.setText("Ready To Collect");
+                } else {
+                    holder.orderStatus.setText("Out for Delivery");
+                }
+            } else {
+                holder.orderStatus.setText(status);
+            }
             holder.orderStatus.setTextColor(context.getResources().getColor(R.color.price_color));
             holder.layoutTrackOrder.setVisibility(View.VISIBLE);
             holder.layoutReapetOrder.setVisibility(View.GONE);
@@ -153,11 +161,16 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         } else if (strOrderStatus.equalsIgnoreCase("delivered")) {
             String ordStatus = strOrderStatus;
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
-            holder.orderStatus.setText(status);
+            if (dataList.getDeliveryOption().equalsIgnoreCase("collection")) {
+                holder.orderStatus.setText("Collected");
+            } else {
+                holder.orderStatus.setText("Delivered");
+            }
+            // holder.orderStatus.setText(status);
             holder.orderStatus.setTextColor(Color.GREEN);
             holder.cancelOrder.setVisibility(View.GONE);
             holder.layoutTrackOrder.setVisibility(View.GONE);
-            holder.layoutReapetOrder.setVisibility(View.VISIBLE);
+            // holder.layoutReapetOrder.setVisibility(View.VISIBLE);
 
         } else if (strOrderStatus.equalsIgnoreCase("rejected")) {
             String ordStatus = strOrderStatus;
@@ -166,21 +179,33 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             holder.orderStatus.setTextColor(Color.RED);
             holder.cancelOrder.setVisibility(View.GONE);
             holder.layoutTrackOrder.setVisibility(View.GONE);
-            holder.layoutReapetOrder.setVisibility(View.VISIBLE);
+            //  holder.layoutReapetOrder.setVisibility(View.VISIBLE);
 
             if (dataList.getOrderRejectNote() != null && !dataList.getOrderRejectNote().equalsIgnoreCase("")) {
-                holder.reasonForCancel.setVisibility(View.VISIBLE);
+                // holder.reasonForCancel.setVisibility(View.VISIBLE);
                 holder.reasonForCancel.setText(dataList.getOrderRejectNote());
             } else {
                 holder.reasonForCancel.setVisibility(View.GONE);
             }
-        } else {
+        }/*else if(strOrderStatus.equalsIgnoreCase("out_for_delivery")){
+
+            if (dataList.getDeliveryOption().equalsIgnoreCase("collection")) {
+                holder.orderStatus.setText("Ready To Collect");
+            } else {
+                holder.orderStatus.setText("Out for Delivery");
+            }}
+            String ordStatus = strOrderStatus;
+            String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
+            //holder.orderStatus.setText(status);
+            holder.cancelOrder.setVisibility(View.GONE);
+            holder.layoutTrackOrder.setVisibility(View.GONE);
+        }*/ else {
             String ordStatus = strOrderStatus;
             String status = ordStatus.substring(0, 1).toUpperCase() + ordStatus.substring(1);
             holder.orderStatus.setText(status);
             holder.cancelOrder.setVisibility(View.GONE);
             holder.layoutTrackOrder.setVisibility(View.GONE);
-            holder.layoutReapetOrder.setVisibility(View.VISIBLE);
+            //holder.layoutReapetOrder.setVisibility(View.VISIBLE);
         }
 
         //----- below code for hide track order option
@@ -190,18 +215,31 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 try {
-                    if (dataList.getOrderDetails().getData().getMenuCategoryCarts() != null) {
-                        if (Constants.isInternetConnectionAvailable(300)) {
-                            Intent intent = new Intent(context, OrderDetailActivity.class);
-                            intent.putExtra("order_no", dataList.getOrderNum());
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                        } else {
-                            dialogNoInternetConnection("Please check internet connection.");
-                        }
+//                    if (dataList.getOrderDetails().getData().getMenuCategoryCarts() != null) {
+                    if (Constants.isInternetConnectionAvailable(300)) {
+                        Intent intent = new Intent(context, OrderDetailActivity.class);
+                        intent.putExtra("order_no", dataList.getOrderNum());
+                        intent.putExtra(Constants.PAYMENT_MODE, dataList.getPaymentMode());
+                        intent.putExtra(Constants.RESTAURENT_NAME, dataList.getRestaurantName());
+                        intent.putExtra(Constants.TOTAL_COST, String.valueOf(dataList.getOrderTotal()));
+                        intent.putExtra(Constants.PHONE_NUMBER, "9876543210");
+                        intent.putExtra(Constants.CUSTOMER_ID, dataList.getCustomerId());
+                        intent.putExtra(Constants.ORDER_TIME, dataList.getDeliveryTime());
 
+                        //  data.getData().getPhone_number();
+                        Log.e("Total Cost", "" + dataList.getTotal());
+                        intent.putExtra(Constants.ORDER_TYPE, dataList.getDeliveryOption());
+                        sharePre.setOrderIDKey(dataList.getOrderNum());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.");
                     }
+
+//                    }
 
                 } catch (ActivityNotFoundException e) {
                     e.printStackTrace();
@@ -216,6 +254,16 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                     if (Constants.isInternetConnectionAvailable(300)) {
                         Intent intent = new Intent(context, OrderStatusActivity.class);
                         intent.putExtra("order_no", dataList.getOrderNum());
+                        intent.putExtra(Constants.PAYMENT_MODE, dataList.getPaymentMode());
+                        intent.putExtra(Constants.RESTAURENT_NAME, dataList.getRestaurantName());
+                        intent.putExtra(Constants.TOTAL_COST, String.valueOf(dataList.getOrderTotal()));
+                        intent.putExtra(Constants.PHONE_NUMBER, "9876543210");
+                        intent.putExtra(Constants.CUSTOMER_ID, dataList.getCustomerId());
+                        intent.putExtra(Constants.ORDER_TIME, dataList.getDeliveryTime());
+
+                        //  data.getData().getPhone_number();
+                        Log.e("Total Cost", "" + dataList.getTotal());
+                        intent.putExtra(Constants.ORDER_TYPE, dataList.getDeliveryOption());
                         sharePre.setOrderIDKey(dataList.getOrderNum());
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
@@ -507,7 +555,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                     }
                 }
 
-                db.insertMenuProduct(id,Long.parseLong( menuProducts.get(j).getMenuSubCatId()), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
+                db.insertMenuProduct(id, Long.parseLong(menuProducts.get(j).getMenuSubCatId()), previousOrderDetailList.getOrderDetails().getData().getMenuCategoryCarts().get(i).getMenuCategoryId(),
                         menuProducts.get(j).getMenuProductId(),
                         menuProducts.get(j).getProductName(),
                         menuProducts.get(j).getVegType(),

@@ -5,6 +5,26 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class RestaurantDetailsRequest {
+    /////////////////// These two keys are for hygiene rating  ///////////////////
+    private String name;
+    private String postcode;
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    /////////////////////////////////////
 
     @SerializedName("user_id")
     @Expose
@@ -15,6 +35,7 @@ public class RestaurantDetailsRequest {
     @SerializedName("post_code")
     @Expose
     private String postCode;
+
 
     public String getUserId() {
         return userId;

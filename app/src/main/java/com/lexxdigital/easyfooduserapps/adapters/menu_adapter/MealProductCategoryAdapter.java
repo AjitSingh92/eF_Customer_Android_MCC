@@ -14,6 +14,7 @@ import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenum
 import com.lexxdigital.easyfooduserapps.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -21,6 +22,11 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
     private final LayoutInflater inflater;
     List<MealCategory> mItem;
     private ItemClickListener itemClickListener;
+    private scrollToPosition scrollToPosition;
+
+    public interface scrollToPosition {
+        void onScrollPosition(int position);
+    }
 
     int parentPosition;
     int childPosition;
@@ -32,12 +38,30 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
     Boolean isSubCat;
     private Dialog dialog;
     OnMealProductItemSelect onMealProductItemSelect;
-    List<MealProductAdapter> mealProductAdapters;
+    public HashMap<Integer, MealProductAdapter> mealProductAdapters;
+
+    int lastGonePosition = -1;
+
+    boolean isShowOption = false;
 
     Boolean openOnClick;
+    private Boolean enableScrollToPosition = false;
 
-    public MealProductCategoryAdapter(Context context, Boolean openOnClick, Dialog dialog, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect) {
+    public void setEnableScrollToPosition(Boolean enableScrollToPosition) {
+        this.enableScrollToPosition = enableScrollToPosition;
+    }
+
+    public void setLastGonePosition(int position) {
+        this.lastGonePosition = position;
+    }
+
+    public int getLastGonePosition() {
+        return lastGonePosition;
+    }
+
+    public MealProductCategoryAdapter(Context context, scrollToPosition scrollToPosition, Boolean openOnClick, Dialog dialog, int parentPosition, int childPosition, View qtyLayout, TextView item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, ItemClickListener itemClickListener, OnMealProductItemSelect onMealProductItemSelect) {
         this.context = context;
+        this.scrollToPosition = scrollToPosition;
         this.openOnClick = openOnClick;
         inflater = LayoutInflater.from(context);
         mItem = new ArrayList<>();
@@ -52,10 +76,10 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         this.menuCategory = menuCategory;
         this.isSubCat = isSubCat;
         this.onMealProductItemSelect = onMealProductItemSelect;
-        mealProductAdapters = new ArrayList<>();
+        mealProductAdapters = new HashMap<>();
     }
 
-    public List<MealProductAdapter> getMealProductAdapters() {
+    public HashMap<Integer, MealProductAdapter> getMealProductAdapters() {
         return mealProductAdapters;
     }
 
@@ -129,18 +153,64 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         private void bindData(int position) {
 
             if (mItem.get(position).getCustomizable() == 1) {
-                tvItemTitle.setText("Choose any " + mItem.get(position).getQuantity() + " out of " + mItem.get(position).getMealProducts().size() + " in " + mItem.get(position).getCategoryName());
+                tvItemTitle.setText(mItem.get(position).getCategoryName() + "\n" + "Pick " + mItem.get(position).getQuantity());
                 mealProductAdapter = new MealProductAdapter(context, openOnClick, dialog, mItem.get(position).getQuantity(), position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
+
+//                menuCategory.getMeal().get(childPosition).getMealCategories().get(0).getMealProducts().get(0)
+
+                /*int count = 0;
+                for (int i = 0; i < menuCategory.getMeal().get(childPosition).getMealCategories().size(); i++) {
+
+                    for (int j = 0; j < menuCategory.getMeal().get(childPosition).getMealCategories().get(i).getMealProducts().size(); j++) {
+                        if (menuCategory.getMeal().get(childPosition).getMealCategories().get(i).getMealProducts().get(j).isSelected) {
+                            count++;
+                        }
+                    }
+                }
+                mealProductAdapter.setTotalItem(count+1);*/
 
             } else if (mItem.get(position).getCustomizable() == 0) {
                 tvItemTitle.setText(mItem.get(position).getCategoryName());
                 mealProductAdapter = new MealProductAdapter(context, openOnClick, dialog, -1, position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
+
+                /*int count = 0;
+                for (int i = 0; i < menuCategory.getMeal().get(childPosition).getMealCategories().size(); i++) {
+
+                    for (int j = 0; j < menuCategory.getMeal().get(childPosition).getMealCategories().get(i).getMealProducts().size(); j++) {
+                        if (menuCategory.getMeal().get(childPosition).getMealCategories().get(i).getMealProducts().get(j).isSelected) {
+                            count++;
+                        }
+                    }
+                }
+                mealProductAdapter.setTotalItem(count+1);*/
             }
             alertMsg.setVisibility(View.GONE);
-            mealProductAdapters.add(mealProductAdapter);
+            listProduct.setVisibility(View.GONE);
+
+            mealProductAdapters.put(position, mealProductAdapter);
             listProduct.setAdapter(mealProductAdapter);
             mealProductAdapter.addItem(mItem.get(position).getMealProducts());
+//            if (enableScrollToPosition) {
+                for (int j = 0; j < menuCategory.getMeal().get(childPosition).getMealCategories().get(position).getMealProducts().size(); j++) {
+                    if (menuCategory.getMeal().get(childPosition).getMealCategories().get(position).getMealProducts().get(j).isSelected) {
+                        listProduct.setVisibility(View.VISIBLE);
+                        if (enableScrollToPosition && scrollToPosition != null) {
+                            scrollToPosition.onScrollPosition(position + 1);
+                        }
+                        isShowOption = false;
+                        lastGonePosition = getLayoutPosition();
 
+                    }
+                }
+//            }
+            /*if ((lastGonePosition + 1) == position) {
+                listProduct.setVisibility(View.VISIBLE);
+            }*/
+
+            if (lastGonePosition != position && !isShowOption) {
+                isShowOption = true;
+                listProduct.setVisibility(View.VISIBLE);
+            }
 
         }
 

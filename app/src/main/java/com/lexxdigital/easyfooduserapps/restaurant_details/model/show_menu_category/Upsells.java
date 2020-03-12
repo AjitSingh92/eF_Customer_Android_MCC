@@ -9,19 +9,11 @@ public class Upsells {
     private String upsellGroupId;
     private List<Object> upsellProducts = null;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+
     public Upsells() {
     }
 
-    /**
-     * 
-     * @param upsellGroupName
-     * @param upsellProducts
-     * @param upsellGroupId
-     */
+
     public Upsells(String upsellGroupName, String upsellGroupId, List<Object> upsellProducts) {
         super();
         this.upsellGroupName = upsellGroupName;

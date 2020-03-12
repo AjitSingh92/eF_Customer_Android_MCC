@@ -174,11 +174,6 @@ public class AddAddressManualActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isValid()) {
-                    /*if (isEditable) {
-                        editmanageAddress();
-                    } else
-                        manageAddress();*/
-//                    callSearchPostAPI(postalCode.getText().toString().trim());
                     performSearchPostal(postalCode.getText().toString().trim());
                 }
             }
@@ -214,10 +209,10 @@ public class AddAddressManualActivity extends AppCompatActivity {
         for (int i = 0; i < labels.length; i++) {
             if (position == i) {
                 labels[i].setTextColor(getResources().getColor(R.color.orange));
-               // icons[i].setColorFilter(getResources().getColor(R.color.orange));
+                icons[i].setColorFilter(getResources().getColor(R.color.orange));
             } else {
                 labels[i].setTextColor(getResources().getColor(R.color.tc1));
-              //  icons[i].setColorFilter(getResources().getColor(R.color.tc1));
+                icons[i].setColorFilter(getResources().getColor(R.color.tc1));
             }
 
         }

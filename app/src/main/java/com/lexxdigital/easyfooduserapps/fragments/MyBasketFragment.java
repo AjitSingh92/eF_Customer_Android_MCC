@@ -65,6 +65,7 @@ import com.lexxdigital.easyfooduserapps.model.VoucherApplyRequest;
 import com.lexxdigital.easyfooduserapps.model.VoucherApplyResponse;
 import com.lexxdigital.easyfooduserapps.model.add_favourites_request.AddFavouristeResquest;
 import com.lexxdigital.easyfooduserapps.model.add_favourites_response.AddFavouristeResponse;
+import com.lexxdigital.easyfooduserapps.model.address_list_request.AddressDeliveryListRequest;
 import com.lexxdigital.easyfooduserapps.model.address_list_request.AddressListRequest;
 import com.lexxdigital.easyfooduserapps.model.address_list_response.AddressListResponse;
 import com.lexxdigital.easyfooduserapps.model.landing_page_response.DiscountOffer;
@@ -293,7 +294,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     private String appliedVoucherPaymentType = "";
     private String voucherValidOn = "";
     private double minimumValue = 0.0;
-
+    private String restaurentId;
     Double totalPrice = 0d;
     int totalCartIterm;
     Boolean voucherApplyStatus = false;
@@ -407,6 +408,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
             itemList.add(addressList.get(i).getAddressOne());
         }
 
+        //Toast.makeText(val, "No deliverable address found!", Toast.LENGTH_SHORT).show();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, itemList);
         popupWindow.setAdapter(adapter);
         popupWindow.setAnchorView(tvCat);
@@ -635,7 +637,11 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                 alertDialogNote();
                 break;
             case R.id.rl_cat:
-                setSpinnerForAddressList();
+                if (addressList != null && addressList.size() > 0) {
+                    setSpinnerForAddressList();
+                } else {
+                    Toast.makeText(val, "No deliverable address found!", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.add_more_item:
                 try {
@@ -1405,8 +1411,9 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
     public void getAddressList() {
         AddressListInterface apiInterface = ApiClient.getClient(mContext).create(AddressListInterface.class);
-        AddressListRequest request = new AddressListRequest();
+        AddressDeliveryListRequest request = new AddressDeliveryListRequest();
         request.setCustomerId(val.getLoginResponse().getData().getUserId());
+        request.setRestaurant_id(sharedPreferencesClass.getString(sharedPreferencesClass.RESTUARANT_ID));
 
         Call<AddressListResponse> call3 = apiInterface.mLogin(request);
         call3.enqueue(new Callback<AddressListResponse>() {
@@ -1417,17 +1424,19 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
 
                         for (int i = 0; i < response.body().getData().getAddresses().size(); i++) {
+                            if (response.body().getData().getAddresses().get(i).getIsDelivering() == 1) {
 
-                            addressList.add(new AddressList(response.body().getData().getAddresses().get(i).getId(),
-                                    response.body().getData().getAddresses().get(i).getCustomerId(),
-                                    response.body().getData().getAddresses().get(i).getAddress1(),
-                                    response.body().getData().getAddresses().get(i).getAddress2(),
-                                    response.body().getData().getAddresses().get(i).getCity(),
-                                    response.body().getData().getAddresses().get(i).getPostCode(),
-                                    response.body().getData().getAddresses().get(i).getCountry(),
-                                    ((response.body().getData().getAddresses().get(i).getAddressType().equals("")) ? "" : (response.body().getData().getAddresses().get(i).getAddressType().substring(0, 1).toUpperCase() + response.body().getData().getAddresses().get(i).getAddressType().substring(1))),
-                                    response.body().getData().getAddresses().get(i).getIsDefault(),
-                                    response.body().getData().getAddresses().get(i).getIsDelivering()));
+                                addressList.add(new AddressList(response.body().getData().getAddresses().get(i).getId(),
+                                        response.body().getData().getAddresses().get(i).getCustomerId(),
+                                        response.body().getData().getAddresses().get(i).getAddress1(),
+                                        response.body().getData().getAddresses().get(i).getAddress2(),
+                                        response.body().getData().getAddresses().get(i).getCity(),
+                                        response.body().getData().getAddresses().get(i).getPostCode(),
+                                        response.body().getData().getAddresses().get(i).getCountry(),
+                                        ((response.body().getData().getAddresses().get(i).getAddressType().equals("")) ? "" : (response.body().getData().getAddresses().get(i).getAddressType().substring(0, 1).toUpperCase() + response.body().getData().getAddresses().get(i).getAddressType().substring(1))),
+                                        response.body().getData().getAddresses().get(i).getIsDefault(),
+                                        response.body().getData().getAddresses().get(i).getIsDelivering()));
+                            }
 
 
                             if (response.body().getData().getAddresses().get(i).getIsDefault() == 1) {
@@ -1452,7 +1461,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
             @Override
             public void onFailure(Call<AddressListResponse> call, Throwable t) {
-
+                Log.e("print", "" + t.getMessage());
             }
         });
     }
@@ -1585,6 +1594,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
 
                         sharedPreferencesClass.setString(sharedPreferencesClass.RESTAURANT_NAME_SLUG, response.body().getData().getRestaurants().getRestaurantSlug());
                         restaurantName.setText(res.getData().getRestaurants().getRestaurantName());
+                        restaurentId = res.getData().getRestaurants().getRestaurantId();
                         tvDistance.setText(String.valueOf(res.getData().getRestaurants().getDistanceInMiles()) + " miles");
                         tvRestaurantAdddress.setText(res.getData().getRestaurants().getAddress());
                         mlat = Double.parseDouble(res.getData().getRestaurants().getLat());

@@ -10,6 +10,10 @@ public class AddressListRequest {
     @Expose
     private String customerId;
 
+    @SerializedName("restaurant_id")
+    @Expose
+    private String restaurant_id;
+
     public String getCustomerId() {
         return customerId;
     }
@@ -18,4 +22,12 @@ public class AddressListRequest {
         this.customerId = customerId;
     }
 
+
+    public String getRestaurant_id() {
+        return restaurant_id;
+    }
+
+    public void setRestaurant_id(String restaurant_id) {
+        this.restaurant_id = restaurant_id;
+    }
 }

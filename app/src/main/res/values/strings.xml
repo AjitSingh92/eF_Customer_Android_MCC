@@ -203,5 +203,6 @@ ou will be sent a varification code to your mobile </string>
     <string name="hygiene_rating_is_pending">Hygiene rating is pending</string>
     <string name="hygiene_rating">The hygiene rating below is given by the Food Standards Agency and your local authority:</string>
     <string name="isFavorate">IS_FAVORITE</string>
+    <string name="terms_and_condition"><![CDATA[Terms & Conditions]]></string>
 
 </resources>

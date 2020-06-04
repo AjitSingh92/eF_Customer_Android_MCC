@@ -8,6 +8,19 @@ public class LogoutRequest {
     @Expose
     private String customerId;
 
+
+    public String getFcm_id() {
+        return fcm_id;
+    }
+
+    public void setFcm_id(String fcm_id) {
+        this.fcm_id = fcm_id;
+    }
+
+    @SerializedName("fcm_id")
+    @Expose
+    private String fcm_id;
+
     public String getCustomerId() {
         return customerId;
     }
@@ -19,7 +32,9 @@ public class LogoutRequest {
     @Override
     public String toString() {
         return "LogoutRequest{" +
-                "customerId='" + customerId + '\'' +
+                "customerId='" + customerId +
+                "fcm_id='" + fcm_id +
+                '\'' +
                 '}';
     }
 }

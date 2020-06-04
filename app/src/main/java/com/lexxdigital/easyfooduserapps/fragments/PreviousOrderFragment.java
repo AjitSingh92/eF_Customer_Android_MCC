@@ -210,7 +210,8 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
     }
 
     public void getCardList() {
-        swipreferesh.setRefreshing(true);
+        if (swipreferesh != null)
+            swipreferesh.setRefreshing(true);
         PreviousOrderInterface apiInterface = ApiClient.getClient(getContext()).create(PreviousOrderInterface.class);
         String custId = val.getLoginResponse().getData().getUserId();
         int offset = 0, limit = 50;

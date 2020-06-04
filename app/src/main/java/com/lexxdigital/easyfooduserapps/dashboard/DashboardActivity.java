@@ -225,7 +225,7 @@ public class DashboardActivity extends AppCompatActivity {
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(),isFavorite));
+                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(), isFavorite));
                 transaction.commitAllowingStateLoss();
             } else if (val.getPostCode() != null) {
 
@@ -486,7 +486,7 @@ public class DashboardActivity extends AppCompatActivity {
                 etLocation.setVisibility(View.GONE);
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
-                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext(),false), getSupportFragmentManager());
+                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext(), false), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -500,7 +500,7 @@ public class DashboardActivity extends AppCompatActivity {
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
-                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext(),false), getSupportFragmentManager());
+                Constants.fragmentCall(new MyBasketFragment(DashboardActivity.this, getApplicationContext(), false), getSupportFragmentManager());
                 if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                     drawer.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -786,13 +786,13 @@ public class DashboardActivity extends AppCompatActivity {
             if (intent.getAction().equals("custom")) {
                 etLocation.setVisibility(View.GONE);
                 setDefaultDrawer();
-                boolean isFavorite = intent.getBooleanExtra(getString(R.string.isFavorate),false);
+                boolean isFavorite = intent.getBooleanExtra(getString(R.string.isFavorate), false);
                 myBasketId.setBackgroundColor(getResources().getColor(R.color.orange));
                 myBasket.setTextColor(getResources().getColor(R.color.white));
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(),isFavorite));
+                transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(), isFavorite));
                 transaction.commitAllowingStateLoss();
             }
         } else {
@@ -841,6 +841,8 @@ public class DashboardActivity extends AppCompatActivity {
         LogoutApiInterface apiInterface = ApiClient.getClient(DashboardActivity.this).create(LogoutApiInterface.class);
         LogoutRequest request = new LogoutRequest();
         request.setCustomerId(customerId);
+        request.setFcm_id(sharedPreferencesClass.getString(sharedPreferencesClass.FB_TOKEN_ID));
+        Log.e("PrintLogut", "" + request);
         Call<LogoutResponse> call3 = apiInterface.logout(request);
         call3.enqueue(new Callback<LogoutResponse>() {
             @Override

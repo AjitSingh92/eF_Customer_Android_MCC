@@ -9,7 +9,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface LoginRequestInterface {
-    @Headers("Content-Type: application/json")
     @POST("login")
     Call<LoginResponse> mLogin(@Body LoginRequest request);
 }

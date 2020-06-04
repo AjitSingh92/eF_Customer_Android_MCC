@@ -94,8 +94,6 @@ public class OrderStatusActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equalsIgnoreCase("status")) ;
                 {
-
-
                     if (getIntent().hasExtra("or")) {
                         OrderId = getIntent().getStringExtra("or");
                         getStatus(OrderId);

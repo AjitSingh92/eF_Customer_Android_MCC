@@ -116,7 +116,7 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView title, modifiers;
+        private final TextView title, price, modifiers;
         private final CheckBox itemSelected;
 
         public ViewHolder2(@NonNull View itemView) {
@@ -124,7 +124,7 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             title = itemView.findViewById(R.id.tv_title);
             modifiers = itemView.findViewById(R.id.tv_modifiers);
-
+            price = itemView.findViewById(R.id.tv_price);
             // note = itemView.findViewById(R.id.tv_note);
             itemSelected = itemView.findViewById(R.id.cb_itemSelected);
 
@@ -133,6 +133,10 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         private void bindData(int position) {
             title.setText(mItem.get(position).getProductName());
+            if (mItem.get(position).getModifierProductPrice() != null) {
+                price.setText("£" + mItem.get(position).getModifierProductPrice());
+            }
+
             modifiers.setVisibility(View.GONE);
             if (mItem.get(position).getOriginalQuantity().equals("1")) {
                 itemSelected.setChecked(true);
@@ -173,7 +177,7 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }*/
 
 
-            if (mItem.get(getLayoutPosition()).getOriginalQuantity().equals("1")){
+            if (mItem.get(getLayoutPosition()).getOriginalQuantity().equals("1")) {
                 mItem.get(getLayoutPosition()).setQuantity("0");
                 mItem.get(getLayoutPosition()).setOriginalQuantity("0");
                 mItem.get(getLayoutPosition()).setAmount((0 * (Double.parseDouble(mItem.get(getLayoutPosition()).getModifierProductPrice()))));
@@ -181,7 +185,7 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 itemSelected.setChecked(false);
                 lastSelectedPosition = getLayoutPosition();
                 lastSelectedItem = null;
-            }else{
+            } else {
                 itemSelected.setChecked(true);
                 lastSelectedItem = itemSelected;
 

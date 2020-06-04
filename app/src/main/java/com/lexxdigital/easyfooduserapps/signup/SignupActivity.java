@@ -495,7 +495,6 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
     }
 
 
-
     @Override
     @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -586,6 +585,7 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         final TextView privacyDesc = mDialogView.findViewById(R.id.desc_privacy);
         final TextView privacyPolc = mDialogView.findViewById(R.id.privacy_polc);
+        privacyPolc.setText(getResources().getString(R.string.terms_and_condition));
         btnContinnue = mDialogView.findViewById(R.id.btn_continue);
         progress = mDialogView.findViewById(R.id.progress);
         final WebView webView = mDialogView.findViewById(R.id.web_privacy_policy);
@@ -603,7 +603,7 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
         webView.setVisibility(View.VISIBLE);
         progress.setVisibility(View.VISIBLE);
         webView.setWebViewClient(new MyWebViewClient());
-        webView.loadUrl(ApiConstants.PRIVACY_POLICY);
+        webView.loadUrl(ApiConstants.TERMS_AND_CONDITIONS);
 
         btnContinnue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -613,7 +613,7 @@ public class SignupActivity extends AppCompatActivity implements EasyPermissions
                 webView.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.VISIBLE);
                 webView.setWebViewClient(new MyWebViewClient());
-                webView.loadUrl(ApiConstants.PRIVACY_POLICY);
+                webView.loadUrl(ApiConstants.TERMS_AND_CONDITIONS);
             }
 
         });

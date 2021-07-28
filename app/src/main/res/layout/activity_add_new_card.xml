@@ -251,13 +251,28 @@
                             android:id="@+id/store_card"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_gravity="start"
                             android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
                             android:buttonTint="@color/orange"
                             android:text="Do you want to save this card for future payments?"
                             android:textColor="@color/orange"
                             android:textSize="@dimen/_10sdp"
                             android:visibility="gone" />
+
+                        <CheckBox
+                            android:id="@+id/make_default"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:buttonTint="@color/orange"
+                            android:text="Make Default"
+                            android:textColor="@color/orange"
+                            android:textSize="@dimen/_10sdp"
+                            android:visibility="gone" />
+
 
                         <LinearLayout
                             android:id="@+id/ll"

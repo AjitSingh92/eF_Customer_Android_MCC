@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_63sdp"
-    android:background="@drawable/bg_gradient"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical">
 
 
     <!--<LinearLayout
@@ -92,48 +92,57 @@
     </LinearLayout>-->
 
     <TextView
+        android:id="@+id/tv_countt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_black"
+
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
         android:id="@+id/restauraunt_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@+id/tv_countt"
         android:fontFamily="@font/avenir_black"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="@dimen/_14sdp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:textColor="#666666"
+        android:textSize="@dimen/_10sdp" />
+
+
+    <TextView
+        android:id="@+id/txt_postcode"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="visible">
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toStartOf="@+id/btn_change"
+        android:fontFamily="@font/avenir_black"
 
-        <TextView
-            android:id="@+id/txt_postcode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:gravity="center_vertical"
-            android:text=""
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_20sdp" />
+        android:textAllCaps="true"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_12sdp" />
 
-        <Button
-            android:id="@+id/btn_change"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:background="@drawable/edit_bg_forgot"
-            android:fontFamily="@font/avenir_black"
-            android:text="Change"
-            android:textAllCaps="false"
-            android:textColor="@color/orange" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/btn_change"
 
-</LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/avenir_black"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_3sdp"
+        android:text="Change Location"
+        android:textAllCaps="false"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_12sdp" />
+</RelativeLayout>

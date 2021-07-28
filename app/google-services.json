@@ -8,6 +8,58 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1028511164813:android:1857b7e57e6493cad0f5c4",
+        "android_client_info": {
+          "package_name": "com.easyfoodcustomer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028511164813-lbhn0d9stq3l4mcdq7cj7364072qeh7r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.easyfoodcustomer",
+            "certificate_hash": "1c609eb200acb17079dbc3837f831a58e76fb892"
+          }
+        },
+        {
+          "client_id": "1028511164813-b0se80bauc939uc0dlvcg1cir6837lnu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.easyfoodcustomer",
+            "certificate_hash": "352c4a1ce35111fea27090795771e759c433ab98"
+          }
+        },
+        {
+          "client_id": "1028511164813-2cae9ktgtlnslk7s34f9ik8v3s43s7no.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZt8tduk1FCQCxlMm9J8EhiTCGjRvDCGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028511164813-2cae9ktgtlnslk7s34f9ik8v3s43s7no.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1028511164813-o54q52po1fv6mbe9jrhou70jp6696f97.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.easyfood"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1028511164813:android:7bbf096f5f2dc554",
         "android_client_info": {
           "package_name": "com.lexxdigital.easyfooduserapps"
@@ -56,10 +108,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1028511164813-q3hc83m5vvi7gbda9drk0jroofe1rbl5.apps.googleusercontent.com",
+              "client_id": "1028511164813-o54q52po1fv6mbe9jrhou70jp6696f97.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.lexxd.easyfood"
+                "bundle_id": "com.app.easyfood"
               }
             }
           ]

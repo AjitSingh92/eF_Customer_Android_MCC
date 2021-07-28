@@ -41,6 +41,7 @@
     <color name="dot_light_screen3">#ffffff</color>
     <color name="dot_light_screen4">#ffffff</color>
     <color name="tc1">#828585</color>
+    <color name="transprent">#00FFFFFF</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>

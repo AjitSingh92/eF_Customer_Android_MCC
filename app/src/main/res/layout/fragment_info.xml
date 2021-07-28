@@ -18,7 +18,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
@@ -38,7 +38,7 @@
                         android:layout_height="@dimen/_130sdp"
 
 
-                        tools:context="com.lexxdigital.easyfooduserapps.fragments.InfoFragment" />
+                        tools:context="com.easyfoodcustomer.fragments.InfoFragment" />
 
                     <!--<com.google.android.gms.maps.MapView-->
                     <!--android:id="@+id/mapView2"-->
@@ -86,9 +86,9 @@
                             android:layout_height="@dimen/_10sdp"></LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
@@ -126,6 +126,67 @@
                             android:textSize="@dimen/_14sdp" />
 
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5sdp"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/helvetica_neue_bold"
+                                android:gravity="left|start"
+
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/helvetica_neue_bold"
+                                android:gravity="center_horizontal"
+                                android:text="Delivery"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:gravity="center_horizontal"
+                                android:fontFamily="@font/helvetica_neue_bold"
+                                android:text="Collection"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:gravity="center_horizontal"
+                                android:fontFamily="@font/helvetica_neue_bold"
+                                android:text="Dine In"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/ly_monday"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -144,22 +205,47 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="left|start"
-                                android:text="Monday"
+                                android:text="Mon"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:textSize="@dimen/_10sdp" />
 
                             <TextView
-                                android:id="@+id/time_monday"
+                                android:id="@+id/tv_mon_del"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.4"
+                                android:layout_weight=".5"
+                                android:gravity="center_horizontal"
                                 android:fontFamily="@font/avenir_medium"
-                                android:text="09.00-14.00   17.00-22.00"
+                                android:text="16:00-21:30"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_mon_col"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:gravity="center_horizontal"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_mon_din"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:gravity="center_horizontal"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
+
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -182,22 +268,46 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="left|start"
-                                android:text="Tuesday"
+                                android:text="Tue"
                                 android:textColor="#3c3c3b"
                                 android:textSize="@dimen/_11sdp" />
 
+
                             <TextView
-                                android:id="@+id/time_tuesday"
+                                android:id="@+id/tv_tue_del"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.4"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
-                                android:text="09.00-14.00   17.00-22.00"
+                                android:text="16:00-21:30"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:gravity="center_horizontal"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_tue_col"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_tue_din"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -220,22 +330,46 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="left|start"
-                                android:text="Wednesday"
+                                android:text="Wed"
                                 android:textColor="#3c3c3b"
                                 android:textSize="@dimen/_11sdp" />
 
+
                             <TextView
-                                android:id="@+id/time_wednesday"
+                                android:id="@+id/tv_wed_del"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.4"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
-                                android:text="09.00-14.00   17.00-22.00"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_wed_col"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:textColor="#3c3c3b"
+                                android:gravity="center_horizontal"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_wed_din"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -258,22 +392,46 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="left|start"
-                                android:text="Thursday"
+                                android:text="Thu"
                                 android:textColor="#3c3c3b"
                                 android:textSize="@dimen/_11sdp" />
 
+
                             <TextView
-                                android:id="@+id/time_thursday"
+                                android:id="@+id/tv_thu_del"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.4"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
-                                android:text="09.00-14.00   17.00-22.00"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_thu_col"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_thu_din"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -296,22 +454,45 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="left|start"
-                                android:text="Friday"
+                                android:text="Fri"
                                 android:textColor="#3c3c3b"
                                 android:textSize="@dimen/_11sdp" />
 
                             <TextView
-                                android:id="@+id/time_friday"
+                                android:id="@+id/tv_fri_del"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.4"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
-                                android:text="09.00-14.00   17.00-22.00"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_fri_col"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_fri_din"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -334,22 +515,45 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="left|start"
-                                android:text="Saturday"
+                                android:text="Sat"
                                 android:textColor="#3c3c3b"
                                 android:textSize="@dimen/_11sdp" />
 
                             <TextView
-                                android:id="@+id/time_saturday"
+                                android:id="@+id/tv_sat_del"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.4"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
-                                android:text="09.00-14.00   17.00-22.00"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_sat_col"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_sat_din"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -373,22 +577,45 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
                                 android:gravity="left|start"
-                                android:text="Sunday"
+                                android:text="Sun"
                                 android:textColor="#3c3c3b"
                                 android:textSize="@dimen/_11sdp" />
 
                             <TextView
-                                android:id="@+id/time_sunday"
+                                android:id="@+id/tv_sun_del"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.4"
+                                android:layout_weight=".5"
                                 android:fontFamily="@font/avenir_medium"
-                                android:text="09.00-14.00   17.00-22.00"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
                                 android:textColor="#3c3c3b"
-                                android:textSize="@dimen/_11sdp" />
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_sun_col"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_sun_din"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:fontFamily="@font/avenir_medium"
+                                android:text="16:00-21:30"
+                                android:gravity="center_horizontal"
+                                android:textColor="#3c3c3b"
+                                android:textSize="@dimen/_9sdp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -423,17 +650,17 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/avenir_medium"
                             android:gravity="left|start"
                             android:text="Delivery Areas"
-                            android:fontFamily="@font/avenir_medium"
                             android:textColor="#3c3c3b"
-                            android:textSize="@dimen/_11sdp"/>
+                            android:textSize="@dimen/_11sdp" />
 
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
@@ -460,7 +687,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sdp" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_delivery_areas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -471,10 +698,10 @@
                         android:paddingBottom="@dimen/_10sdp" />
 
                 </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
@@ -521,12 +748,13 @@
                         android:layout_height="@dimen/_60sdp"
                         android:layout_below="@+id/hygine_text"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp" />
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/img_hygine"
+                        android:layout_marginBottom="@dimen/_10sdp" />
 
 
                 </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
         </LinearLayout>

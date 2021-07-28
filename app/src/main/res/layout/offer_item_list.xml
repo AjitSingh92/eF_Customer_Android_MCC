@@ -78,9 +78,10 @@
             android:fontFamily="@font/avenir_roman"
             android:gravity="center"
             android:text="1"
+
             android:textColor="@color/white"
             android:textSize="@dimen/_9sdp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </LinearLayout>
 

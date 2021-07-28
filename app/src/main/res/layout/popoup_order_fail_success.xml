@@ -60,7 +60,7 @@
             android:paddingTop="@dimen/_3sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_3sdp"
-            android:text="ok"
+            android:text="Ok"
             android:textColor="@color/com_facebook_blue"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />

@@ -250,6 +250,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:text="I agree to"
+                        android:textColor="@color/black"
                         android:layout_centerInParent="true" />
 
                     <TextView
@@ -258,6 +260,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_toEndOf="@+id/cb_terms"
+                        android:layout_marginStart="@dimen/_2sdp"
                         android:fontFamily="@font/avenir_medium"
                         android:gravity="center|start"
                         android:text="@string/term"

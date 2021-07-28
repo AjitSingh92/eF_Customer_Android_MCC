@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout.titleLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <CheckBox
+        android:id="@+id/cb.itemSelected"
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:buttonTint="@color/orange"
+        android:clickable="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/cb.itemSelected"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tv.title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight=".8"
+                android:ellipsize="end"
+
+                android:fontFamily="@font/avenir_roman"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/tv.price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                android:textColor="@color/black"
+
+                android:textSize="@dimen/_12sdp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv.modifiers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/avenir_roman"
+            android:text=""
+            android:visibility="gone"
+            android:textSize="@dimen/_10sdp" />
+    </LinearLayout>
+
+
+</RelativeLayout>
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/layout.titleLayout"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="5dp">
+
+<TextView
+    android:id="@+id/tv_productname"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_marginEnd="@dimen/_8sdp"
+    android:layout_toStartOf="@+id/clickCount"
+    android:fontFamily="@font/avenir_roman"
+    android:textColor="@color/black"
+    android:textSize="@dimen/_12sdp"
+
+
+    />
+
+<LinearLayout
+    android:id="@+id/clickCount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_centerVertical="true"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/_5sdp"
+    android:paddingTop="@dimen/_5sdp"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:id="@+id/item_remove"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:background="@drawable/border_circle_orange"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_2sdp"
+            android:layout_gravity="center"
+            android:background="@color/orange"
+
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_count_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:fontFamily="@font/avenir_black"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/descolor"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id="@+id/item_add"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:background="@drawable/border_circle_orange"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/avenir_black"
+
+            android:text="+"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+</LinearLayout>
+
+</RelativeLayout>

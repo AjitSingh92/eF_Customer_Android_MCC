@@ -7,14 +7,14 @@
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".restaurant_details.RestaurantDetailsActivity">
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_40sdp"
         />
 
-    <com.lexxdigital.easyfooduserapps.utility.HeightWrappingViewPager
+    <com.easyfoodcustomer.utility.HeightWrappingViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -16,8 +16,8 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_15sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_15sdp">
 
             <LinearLayout
                 android:id="@+id/ll"
@@ -29,6 +29,7 @@
                 android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
+                    android:id="@+id/tv.headline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
@@ -36,8 +37,21 @@
                     android:gravity="center"
                     android:text="Sign into account"
                     android:textColor="@color/white"
-                    android:id="@+id/tv.headline"
                     android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_guest_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/avenir_black"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Continue as a Guest>"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sdp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -79,8 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fm"
                     android:layout_marginLeft="@dimen/_15sdp"
-                    android:autoText="true"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:autoText="true"
                     android:fontFamily="@font/avenir_black"
                     android:padding="@dimen/_5sdp"
                     android:text="Password"
@@ -172,9 +186,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/forgatPassTv"
                 android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_7sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:gravity="center"
-                android:layout_marginTop="@dimen/_7sdp"
                 android:orientation="horizontal">
 
                 <View

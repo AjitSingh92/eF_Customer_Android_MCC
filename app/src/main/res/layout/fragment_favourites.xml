@@ -11,13 +11,13 @@
 
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipreferesh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/llbotom">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/febList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@color/white"
                 android:focusable="false" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
             android:id="@+id/llbotom"

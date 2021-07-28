@@ -210,13 +210,13 @@
            </RelativeLayout>
 
        </ScrollView>
-       <android.support.v4.widget.SwipeRefreshLayout
+       <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
            android:id="@+id/swipreferesh"
            android:layout_width="match_parent"
            android:layout_above="@+id/add_new_cardll"
            android:layout_height="wrap_content"
            >
-       <android.support.v7.widget.RecyclerView
+       <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/cardList"
            android:visibility="gone"
            android:layout_width="match_parent"
@@ -226,7 +226,7 @@
            android:layout_marginTop="@dimen/_20sdp"
 
            android:background="@android:color/transparent"/>
-       </android.support.v4.widget.SwipeRefreshLayout>
+       </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
        <LinearLayout
            android:id="@+id/add_new_cardll"
            android:layout_width="match_parent"
@@ -236,7 +236,7 @@
            android:background="@android:color/transparent"
            android:paddingBottom="@dimen/_5sdp"
            android:paddingTop="@dimen/_5sdp"
-           android:visibility="visible">
+           android:visibility="gone">
 
            <TextView
                android:id="@+id/add_new_card"

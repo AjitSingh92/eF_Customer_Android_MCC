@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/seme_transparent">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -61,7 +61,7 @@
                     android:src="@mipmap/x_copy"
                     android:visibility="gone" />
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
                     style="@style/TabLayout"
                     android:layout_width="match_parent"
@@ -73,7 +73,7 @@
 
             </RelativeLayout>
 
-            <com.lexxdigital.easyfooduserapps.utility.HeightWrappingViewPager
+            <com.easyfoodcustomer.utility.HeightWrappingViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -92,8 +92,6 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@drawable/border_black_transparent"
                 android:fontFamily="@font/avenir_roman"
-                android:drawableEnd="@mipmap/arrow_right"
-                android:drawableTint="@color/black"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_20sdp"
@@ -141,7 +139,7 @@
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="@string/now"
+                android:text="@string/asap"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
@@ -195,6 +193,6 @@
                 android:layout_centerInParent="true" />
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

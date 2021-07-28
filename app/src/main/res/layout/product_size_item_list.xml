@@ -30,7 +30,7 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:fontFamily="@font/avenir_roman"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="@dimen/_14sdp"
             android:text="Title" />
 
@@ -50,7 +50,7 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list.sizeModifierList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

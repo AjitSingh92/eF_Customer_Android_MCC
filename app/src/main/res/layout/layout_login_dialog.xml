@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_10sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/tv_closed_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/helvetica_neue_bold"
+                android:gravity="center_horizontal"
+                android:text="@string/youe_need_to_login_to_use_this_feature"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp" />
+
+            <TextView
+                android:id="@+id/tv_close_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_closed_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_medium"
+                android:gravity="center_horizontal"
+                android:text="@string/are_you_sure_you_want_to_login"
+                android:textColor="@color/descolor"
+                android:textSize="@dimen/_13sdp" />
+
+            <View
+                android:id="@+id/vw"
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:layout_below="@+id/tv_close_msg"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/seme_transparent" />
+
+            <TextView
+                android:id="@+id/tv_btn_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vw"
+                android:layout_marginStart="@dimen/_35sdp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="@string/no"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="@dimen/_16sdp" />
+
+            <TextView
+                android:id="@+id/tv_btn_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vw"
+                android:layout_marginEnd="@dimen/_35sdp"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="@string/yes"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="@dimen/_16sdp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

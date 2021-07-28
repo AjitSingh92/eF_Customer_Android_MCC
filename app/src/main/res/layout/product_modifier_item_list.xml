@@ -42,7 +42,7 @@
         android:visibility="gone"
         android:paddingBottom="@dimen/_5sdp" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list.modifierList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

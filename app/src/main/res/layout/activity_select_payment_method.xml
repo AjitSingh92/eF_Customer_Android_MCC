@@ -70,7 +70,7 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/showCardList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -300,7 +300,7 @@
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
-                <TextView
+        <!--        <TextView
                     android:id="@+id/pay_with_cash"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="@dimen/_130sdp"
@@ -317,7 +317,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:visibility="gone" />-->
             </LinearLayout>
 
             <TextView

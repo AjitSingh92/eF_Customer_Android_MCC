@@ -50,7 +50,7 @@
     </FrameLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/container_restaurants_details"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -322,6 +322,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
+                            android:id="@+id/ll_distance"
                             android:orientation="vertical">
 
                             <TextView
@@ -448,7 +449,7 @@
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
                     style="@style/TabLayout"
                     android:layout_width="match_parent"
@@ -465,7 +466,7 @@
                       app:cardElevation="@dimen/_4sdp"
                       app:cardBackgroundColor="@color/white">-->
 
-                <com.lexxdigital.easyfooduserapps.utility.HeightWrappingViewPager
+                <com.easyfoodcustomer.utility.HeightWrappingViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -474,7 +475,7 @@
 
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/llbotom"

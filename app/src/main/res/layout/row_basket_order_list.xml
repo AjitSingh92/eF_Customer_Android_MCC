@@ -82,7 +82,7 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/_15sdp"
         android:paddingRight="@dimen/_15sdp">
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/items_list"
             android:visibility="gone"
             android:layout_width="match_parent"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/cb_item"
+        style="@android:style/Widget.CompoundButton.RadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:fontFamily="@font/avenir_black"
+        android:text="Restaurant"
+        android:textSize="@dimen/_13sdp" />
+
+</layout>

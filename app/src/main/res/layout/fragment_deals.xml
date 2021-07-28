@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipreferesh"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/nsv_deal"
@@ -115,14 +115,15 @@
                     android:id="@+id/toolbarid"
                     layout="@layout/toolbar_filter"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_64sdp" />
+                    android:layout_height="wrap_content" />
 
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/restaurant_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:animateLayoutChanges="false"
+                    android:paddingTop="@dimen/_10sdp"
                     android:background="@color/white"
                     android:nestedScrollingEnabled="false" />
 
@@ -154,5 +155,5 @@
 
 
     </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -209,7 +209,7 @@ android:layout_below="@+id/toolbarhide"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent">
-            <android.support.design.widget.TabLayout
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
 
                 android:layout_width="match_parent"
@@ -217,7 +217,7 @@ android:layout_below="@+id/toolbarhide"
                 android:layout_marginBottom="@dimen/_40sdp"
                 />
 
-            <com.lexxdigital.easyfooduserapps.utility.HeightWrappingViewPager
+            <com.easyfoodcustomer.utility.HeightWrappingViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_600sdp"

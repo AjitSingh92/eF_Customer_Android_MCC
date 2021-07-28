@@ -3,17 +3,15 @@
     <string name="currency">\u00a3</string>
 
 
-   <!-- <string name="facebook_app_id">2246223352155867</string>
-    <string name="fb_login_protocol_scheme">fb2246223352155867</string>-->
+    <!-- <string name="facebook_app_id">2246223352155867</string>
+     <string name="fb_login_protocol_scheme">fb2246223352155867</string>-->
 
 
     <string name="facebook_app_id">535154387295634</string>
     <string name="fb_login_protocol_scheme">fb535154387295634</string>
 
 
-
     <string name="geo_api_key">AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM</string>
-
 
 
     <string name="dummy_button">Dummy Button</string>
@@ -25,7 +23,7 @@
     <string name="submit">SUBMIT</string>
     <string name="cancel">Cancel</string>
 
-    <string name="sorry_we_don_t_currently_deliver_in_your_area">Sorry, we don’t currently deliver in your area</string>
+    <string name="sorry_we_don_t_currently_deliver_in_your_area">Sorry, we don’t have any pubs\nor restaurants in your area</string>
     <string name="add_note">Add note</string>
     <string name="No_items_added">No items added</string>
     <string name="your_basket_is_empty_add_items_to_your_order_before_accessing_your_basket">Your basket is empty. Please add items to you order to view your basket</string>
@@ -103,6 +101,9 @@ ou will be sent a varification code to your mobile </string>
     Currently you have no cards saved. Add your debit or credit cardsfor faster payments.
     <string name="easyfood">easyFood</string>
     <string name="continue_as_spencer">Continue as Spencer</string>
+    <string name="continue_">Continue</string>
+    <string name="no_internet_available_msg">No internet connection available.</string>
+    <string name="msg_please_try_later">Something went wrong. Please try later!</string>
     <string name="do_you_have_an_allergy_tap_for_info">Do you have an allergy? Tap for info</string>
     <string name="do_you_want_to_remove_those_and_start_a_new_order_with">Do you want to remove those and start a new order with</string>
     <string name="big_burger">Big Burger</string>
@@ -121,6 +122,7 @@ ou will be sent a varification code to your mobile </string>
     <string name="order_again">Order again</string>
     <string name="order_summary">Order Summary</string>
     <string name="RestaurantsorCuisine">Restaurants</string>
+    <string name="locationCuisine">Locations</string>
     <string name="my_account">My Account</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="Manage_Address">Manage Address</string>
@@ -156,9 +158,9 @@ ou will be sent a varification code to your mobile </string>
     <string name="order_title_2">Order is preparing</string>
     <string name="order_title_3">Order has been prepared and out for delivery</string>
     <string name="order_title_4">Order has been delivered.</string>
-    <string name="restaurent_closed">This restaurant is currently closed </string>
-    <string name="restaurent_closed2">This restaurant is closed </string>
-    <string name="restaurent_closed3">The restaurant is temporarily closed</string>
+    <string name="restaurent_closed">This restaurant is currently closed.</string>
+    <string name="restaurent_closed2">This restaurant is closed.</string>
+    <string name="restaurent_closed3">The restaurant is temporarily closed.</string>
     <string name="pre_order_for_later"> Pre-order for later </string>
 
     <string name="order_title_Details_0">Thank you for placing the order, we will inform you once</string>
@@ -199,10 +201,33 @@ ou will be sent a varification code to your mobile </string>
     <string name="collection">collection</string>
     <string name="now">Now</string>
     <string name="update">Confirm</string>
-    <string name="term">I agree to terms and condition.</string>
-    <string name="hygiene_rating_is_pending">Hygiene rating is pending</string>
+    <string name="term">Terms and Condition.</string>
+    <string name="hygiene_rating_is_pending">Please note, the Food Standards Agency &amp; your Local Authority have yet to give this restaurant or takeaway a food hygiene rating, however as soon as we have the rating, we will be sure to update you.</string>
     <string name="hygiene_rating">The hygiene rating below is given by the Food Standards Agency and your local authority:</string>
     <string name="isFavorate">IS_FAVORITE</string>
     <string name="terms_and_condition"><![CDATA[Terms & Conditions]]></string>
+    <string name="youe_need_to_login_to_use_this_feature">You need to sign-in to\nview this.</string>
+    <string name="are_you_sure_you_want_to_login">Would you like to sign-in now?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="we_are_expanding_fast">"We’re expanding fast, so\nplease check back soon "</string>
+    <string name="back">Back</string>
+    <string name="track_and_trace"><![CDATA[Track & Trace]]></string>
+    <string name="skip">Skip</string>
+    <string name="for_your_safety"><![CDATA[For your safety please complete your details below. In the event of a localised Coronavirus outbreak art this establishment, NHS Track & Trace will contact you.]]></string>
+    <string name="in_the_event_of"><![CDATA[In the event of local Coronavirus outbreak, I agree for my details to be released to NHS Test & Trace. At the request of NHS Track & Trace you agree to supply the contact details of all members of your party. Your data will not be shared with any other 3rd party. Your details will be stored securely, then deleted after 28 days.]]></string>
+    <string name="select_your_serve_style">Select Your Serve Style</string>
+    <string name="delivery">Delivery</string>
+    <string name="collectionn">Collection</string>
+    <string name="dine_in">Dine In</string>
+    <string name="to_change_serve_style">To Change the\nServe Style:</string>
+    <string name="your_cart_will_be_removed">Your cart will be remove after\n change the serve style.</string>
+    <string name="are_sure_you_want_to_change">Are you sure you want\nto change?</string>
+    <string name="update_now">Update Now</string>
+    <string name="asap">ASAP</string>
+    <string name="mobilee">Mobile:</string>
+    <string name="please_add_comments_below_">Please add comments below (Optional)</string>
+    <string name="please_note_changing_your_serve">Please note changing your serve\nstyle will empty your cart</string>
+    <string name="are_sure_you_would_like_to_continue">Are you sure you would like\nto continue?</string>
 
 </resources>

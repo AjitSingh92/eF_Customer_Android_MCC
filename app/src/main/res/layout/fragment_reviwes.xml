@@ -10,22 +10,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-
         android:background="@color/tab_header_color"
         android:orientation="vertical">
 
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_60sdp"
-            android:gravity="center">
+            android:layout_height="@dimen/_60sdp">
 
             <TextView
                 android:id="@+id/overall_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:fontFamily="@font/avenir_black"
-                android:gravity="center"
+android:layout_marginStart="@dimen/_10sdp"
                 android:text="5.0"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18sdp" />
@@ -35,12 +34,26 @@
                 android:id="@+id/rat_5"
                 android:layout_width="@dimen/_22sdp"
                 android:layout_height="@dimen/_22sdp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/overall_rating"
                 android:background="@drawable/rating_star"
                 android:padding="@dimen/_10sdp" />
 
+            <TextView
+                android:id="@+id/on_base"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/avenir_black"
+                android:text="Based on 7 reviews"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
 
-        </LinearLayout>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/on_based"
@@ -49,15 +62,16 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:gravity="center_horizontal"
             android:fontFamily="@font/avenir_medium"
-            android:text="Based On 524 Reviews"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:text="This restaurant is yet to recieve a review. Why not be the first to review this restaurant and help other customers decide where to eat?"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reviewList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

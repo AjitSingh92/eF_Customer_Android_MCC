@@ -96,7 +96,7 @@
     </LinearLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_600sdp"
@@ -141,8 +141,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="5dp"
+
                 android:visibility="visible">
+                <CheckBox
+                    android:id="@+id/cb.itemSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                    android:clickable="false" />
 
                 <TextView
                     android:id="@+id/tv.title"
@@ -154,22 +161,17 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
-                <CheckBox
-                    android:id="@+id/cb.itemSelected"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:clickable="false" />
+
 
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_meal_category"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_10sdp" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/product_modifier"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -178,7 +180,7 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/add_items"

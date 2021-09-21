@@ -149,7 +149,7 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private void bindData(int position) {
             title.setText(mItem.get(position).getProductName());
 
-            if (mItem.get(position).getModifierProductPrice() != null) {
+            if (mItem.get(position).getModifierProductPrice() != null && Double.parseDouble(mItem.get(position).getModifierProductPrice()) > 0) {
                 price.setText("£" + mItem.get(position).getModifierProductPrice());
             }
 
@@ -180,7 +180,7 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 public void onClick(View view) {
 
                     if (modifierItemSelectListener != null) {
-                        modifierItemSelectListener.onModifierItemSelected(parentPosition, mItem,true);
+                        modifierItemSelectListener.onModifierItemSelected(parentPosition, mItem, true);
                     }
 
                     lastSelectedPosition = getAdapterPosition();
@@ -188,9 +188,6 @@ public class ModifierProductAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 }
             });
-
-
-
 
 
         }

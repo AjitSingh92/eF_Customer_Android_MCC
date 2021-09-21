@@ -5,7 +5,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Handler;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -36,6 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         printHashKey(SplashActivity.this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         db = new DatabaseHelper(this);
+        deleteDatabase("cart_db");
 
         try {
             Log.e("VersionName", "" + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);

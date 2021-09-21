@@ -12,11 +12,13 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -436,15 +438,15 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         orderDate.setText(data.getOrderDateTime());
-        subtotal.setText(getString(R.string.currency) +String.format("%.2f",data.getOrderSubtotal()));
-        dicsRate.setText(getString(R.string.currency) + String.format("%.2f",Double.parseDouble(data.getDiscountAmount())));
-        delivRate.setText(getString(R.string.currency) + String.format("%.2f",Double.parseDouble(data.getDeliveryCharge())));
+        subtotal.setText(getString(R.string.currency) + String.format("%.2f", data.getOrderSubtotal()));
+        dicsRate.setText(getString(R.string.currency) + String.format("%.2f", Double.parseDouble(data.getDiscountAmount())));
+        delivRate.setText(getString(R.string.currency) + String.format("%.2f", Double.parseDouble(data.getDeliveryCharge())));
         if (data.getPaymentMode() != null && data.getPaymentMode().trim().length() > 0) {
             String _paymentMode = data.getPaymentMode();
             String firstChat = String.valueOf(_paymentMode.charAt(0)).toUpperCase();
             tvPaidBy.setText("Paid by " + firstChat + _paymentMode.substring(1, _paymentMode.length()));
         }
-        totalPrice.setText(getString(R.string.currency) + String.format("%.2f",Double.parseDouble(data.getOrderTotal())));
+        totalPrice.setText(getString(R.string.currency) + String.format("%.2f", Double.parseDouble(data.getOrderTotal())));
 //        orderItemListView
 //        sub_product_order_list
         Gson gson = new Gson();
@@ -470,7 +472,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                         TextView priceModi = rootModi.findViewById(R.id.price);
 
                         titleModi.setText(productModifiers.get(j).getModifierProducts().get(k).getQuantity() + "x " + productModifiers.get(j).getModifierProducts().get(k).getProductName());
-                        priceModi.setText(getString(R.string.currency) + String.format("%.2f",Double.parseDouble(productModifiers.get(j).getModifierProducts().get(k).getModifierProductPrice())));
+                        Double sizeModifierProductPrice = Double.parseDouble(productModifiers.get(j).getModifierProducts().get(k).getModifierProductPrice()) * Integer.parseInt(productModifiers.get(j).getModifierProducts().get(k).getQuantity());
+
+                        priceModi.setText(getString(R.string.currency) + String.format("%.2f", sizeModifierProductPrice));
                         orderItemListView.addView(rootModi);
                     }
                 }
@@ -488,7 +492,10 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                             TextView priceModi = rootSizeModi.findViewById(R.id.price);
 
                             titleModi.setText(sizeModifierProducts.get(l).getQuantity() + "x " + sizeModifierProducts.get(l).getProductName());
-                            priceModi.setText(getString(R.string.currency) + String.format("%.2f",Double.parseDouble(sizeModifierProducts.get(l).getAmount())));
+
+                            Double sizeModifierProductPrice = Double.parseDouble(sizeModifierProducts.get(l).getAmount()) * sizeModifierProducts.get(l).getQuantity();
+
+                            priceModi.setText(getString(R.string.currency) + String.format("%.2f", sizeModifierProductPrice));
                             orderItemListView.addView(rootSizeModi);
                         }
                     }
@@ -502,7 +509,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                 TextView priceSizeModi = rootSize.findViewById(R.id.price);
 
                 titleSizeModi.setText(menu.getOptions().getSize().getQuantity() + "x " + menu.getOptions().getSize().getProductSizeName());
-                priceSizeModi.setText(getString(R.string.currency) + String.format("%.2f",Double.parseDouble(menu.getOptions().getSize().getProductSizePrice())));
+                Double ProductSizePrice = Double.parseDouble(menu.getOptions().getSize().getProductSizePrice()) * menu.getOptions().getSize().getQuantity();
+
+                priceSizeModi.setText(getString(R.string.currency) + String.format("%.2f", ProductSizePrice));
                 orderItemListView.addView(rootSize);
 
                 for (int j = 0; j < menu.getOptions().getSize().getSizeModifiers().size(); j++) {
@@ -515,7 +524,8 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                         TextView priceModi = rootSizeModi.findViewById(R.id.price);
 
                         titleModi.setText(sizeModifierProducts.get(k).getQuantity() + "x " + sizeModifierProducts.get(k).getProductName());
-                        priceModi.setText(getString(R.string.currency) + String.format("%.2f",Double.parseDouble(sizeModifierProducts.get(k).getAmount())));
+                        Double modePrice = Double.parseDouble(sizeModifierProducts.get(k).getAmount()) * sizeModifierProducts.get(k).getQuantity();
+                        priceModi.setText(getString(R.string.currency) + String.format("%.2f", modePrice));
                         orderItemListView.addView(rootSizeModi);
                     }
 

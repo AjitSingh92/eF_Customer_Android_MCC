@@ -28,6 +28,7 @@ import com.easyfoodcustomer.cart_db.DatabaseHelper;
 import com.easyfoodcustomer.fragments.DealsFragment;
 import com.easyfoodcustomer.model.landing_page_response.RestaurantsDealResponse;
 import com.easyfoodcustomer.restaurant_details.RestaurantDetailsActivity;
+import com.easyfoodcustomer.roomData.AppDatabase;
 import com.easyfoodcustomer.utility.GlobalValues;
 import com.easyfoodcustomer.utility.SharedPreferencesClass;
 
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.easyfoodcustomer.utility.SharedPreferencesClass.OFFERR_DETAL_DFG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> implements Filterable {
 
@@ -51,6 +53,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
     Activity activity;
     SharedPreferencesClass sharePre;
     DatabaseHelper db;
+    private AppDatabase mDB;
 
 
     public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
@@ -65,6 +68,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         this.responseDeals = new ArrayList<>();
         this.respNameFilter = new ArrayList<>();
         this.userID = userid;
+        mDB = AppDatabase.getInstance(getApplicationContext());
         this.activity = activity;
     }
 
@@ -429,6 +433,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
         holder.deliveryVal.setText(mContext.getResources().getString(R.string.currency) + respNameFilter.get(listPosition).getMin_order_value() + " min order");
         holder.deliveryTime.setText(respNameFilter.get(listPosition).getAvgDeliveryTime() + " min");
 */
+
         mDealCardAdapter = new DealCardAdapter(mContext, respNameFilter.get(listPosition), respNameFilter.get(listPosition).getDiscountOffers().size(), listPosition, userID, activity);
         @SuppressLint("WrongConstant")
         LinearLayoutManager horizontalLayoutManagaer2 = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
@@ -512,6 +517,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.MyViewHolder> 
                 sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                 sharePre.setString(sharePre.NOTEPAD, "");
                 db.deleteCart();
+                mDB.saveOrderHistry().deleteAll();
                 Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                 i.putExtra("RESTAURANTID", currentRestId);
                 i.putExtra("RESTAURANTNAME", currentRestuarant);

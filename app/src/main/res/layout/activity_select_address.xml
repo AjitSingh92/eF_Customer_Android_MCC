@@ -58,7 +58,7 @@
             android:fontFamily="@font/avenir_medium"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_below="@+id/toolbarid"
+
             android:layout_marginTop="@dimen/_5sdp"
             android:text="Add or select your delivery addresses"
             android:layout_marginRight="@dimen/_5sdp"

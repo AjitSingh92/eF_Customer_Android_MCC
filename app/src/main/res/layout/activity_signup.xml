@@ -277,7 +277,7 @@
                     android:layout_margin="@dimen/_15sdp"
                     android:fontFamily="@font/avenir_medium"
                     android:gravity="center_horizontal"
-                    android:text="For your security, you will be sent a verification code to your mobile and email"
+                    android:text="For your security, you will be sent a verification code to your email."
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 

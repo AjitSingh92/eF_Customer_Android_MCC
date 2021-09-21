@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+<!--
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
@@ -39,7 +42,7 @@
                 android:textSize="@dimen/_13sdp"
               />
 
-       <!--     <TextView
+       &lt;!&ndash;     <TextView
                 android:id="@+id/order_status"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
@@ -49,7 +52,7 @@
                 android:fontFamily="@font/avenir_medium"
                 android:text=""
                 android:textColor="@color/price_color"
-                android:textSize="@dimen/_13sdp" />-->
+                android:textSize="@dimen/_13sdp" />&ndash;&gt;
         </LinearLayout>
 
 
@@ -98,7 +101,7 @@
             android:layout_marginTop="@dimen/_10sdp"
            android:layout_marginBottom="@dimen/_10sdp">
 
-<!--
+&lt;!&ndash;
             <TextView
                 android:id="@+id/order_item_details"
                 android:layout_width="0dp"
@@ -112,7 +115,7 @@
                 android:textSize="@dimen/_12sdp"
 
                 />
--->
+&ndash;&gt;
             <TextView
                 android:id="@+id/order_status"
                 android:layout_width="wrap_content"
@@ -284,3 +287,329 @@
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+-->
+
+
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/sl_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:clipToPadding="false"
+    app:clickToClose="true">
+
+    <RelativeLayout
+        android:id="@+id/bottom_wrapper_2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:tag="Bottom4">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:background="@color/orange">
+
+
+
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_15sdp"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/white" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/white"
+            android:padding="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
+            card_view:cardElevation="@dimen/_20sdp"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ll_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/rest_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:text="New Restaurant withOUT KYC"
+                        android:textColor="@color/price_color"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <!--     <TextView
+                             android:id="@+id/order_status"
+                             android:layout_width="wrap_content"
+                             android:layout_height="@dimen/_20sdp"
+                             android:layout_marginLeft="@dimen/_10sdp"
+                             android:layout_marginTop="@dimen/_5sdp"
+                             android:layout_marginRight="@dimen/_10sdp"
+                             android:fontFamily="@font/avenir_medium"
+                             android:text=""
+                             android:textColor="@color/price_color"
+                             android:textSize="@dimen/_13sdp" />-->
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/order_no"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_roman"
+                        android:text="Order No. 1234567890"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_10sdp"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/order_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:fontFamily="@font/avenir_roman"
+                        android:text="27/04/2019"
+                        android:textColor="@color/price_color"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp">
+
+                    <!--
+                                <TextView
+                                    android:id="@+id/order_item_details"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginRight="@dimen/_10sdp"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/avenir_roman"
+                                    android:textColor="@color/gray"
+                                    android:textSize="@dimen/_12sdp"
+
+                                    />
+                    -->
+                    <TextView
+                        android:id="@+id/order_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:fontFamily="@font/avenir_medium"
+                        android:text=""
+                        android:textColor="@color/price_color"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/detail_arraw"
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_24sdp"
+
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/ic_chevron_right_black_24dp"
+                            android:backgroundTint="@color/black"
+                            android:fontFamily="@font/avenir_roman"
+                            android:textColor="@color/price_color" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv.reasonForCancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:fontFamily="@font/avenir_roman"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:text="asdasd"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/_8sdp">
+
+                    <LinearLayout
+                        android:id="@+id/cancel_order"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:visibility="gone">
+
+                        <TextView
+
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/btn_grey_corn30"
+                            android:fontFamily="@font/avenir_roman"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:text="Cancel Order"
+                            android:textColor="@color/white"
+                            android:visibility="visible" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/layout_track_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/order_detail"
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_orancle_corn_30"
+                                android:fontFamily="@font/avenir_roman"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingTop="@dimen/_5sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:paddingBottom="@dimen/_5sdp"
+                                android:text="Order Detail"
+                                android:textColor="@color/white"
+                                android:visibility="visible" />
+
+
+                            <TextView
+                                android:id="@+id/track_order"
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:background="@drawable/btn_orancle_corn_30"
+                                android:fontFamily="@font/avenir_roman"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingTop="@dimen/_5sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:paddingBottom="@dimen/_5sdp"
+                                android:text="Track Order"
+                                android:textColor="@color/white"
+                                android:visibility="visible" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_repeat_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/tv.repeatOrder"
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_yellow_corn_30"
+                                android:fontFamily="@font/avenir_roman"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingTop="@dimen/_5sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:paddingBottom="@dimen/_5sdp"
+                                android:text="Repeat Order"
+                                android:textColor="@color/white"
+                                android:visibility="visible" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_black"
+                        android:text="$ 20.0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14sdp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

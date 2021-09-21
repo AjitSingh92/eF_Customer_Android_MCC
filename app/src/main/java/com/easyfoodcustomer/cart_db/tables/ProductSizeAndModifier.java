@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 import androidx.annotation.NonNull;
 
+import com.easyfoodcustomer.cart_db.converters.ProductMainDetailConverter;
+import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_response.ProductMainDetails;
 import com.google.gson.annotations.SerializedName;
 import com.easyfoodcustomer.cart_db.converters.MenuProductSizeConverter;
 import com.easyfoodcustomer.cart_db.converters.ProductModifierConverter;
@@ -64,14 +66,19 @@ public class ProductSizeAndModifier {
         @SerializedName("menuProductSize")
         List<MenuProductSize> menuProductSize;
 
+        @TypeConverters({ProductMainDetailConverter.class})
+        @SerializedName("productMainDetails")
+        ProductMainDetails productMainDetails;
+
         @Ignore
         public ProductSizeAndModifierTable() {
         }
 
-        public ProductSizeAndModifierTable(@NonNull String productId, List<ProductModifier> productModifiers, List<MenuProductSize> menuProductSize) {
+        public ProductSizeAndModifierTable(@NonNull String productId, List<ProductModifier> productModifiers, List<MenuProductSize> menuProductSize, ProductMainDetails productMainDetails) {
             this.productId = productId;
             this.productModifiers = productModifiers;
             this.menuProductSize = menuProductSize;
+            this.productMainDetails = productMainDetails;
         }
 
         @NonNull
@@ -99,12 +106,21 @@ public class ProductSizeAndModifier {
             this.menuProductSize = menuProductSize;
         }
 
+        public ProductMainDetails getProductMainDetails() {
+            return productMainDetails;
+        }
+
+        public void setProductMainDetails(ProductMainDetails productMainDetails) {
+            this.productMainDetails = productMainDetails;
+        }
+
         @Override
         public String toString() {
             return "Data{" +
                     "productId='" + productId + '\'' +
                     ", productModifiers=" + productModifiers +
                     ", menuProductSize=" + menuProductSize +
+                    ", productMainDetails=" + productMainDetails +
                     '}';
         }
     }

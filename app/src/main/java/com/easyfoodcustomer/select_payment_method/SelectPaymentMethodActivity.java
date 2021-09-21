@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,8 +31,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easyfoodcustomer.adapters.RecyclerLayoutManager;
+import com.easyfoodcustomer.fragments.MyCartFragment;
+import com.easyfoodcustomer.modelsNew.CartDatRequestNew;
+import com.easyfoodcustomer.modelsNew.CartDataNew;
+import com.easyfoodcustomer.modelsNew.CartProdctListModel;
+import com.easyfoodcustomer.modelsNew.CheckoutModel;
+import com.easyfoodcustomer.modelsNew.MealDetailsModel;
 import com.easyfoodcustomer.order_details_activity.OrderDetailActivity;
 import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_response.MenuProductList;
+import com.easyfoodcustomer.roomData.AppDatabase;
+import com.easyfoodcustomer.roomData.OrderSaveModel;
+import com.easyfoodcustomer.ui_new.MealCartAdapter;
 import com.easyfoodcustomer.utility.Helper;
 import com.easyfoodcustomer.utility.PrefManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -59,7 +70,14 @@ import com.easyfoodcustomer.utility.ApiClient;
 import com.easyfoodcustomer.utility.Constants;
 import com.easyfoodcustomer.utility.GlobalValues;
 import com.easyfoodcustomer.utility.SharedPreferencesClass;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,9 +93,20 @@ import retrofit2.Response;
 
 import static com.easyfoodcustomer.utility.Helper.formatDateTime;
 import static com.easyfoodcustomer.utility.Helper.isInternetOn;
+import static com.easyfoodcustomer.utility.SharedPreferencesClass.IS_FOR_TABLE;
+import static com.easyfoodcustomer.utility.SharedPreferencesClass.SERVE_STYLE;
+import static com.easyfoodcustomer.utility.SharedPreferencesClass.TABLE_NO;
+import static com.easyfoodcustomer.utility.SharedPreferencesClass.TABLE_TYPE;
 import static com.easyfoodcustomer.utility.UserContants.AUTH_TOKEN;
+import static com.easyfoodcustomer.utility.UserContants.IS_OFFERED;
+import static com.easyfoodcustomer.utility.UserContants.MIN_VALUE;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_ID;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_PRICE;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_TYPE;
 import static com.easyfoodcustomer.utility.UserContants.POST_CODE_NEW;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
+/*Line no 396*/
 public class SelectPaymentMethodActivity extends AppCompatActivity implements SaveCardAdapter.PositionInterface {
     SharedPreferencesClass sharedPreferencesClass;
     @BindView(R.id.showCardList)
@@ -88,8 +117,8 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     TextView addNewCard;
     @BindView(R.id.ll)
     LinearLayout ll;
-   /* @BindView(R.id.pay_with_cash)
-    TextView payWithCash;*/
+    @BindView(R.id.pay_with_cash)
+    TextView payWithCash;
     ArrayList<String> check = new ArrayList<>();
     SaveCardAdapter.PositionInterface mPositionInterface;
     SaveCardAdapter mDealCardAdapter;
@@ -127,11 +156,16 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     private String deliveryTime;
     private String deliveryPartnerId = "";
 
+    private AppDatabase mDb;
+
+    private CartDatRequestNew cartDatRequestNew;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_payment_method);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -170,7 +204,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
 
         }
 
-        /*if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
+        if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
             if (sharedPreferencesClass.getInt(SharedPreferencesClass.IS_FOR_TABLE) == 1) {
                 payWithCash.setText("Pay at Restaurant");
                 //addNewCard.setText("Pay by Card to Server");
@@ -178,13 +212,14 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
             if (deliveryPartnerId != null && !deliveryPartnerId.trim().isEmpty()) {
                 payWithCash.setVisibility(View.GONE);
             } else {
-                payWithCash.setVisibility(View.VISIBLE);
+                payWithCash.setVisibility(View.GONE);
+                //payWithCash.setVisibility(View.VISIBLE);
             }
 
 
         } else {
             payWithCash.setVisibility(View.GONE);
-        }*/
+        }
 
         if (isInternetOn(SelectPaymentMethodActivity.this)) {
             getCardList();
@@ -215,240 +250,397 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     }
 
 
-    private CartDatRequest makeData2() {
-        CartDatRequest cartDatRequest = new CartDatRequest();
+    private void makeData2() {
+        cartDatRequestNew = new CartDatRequestNew();
         try {
             // cartDatRequest.setCartData(db.getCartData());
-            cartDatRequest.setRestaurantId(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
-            cartDatRequest.setRestaurantName(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantName());
-            cartDatRequest.setPostCode(val.getRestaurantDetailsResponse().getData().getRestaurants().getPostCode());
-            cartDatRequest.setTotalCartPrice(totalAmount);
-            cartDatRequest.setOrderType(orderType.toLowerCase());
-            cartDatRequest.setDeliveryCharge(deliveryFee);
-            cartDatRequest.setMaxLength(String.valueOf(Constants.MAX_LENGTH));
-            cartDatRequest.setVoucherDiscount(voucherDiscount);
-            cartDatRequest.setVoucherCode(voucherCode);
-            cartDatRequest.setRestaurantSlug(sharedPreferencesClass.getString(sharedPreferencesClass.RESTAURANT_NAME_SLUG));
-            cartDatRequest.setIsTableBooking(sharedPreferencesClass.getInt(SharedPreferencesClass.IS_FOR_TABLE));
-            cartDatRequest.setUnitType(sharedPreferencesClass.getString(SharedPreferencesClass.UNIT_TYPE));
-            cartDatRequest.setUnitNumber(sharedPreferencesClass.getString(SharedPreferencesClass.TABLE_NO));
-            cartDatRequest.setUnitId(sharedPreferencesClass.getString(SharedPreferencesClass.UNIT_ID));
+            cartDatRequestNew.setRestaurantId(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
+            cartDatRequestNew.setRestaurantName(val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantName());
+            cartDatRequestNew.setPostCode(val.getRestaurantDetailsResponse().getData().getRestaurants().getPostCode());
+            cartDatRequestNew.setTotalCartPrice(totalAmount);
+            cartDatRequestNew.setOrderType(orderType.toLowerCase());
+            cartDatRequestNew.setDeliveryCharge(deliveryFee);
+            cartDatRequestNew.setMaxLength(String.valueOf(Constants.MAX_LENGTH));
+            cartDatRequestNew.setVoucherDiscount(voucherDiscount);
+            cartDatRequestNew.setVoucherCode(voucherCode);
+            cartDatRequestNew.setRestaurantSlug(sharedPreferencesClass.getString(sharedPreferencesClass.RESTAURANT_NAME_SLUG));
+            cartDatRequestNew.setIsTableBooking(sharedPreferencesClass.getInt(SharedPreferencesClass.IS_FOR_TABLE));
+            cartDatRequestNew.setUnitType(sharedPreferencesClass.getString(SharedPreferencesClass.UNIT_TYPE));
+            cartDatRequestNew.setUnitNumber(sharedPreferencesClass.getString(SharedPreferencesClass.TABLE_NO));
+            cartDatRequestNew.setUnitId(sharedPreferencesClass.getString(SharedPreferencesClass.UNIT_ID));
 
-            /*----------------------------------*/
-
-
-          /*  CartData cartDataForRequest = new CartData();
+            CartDataNew cartDataForRequest = new CartDataNew();
             CartData data = db.getCartData();
             cartDataForRequest.setSpecialOffers(data.getSpecialOffers());
             cartDataForRequest.setUpsellProducts(data.getUpsellProducts());
-            List<MenuProduct> cartMenu = new ArrayList<>();
-            List<MenuCategoryCart> menuCategoryCartsRequest = new ArrayList<>();
 
-            for (MenuCategoryCart menuCategoryCart : data.getMenuCategoryCarts()) {
-                for (MenuProduct menuProduct : menuCategoryCart.getMenuProducts()) {
-                    // (String menuCategoryId, String menuCategoryName, List<MenuCategoryCart> menuSubCategory, List<MenuProduct> menuProducts)
-                    cartMenu.add(menuProduct);
-                    MenuCategoryCart menuCart = new MenuCategoryCart(menuCategoryCart.getMenuCategoryId(), menuProduct.getProductName(), menuCategoryCart.getMenuSubCategory(), cartMenu);
-                    menuCategoryCartsRequest.add(menuCart);
+            Log.e("SIZE MODIFIER", cartDatRequestNew.toString());
 
-                }
-                for (MenuCategoryCart menuCategoryCart1 : menuCategoryCart.getMenuSubCategory()) {
-                    for (MenuProduct menuProduct : menuCategoryCart1.getMenuProducts()) {
-                        cartMenu.add(menuProduct);
-                        MenuCategoryCart menuCart = new MenuCategoryCart(menuCategoryCart.getMenuCategoryId(), menuProduct.getProductName(), menuCategoryCart.getMenuSubCategory(), cartMenu);
-                        menuCategoryCartsRequest.add(menuCart);
-                    }
-                }
+            mDb.saveOrderHistry().loadAllHistory().observe(this, new androidx.lifecycle.Observer<List<OrderSaveModel>>() {
+                @Override
+                public void onChanged(@Nullable List<OrderSaveModel> orderSaveModelList) {
 
-                //menuCategoryCartsRequest.add(menuCategoryCart);
+                    List<CheckoutModel> checkoutModelList = new ArrayList<>();
 
-            }
-            cartDataForRequest.setMenuCategoryCarts(menuCategoryCartsRequest);
+                    for (int i = 0; i < orderSaveModelList.size(); i++) {
+                        CheckoutModel checkoutModel = new CheckoutModel();
 
-            cartDatRequest.setCartData(cartDataForRequest);*/
+                        checkoutModel.setId(0);
+                        checkoutModel.setMenuId(0);
+                        checkoutModel.setMenuCategoryId(orderSaveModelList.get(i).getMealID());
+                        checkoutModel.setMenuCategoryName(orderSaveModelList.get(i).getMealName());
 
 
-            CartData cartDataForRequest = new CartData();
-            CartData data = db.getCartData();
-            cartDataForRequest.setSpecialOffers(data.getSpecialOffers());
-            cartDataForRequest.setUpsellProducts(data.getUpsellProducts());
-            List<MenuProduct> cartMenu = new ArrayList<>();
-            List<MenuCategoryCart> menuCategoryCartsRequest = new ArrayList<>();
-            List<MealProduct> mealProducts = new ArrayList<>();
-            MenuProductList menuProductList = new MenuProductList();
-            List<Modifier> mealModifiers = new ArrayList<>();
+                        List<CheckoutModel.MenuProductsDTO> menuProductsDTOList = new ArrayList<>();
+
+                        CheckoutModel.MenuProductsDTO menuProductsDTO = new CheckoutModel.MenuProductsDTO();
+
+                        menuProductsDTO.setId(orderSaveModelList.get(i).getMealID());
+                        menuProductsDTO.setMenuId(0);
+                        menuProductsDTO.setMenuSubCategoryId(0);
+                        menuProductsDTO.setAmount(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                        menuProductsDTO.setMenuProductPrice(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                        menuProductsDTO.setOriginalAmount1(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                        menuProductsDTO.setOriginalAmount(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                        menuProductsDTO.setProductName(orderSaveModelList.get(i).getMealName());
+                        menuProductsDTO.setQuantity(orderSaveModelList.get(i).getItemCount());
+                        menuProductsDTO.setOriginalQuantity(orderSaveModelList.get(i).getItemCount());
+                        menuProductsDTO.setVegType(orderSaveModelList.get(i).getVegType());
+                        menuProductsDTO.setMenuProductId(orderSaveModelList.get(i).getMealID());
 
 
-            for (MenuCategoryCart menuCategoryCart : data.getMenuCategoryCarts()) {
+                        List<CheckoutModel.MenuProductsDTO.MealProductsDTO> mealProducts = new ArrayList<>();
+                        MealDetailsModel mealDetailsModel = new Gson().fromJson(orderSaveModelList.get(i).getData(), MealDetailsModel.class);
 
-                for (MenuProduct menuProduct : menuCategoryCart.getMenuProducts()) {
-                    mealProducts = new ArrayList<>();
-                    mealModifiers = new ArrayList<>();
-                    if (menuProduct.getMealProducts() != null && menuProduct.getMealProducts().size() > 0) {
+                        List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO> list = new ArrayList<>();
+
+                        if (mealDetailsModel != null) {
+                            for (int j = 0; j < mealDetailsModel.getMeal_config().size(); j++) {
+
+                                for (int k = 0; k < mealDetailsModel.getMeal_config().get(j).getProducts().size(); k++) {
+
+                                    if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getNoOfCount() > 0) {
+
+                                        if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().size() > 0) {
+                                            CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO sizeModifierProductsDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO();
+                                            sizeModifierProductsDTO.setUnit("");
+
+                                            sizeModifierProductsDTO.setQuantity(orderSaveModelList.get(i).getItemCount());
+                                            sizeModifierProductsDTO.setProductId(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_id());
+                                            sizeModifierProductsDTO.setProductName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_name());
+                                            if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price() != null && !mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price().trim().isEmpty()) {
+                                                sizeModifierProductsDTO.setAmount(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price()));
+                                                sizeModifierProductsDTO.setOriginalAmount1(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price()));
+                                                sizeModifierProductsDTO.setModifierProductPrice(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price()));
+                                            } else {
+                                                if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_price() != null && !mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_price().trim().isEmpty()) {
+                                                    sizeModifierProductsDTO.setOriginalAmount1(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_price()));
+                                                    sizeModifierProductsDTO.setModifierProductPrice(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_price()));
+                                                    sizeModifierProductsDTO.setAmount(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_price()));
+                                                } else {
+                                                    sizeModifierProductsDTO.setOriginalAmount1(0.0);
+                                                    sizeModifierProductsDTO.setModifierProductPrice(0.0);
+                                                    sizeModifierProductsDTO.setAmount(0.0);
+                                                }
+                                            }
+
+                                            sizeModifierProductsDTO.setOriginalQuantity(orderSaveModelList.get(i).getItemCount());
+                                            if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size() != null && mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().size() > 0) {
+                                                if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(0).getSize_modifiers() != null && mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(0).getSize_modifiers().size() > 0) {
+                                                    sizeModifierProductsDTO.setMax_allowed_quantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(0).getSize_modifiers().get(0).getMax_allowed_quantity());
+                                                }
+                                            } else {
+
+                                            }
+                                            list.add(sizeModifierProductsDTO);
+
+                                            for (int m = 0; m < mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().size(); m++) {
+                                                for (int n = 0; n < mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().size(); n++) {
+
+                                                    for (int p = 0; p < mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getSize_modifier_products().size(); p++) {
+                                                        MealDetailsModel.MealConfigBean.ProductsBean.MenuProductSizeBean.SizeModifiersBean.SizeModifierProductsBean sizeModifierProductsBean = mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getSize_modifier_products().get(p);
+
+                                                        if (sizeModifierProductsBean.getNoOfCount() > 0) {
+
+                                                            CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO sizeModifierProductsDTOOne = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO();
+                                                            sizeModifierProductsDTOOne.setUnit("other");
+                                                            sizeModifierProductsDTOOne.setAmount(Double.parseDouble(sizeModifierProductsBean.getModifier_product_price()));
+                                                            sizeModifierProductsDTOOne.setQuantity(sizeModifierProductsBean.getNoOfCount());
+                                                            sizeModifierProductsDTOOne.setProductId(sizeModifierProductsBean.getProduct_id());
+                                                            sizeModifierProductsDTOOne.setProductName(sizeModifierProductsBean.getProduct_name());
+                                                            sizeModifierProductsDTOOne.setOriginalAmount1(Double.parseDouble(sizeModifierProductsBean.getModifier_product_price()));
+                                                            sizeModifierProductsDTOOne.setModifierProductPrice(Double.parseDouble(sizeModifierProductsBean.getModifier_product_price()));
+                                                            sizeModifierProductsDTOOne.setOriginalQuantity(sizeModifierProductsBean.getNoOfCount());
+                                                            sizeModifierProductsDTOOne.setMax_allowed_quantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getMax_allowed_quantity());
+                                                            list.add(sizeModifierProductsDTOOne);
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO sizeModifierProductsDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO();
+                                            sizeModifierProductsDTO.setUnit("");
+
+                                            sizeModifierProductsDTO.setQuantity(orderSaveModelList.get(i).getItemCount());
+                                            sizeModifierProductsDTO.setProductId(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_id());
+                                            sizeModifierProductsDTO.setProductName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_name());
+
+                                            if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price() != null && !mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price().trim().isEmpty()) {
+                                                sizeModifierProductsDTO.setModifierProductPrice(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price()));
+                                                sizeModifierProductsDTO.setOriginalAmount1(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price()));
+                                                sizeModifierProductsDTO.setAmount(Double.parseDouble(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getSelling_price()));
+                                            } else {
+                                                sizeModifierProductsDTO.setModifierProductPrice(0.0);
+                                                sizeModifierProductsDTO.setOriginalAmount1(0.0);
+                                                sizeModifierProductsDTO.setAmount(0.0);
+                                            }
+
+                                            sizeModifierProductsDTO.setOriginalQuantity(orderSaveModelList.get(i).getItemCount());
+                                            // sizeModifierProductsDTO.setMax_allowed_quantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getAllowed_quantity());
+                                            sizeModifierProductsDTO.setMax_allowed_quantity(1);
+                                            list.add(sizeModifierProductsDTO);
+                                        }
 
 
-                        for (int i = 0; i < menuProduct.getMealProducts().size(); i++) {
-                            if (i > 0) {
-                                Modifier modifier = new Modifier(menuProduct.getMealProducts().get(i).getProductId(),
-                                        "", menuProduct.getMealProducts().get(i).getProductSizePrice(),
-                                        menuProduct.getMealProducts().get(i).getProductName(),
-                                        String.valueOf(menuProduct.getMealProducts().get(i).getQuantity()),
-                                        String.valueOf(menuProduct.getMealProducts().get(i).getQuantity()),
-                                        Double.parseDouble("0"),
-                                        Double.parseDouble("0"));
-                                mealModifiers.add(modifier);
-                            }
-                        }
-
-                        for (MealProduct mealProduct : menuProduct.getMealProducts()) {
-
-
-                            if (mealProduct.getMenuProductSize() != null && mealProduct.getMenuProductSize().size() > 0) {
-                                mealProduct.setAmount(mealProduct.getMenuProductSize().get(0).getAmount());
-                                mealProduct.setOriginalAmount(mealProduct.getMenuProductSize().get(0).getOriginalAmount());
-                                mealProduct.setOriginalQuantity(mealProduct.getMenuProductSize().get(0).getOriginalQuantity());
-                                mealProduct.setProductSizePrice(mealProduct.getMenuProductSize().get(0).getProductSizePrice());
-                                mealProduct.setSizeModifiers(mealProduct.getMenuProductSize().get(0).getSizeModifiers());
-                                List<Modifier> mod = mealProduct.getSizeModifiers().get(mealProduct.getSizeModifiers().size() - 1).getModifier();
-                                mod.addAll(mealModifiers);
-                                mealProduct.getSizeModifiers().get(mealProduct.getSizeModifiers().size() - 1).setModifier(mod);
-                                mealProduct.setMenuProductSize(null);
-
-                            }
-                            if (mealProducts.size() == 0)
-                                mealProducts.add(mealProduct);
-                        }
-
-
-                    }
-                    menuProduct.setMealProducts(mealProducts);
-                    cartMenu.add(menuProduct);
-                    List<MenuProduct> menProd = new ArrayList<>();
-                    menProd.add(menuProduct);
-                    MenuCategoryCart menuCart = new MenuCategoryCart(menuCategoryCart.getMenuCategoryId(), menuProduct.getProductName(), menuCategoryCart.getMenuSubCategory(), menProd);
-                    menuCategoryCartsRequest.add(menuCart);
-
-                }
-
-                for (MenuCategoryCart menuCategoryCart1 : menuCategoryCart.getMenuSubCategory()) {
-                    for (MenuProduct menuProduct : menuCategoryCart1.getMenuProducts()) {
-                        cartMenu.add(menuProduct);
-                        List<MenuProduct> menProd = new ArrayList<>();
-                        menProd.add(menuProduct);
-                        MenuCategoryCart menuCart = new MenuCategoryCart(menuCategoryCart.getMenuCategoryId(), menuProduct.getProductName(), menuCategoryCart.getMenuSubCategory(), menProd);
-                        menuCategoryCartsRequest.add(menuCart);
-                    }
-                }
-
-                //menuCategoryCartsRequest.add(menuCategoryCart);
-
-            }
-            cartDataForRequest.setMenuCategoryCarts(menuCategoryCartsRequest);
-
-            cartDatRequest.setCartData(cartDataForRequest);
-        /*    HashMap<Integer, List<SizeModifier>> sizeModifiersDataMap = new HashMap<>();
-            CartData cartDataForRequest = new CartData();
-
-
-            CartData cartData = db.getCartData();
-            cartDataForRequest.setSpecialOffers(cartData.getSpecialOffers());
-            cartDataForRequest.setUpsellProducts(cartData.getUpsellProducts());
-
-            int count = 0;
-            for (MenuCategoryCart menuCategoryCart : cartData.getMenuCategoryCarts()) {
-                List<MenuProduct> menuProducts = menuCategoryCart.getMenuProducts();
-                for (MenuProduct menuProduct : menuProducts) {
-                    List<MealProduct> mealProducts = menuProduct.getMealProducts();
-                    if (mealProducts != null) {
-                        for (MealProduct mealProduct : mealProducts) {
-                            List<MenuProductSize> menuProductSize = mealProduct.getMenuProductSize();
-                            if (menuProductSize != null) {
-                                for (MenuProductSize productSize : menuProductSize) {
-                                    sizeModifiersDataMap.put(count, productSize.getSizeModifiers());
+                                    }
                                 }
+
                             }
 
                         }
-                    }
-                }
-                count++;
-            }
 
-            count = 0;
-            List<MenuCategoryCart> menuCategoryCartsRequest = new ArrayList<>();
-            for (MenuCategoryCart menuCategoryCart : cartData.getMenuCategoryCarts()) {
-                MenuCategoryCart menuCategoryCartRequest = menuCategoryCart;
+                        if (mealDetailsModel != null && isMealProduect(mealDetailsModel)) {
+                            for (int j = 0; j < 1; j++) {
+                                List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO> sizeModifiersDTOS = new ArrayList<>();
+                                CheckoutModel.MenuProductsDTO.MealProductsDTO mealProductsDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO();
+                                mealProductsDTO.setAmount(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                                mealProductsDTO.setQuantity(String.valueOf(mealDetailsModel.getMeal_config().get(j).getProduct_quantity()));
+                                mealProductsDTO.setOroginalQuantity(String.valueOf(mealDetailsModel.getMeal_config().get(j).getProduct_quantity()));
+                                mealProductsDTO.setOriginalAmount(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                                mealProductsDTO.setProductSizePrice(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                                mealProductsDTO.setSelected(true);
+                                mealProductsDTO.setProductSizeName(mealDetailsModel.getMeal_config().get(j).getProduct_size_name());
+                                for (int k = 0; k < mealDetailsModel.getMeal_config().get(j).getProducts().size(); k++) {
+                                    if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getNoOfCount() > 0) {
+                                        if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_size_id() != null) {
+                                            mealProductsDTO.setProductSizeId(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_size_id());
+                                        } else {
+                                            mealProductsDTO.setProductSizeId("");
+                                        }
+                                        break;
+                                    }
 
-                List<MenuProduct> menuProductsRequest = new ArrayList<>();
-
-                for (MenuProduct menuProduct : menuCategoryCart.getMenuProducts()) {
-                    MenuProduct menuProductRequest = menuProduct;
-
-                    List<MealProduct> mealProducts = menuProduct.getMealProducts();
-                    if (mealProducts != null) {
-                        List<Modifier> mealProductNoMenuProductSize = new ArrayList<>();
-
-                        for (int i = 0; i < mealProducts.size(); i++) {
-                            if (mealProducts.get(i).getMenuProductSize() == null) {
-                                Modifier modifier = new Modifier();
-                                modifier.setAmount(0d);
-                                modifier.setModifierProductPrice("0");
-                                modifier.setOriginalAmount1(0d);
-                                modifier.setOriginalQuantity(String.valueOf(mealProducts.get(i).getQuantity()));
-                                modifier.setProductId(mealProducts.get(i).getProductId());
-                                modifier.setProductName(mealProducts.get(i).getProductName());
-                                modifier.setQuantity(String.valueOf(mealProducts.get(i).getQuantity()));
-                                modifier.setUnit("");
-
-                                mealProductNoMenuProductSize.add(modifier);
-                            }
-                        }
-
-                        List<SizeModifier> sizeModifiers = sizeModifiersDataMap.get(count);
-                        for (int i = 0; i < sizeModifiers.size(); i++) {
-                            if (i + 1 == sizeModifiers.size()) {
-                                List<Modifier> modifier = sizeModifiers.get(i).getModifier();
-                                modifier.addAll(mealProductNoMenuProductSize);
-                                sizeModifiers.get(i).setModifier(modifier);
-                            }
-                        }
-                        List<MealProduct> mealProductsRequest = new ArrayList<>();
-                        for (int i = 0; i < mealProducts.size(); i++) {
-                            if (i + 1 == mealProducts.size()) {
-                                MealProduct mealProduct = mealProducts.get(0);
-                                mealProduct.setSizeModifiers(sizeModifiers);
-                                mealProductsRequest.add(mealProduct);
-                            } else {
-                                MealProduct mealProduct = mealProducts.get(i);
-                                if (mealProducts.get(i).getMenuProductSize() != null && mealProducts.get(i).getMenuProductSize().size() > 0) {
-                                    mealProduct.setSizeModifiers(mealProducts.get(i).getMenuProductSize().get(0).getSizeModifiers());
                                 }
-                                mealProductsRequest.add(mealProduct);
-                            }
-                        }
-                        List<MealProduct> mealProductsRequests = new ArrayList<>();
-                        if (mealProductsRequest.size() > 0) {
-                            mealProductsRequests.add(mealProductsRequest.get(0));
-                        }
-                        menuProductRequest.setMealProducts(mealProductsRequests);
+                                boolean isLoopExecuted = false;
+                                for (int k = 0; k < mealDetailsModel.getMeal_config().get(j).getProducts().size(); k++) {
 
-                    }
-                    menuProductsRequest.add(menuProductRequest);
-                }
-                menuCategoryCartRequest.setMenuProducts(menuProductsRequest);
-                menuCategoryCartsRequest.add(menuCategoryCartRequest);
-                count++;
-            }
+                                    if (!isLoopExecuted && mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getNoOfCount() > 0) {
+                                        /*if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().size() > 0) {
+                                            for (int m = 0; m < mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().size(); m++) {
 
-            cartDataForRequest.setMenuCategoryCarts(menuCategoryCartsRequest);
+                                                for (int n = 0; n < mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().size(); n++) {
+                                                    CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO sizeModifiersDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO();
 
-            cartDatRequest.setCartData(cartDataForRequest);
+                                                    sizeModifiersDTO.setModifierType(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getModifier_type());
+                                                    sizeModifiersDTO.setMinAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getMin_allowed_quantity());
+                                                    sizeModifiersDTO.setMaxAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getMax_allowed_quantity());
+                                                    sizeModifiersDTO.setModifierId(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getModifier_id());
+                                                    sizeModifiersDTO.setModifierName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getModifier_name());
+                                                    List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO> sizeModifierProducts = new ArrayList<>();
+
+                                                    for (int q = 0; q < list.size(); q++) {
+                                                        if (list.get(q).getMax_allowed_quantity() == mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getMax_allowed_quantity()) {
+                                                            sizeModifierProducts.add(list.get(q));
+                                                        }
+                                                    }
+                                                    sizeModifiersDTO.setSizeModifierProducts(sizeModifierProducts);
+                                                    sizeModifiersDTOS.add(sizeModifiersDTO);
+                                                    isLoopExecuted = true;
+                                                }
+                                                break;
+                                            }
+                                        } else {
+                                            if (list.size() > 0) {
+                                                CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO sizeModifiersDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO();
+
+                                                sizeModifiersDTO.setModifierType("");
+                                                sizeModifiersDTO.setMinAllowedQuantity(0);
+                                                sizeModifiersDTO.setMaxAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getAllowed_quantity());
+                                                sizeModifiersDTO.setModifierId("");
+                                                sizeModifiersDTO.setModifierName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_name());
+                                                List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO> sizeModifierProducts = new ArrayList<>();
+
+                                                for (int q = 0; q < list.size(); q++) {
+
+                                                    sizeModifierProducts.add(list.get(q));
+
+                                                }
+                                                sizeModifiersDTO.setSizeModifierProducts(sizeModifierProducts);
+                                                sizeModifiersDTOS.add(sizeModifiersDTO);
+                                                break;
+                                            }
+
+                                        }
 */
-            Log.e("SIZE MODIFIER", cartDatRequest.toString());
+
+
+                                        if (list.size() > 0) {
+                                            CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO sizeModifiersDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO();
+
+                                            sizeModifiersDTO.setModifierType("");
+                                            sizeModifiersDTO.setMinAllowedQuantity(0);
+                                            sizeModifiersDTO.setMaxAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getAllowed_quantity());
+                                            sizeModifiersDTO.setModifierId("");
+                                            sizeModifiersDTO.setModifierName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_name());
+                                            List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO> sizeModifierProducts = new ArrayList<>();
+
+                                            for (int q = 0; q < list.size(); q++) {
+
+                                                sizeModifierProducts.add(list.get(q));
+
+                                            }
+                                            sizeModifiersDTO.setSizeModifierProducts(sizeModifierProducts);
+                                            sizeModifiersDTOS.add(sizeModifiersDTO);
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                mealProductsDTO.setSizeModifiers(sizeModifiersDTOS);
+
+                                mealProducts.add(mealProductsDTO);
+                            }
+                        } else {
+                            if (mealDetailsModel != null) {
+                                for (int j = 0; j < mealDetailsModel.getMeal_config().size(); j++) {
+                                    if (mealDetailsModel.getMeal_config().get(j).getNoOfCount() > 0) {
+                                        List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO> sizeModifiersDTOS = new ArrayList<>();
+                                        CheckoutModel.MenuProductsDTO.MealProductsDTO mealProductsDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO();
+                                        mealProductsDTO.setAmount(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                                        mealProductsDTO.setQuantity(String.valueOf(mealDetailsModel.getMeal_config().get(j).getProduct_quantity()));
+                                        mealProductsDTO.setOroginalQuantity(String.valueOf(mealDetailsModel.getMeal_config().get(j).getProduct_quantity()));
+                                        mealProductsDTO.setOriginalAmount(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                                        mealProductsDTO.setProductSizePrice(Double.parseDouble(orderSaveModelList.get(i).getMealPrice()));
+                                        mealProductsDTO.setSelected(true);
+                                        mealProductsDTO.setProductSizeName(mealDetailsModel.getMeal_config().get(j).getProduct_size_name());
+                                        for (int k = 0; k < mealDetailsModel.getMeal_config().get(j).getProducts().size(); k++) {
+                                            if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getNoOfCount() > 0) {
+                                                if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_size_id() != null) {
+                                                    mealProductsDTO.setProductSizeId(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_size_id());
+                                                } else {
+                                                    mealProductsDTO.setProductSizeId("");
+                                                }
+                                                break;
+                                            }
+
+                                        }
+                                        boolean isLoopExecuted = false;
+                                        for (int k = 0; k < mealDetailsModel.getMeal_config().get(j).getProducts().size(); k++) {
+
+                                            if (!isLoopExecuted && mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getNoOfCount() > 0) {
+                                        /*if (mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().size() > 0) {
+                                            for (int m = 0; m < mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().size(); m++) {
+
+                                                for (int n = 0; n < mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().size(); n++) {
+                                                    CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO sizeModifiersDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO();
+
+                                                    sizeModifiersDTO.setModifierType(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getModifier_type());
+                                                    sizeModifiersDTO.setMinAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getMin_allowed_quantity());
+                                                    sizeModifiersDTO.setMaxAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getMax_allowed_quantity());
+                                                    sizeModifiersDTO.setModifierId(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getModifier_id());
+                                                    sizeModifiersDTO.setModifierName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getModifier_name());
+                                                    List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO> sizeModifierProducts = new ArrayList<>();
+
+                                                    for (int q = 0; q < list.size(); q++) {
+                                                        if (list.get(q).getMax_allowed_quantity() == mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getMenu_product_size().get(m).getSize_modifiers().get(n).getMax_allowed_quantity()) {
+                                                            sizeModifierProducts.add(list.get(q));
+                                                        }
+                                                    }
+                                                    sizeModifiersDTO.setSizeModifierProducts(sizeModifierProducts);
+                                                    sizeModifiersDTOS.add(sizeModifiersDTO);
+                                                    isLoopExecuted = true;
+                                                }
+                                                break;
+                                            }
+                                        } else {
+                                            if (list.size() > 0) {
+                                                CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO sizeModifiersDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO();
+
+                                                sizeModifiersDTO.setModifierType("");
+                                                sizeModifiersDTO.setMinAllowedQuantity(0);
+                                                sizeModifiersDTO.setMaxAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getAllowed_quantity());
+                                                sizeModifiersDTO.setModifierId("");
+                                                sizeModifiersDTO.setModifierName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_name());
+                                                List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO> sizeModifierProducts = new ArrayList<>();
+
+                                                for (int q = 0; q < list.size(); q++) {
+
+                                                    sizeModifierProducts.add(list.get(q));
+
+                                                }
+                                                sizeModifiersDTO.setSizeModifierProducts(sizeModifierProducts);
+                                                sizeModifiersDTOS.add(sizeModifiersDTO);
+                                                break;
+                                            }
+
+                                        }
+*/
+
+
+                                                if (list.size() > 0) {
+                                                    CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO sizeModifiersDTO = new CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO();
+
+                                                    sizeModifiersDTO.setModifierType("");
+                                                    sizeModifiersDTO.setMinAllowedQuantity(0);
+                                                    sizeModifiersDTO.setMaxAllowedQuantity(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getAllowed_quantity());
+                                                    sizeModifiersDTO.setModifierId("");
+                                                    sizeModifiersDTO.setModifierName(mealDetailsModel.getMeal_config().get(j).getProducts().get(k).getProduct_name());
+                                                    List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO> sizeModifierProducts = new ArrayList<>();
+
+                                                    for (int q = 0; q < list.size(); q++) {
+
+                                                        sizeModifierProducts.add(list.get(q));
+
+                                                    }
+                                                    sizeModifiersDTO.setSizeModifierProducts(sizeModifierProducts);
+                                                    sizeModifiersDTOS.add(sizeModifiersDTO);
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        mealProductsDTO.setSizeModifiers(sizeModifiersDTOS);
+
+                                        mealProducts.add(mealProductsDTO);
+                                    }
+                                }
+                            }
+                        }
+
+                        //  List<CheckoutModel.MenuProductsDTO.MealProductsDTO.SizeModifiersDTO.SizeModifierProductsDTO>
+                        menuProductsDTO.setMealProducts(mealProducts);
+                        menuProductsDTOList.add(menuProductsDTO);
+                        checkoutModel.setMenuProducts(menuProductsDTOList);
+
+                        checkoutModelList.add(checkoutModel);
+
+                    }
+
+                    cartDataForRequest.setMenuCategoryCarts(checkoutModelList);
+                    cartDatRequestNew.setCartData(cartDataForRequest);
+                    Log.e("Cart Data", new Gson().toJson(cartDatRequestNew));
+                    //initAssetJsonData();
+
+
+                }
+            });
+
+            Log.e("Pront", "" + cartDatRequestNew);
+            // cartDatRequestNew
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return cartDatRequest;
     }
 
     public void alertDialogCVV(String msg) {
@@ -527,7 +719,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                             }
 
                         } else {
-                            alertVoucherApply(voucherPaymentType, false);
+                            alertVoucherApply(voucherPaymentType, false, exDate.getText().toString(), exYear.getText().toString());
                         }
                     } else {
                         Intent intent = new Intent(SelectPaymentMethodActivity.this, AddAddressManualActivity.class);
@@ -581,7 +773,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
     }
 
 
-    @OnClick({R.id.add_new_card, R.id.paywith_card_tv/*, R.id.pay_with_cash*/})
+    @OnClick({R.id.add_new_card, R.id.paywith_card_tv, R.id.pay_with_cash})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.add_new_card:
@@ -618,13 +810,13 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     startActivity(i);
                     this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 } else {
-                    alertVoucherApply(voucherPaymentType, true);
+                    alertVoucherApply(voucherPaymentType, true, "", "");
                 }
                 break;
             case R.id.paywith_card_tv:
                 break;
-           /* case R.id.pay_with_cash:
-               *//* try {
+         /*   case R.id.pay_with_cash:
+                try {
                     if (sharedPreferencesClass.getInt(sharedPreferencesClass.NUMBER_OF_ORDERS) > 0) {
                         if (voucherPaymentType != null && !voucherPaymentType.equals("") && voucherPaymentType.equalsIgnoreCase("cash")) {
                             if (isInternetOn(SelectPaymentMethodActivity.this)) {
@@ -646,7 +838,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     }
                 } catch (Exception e) {
                     Toast.makeText(SelectPaymentMethodActivity.this, "Server Error.", Toast.LENGTH_SHORT).show();
-                }*//*
+                }
                 break;*/
         }
     }
@@ -680,10 +872,10 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
-    @Override
+  /*  @Override
     public void onBackPressed() {
         return;
-    }
+    }*/
 
     public void callAPI(String token, String paymentType, String exDate, String exYear) {
         mProgressDialog.show();
@@ -736,7 +928,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         request.setUseragent(Helper.getDeviceName() + "," + Build.VERSION.RELEASE);
         request.setOrder_time_postcode(PrefManager.getInstance(SelectPaymentMethodActivity.this).getPreference(POST_CODE_NEW, ""));
         request.setEmailId(val.getLoginResponse().getData().getEmail());
-        request.setCardData(makeData2());
+        request.setCardData(cartDatRequestNew);
         Call<CheckoutResponse> call3 = apiInterface.mCheckout(PrefManager.getInstance(SelectPaymentMethodActivity.this).getPreference(AUTH_TOKEN, ""), request);
         call3.enqueue(new Callback<CheckoutResponse>() {
             @Override
@@ -863,7 +1055,9 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     }
 
                     String restaurentName = sharedPreferencesClass.getString(sharedPreferencesClass.RESTUARANT_NAME);
+
                     db.deleteCart();
+                    mDb.saveOrderHistry().deleteAll();
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
@@ -873,6 +1067,14 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     sharedPreferencesClass.setString(SharedPreferencesClass.UNIT_TYPE, null);
                     sharedPreferencesClass.setString(SharedPreferencesClass.TABLE_TYPE, null);
                     sharedPreferencesClass.setString(sharedPreferencesClass.DEFAULT_ADDRESS, null);
+
+
+                    PrefManager.getInstance(SelectPaymentMethodActivity.this).savePreference(IS_OFFERED, false);
+                    PrefManager.getInstance(SelectPaymentMethodActivity.this).savePreference(OFFER_PRICE, null);
+                    PrefManager.getInstance(SelectPaymentMethodActivity.this).savePreference(OFFER_TYPE, null);
+                    PrefManager.getInstance(SelectPaymentMethodActivity.this).savePreference(OFFER_ID, null);
+                    PrefManager.getInstance(SelectPaymentMethodActivity.this).savePreference(MIN_VALUE, null);
+
                     Constants.ORDER_STATUS = 1;
                     Intent intent = new Intent(SelectPaymentMethodActivity.this, OrderStatusActivity.class);
                     intent.putExtra("order_no", orderNum);
@@ -913,7 +1115,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         cardDialog.show();
     }
 
-    public void alertVoucherApply(String paymentType, final Boolean addCard) {
+    public void alertVoucherApply(String paymentType, final Boolean addCard, String exDate, String exYear) {
         LayoutInflater factory = LayoutInflater.from(this);
         final View mDialogView = factory.inflate(R.layout.addnote_success_dialog, null);
         final AlertDialog noteDialog = new AlertDialog.Builder(this).create();
@@ -952,7 +1154,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     SelectPaymentMethodActivity.this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 } else {
                     if (isInternetOn(SelectPaymentMethodActivity.this)) {
-                        callAPI("", "cash", "", "");
+                        callAPI("", "card", exDate, exYear);
                     } else {
                         dialogNoInternetConnection("Please check internet connection.", 0);
                     }
@@ -1019,7 +1221,7 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     cardDialog.dismiss();
                 } else {
-                    alertVoucherApply(voucherPaymentType, true);
+                    alertVoucherApply(voucherPaymentType, true, "", "");
                 }
             }
         });
@@ -1084,5 +1286,148 @@ public class SelectPaymentMethodActivity extends AppCompatActivity implements Sa
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         String formattedDate = df.format(c.getTime());
         return formattedDate;
+    }
+
+
+    List<JSONObject> mySizeModifierProducts = new ArrayList<>();
+    List<List<JSONObject>> seprated = new ArrayList<>();
+
+    private void initAssetJsonData() {
+        String strJson = getJsonFromAssets(this, "resOriginal.json");
+        try {
+            seprated.removeAll(seprated);
+            JSONObject mainObject = new JSONObject(strJson);
+            if (mainObject != null && !mainObject.isNull("menu")) {
+                JSONObject menuObject = mainObject.getJSONObject("menu");
+                if (menuObject != null && !menuObject.isNull("menuCategory")) {
+                    JSONArray menuCategoryArray = menuObject.getJSONArray("menuCategory");
+                    //showLog("menuCategoryArray",menuCategoryArray.toString());
+                    //showLog("menuCategoryArray Size : ",""+menuCategoryArray.length());
+                    if (menuCategoryArray != null && menuCategoryArray.length() > 0) {
+                        for (int i = 0; i < menuCategoryArray.length(); i++) {
+                            JSONObject menuCategoryObj = menuCategoryArray.getJSONObject(i);
+                            if (menuCategoryObj != null && !menuCategoryObj.isNull("menuProducts") && menuCategoryObj.has("menuProducts")) {
+                                getMenuProducts(menuCategoryObj);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getMenuProducts(JSONObject menuCategoryObj) {
+        try {
+            JSONArray menuProductsArray = menuCategoryObj.getJSONArray("menuProducts");
+            //showLog("menuProductsArray",menuProductsArray.toString());
+            //showLog("menuProductsArray Size : ",""+menuProductsArray.length());
+            if (menuProductsArray != null && menuProductsArray.length() > 0) {
+                for (int j = 0; j < menuProductsArray.length(); j++) {
+                    JSONObject menuProductsObj = menuProductsArray.getJSONObject(j);
+                    if (menuProductsObj != null && !menuProductsObj.isNull("mealProducts") && menuProductsObj.has("mealProducts")) {
+                        JSONArray mealProductsArray = menuProductsObj.getJSONArray("mealProducts");
+                        //showLog("mealProductsArray",mealProductsArray.toString());
+                        //showLog("mealProductsArray Size : ",""+mealProductsArray.length());
+                        getMealProducts(mealProductsArray);
+                    }
+                }
+            }
+        } catch (JSONException e) {
+
+        }
+    }
+
+    private void getMealProducts(JSONArray mealProductsArray) {
+        try {
+            if (mealProductsArray != null && mealProductsArray.length() > 0) {
+                for (int k = 0; k < mealProductsArray.length(); k++) {
+                    JSONObject mealProductsObj = mealProductsArray.getJSONObject(k);
+                    if (mealProductsObj != null && !mealProductsObj.isNull("sizeModifiers") && mealProductsObj.has("sizeModifiers")) {
+                        JSONArray sizeModifiersArray = mealProductsObj.getJSONArray("sizeModifiers");
+                        //showLog("sizeModifiersArray",sizeModifiersArray.toString());
+                        //showLog("sizeModifiersArray Size: ",""+sizeModifiersArray.length());
+                        if (sizeModifiersArray != null && sizeModifiersArray.length() > 0) {
+                            mySizeModifierProducts.removeAll(mySizeModifierProducts);
+                            getSizeModifiers(sizeModifiersArray);
+                            seprated.add(mySizeModifierProducts);
+                            Log.e("mySizeModifierProducts:", "\n" + mySizeModifierProducts.toString());
+                            Log.e("seprated:", "\n" + seprated.toString());
+                            Log.e("seprated.size:", "\n" + seprated.size());
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+
+        }
+    }
+
+    private void getSizeModifiers(JSONArray sizeModifiersArray) {
+        try {
+            for (int l = 0; l < sizeModifiersArray.length(); l++) {
+                JSONObject sizeModifiersObj = sizeModifiersArray.getJSONObject(l);
+                if (sizeModifiersObj != null && !sizeModifiersObj.isNull("sizeModifierProducts") && sizeModifiersObj.has("sizeModifierProducts")) {
+                    JSONArray sizeModifierProductsArray = sizeModifiersObj.getJSONArray("sizeModifierProducts");
+                    //showLog("sizeModifierProductsArray",sizeModifierProductsArray.toString());
+                    //showLog("sizeModifierProducts Size : ",""+sizeModifierProductsArray.length());
+                    if (sizeModifierProductsArray != null && sizeModifierProductsArray.length() > 0) {
+                        getSizeModifierProductsItems(sizeModifierProductsArray);
+                    }
+                }
+            }
+        } catch (JSONException e) {
+
+        }
+    }
+
+    private void getSizeModifierProductsItems(JSONArray sizeModifierProductsArray) {
+        try {
+            for (int m = 0; m < sizeModifierProductsArray.length(); m++) {
+                JSONObject sizeModifierProductsObj = sizeModifierProductsArray.getJSONObject(m);
+                //showLog("sizeModifierProductsObj",sizeModifierProductsObj.toString());
+                //showLog("sizeModifierProductsObj", sizeModifierProductsObj.toString());
+                if (sizeModifierProductsObj != null) {
+                    mySizeModifierProducts.add(sizeModifierProductsObj);
+                }
+            }
+        } catch (JSONException e) {
+
+        }
+    }
+
+    private void showLog(String title, String msg) {
+        Log.e("Array :", "\n" + title + "--" + msg + "\n");
+    }
+
+    public static String getJsonFromAssets(Context context, String fileName) {
+        String jsonString;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            jsonString = new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return jsonString;
+    }
+
+    public boolean isMealProduect(MealDetailsModel mealDetailsModel) {
+        boolean isMeal = false;
+
+        for (int i = 0; i < mealDetailsModel.getMeal_config().get(0).getProducts().size(); i++) {
+            if (mealDetailsModel.getMeal_config().get(0).getProducts().get(i).getNoOfCount() > 0) {
+                isMeal = true;
+                break;
+            }
+        }
+
+
+        return isMeal;
     }
 }

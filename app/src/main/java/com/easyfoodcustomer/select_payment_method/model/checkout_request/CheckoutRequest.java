@@ -1,6 +1,7 @@
 
 package com.easyfoodcustomer.select_payment_method.model.checkout_request;
 
+import com.easyfoodcustomer.modelsNew.CartDatRequestNew;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.CartDatRequest;
@@ -64,7 +65,7 @@ public class CheckoutRequest {
     @SerializedName("cart_details")
     @Expose
 //    private CartDetails cartDetails;
-            CartDatRequest cardData;
+            CartDatRequestNew cardData;
     @SerializedName("stripe_token")
     @Expose
     private String stripeToken;
@@ -300,11 +301,11 @@ public class CheckoutRequest {
         this.orderNotes = orderNotes;
     }
 
-    public CartDatRequest getCardData() {
+    public CartDatRequestNew getCardData() {
         return cardData;
     }
 
-    public void setCardData(CartDatRequest cardData) {
+    public void setCardData(CartDatRequestNew cardData) {
         this.cardData = cardData;
     }
 

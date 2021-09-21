@@ -15,6 +15,11 @@ public class MenuCategory {
     private String menuCategoryName;
 
 
+    @SerializedName("menuCategoryDescription")
+    @Expose
+    private String menuCategoryDescription;
+
+
     @SerializedName("dine_in")
     @Expose
     private int dine_in;
@@ -37,15 +42,16 @@ public class MenuCategory {
     List<Meal> meal;
 
 
-    public MenuCategory(String menuCategoryId, String menuCategoryName,int dine_in,int delivery,int collection, List<MenuCategory> menuSubCategory, List<MenuProduct> menuProducts, List<Meal> meal) {
+    public MenuCategory(String menuCategoryId, String menuCategoryName, String menuCategoryDescription, int dine_in, int delivery, int collection, List<MenuCategory> menuSubCategory, List<MenuProduct> menuProducts, List<Meal> meal) {
         this.menuCategoryId = menuCategoryId;
         this.menuCategoryName = menuCategoryName;
+        this.menuCategoryDescription = menuCategoryDescription;
         this.menuSubCategory = menuSubCategory;
         this.menuProducts = menuProducts;
         this.meal = meal;
-        this.dine_in=dine_in;
-        this.delivery=delivery;
-        this.collection=collection;
+        this.dine_in = dine_in;
+        this.delivery = delivery;
+        this.collection = collection;
     }
 
     public String getMenuCategoryId() {
@@ -64,6 +70,13 @@ public class MenuCategory {
         this.menuCategoryName = menuCategoryName;
     }
 
+    public String getMenuCategoryDescription() {
+        return menuCategoryDescription;
+    }
+
+    public void setMenuCategoryDescription(String menuCategoryDescription) {
+        this.menuCategoryDescription = menuCategoryDescription;
+    }
 
     public int getDine_in() {
         return dine_in;
@@ -118,6 +131,7 @@ public class MenuCategory {
         return "MenuCategory{" +
                 "menuCategoryId='" + menuCategoryId + '\'' +
                 ", menuCategoryName='" + menuCategoryName + '\'' +
+                ", menuCategoryDescription='" + menuCategoryDescription + '\'' +
                 ", menuSubCategory=" + menuSubCategory +
                 ", menuProducts=" + menuProducts +
                 ", meal=" + meal +

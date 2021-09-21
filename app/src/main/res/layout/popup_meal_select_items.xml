@@ -82,6 +82,7 @@
             android:fontFamily="@font/helvetica_neue_medium"
             android:paddingBottom="@dimen/_10sdp"
             android:text="Base Price \n"
+            android:visibility="gone"
             android:textSize="@dimen/_12sdp" />
 
         <TextView

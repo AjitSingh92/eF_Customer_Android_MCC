@@ -133,6 +133,7 @@ public class MenuMealDialog extends DialogFragment implements View.OnClickListen
             }
         }
         tvBasePrice.setText(title);
+        tvBasePrice.setVisibility(View.GONE);
 
         tvAmountToPay.setText("Amount to pay\n" + context.getResources().getString(R.string.currency) + String.format("%.2f", Double.parseDouble(menuCategory.getMeal().get(childPosition).getMealPrice())));
 

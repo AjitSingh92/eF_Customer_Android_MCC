@@ -54,7 +54,7 @@
             android:id="@+id/btn.ok"
             android:layout_width="@dimen/_130sdp"
             android:layout_height="@dimen/_40sdp"
-            android:layout_below="@+id/fm"
+            
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/recatangle_orange"

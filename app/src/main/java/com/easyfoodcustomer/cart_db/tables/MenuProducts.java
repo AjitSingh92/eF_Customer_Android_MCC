@@ -57,9 +57,11 @@ public class MenuProducts {
         @PrimaryKey
         @NonNull
         String categoryId;
+
         @TypeConverters({MenuProductConverter.class})
         @SerializedName("menuProducts")
         List<MenuProduct> menuProducts;
+
         @TypeConverters({MealConverter.class})
         @SerializedName("meal")
         List<Meal> meal;

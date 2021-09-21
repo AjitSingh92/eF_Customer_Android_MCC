@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/_10sdp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
@@ -11,11 +11,11 @@
     <LinearLayout
 
         android:layout_width="@dimen/_130sdp"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/_190sdp"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:orientation="vertical">
 
@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/dealNameId"
             android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:fontFamily="@font/avenir_medium"
             android:text="1 Any 2 x 10” Pizzas 2 Chips 2 Bread"
             android:textColor="@color/descolor"
@@ -87,13 +88,13 @@
                 android:visibility="gone"/>-->
 
             <ImageView
-                android:id="@+id/cross_tv"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:background="@drawable/circle_gray"
+                android:id="@+id/iv_offer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
                 android:padding="@dimen/_6sdp"
-                android:src="@drawable/ic_close_black_24dp"
-                android:visibility="gone" />
+
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/btn_get_deals"

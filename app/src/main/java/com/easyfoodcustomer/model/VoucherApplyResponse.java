@@ -84,6 +84,11 @@ public class VoucherApplyResponse {
         @SerializedName("minimum_order_value")
         @Expose
         private String minimum_order_value;
+
+        @SerializedName("max_discounts")
+        @Expose
+        private String max_discounts;
+
         @SerializedName("voucher_applicable_on")
         @Expose
         private String voucher_applicable_on;
@@ -154,6 +159,14 @@ public class VoucherApplyResponse {
             this.minimum_order_value = minimum_order_value;
         }
 
+        public String getMax_discounts() {
+            return max_discounts;
+        }
+
+        public void setMax_discounts(String max_discounts) {
+            this.max_discounts = max_discounts;
+        }
+
         public String getVoucher_applicable_on() {
             return voucher_applicable_on;
         }
@@ -196,6 +209,7 @@ public class VoucherApplyResponse {
                     ", voucher_type='" + voucher_type + '\'' +
                     ", voucher_value='" + voucher_value + '\'' +
                     ", minimum_order_value='" + minimum_order_value + '\'' +
+                    ", max_discounts='" + max_discounts + '\'' +
                     ", voucher_applicable_on='" + voucher_applicable_on + '\'' +
                     ", voucher_valid_on='" + voucher_valid_on + '\'' +
                     ", days_available='" + days_available + '\'' +

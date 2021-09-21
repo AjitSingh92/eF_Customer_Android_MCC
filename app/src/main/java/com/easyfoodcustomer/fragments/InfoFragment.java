@@ -210,8 +210,16 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         } else {
             tvDelMonday.setText("Closed");
             tvDelMonday.setTextSize(getResources().getDimension(R.dimen._3sdp));
-            tvColMonday.setVisibility(View.GONE);
-            tvDinMonday.setVisibility(View.GONE);
+
+            tvColMonday.setText("Closed");
+            tvColMonday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            tvDinMonday.setText("Closed");
+            tvDinMonday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+
+           /* tvColMonday.setVisibility(View.GONE);
+            tvDinMonday.setVisibility(View.GONE);*/
         }
 
 
@@ -230,8 +238,15 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         } else {
             tvDelTuesday.setText("Closed");
             tvDelTuesday.setTextSize(getResources().getDimension(R.dimen._3sdp));
-            tvColTuesday.setVisibility(View.GONE);
-            tvDinTuesday.setVisibility(View.GONE);
+
+            tvColTuesday.setText("Closed");
+            tvColTuesday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            tvDinTuesday.setText("Closed");
+            tvDinTuesday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            /*tvColTuesday.setVisibility(View.GONE);
+            tvDinTuesday.setVisibility(View.GONE);*/
         }
 
 
@@ -250,8 +265,14 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         } else {
             tvDelWednesday.setText("Closed");
             tvDelWednesday.setTextSize(getResources().getDimension(R.dimen._3sdp));
-            tvColWednesday.setVisibility(View.GONE);
-            tvDinWednesday.setVisibility(View.GONE);
+            tvColWednesday.setText("Closed");
+            tvColWednesday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+            tvDinWednesday.setText("Closed");
+            tvDinWednesday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+
+            //tvColWednesday.setVisibility(View.GONE);
+            //tvDinWednesday.setVisibility(View.GONE);
         }
 
 
@@ -271,8 +292,15 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         } else {
             tvDelThursday.setText("Closed");
             tvDelThursday.setTextSize(getResources().getDimension(R.dimen._3sdp));
-            tvColThursday.setVisibility(View.GONE);
-            tvDinThursday.setVisibility(View.GONE);
+
+            tvColThursday.setText("Closed");
+            tvColThursday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            tvDinThursday.setText("Closed");
+            tvDinThursday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            //tvColThursday.setVisibility(View.GONE);
+            //tvDinThursday.setVisibility(View.GONE);
         }
 
 
@@ -291,8 +319,13 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         } else {
             tvDelFriday.setText("Closed");
             tvDelFriday.setTextSize(getResources().getDimension(R.dimen._3sdp));
-            tvColFriday.setVisibility(View.GONE);
-            tvDinFriday.setVisibility(View.GONE);
+            tvColFriday.setText("Closed");
+            tvColFriday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+            tvDinFriday.setText("Closed");
+            tvDinFriday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+   /*         tvColFriday.setVisibility(View.GONE);
+            tvDinFriday.setVisibility(View.GONE);*/
         }
 
 
@@ -311,8 +344,14 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         } else {
             tvDelSaturday.setText("Closed");
             tvDelSaturday.setTextSize(getResources().getDimension(R.dimen._3sdp));
-            tvColSaturday.setVisibility(View.GONE);
-            tvDinSaturday.setVisibility(View.GONE);
+            tvColSaturday.setText("Closed");
+            tvColSaturday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            tvDinSaturday.setText("Closed");
+            tvDinSaturday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            //tvColSaturday.setVisibility(View.GONE);
+            //tvDinSaturday.setVisibility(View.GONE);
         }
 
 
@@ -330,8 +369,14 @@ public class InfoFragment extends Fragment implements OnMapReadyCallback {
         } else {
             tvDelSunday.setText("Closed");
             tvDelSunday.setTextSize(getResources().getDimension(R.dimen._3sdp));
-            tvColSunday.setVisibility(View.GONE);
-            tvDinSunday.setVisibility(View.GONE);
+            tvColSunday.setText("Closed");
+            tvColSunday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            tvDinSunday.setText("Closed");
+            tvDinSunday.setTextSize(getResources().getDimension(R.dimen._3sdp));
+
+            //tvColSunday.setVisibility(View.GONE);
+            //tvDinSunday.setVisibility(View.GONE);
         }
 // shakti make a change check object
 

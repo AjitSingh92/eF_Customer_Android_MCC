@@ -123,6 +123,18 @@ import retrofit2.Response;
 import static com.easyfoodcustomer.utility.Helper.isInternetOn;
 import static com.easyfoodcustomer.utility.SharedPreferencesClass.SERVE_STYLE;
 import static com.easyfoodcustomer.utility.UserContants.AUTH_TOKEN;
+import static com.easyfoodcustomer.utility.UserContants.IS_OFFERED;
+import static com.easyfoodcustomer.utility.UserContants.IS_VOUCHER_APPLIED;
+import static com.easyfoodcustomer.utility.UserContants.MAX_DISCOUNTS;
+import static com.easyfoodcustomer.utility.UserContants.MIN_VALUE;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_ID;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_PRICE;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_TYPE;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_CODE;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_MAX_DISCOUNT;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_MIN_ORDER;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_PRICE;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_TYPE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class RestaurantDetailsActivity extends AppCompatActivity implements ItemClickListener,
@@ -231,7 +243,12 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     Gson gson = new Gson();
     Menu menu;
     Bundle extras;
-    boolean isFromLogin;
+    boolean isFromLogin, isOffer;
+    private String offerPrice, offerType, offerId, minValue,maxValue;
+    /* i.putExtra("offer_price", discountOffer.getOfferPrice());
+                i.putExtra("offer_type", discountOffer.getOfferType());
+                i.putExtra("offer_id", discountOffer.getOfferId());
+                i.putExtra("min_value", discountOffer.getMin_value());*/
 
     public static RestaurantDetailsActivity restaurantDetailsActivity;
     private MenuViewModel menuViewModel;
@@ -248,6 +265,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     public static CallMenueDialogInterface callMenueDialogInterface;
 
     private DialogUtils dialogUtils;
+    private boolean isFromCart=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,14 +273,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         setContentView(R.layout.activity_restaurant_details);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mDb = AppDatabase.getInstance(getApplicationContext());
-        callMenueDialogInterface=this;
+        callMenueDialogInterface = this;
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
         ButterKnife.bind(this);
         restaurantDetailsActivity = this;
         menu = new Menu();
         db = new DatabaseHelper(this);
         cartData = new FinalNewCartDetails();
-        dialogUtils=new DialogUtils(RestaurantDetailsActivity.this);
+        dialogUtils = new DialogUtils(RestaurantDetailsActivity.this);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -398,9 +416,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     @Override
     protected void onStart() {
         super.onStart();
-        callMenueDialogInterface=this;
+        callMenueDialogInterface = this;
     }
-
 
 
     @Override
@@ -428,7 +445,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
     @Override
     public void onNotify(String menueID) {
-        getMelProducts( menueID);
+        getMelProducts(menueID);
     }
 
 
@@ -465,12 +482,76 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     @Override
     protected void onResume() {
         super.onResume();
-        showPriceAndView(null, null, 0);
+        // showPriceAndView(null, null, 0);
         extras = getIntent().getExtras();
         if (extras != null) {
             restaurantId = extras.getString("RESTAURANTID");
             isFromLogin = extras.getBoolean("IS_FROM_LOGIN", false);
             serveStyle = extras.getString("ServeStyle");
+
+          /*  i.putExtra("isOffer", isOffer);
+            if (isOffer) {
+                i.putExtra("offer_price", discountOffer.getOfferPrice());
+                i.putExtra("offer_type", discountOffer.getOfferType());
+                i.putExtra("offer_id", discountOffer.getOfferId());
+                i.putExtra("min_value", discountOffer.getMin_value());
+            }*/
+            isOffer = extras.getBoolean("isOffer", false);
+            isFromCart=extras.getBoolean("isFromCart", false);
+            if(isFromCart){
+
+
+
+
+                String voucherType=extras.getString("voucherType");
+                String minOrder=extras.getString("minOrder");
+                String maxDiscount=extras.getString("maxDiscount");
+                String voucherCode=extras.getString("voucherCode");
+                String voucherValue=extras.getString("voucherValue");
+
+
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(IS_VOUCHER_APPLIED, true);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_TYPE, voucherType);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_MIN_ORDER, minOrder);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_MAX_DISCOUNT, maxDiscount);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_CODE, voucherCode);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_PRICE, voucherValue);
+
+
+            }else {
+
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(IS_VOUCHER_APPLIED, false);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_TYPE, "");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_MIN_ORDER, "0.0");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_MAX_DISCOUNT, "0.0");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_CODE, "");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(VOUCHER_PRICE, "0.0");
+
+            }
+
+            if (isOffer) {
+
+                offerPrice = extras.getString("offer_price");
+                offerType = extras.getString("offer_type");
+                offerId = extras.getString("offer_id");
+                minValue = extras.getString("min_value");
+                maxValue = extras.getString("max_value");
+
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(IS_OFFERED, true);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_TYPE, offerType);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_ID, offerId);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(MIN_VALUE, minValue);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(MAX_DISCOUNTS, maxValue);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_PRICE, offerPrice);
+
+            }else {
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(IS_OFFERED, false);
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_TYPE, "");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_ID, "");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(MIN_VALUE, "");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(MAX_DISCOUNTS, "");
+                PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_PRICE, "");
+            }
             if (isFromLogin) {
                 //txtEmptyBasket.setText(getResources().getString(R.string.view_basket));
 
@@ -524,7 +605,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     protected void onStop() {
         super.onStop();
         dialog.dismiss();
-        callMenueDialogInterface=null;
+        callMenueDialogInterface = null;
     }
 
     public void getRestaurantDetails(final String rId) {
@@ -581,8 +662,16 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                         }
                         itemCuisines.setText(response.body().getData().getRestaurants().getRestaurantCuisines());
                         minimumValue = Double.parseDouble(response.body().getData().getRestaurants().getMinOrderValue());
-                        deliveryMinorder.setText("£" + String.valueOf(response.body().getData().getRestaurants().getDeliveryCharge()) + " delivery");
-                        deliveryVal.setText("£" + String.valueOf(response.body().getData().getRestaurants().getMinOrderValue()) + " min order");
+                        if (response.body().getData().getRestaurants().getDeliveryCharge() != null && !response.body().getData().getRestaurants().getDeliveryCharge().trim().isEmpty())
+                            deliveryMinorder.setText("£" + String.format("%.2f", Double.parseDouble(response.body().getData().getRestaurants().getDeliveryCharge())) + " delivery");
+                        else
+                            deliveryMinorder.setText("£" + "0.00" + " delivery");
+
+                        if (response.body().getData().getRestaurants().getMinOrderValue() != null && !response.body().getData().getRestaurants().getMinOrderValue().trim().isEmpty())
+                            deliveryVal.setText("£" + String.format("%.2f", Double.parseDouble(response.body().getData().getRestaurants().getMinOrderValue())) + " min order");
+                        else
+                            deliveryVal.setText("£" + "0.00" + " min order");
+
                         txtMinutes.setText(response.body().getData().getRestaurants().getAvgDeliveryTime() + " min");
                         restaurantPhoneNumber = response.body().getData().getRestaurants().getPhoneNumber();
                         if (response.body().getData().getRestaurants().getDistanceInMiles() == 0) {
@@ -827,7 +916,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if (mResponse.body()!=null && mResponse.body().getSuccess()) {
+                        if (mResponse.body() != null && mResponse.body().getSuccess()) {
                             mResponse.body().getProductSizeAndModifier().setProductId(productId);
                             final Long id = GlobalValues.getInstance().getDb().productSizeAndModifierMaster().insert(mResponse.body().getProductSizeAndModifier());
 
@@ -885,12 +974,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             @Override
             public void onResponse(Call<MenuProducts> call, final Response<MenuProducts> response) {
                 final Response<MenuProducts> mResponse = response;
+                Log.e("menuSize", "" + mResponse.body().getData().getMenuProducts().size());
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         if (mResponse.body().getSuccess()) {
                             mResponse.body().getData().setCategoryId(categoryId);
                             final Long id = GlobalValues.getInstance().getDb().menuProductMaster().insert(mResponse.body().getData());
+
+
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -976,8 +1068,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
 
         } else {
             if (isCategory) {
-                if (menuCategory.getMenuProducts()!=null && menuCategory.getMenuProducts().size()>0
-                        &&menuCategory.getMenuProducts().get(childPosition).getProductModifiers() != null && menuCategory.getMenuProducts().get(childPosition).getMenuProductSize() != null) {
+                if (menuCategory.getMenuProducts() != null && menuCategory.getMenuProducts().size() > 0
+                        && menuCategory.getMenuProducts().get(childPosition).getProductModifiers() != null && menuCategory.getMenuProducts().get(childPosition).getMenuProductSize() != null) {
                     updateCategoryUi(parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory);
                 } else {
                     new Thread(new Runnable() {
@@ -1062,6 +1154,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     }
 
                 } else {
+                   /* if(){
+
+                    }*/
                     ChooseLastCustnizationDialog chooseLastCustnizationDialog = ChooseLastCustnizationDialog.newInstance(this, menuProduct, itemCount, qtyLayout, itemQtyView, parentPosition, childPosition, menuCategory, true, action, this);
                     chooseLastCustnizationDialog.show(getSupportFragmentManager(), "chooseLastCustnizationDialog");
                 }
@@ -1095,6 +1190,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             }
         }
     }
+
 
     private void updateCategoryUi(int parentPosition, int childPosition, View
             qtyLayout, TextView itemQtyView, int itemCount, int action, MenuCategory menuCategory) {
@@ -1146,8 +1242,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
             } else {
                 getMelProducts(menuCategory.getMeal().get(childPosition).getMealId());
 
-              //  MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, true, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, false, this);
-               // menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
+                //  MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, true, -1, -1, parentPosition, childPosition, qtyLayout, itemQtyView, itemCount, action, menuCategory, false, false, this);
+                // menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
             }
         } else {
             if (db.getMenuProductCount(menuCategory.getMenuCategoryId(), menuCategory.getMenuProducts().get(childPosition).getMenuProductId()) > 0) {
@@ -1474,7 +1570,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     public void OnMealProductModifierSelected(Boolean onDone, int childParentPosition,
                                               int selectedChildPosition, int parentPosition, int childPosition, View qtyLayout, TextView
                                                       item_count, int itemCount, int action, MenuCategory menuCategory, Boolean isSubCat, Boolean enableScrollToPosition) {
-       // mItem.get(parentPosition).setSelectedCount(mItem.get(parentPosition).getSelectedCount() + 1);
+        // mItem.get(parentPosition).setSelectedCount(mItem.get(parentPosition).getSelectedCount() + 1);
         if (onDone) {
             MenuMealDialog menuMealDialog = MenuMealDialog.newInstance(this, false, childParentPosition, selectedChildPosition, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, false, enableScrollToPosition, this);
             menuMealDialog.show(getSupportFragmentManager(), "menuMealDailog");
@@ -2029,7 +2125,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                 if (mResponse.isSuccessful()) {
                     MealDetailList meaListBean = response.body();
 
-                    new MenuDetailDialog(RestaurantDetailsActivity.this,meaListBean.getData()).show();
+                    new MenuDetailDialog(RestaurantDetailsActivity.this, meaListBean.getData()).show();
                     dialogUtils.closeDialog();
 /*
 
@@ -2068,8 +2164,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
                     }
 */
 
-                }else
-                {
+                } else {
                     dialogUtils.closeDialog();
                 }
 
@@ -2085,15 +2180,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
     }
 
 
-    public void showFinalPriceAndView()
-    {
+    public void showFinalPriceAndView() {
 
         mDb.saveOrderHistry().loadAllHistory().observe(RestaurantDetailsActivity.this, new androidx.lifecycle.Observer<List<OrderSaveModel>>() {
             @Override
             public void onChanged(@Nullable List<OrderSaveModel> orderSaveModelList) {
-                if (orderSaveModelList.size()>0)
-                {
-                    footerCount.setText(String.valueOf(orderSaveModelList.size()));
+                if (orderSaveModelList.size() > 0) {
+                    footerCount.setText(getNumberOfCount(orderSaveModelList));
                     footerDetails.setText(String.format("%.2f", getTotalPrice(orderSaveModelList)));
                     if (Double.parseDouble(footerDetails.getText().toString()) < minimumValue) {
                         llbotom.setBackgroundColor(getResources().getColor(R.color.gray));
@@ -2133,13 +2226,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Item
         });
     }
 
+    private String getNumberOfCount(List<OrderSaveModel> orderSaveModelList) {
+        int count = 0;
+        for (int i = 0; i < orderSaveModelList.size(); i++) {
+            count = count + orderSaveModelList.get(i).getItemCount();
+        }
+
+        return String.valueOf(count);
+
+    }
+
     private double getTotalPrice(List<OrderSaveModel> orderSaveModelList) {
 
         double finalPrice = 0;
 
-        for (int i=0;i<orderSaveModelList.size();i++)
-        {
-            finalPrice=finalPrice+Double.parseDouble(orderSaveModelList.get(i).getTotalAmoutOfMeal());
+        for (int i = 0; i < orderSaveModelList.size(); i++) {
+            finalPrice = finalPrice + Double.parseDouble(orderSaveModelList.get(i).getTotalAmoutOfMeal());
         }
 
         return finalPrice;

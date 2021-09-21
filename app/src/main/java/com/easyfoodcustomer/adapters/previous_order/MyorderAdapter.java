@@ -19,8 +19,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.easyfoodcustomer.utility.GlobalValues;
 import com.easyfoodcustomer.utility.PrefManager;
 import com.google.gson.Gson;
@@ -71,8 +73,9 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
     Gson gson = new Gson();
     private Dialog dialog;
     GlobalValues val;
+    DeleteOderListener deleteOderListener;
 
-    public MyorderAdapter(List<PreviousOrderDetail> previousOrderDetailList, Context context, Activity activity, OrderPositionListner orderPositionListner) {
+    public MyorderAdapter(List<PreviousOrderDetail> previousOrderDetailList, Context context, Activity activity, OrderPositionListner orderPositionListner,DeleteOderListener deleteOderListener) {
         this.previousOrderDetailList = previousOrderDetailList;
         this.context = context;
         this.activity = activity;
@@ -80,6 +83,7 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         db = new DatabaseHelper(context);
         dialog = new Dialog(this.activity);
         this.val = (GlobalValues) context;
+        this.deleteOderListener=deleteOderListener;
         // this.previousOrder = previousOrder;
     }
 
@@ -96,6 +100,8 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final int listPosition = position;
         final PreviousOrderDetail dataList = previousOrderDetailList.get(listPosition);
+        holder.slMain.setShowMode(SwipeLayout.ShowMode.PullOut);
+        holder.slMain.addDrag(SwipeLayout.DragEdge.Right, holder.bottomWrapper2);
         sharePre = new SharedPreferencesClass(context);
         dialog.setTitle("");
         dialog.setCancelable(false);
@@ -338,6 +344,14 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
                 orderPositionListner.onClickPosition(listPosition, dataList.getOrderNum());
             }
         });
+
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.slMain.close();
+              deleteOderListener.onDelete(position,dataList.getOrderNum());
+            }
+        });
     /*    holder.detailsArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -478,11 +492,13 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView restImage;
+        ImageView restImage,ivDelete;
         CircleImageView restLogo;
         TextView restName, orderNo, orderDate, total, trackOrder, orderDetail, orderItemDetails, /*detailsArrow,*/
                 orderStatus, reasonForCancel;
         TextView repeatOrder;
+        SwipeLayout slMain;
+        RelativeLayout bottomWrapper2;
         RecyclerView subProductRecycler;
         SubProductListAdapter subProductListAdapter;
         LinearLayout /*layoutTrackOrder,*/ layoutReapetOrder, llMain, cancelOrder;
@@ -492,6 +508,9 @@ public class MyorderAdapter extends RecyclerView.Adapter<MyorderAdapter.MyViewHo
         public MyViewHolder(View itemView) {
             super(itemView);
             this.restName = (TextView) itemView.findViewById(R.id.rest_name);
+            this.ivDelete=(ImageView)itemView.findViewById(R.id.iv_delete);
+            this.slMain=(SwipeLayout)itemView.findViewById(R.id.sl_main);
+            this.bottomWrapper2=(RelativeLayout)itemView.findViewById(R.id.bottom_wrapper_2);
             this.orderNo = (TextView) itemView.findViewById(R.id.order_no);
             this.orderDate = (TextView) itemView.findViewById(R.id.order_time);
             this.total = (TextView) itemView.findViewById(R.id.price);

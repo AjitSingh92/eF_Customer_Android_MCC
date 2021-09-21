@@ -1,15 +1,22 @@
 package com.easyfoodcustomer.adapters.menu_adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Handler;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +29,7 @@ import com.easyfoodcustomer.R;
 import com.easyfoodcustomer.cart_db.DatabaseHelper;
 import com.easyfoodcustomer.dialogs.ChooseOrderTypeDialog;
 import com.easyfoodcustomer.dialogs.SingleOrderCountDialog;
+import com.easyfoodcustomer.fragments.MenuFragment;
 import com.easyfoodcustomer.restaurant_details.RestaurantDetailsActivity;
 import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_response.Meal;
 import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_response.MenuCategory;
@@ -48,6 +56,8 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
     DatabaseHelper db;
     private boolean isClosed;
     private AppDatabase mDb;
+
+
 
     public RestaurantMealCategoryAdapter(Context context, int parentPosition, ItemClickListener menuItemClickListener, boolean isClosed) {
         this.context = context;
@@ -156,8 +166,8 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView txt_menu_title, txt_price, txt_items_detail, item_count/*, txt_Count*/;
-        private final LinearLayout clickCount, item_remove, item_add;
+        private final TextView txt_menu_title, txt_price, txt_items_detail, item_count/*, txt_Count*/,tvReadmore;
+        private final LinearLayout clickCount, item_remove, item_add,llDescription;
         private final ProgressBar progressBar;
 
         public CategoryViewHolder(@NonNull View itemView) {
@@ -167,24 +177,27 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
             progressBar.setVisibility(View.GONE);
             txt_menu_title = itemView.findViewById(R.id.txt_menu_title);
             txt_price = itemView.findViewById(R.id.txt_price);
+            llDescription = itemView.findViewById(R.id.ll_description);
+            tvReadmore = itemView.findViewById(R.id.tv_readmore);
             txt_items_detail = itemView.findViewById(R.id.txt_items_detail);
             //  txt_Count = (TextView) itemView.findViewById(R.id.txt_count);
             clickCount = itemView.findViewById(R.id.clickCount);
             item_remove = itemView.findViewById(R.id.item_remove);
             item_add = itemView.findViewById(R.id.item_add);
             item_count = itemView.findViewById(R.id.item_count);
-           // item_add.setOnClickListener(this);
-          //  item_remove.setOnClickListener(this);
+            // item_add.setOnClickListener(this);
+            //  item_remove.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 
         private void bindData(int position) {
+
             txt_menu_title.setText(mItem.get(position).getMealName());
             txt_price.setText(context.getResources().getString(R.string.currency) + mItem.get(position).getMealPrice());
             item_count.setText("0");
             Log.e("Menu Description", "" + mItem.get(position).getDescription());
             // txt_Count.setText("0");
-            if (hideDetail) {
+           /* if (hideDetail) {
                 txt_items_detail.setVisibility(View.GONE);
             } else {
                 txt_items_detail.setVisibility(View.VISIBLE);
@@ -198,20 +211,35 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
                         txt_items_detail.setText(Html.fromHtml(mItem.get(position).getDescription()));
                 }
 
+            }*/
+
+            if (mItem.get(position).getDescription() != null && !mItem.get(position).getDescription().isEmpty()) {
+                String description=mItem.get(position).getDescription().replaceAll("</br>","\n");
+                description=description.replaceAll("/r","");
+                description=description.replaceAll("<br/>","\n");
+                description=description.replaceAll("<br>","\n");
+                SpannableString ss = new SpannableString(description);
+                setDescriptionLayout(ss, txt_items_detail, tvReadmore);
+                // catDescp.setText(dataItem.getMenuCategoryDescription());
+
+
+                llDescription.setVisibility(View.VISIBLE);
+            } else {
+                llDescription.setVisibility(View.GONE);
+
             }
 //            List<MenuProduct> products = db.getMenuProduct(menuCategory.getMenuCategoryId(), mItem.get(position).getMealId());
             int qtyCount = 0;
             mDb = AppDatabase.getInstance(getApplicationContext());
             //List<OrderSaveModel> orderSaveModelList= mDb.saveOrderHistry().loadAllHistoryOfOrder();
-            List<OrderSaveModel> orderSaveModelList= mDb.saveOrderHistry().loadAllOrderForID(mItem.get(position).getMealId());
-            if (orderSaveModelList.size()>0)
-            {
-                for (int i=0;i<orderSaveModelList.size();i++)
-                {
-                    qtyCount=qtyCount+orderSaveModelList.get(i).getItemCount();
+            List<OrderSaveModel> orderSaveModelList = mDb.saveOrderHistry().loadAllOrderForID(mItem.get(position).getMealId());
+            if (orderSaveModelList.size() > 0) {
+                for (int i = 0; i < orderSaveModelList.size(); i++) {
+                    qtyCount = qtyCount + orderSaveModelList.get(i).getItemCount();
                 }
 
             }
+
             /*mDb.saveOrderHistry().loadAllOrderForID(mItem.get(position).getMenuId()).observe(context, new androidx.lifecycle.Observer<List<OrderSaveModel>>() {
                 @Override
                 public void onChanged(@Nullable List<OrderSaveModel> orderSaveModelList) {
@@ -224,22 +252,28 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
 //                qtyCount += itemOnCart.getOriginalQuantity();
 //            }
 
+            //if(position==selectedPosition) {
             if (qtyCount == 0) {
                 clickCount.setVisibility(View.GONE);
                 // txt_Count.setVisibility(View.GONE);
                 //txt_Count.setText(String.valueOf(qtyCount));
                 item_count.setText(String.valueOf(qtyCount));
             } else {
-                clickCount.setVisibility(View.VISIBLE);
-                // txt_Count.setVisibility(View.VISIBLE);
-                //txt_Count.setText(String.valueOf(qtyCount));
-                item_count.setText(String.valueOf(qtyCount));
+
+                    clickCount.setVisibility(View.VISIBLE);
+                    // txt_Count.setVisibility(View.VISIBLE);
+                    //txt_Count.setText(String.valueOf(qtyCount));
+                    item_count.setText(String.valueOf(qtyCount));
+
             }
+           /* }else {
+                clickCount.setVisibility(View.GONE);
+            }*/
 
             item_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new ChooseOrderTypeDialog(context,orderSaveModelList).show();
+                    new ChooseOrderTypeDialog(context, orderSaveModelList).show();
 
                 }
             });
@@ -247,30 +281,19 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
             item_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int  itemQty = (Integer.parseInt(item_count.getText().toString()) - 1);
+                    int itemQty = (Integer.parseInt(item_count.getText().toString()) - 1);
                     //  txt_Count.setText(Integer.parseInt(item_count.getText().toString()) - 1);
                     if (itemQty == 0) {
                         clickCount.setVisibility(View.GONE);
                         //  txt_Count.setVisibility(View.GONE);
                     }
-                    if (Integer.parseInt(item_count.getText().toString())>1)
-                    {
-                        if (orderSaveModelList.size()>1)
-                        {
-                            new SingleOrderCountDialog(context,orderSaveModelList,false).show();
-                        }else
-                        {
-                            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mDb.saveOrderHistry().delete(orderSaveModelList.get(0));
-                                }
-                            });
-                        }
-                        /*if (orderSaveModelList.get(0).getItemCount()>1)
-                        {
-                            OrderSaveModel orderSaveModel=new OrderSaveModel(orderSaveModelList.get(0).getId(),
-                                    orderSaveModelList.get(0).getItemCount()-1,
+                    if (Integer.parseInt(item_count.getText().toString()) > 1) {
+                        if (orderSaveModelList.size() > 1) {
+                            new SingleOrderCountDialog(context, orderSaveModelList, false).show();
+                        } else {
+
+                            OrderSaveModel orderSaveModels = new OrderSaveModel(orderSaveModelList.get(0).getId(),
+                                    orderSaveModelList.get(0).getItemCount() - 1,
                                     orderSaveModelList.get(0).getMealID(),
                                     orderSaveModelList.get(0).getRestaurantID(),
                                     orderSaveModelList.get(0).getMealName(),
@@ -278,21 +301,29 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
                                     orderSaveModelList.get(0).getVegType(),
                                     orderSaveModelList.get(0).getMenuCategoryId(),
                                     orderSaveModelList.get(0).getDescription(),
-                                    String.valueOf((Double.parseDouble(orderSaveModelList.get(0).getTotalAmoutOfMeal())/orderSaveModelList.get(0).getItemCount())*(orderSaveModelList.get(0).getItemCount()-1)),
+                                    String.valueOf((Double.parseDouble(orderSaveModelList.get(0).getTotalAmoutOfMeal()) / orderSaveModelList.get(0).getItemCount()) * (orderSaveModelList.get(0).getItemCount() - 1)),
+                                    true,
                                     orderSaveModelList.get(0).getData());
-                            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mDb.saveOrderHistry().insertOrUpdate(orderSaveModel);
-                                }
-                            });
-                        }else
-                        {
+                            if (orderSaveModelList.get(0).getItemCount() > 1) {
+                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mDb.saveOrderHistry().insertOrUpdate(orderSaveModels);
+                                        orderSaveModelList.get(0).setItemCount(orderSaveModelList.get(0).getItemCount() - 1);
 
+                                    }
+                                });
+                            } else {
+                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mDb.saveOrderHistry().delete(orderSaveModelList.get(0));
+                                    }
+                                });
+
+                            }
                         }
-*/
-                    }else
-                    {
+                    } else {
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {
@@ -328,14 +359,19 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
                         // txt_Count.setVisibility(View.VISIBLE);
                         if (clickCount.getVisibility() == View.GONE) {
                             //txt_Count.setVisibility(View.VISIBLE);
-                            itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
-                            // txt_Count.setText(Integer.parseInt(item_count.getText().toString()) + 1);
-                            if (menuItemClickListener != null) {
-                                List<Meal> mItemNew = mItem;
 
-                                menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
-                            }
+                                itemQty = (Integer.parseInt(item_count.getText().toString()) + 1);
+                                // txt_Count.setText(Integer.parseInt(item_count.getText().toString()) + 1);
+                                if (menuItemClickListener != null) {
+                                    List<Meal> mItemNew = mItem;
+
+                                    menuItemClickListener.OnCategoryClick(parentPosition, getLayoutPosition(), clickCount, item_count, itemQty, 2, menuCategory, progressBar);
+                                }
+
                         }
+
+
+
                     }
                     break;
             }
@@ -364,5 +400,53 @@ public class RestaurantMealCategoryAdapter extends RecyclerView.Adapter<Recycler
 
         alertClodseDialog.show();
     }
+    private void setDescriptionLayout(SpannableString description, final TextView tvDescriptionbody, final TextView tvReadmore) {
 
+
+        if (description != null && description.length() > 0) {
+            tvDescriptionbody.setText(description);
+            tvReadmore.setPaintFlags(tvReadmore.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tvDescriptionbody.setMaxLines(2);
+            tvDescriptionbody.post(new Runnable() {
+                @Override
+                public void run() {
+                    int lineCnt = tvDescriptionbody.getLineCount();
+                    Log.e("line count", String.valueOf(lineCnt));
+                    if (tvDescriptionbody.getLineCount() > 2) {
+                        //check = true;
+                        tvReadmore.setVisibility(View.VISIBLE);
+                        tvReadmore.setText(context.getResources().getText(R.string.read_more));
+                        tvReadmore.setSelected(true);
+                    } else {
+                        tvReadmore.setVisibility(View.GONE);
+                    }
+                }
+
+            });
+        } else {
+            tvDescriptionbody.setText(context.getResources().getString(R.string.no_description_available));
+        }
+        tvReadmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readMore(tvReadmore, tvDescriptionbody);
+            }
+        });
+
+
+    }
+
+
+    private void readMore(TextView mReadMore, TextView mDescription) {
+        if (mReadMore.isSelected()) {
+            mReadMore.setText(context.getString(R.string.read_less));
+            mDescription.setMaxLines(Integer.MAX_VALUE);
+            mReadMore.setSelected(false);
+        } else {
+            mReadMore.setText(context.getString(R.string.read_more));
+            mDescription.setMaxLines(2);
+            mDescription.setEllipsize(TextUtils.TruncateAt.END);
+            mReadMore.setSelected(true);
+        }
+    }
 }

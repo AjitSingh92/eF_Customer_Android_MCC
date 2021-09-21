@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -141,6 +142,18 @@ import static com.easyfoodcustomer.utility.SharedPreferencesClass.TABLE_TYPE;
 import static com.easyfoodcustomer.utility.SharedPreferencesClass.UNIT_ID;
 import static com.easyfoodcustomer.utility.SharedPreferencesClass.UNIT_TYPE;
 import static com.easyfoodcustomer.utility.UserContants.AUTH_TOKEN;
+import static com.easyfoodcustomer.utility.UserContants.IS_OFFERED;
+import static com.easyfoodcustomer.utility.UserContants.IS_VOUCHER_APPLIED;
+import static com.easyfoodcustomer.utility.UserContants.MAX_DISCOUNTS;
+import static com.easyfoodcustomer.utility.UserContants.MIN_VALUE;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_ID;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_PRICE;
+import static com.easyfoodcustomer.utility.UserContants.OFFER_TYPE;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_CODE;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_MAX_DISCOUNT;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_MIN_ORDER;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_PRICE;
+import static com.easyfoodcustomer.utility.UserContants.VOUCHER_TYPE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -179,6 +192,9 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
     TextView allergyClick;
     @BindView(R.id.ll_dev)
     LinearLayout llDev;
+
+    @BindView(R.id.fmBlur)
+    FrameLayout fmBlur;
 
     @BindView(R.id.restaurant_name)
     TextView restaurantName;
@@ -341,6 +357,8 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
     MenuSpecialOfferAdapter mOfferAdapter;
     UpSellProductAdapter mUpSellProductAdapter;
     private String unitId, unitType, tableType, tableNumber;
+    private Double maxDiscount = 0.0;
+    private Double subTotalPrice = 0.0;
 
 
     private List<TableInfoBean.DataBean.ServiceUnitsBean.UnitsBean> dropDownList;
@@ -395,6 +413,9 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
     private AppDatabase mDb;
     ArrayList<CartProdctListModel> cartProdctList;
+    private Double discount = 0.0;
+    private boolean isFromDeal = false;
+    private boolean isCouponApplied = false;
 
     public MyCartFragment(Activity mActivity, Context mContext, boolean isFavorite) {
         this.mActivity = mActivity;
@@ -406,16 +427,19 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
         // Required empty public constructor
     }
 
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_basket, container, false);
+        view = inflater.inflate(R.layout.fragment_my_basket, container, false);
+        isFromDeal = PrefManager.getInstance(getActivity()).getPreference(IS_OFFERED, false);
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
         mDb = AppDatabase.getInstance(getApplicationContext());
-        recyclerviewOrderItems=view.findViewById(R.id.recyclerview_order_items);
+        recyclerviewOrderItems = view.findViewById(R.id.recyclerview_order_items);
         val = (GlobalValues) getActivity().getApplication();
         sharePre = new SharedPreferencesClass(getActivity());
         if (sharePre.getInt(IS_FOR_TABLE) == 1)
@@ -427,7 +451,31 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
         ///////////////////// get if any offer are selected from restaurant....
         String offer_detail = sharePre.getString(OFFERR_DETAL_DFG);
         discountOffer = new Gson().fromJson(offer_detail, DiscountOffer.class);
+        if (!isFromDeal) {
+          /*  String IS_VOUCHER_APPLIED="isVoucherApplied";
+            String VOUCHER_TYPE="voucherType";
+            String VOUCHER_MIN_ORDER="voucherMinOrder";
+            String VOUCHER_MAX_DISCOUNT="voucherMaxDiscount";
+            String VOUCHER_CODE="voucherCode";*/
+            if (PrefManager.getInstance(getActivity()).getPreference(IS_VOUCHER_APPLIED, false)) {
+                voucherType = PrefManager.getInstance(getActivity()).getPreference(VOUCHER_TYPE, "");
+                minOrderValue = Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(VOUCHER_MIN_ORDER, "0.0"));
+                maxDiscount = Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(VOUCHER_MAX_DISCOUNT, "0.0"));
+                voucherCode = PrefManager.getInstance(getActivity()).getPreference(VOUCHER_CODE, "");
+                voucherValue = Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(VOUCHER_PRICE, "0.0"));
+                coponcode.setText(voucherCode);
+                coponcode.setEnabled(false);
+                btnApplyVoucherCode.setTag("remove");
+                btnApplyVoucherCode.setText("Remove");
+                discountOffer = new DiscountOffer();
+                discountOffer.setOfferType(voucherType);
+                discountOffer.setMin_value(String.valueOf(minOrderValue));
+                discountOffer.setOfferPrice(String.valueOf(voucherValue));
+                discountOffer.setMax_discounts(String.valueOf(maxDiscount));
+                isCouponApplied = true;
 
+            }
+        }
         dialog = new Dialog(getActivity());
         dialog.setTitle("");
         dialog.setCancelable(true);
@@ -472,7 +520,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
         } catch (NullPointerException e) {
             lyContainer.setVisibility(View.GONE);
-            alertDialogEmptyBasket();
+            //alertDialogEmptyBasket();
         }
         // tvChangeTable
 
@@ -480,11 +528,14 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
         // etMobile.setText();
 
-        if (isFavorite) {
-            favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_active));
-        } else {
-            favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_white));
+        if (mContext != null) {
+            if (isFavorite) {
+                favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_active));
+            } else {
+                favourites.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_white));
+            }
         }
+
         favourites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -498,6 +549,8 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                 getTables(false, false);
             }
         });
+
+
         return view;
     }
 
@@ -610,11 +663,13 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
         mDb.saveOrderHistry().loadAllHistory().observe(getActivity(), new androidx.lifecycle.Observer<List<OrderSaveModel>>() {
             @Override
             public void onChanged(@Nullable List<OrderSaveModel> orderSaveModelList) {
-
+                // totalCartItermNew = 0;
                 if (orderSaveModelList.size() > 0) {
+                    totalCartItermNew = 0;
                     cartProdctList = new ArrayList<>();
                     for (int i = 0; i < orderSaveModelList.size(); i++) {
-                        totalCartItermNew=totalCartItermNew+orderSaveModelList.get(i).getItemCount();
+//Idhar Change karna hai first
+                        totalCartItermNew = totalCartItermNew + orderSaveModelList.get(i).getItemCount();
                         cartProdctList.add(new CartProdctListModel(orderSaveModelList.get(i).getId(),
                                 orderSaveModelList.get(i).getItemCount(),
                                 orderSaveModelList.get(i).getMealID(),
@@ -630,7 +685,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                         ));
                     }
 
-
+                    recyclerviewOrderItems = view.findViewById(R.id.recyclerview_order_items);
                     RecyclerLayoutManager layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
                     recyclerviewOrderItems.setLayoutManager(layoutManager);
                     mealCartAdapter = new MealCartAdapter(getApplicationContext(), MyCartFragment.this, cartProdctList);
@@ -638,8 +693,8 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
                     getTotalPrice(orderSaveModelList);
 
-                }else
-                {
+                } else {
+                    recyclerviewOrderItems = view.findViewById(R.id.recyclerview_order_items);
                     cartProdctList = new ArrayList<>();
                     RecyclerLayoutManager layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);
                     recyclerviewOrderItems.setLayoutManager(layoutManager);
@@ -673,7 +728,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
                 } else {
                     lyContainer.setVisibility(View.GONE);
-                    alertDialogEmptyBasket();
+                    //alertDialogEmptyBasket();
                 }
 
                 productIdForUpsell = new ArrayList<>();
@@ -726,16 +781,17 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
 
     }
+
     private double getTotalPrice(List<OrderSaveModel> orderSaveModelList) {
 
         double finalPrice = 0;
 
-        for (int i=0;i<orderSaveModelList.size();i++)
-        {
-            finalPrice=finalPrice+Double.parseDouble(orderSaveModelList.get(i).getTotalAmoutOfMeal());
+        for (int i = 0; i < orderSaveModelList.size(); i++) {
+            finalPrice = finalPrice + Double.parseDouble(orderSaveModelList.get(i).getTotalAmoutOfMeal());
         }
+        subTotalPrice = finalPrice;
         subTotal.setText(String.format("%.2f", finalPrice));
-        totalPrice=finalPrice;
+        totalPrice = finalPrice;
         setPriceCalculation(orderSaveModelList.size());
         return finalPrice;
 
@@ -824,6 +880,28 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                         i.putExtra("RESTAURANTID", val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
                         i.putExtra("IS_FROM_LOGIN", false);
                         i.putExtra("ServeStyle", sharedPreferencesClass.getString(SERVE_STYLE));
+                        if (isFromDeal) {
+                            i.putExtra("isOffer", true);
+                            i.putExtra("offer_price", PrefManager.getInstance(getActivity()).getPreference(OFFER_PRICE, ""));
+                            i.putExtra("offer_type", PrefManager.getInstance(getActivity()).getPreference(OFFER_TYPE, ""));
+                            i.putExtra("offer_id", PrefManager.getInstance(getActivity()).getPreference(OFFER_ID, ""));
+                            i.putExtra("min_value", PrefManager.getInstance(getActivity()).getPreference(MIN_VALUE, ""));
+                            i.putExtra("max_value", PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, ""));
+
+                        } else {
+                            if (isCouponApplied) {
+                                i.putExtra("isFromCart", true);
+                                i.putExtra("voucherType", voucherType);
+                                i.putExtra("minOrder", String.valueOf(minOrderValue));
+                                i.putExtra("maxDiscount", String.valueOf(maxDiscount));
+                                i.putExtra("voucherCode", voucherCode);
+                                i.putExtra("voucherValue", String.valueOf(voucherValue));
+
+
+                            }
+                        }
+
+
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                         getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
@@ -858,7 +936,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
             case R.id.btn_ApplyVoucherCode:
                 if (btnApplyVoucherCode.getTag().equals("apply")) {
                     if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
-                        tvVoucherStatus.setVisibility(View.VISIBLE);
+                        //tvVoucherStatus.setVisibility(View.VISIBLE);
                         if (isInternetOn(getActivity())) {
                             getVoucherApply(coponcode.getText().toString());
                         } else {
@@ -876,11 +954,13 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                     coponcode.setEnabled(true);
                     btnApplyVoucherCode.setTag("apply");
                     btnApplyVoucherCode.setText("Apply");
+                    isCouponApplied = false;
                     tvVoucherStatus.setVisibility(View.GONE);
+                    discount = 0.00;
                     tvdiscount.setText(mContext.getResources().getString(R.string.currency) + "0.00");
                     voucherDiscount = 0.d;
                     voucherApplicableOn = null;
-                    totalCartIterm=totalCartItermNew;
+                    totalCartIterm = totalCartItermNew;
                     setPriceCalculation(totalCartIterm);
                 }
                 break;
@@ -935,7 +1015,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                 intent.putExtra("deliveryCharge", deliveryFeesAmt);
                 intent.putExtra("ORDER_TOTAL", netAmount);
                 intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                intent.putExtra("voucherDiscount", voucherDiscount);
+                intent.putExtra("voucherDiscount", discount);
                 intent.putExtra("notes", tvAddNoteData.getText().toString());
                 intent.putExtra("appliedVoucherCode", appliedVoucherCode);
                 intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
@@ -984,7 +1064,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                                         intent.putExtra("PATNER_ID", partnerID);
 
                                         intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                                        intent.putExtra("voucherDiscount", voucherDiscount);
+                                        intent.putExtra("voucherDiscount", discount);
                                         intent.putExtra("notes", tvAddNoteData.getText().toString());
                                         intent.putExtra("appliedVoucherCode", appliedVoucherCode);
                                         intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
@@ -1016,7 +1096,8 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                             intent.putExtra("MOBILE_NUMBER", etMobile.getText().toString().trim());
                             intent.putExtra("ORDER_TOTAL", netAmount);
                             intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                            intent.putExtra("voucherDiscount", voucherDiscount);
+
+                            intent.putExtra("voucherDiscount", discount);
                             intent.putExtra("notes", tvAddNoteData.getText().toString());
                             intent.putExtra("appliedVoucherCode", appliedVoucherCode);
                             intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
@@ -1060,7 +1141,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        /*unbinder.unbind();*/
     }
 
     @Override
@@ -1258,12 +1339,14 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
     private void showPriceAndView() {
         totalPrice = 0d;
-        totalCartIterm=totalCartItermNew;
+        // Indhar bhit check karna hai
+        totalCartIterm = totalCartItermNew;
         List<SpecialOffer> specialOffers = db.getSpecialOffer();
         List<MenuProduct> menuProducts = db.getMenuProduct();
         List<UpsellProduct> upsellProducts = db.getUpSellProducts();
 
         if (menuProducts != null && menuProducts.size() > 0) {
+            totalCartIterm = 0;
             for (MenuProduct menuProduct : menuProducts) {
                 int itemQty = menuProduct.getOriginalQuantity();
                 totalCartIterm += itemQty;
@@ -1402,125 +1485,140 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                 totalPrice += (Double.parseDouble(upsellProducts.get(i).getQuantity()) * upsellProducts.get(i).getProductPrice());
                 totalCartIterm += Double.parseDouble(upsellProducts.get(i).getQuantity());
             }
-            totalCartIterm=totalCartItermNew;
+            totalCartIterm = totalCartItermNew;
             setPriceCalculation(totalCartIterm);
 
         }
 
     }
 
+
     public void setPriceCalculation(int totalCartIterm) {
-     //   subTotal.setText(String.format("%.2f", totalPrice));
-        // numberOfQty = mAdapter.getItemCount();
-        orderType = serveType.getText().toString().trim();
-        if (subTotal.getText().toString()!=null && !subTotal.getText().toString().isEmpty() && !subTotal.getText().toString().equalsIgnoreCase(""))
-        {
-            totalPrice=Double.parseDouble(subTotal.getText().toString());
-        }
+
+        if (isFromDeal) {
 
 
-        if (orderType.equalsIgnoreCase("Please Select")) {
-            llCollectionFromRestaurant.setVisibility(View.GONE);
-            llDeliveryAddress.setVisibility(View.GONE);
-            llBillingAddress.setVisibility(View.GONE);
-            deliveryFees.setText("£" + String.format("%.2f", 0.00));
-            netAmount = totalPrice;
-        } else if (orderType.equalsIgnoreCase("Delivery")) {
-            llCollectionFromRestaurant.setVisibility(View.GONE);
-            llDeliveryAddress.setVisibility(View.VISIBLE);
-            llBillingAddress.setVisibility(View.GONE);
+            //   subTotal.setText(String.format("%.2f", totalPrice));
+            // numberOfQty = mAdapter.getItemCount();
+            orderType = serveType.getText().toString().trim();
+            if (subTotal.getText().toString() != null && !subTotal.getText().toString().isEmpty() && !subTotal.getText().toString().equalsIgnoreCase("")) {
+                totalPrice = Double.parseDouble(subTotal.getText().toString());
+            }
+
+
+            if (orderType.equalsIgnoreCase("Please Select")) {
+                llCollectionFromRestaurant.setVisibility(View.GONE);
+                llDeliveryAddress.setVisibility(View.GONE);
+                llBillingAddress.setVisibility(View.GONE);
+                deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                netAmount = totalPrice;
+            } else if (orderType.equalsIgnoreCase("Delivery")) {
+                llCollectionFromRestaurant.setVisibility(View.GONE);
+                llDeliveryAddress.setVisibility(View.VISIBLE);
+                llBillingAddress.setVisibility(View.GONE);
 
 
            /* if (val.getRestaurantDetailsResponse().getData().getRestaurants().getStatus().trim().equalsIgnoreCase("closed")) {
                 llDeliveryTimeSlot.setEnabled(true);
 
             } else {*/
-            llDeliveryTimeSlot.setEnabled(true);
-            //}
+                llDeliveryTimeSlot.setEnabled(true);
+                //}
 
 
-            if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).isEmpty()) {
-                tvChange.setText("Add a new delivery address");
-                tvDeliveryAddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
-            } else {
-                tvChange.setText("Add a new delivery address");
-            }
-            if (chDeliverySameBilling.isChecked()) {
-                tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
-                tvChangeBillingAddress.setVisibility(View.GONE);
-            } else {
-                tvChangeBillingAddress.setVisibility(View.VISIBLE);
-                tvBillingAdddress.setText("");
-            }
-
-            if (res != null) {
-                ////
-                if (totalPrice > Double.parseDouble(res.getData().getRestaurants().getFreeDelivery())) {
-                    deliveryFees.setText("£" + String.format("%.2f", 0.00));
-                    netAmount = totalPrice;
+                if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).isEmpty()) {
+                    tvChange.setText("Add a new delivery address");
+                    tvDeliveryAddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
                 } else {
-                    deliveryFees.setText("£" + String.format("%.2f", Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge())));
-                    deliveryFeesAmt = Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge());
-                    netAmount = totalPrice + Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge());
+                    tvChange.setText("Add a new delivery address");
                 }
+                if (chDeliverySameBilling.isChecked()) {
+                    tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
+                    tvChangeBillingAddress.setVisibility(View.GONE);
+                } else {
+                    tvChangeBillingAddress.setVisibility(View.VISIBLE);
+                    tvBillingAdddress.setText("");
+                }
+
+                if (res != null) {
+                    ////
+                    if (totalPrice > Double.parseDouble(res.getData().getRestaurants().getFreeDelivery())) {
+                        deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                        netAmount = totalPrice;
+                    } else {
+                        deliveryFees.setText("£" + String.format("%.2f", Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge())));
+                        deliveryFeesAmt = Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge());
+                        netAmount = totalPrice + Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge());
+                    }
+                }
+            } else if (orderType.equalsIgnoreCase("collection")) {
+                llCollectionFromRestaurant.setVisibility(View.VISIBLE);
+                llDeliveryAddress.setVisibility(View.GONE);
+                llBillingAddress.setVisibility(View.GONE);
+
+                llDeliveryTimeSlot.setEnabled(true);
+                deliveryFeesAmt = 0.0d;
+                deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                netAmount = totalPrice;
+            } else {
+                llCollectionFromRestaurant.setVisibility(View.GONE);
+                llDeliveryAddress.setVisibility(View.GONE);
+                llBillingAddress.setVisibility(View.GONE);
+
+                llDeliveryTimeSlot.setEnabled(false);
+                deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                netAmount = totalPrice;
             }
-        } else if (orderType.equalsIgnoreCase("collection")) {
-            llCollectionFromRestaurant.setVisibility(View.VISIBLE);
-            llDeliveryAddress.setVisibility(View.GONE);
-            llBillingAddress.setVisibility(View.GONE);
 
-            llDeliveryTimeSlot.setEnabled(true);
-            deliveryFeesAmt = 0.0d;
-            deliveryFees.setText("£" + String.format("%.2f", 0.00));
-            netAmount = totalPrice;
-        } else {
-            llCollectionFromRestaurant.setVisibility(View.GONE);
-            llDeliveryAddress.setVisibility(View.GONE);
-            llBillingAddress.setVisibility(View.GONE);
+            /*   *//*TODO: Voucher Apply Calculation*/
+            if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
 
-            llDeliveryTimeSlot.setEnabled(false);
-            deliveryFees.setText("£" + String.format("%.2f", 0.00));
-            netAmount = totalPrice;
-        }
+                if (voucherApplicableOn != null && voucherApplicableOn.contains(orderType.toLowerCase())) {
+                    if (voucherApplicableOn.contains(orderType.toLowerCase())) {
+                        if (voucherType.equalsIgnoreCase(PERCENTAGE_OFFERS)) {
+                            if (totalPrice >= minOrderValue) {
+                                Double voucherCal = (subTotalPrice * voucherValue) / 100;
+                                appliedVoucherAmount = voucherCal;
 
-        /*   *//*TODO: Voucher Apply Calculation*/
-        if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
+                                netAmount = netAmount - voucherCal;
+                                appliedVoucherCode = voucherCode;
+                                appliedVoucherPaymentType = voucherValidOn;
+                                tvVoucherStatus.setVisibility(View.GONE);
 
-            if (voucherApplicableOn != null && voucherApplicableOn.contains(orderType.toLowerCase())) {
-                if (voucherApplicableOn.contains(orderType.toLowerCase())) {
-                    if (voucherType.equalsIgnoreCase(PERCENTAGE_OFFERS)) {
-                        if (totalPrice >= minOrderValue) {
-                            Double voucherCal = (netAmount * voucherValue) / 100;
-                            appliedVoucherAmount = voucherCal;
-                            netAmount = netAmount - voucherCal;
-                            appliedVoucherCode = voucherCode;
-                            appliedVoucherPaymentType = voucherValidOn;
-                            tvVoucherStatus.setVisibility(View.GONE);
-                            tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
-                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
-                            voucherDiscount = voucherCal;
-                        } else {
-                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
-                            tvVoucherStatus.setVisibility(View.GONE);
-                            tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+                                tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
+                                discount = voucherCal;
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                voucherDiscount = voucherCal;
+                            } else {
+                                discount = 0.00;
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
+                                tvVoucherStatus.setVisibility(View.GONE);
+                                tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
 
+                            }
+                        } else if (voucherType.equalsIgnoreCase(FLAT_OFFERS)) {
+                            if (totalPrice >= minOrderValue) {
+                                Double voucherCal = netAmount - voucherValue;
+                                appliedVoucherAmount = voucherCal;
+                                appliedVoucherCode = voucherCode;
+                                appliedVoucherPaymentType = voucherValidOn;
+                                netAmount = voucherCal;
+                                tvVoucherStatus.setVisibility(View.GONE);
+                                tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherValue) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
+                                discount = voucherValue;
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
+                                voucherDiscount = voucherValue;
+                            } else {
+                                discount = 0.00;
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
+                                tvVoucherStatus.setVisibility(View.GONE);
+                                tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
+                            }
                         }
-                    } else if (voucherType.equalsIgnoreCase(FLAT_OFFERS)) {
-                        if (totalPrice >= minOrderValue) {
-                            Double voucherCal = netAmount - voucherValue;
-                            appliedVoucherAmount = voucherCal;
-                            appliedVoucherCode = voucherCode;
-                            appliedVoucherPaymentType = voucherValidOn;
-                            netAmount = voucherCal;
-                            tvVoucherStatus.setVisibility(View.GONE);
-                            tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherValue) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
-                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
-                            voucherDiscount = voucherValue;
-                        } else {
-                            tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
-                            tvVoucherStatus.setVisibility(View.GONE);
-                            tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
-                        }
+
+                    } else {
+                        tvVoucherStatus.setVisibility(View.GONE);
+                        tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
                     }
 
                 } else {
@@ -1530,36 +1628,237 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
 
             } else {
                 tvVoucherStatus.setVisibility(View.GONE);
-                tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
             }
+
+            if (PrefManager.getInstance(getActivity()).getPreference(IS_OFFERED, false)) {
+                fmBlur.setVisibility(View.VISIBLE);
+                btnApplyVoucherCode.setClickable(false);
+                btnApplyVoucherCode.setEnabled(false);
+                coponcode.setFocusable(false);
+                coponcode.setFocusableInTouchMode(false);
+                coponcode.setEnabled(false);
+                if (totalPrice > Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MIN_VALUE, "0"))) {
+
+
+                    if (PrefManager.getInstance(getActivity()).getPreference(OFFER_TYPE, "").equalsIgnoreCase(PERCENTAGE_OFFERS)) {
+                        double percentDisc = (subTotalPrice * Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(OFFER_PRICE, "0")) / 100);
+                        if (percentDisc > Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"))) {
+                            netAmount = netAmount - Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"));
+                            discount = Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"));
+                            tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"))));
+                        } else {
+                            netAmount = netAmount - percentDisc;
+                            discount = percentDisc;
+                            tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", percentDisc));
+                        }
+
+                        //discount = percentDisc;
+                        //tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", percentDisc));
+                    } else if (PrefManager.getInstance(getActivity()).getPreference(OFFER_TYPE, "").equalsIgnoreCase(FLAT_OFFERS) && totalPrice > Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MIN_VALUE, "0"))) {
+                        double flatDisc = Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(OFFER_PRICE, "0"));
+                        if (flatDisc > Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"))) {
+                            netAmount = netAmount - Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"));
+                            discount = Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"));
+                            tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", Double.parseDouble(PrefManager.getInstance(getActivity()).getPreference(MAX_DISCOUNTS, "0"))));
+                        } else {
+                            netAmount = netAmount - flatDisc;
+                            discount = flatDisc;
+                            tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", flatDisc));
+                        }
+
+
+                        // netAmount = netAmount - flatDisc;
+                        //discount = flatDisc;
+                        //tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", flatDisc));
+                    }
+
+                } else {
+                    discount = 0.00;
+                    tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", 0f));
+                }
+
+            } else {
+                fmBlur.setVisibility(View.GONE);
+                btnApplyVoucherCode.setClickable(true);
+                btnApplyVoucherCode.setEnabled(true);
+                coponcode.setFocusable(true);
+                coponcode.setFocusableInTouchMode(true);
+                coponcode.setEnabled(true);
+
+
+            }
+            totalCount.setText(String.valueOf(totalCartIterm));
+            footerTotalCount.setText(String.valueOf(totalCartIterm));
+            totalAmmount.setText(String.format("%.2f", netAmount));
+            footerTotalAmount.setText(String.format("%.2f", netAmount));
+            init();
+
 
         } else {
-            tvVoucherStatus.setVisibility(View.GONE);
-        }
-
-        if (discountOffer != null) {
-
-            if (totalPrice > Double.parseDouble(discountOffer.getMin_value())) {
-
-                if (discountOffer.getOfferType().equalsIgnoreCase(PERCENTAGE_OFFERS)) {
-                    double percentDisc = (netAmount * Double.parseDouble(discountOffer.getOfferPrice())) / 100;
-                    netAmount = netAmount - percentDisc;
-                    tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", percentDisc));
-                } else if (discountOffer.getOfferType().equalsIgnoreCase(FLAT_OFFERS) && totalPrice > Double.parseDouble(discountOffer.getMin_value())) {
-                    double flatDisc = Double.parseDouble(discountOffer.getOfferPrice());
-                    netAmount = netAmount - flatDisc;
-                    tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", flatDisc));
-                }
-            } else {
-                tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", 0f));
+            //   subTotal.setText(String.format("%.2f", totalPrice));
+            // numberOfQty = mAdapter.getItemCount();
+            orderType = serveType.getText().toString().trim();
+            if (subTotal.getText().toString() != null && !subTotal.getText().toString().isEmpty() && !subTotal.getText().toString().equalsIgnoreCase("")) {
+                totalPrice = Double.parseDouble(subTotal.getText().toString());
             }
+
+
+            if (orderType.equalsIgnoreCase("Please Select")) {
+                llCollectionFromRestaurant.setVisibility(View.GONE);
+                llDeliveryAddress.setVisibility(View.GONE);
+                llBillingAddress.setVisibility(View.GONE);
+                deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                netAmount = totalPrice;
+            } else if (orderType.equalsIgnoreCase("Delivery")) {
+                llCollectionFromRestaurant.setVisibility(View.GONE);
+                llDeliveryAddress.setVisibility(View.VISIBLE);
+                llBillingAddress.setVisibility(View.GONE);
+
+
+       /* if (val.getRestaurantDetailsResponse().getData().getRestaurants().getStatus().trim().equalsIgnoreCase("closed")) {
+            llDeliveryTimeSlot.setEnabled(true);
+
+        } else {*/
+                llDeliveryTimeSlot.setEnabled(true);
+                //}
+
+
+                if (sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS) != null && !sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS).isEmpty()) {
+                    tvChange.setText("Add a new delivery address");
+                    tvDeliveryAddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
+                } else {
+                    tvChange.setText("Add a new delivery address");
+                }
+                if (chDeliverySameBilling.isChecked()) {
+                    tvBillingAdddress.setText(sharedPreferencesClass.getString(sharedPreferencesClass.DEFAULT_ADDRESS));
+                    tvChangeBillingAddress.setVisibility(View.GONE);
+                } else {
+                    tvChangeBillingAddress.setVisibility(View.VISIBLE);
+                    tvBillingAdddress.setText("");
+                }
+
+                if (res != null) {
+                    ////
+                    if (totalPrice > Double.parseDouble(res.getData().getRestaurants().getFreeDelivery())) {
+                        deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                        netAmount = totalPrice;
+                    } else {
+                        deliveryFees.setText("£" + String.format("%.2f", Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge())));
+                        deliveryFeesAmt = Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge());
+                        netAmount = totalPrice + Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge());
+                    }
+                }
+            } else if (orderType.equalsIgnoreCase("collection")) {
+                llCollectionFromRestaurant.setVisibility(View.VISIBLE);
+                llDeliveryAddress.setVisibility(View.GONE);
+                llBillingAddress.setVisibility(View.GONE);
+
+                llDeliveryTimeSlot.setEnabled(true);
+                deliveryFeesAmt = 0.0d;
+                deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                netAmount = totalPrice;
+            } else {
+                llCollectionFromRestaurant.setVisibility(View.GONE);
+                llDeliveryAddress.setVisibility(View.GONE);
+                llBillingAddress.setVisibility(View.GONE);
+
+                llDeliveryTimeSlot.setEnabled(false);
+                deliveryFees.setText("£" + String.format("%.2f", 0.00));
+                netAmount = totalPrice;
+            }
+
+            /*   *//*TODO: Voucher Apply Calculation*/
+            if (coponcode.getText().toString().trim() != null && !coponcode.getText().toString().equalsIgnoreCase("")) {
+
+                if (voucherApplicableOn != null && voucherApplicableOn.contains(orderType.toLowerCase())) {
+                    if (voucherApplicableOn.contains(orderType.toLowerCase())) {
+                        if (voucherType.equalsIgnoreCase(PERCENTAGE_OFFERS)) {
+                            if (totalPrice >= minOrderValue) {
+                                Double voucherCal = (subTotalPrice * voucherValue) / 100;
+                                if (voucherCal > maxDiscount) {
+                                    voucherCal = maxDiscount;
+                                }
+                                appliedVoucherAmount = voucherCal;
+                                netAmount = netAmount - voucherCal;
+                                appliedVoucherCode = voucherCode;
+                                appliedVoucherPaymentType = voucherValidOn;
+                                tvVoucherStatus.setVisibility(View.GONE);
+                                tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherCal) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
+                                voucherDiscount = voucherCal;
+                            } else {
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
+                                tvVoucherStatus.setVisibility(View.GONE);
+                                tvVoucherStatus.setText("Voucher applicable on minimum order value " + getString(R.string.currency) + String.format("%.2f", minOrderValue));
+
+                            }
+                        } else if (voucherType.equalsIgnoreCase(FLAT_OFFERS)) {
+                            if (totalPrice >= minOrderValue) {
+                                if (voucherValue > maxDiscount) {
+                                    voucherValue = maxDiscount;
+                                }
+                                Double voucherCal = netAmount - voucherValue;
+                                appliedVoucherAmount = voucherCal;
+                                appliedVoucherCode = voucherCode;
+                                appliedVoucherPaymentType = voucherValidOn;
+                                netAmount = voucherCal;
+                                tvVoucherStatus.setVisibility(View.GONE);
+                                tvVoucherStatus.setText(getString(R.string.currency) + " " + String.format("%.2f", voucherValue) + " voucher has been applied on " + appliedVoucherPaymentType + " payment.");
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
+                                voucherDiscount = voucherValue;
+                            } else {
+                                tvdiscount.setText(mContext.getResources().getString(R.string.currency) + " " + String.format("%.2f", 0f));
+                                tvVoucherStatus.setVisibility(View.GONE);
+                                tvVoucherStatus.setText("Voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + minOrderValue);
+                            }
+                        }
+
+                    } else {
+                        tvVoucherStatus.setVisibility(View.GONE);
+                        tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                    }
+
+                } else {
+                    tvVoucherStatus.setVisibility(View.GONE);
+                    tvVoucherStatus.setText("Voucher applicable on " + voucherApplicableOn);
+                }
+
+            } else {
+                tvVoucherStatus.setVisibility(View.GONE);
+            }
+
+            if (discountOffer != null) {
+
+                if (totalPrice > Double.parseDouble(discountOffer.getMin_value())) {
+
+                    if (discountOffer.getOfferType().equalsIgnoreCase(PERCENTAGE_OFFERS)) {
+                        double percentDisc = (subTotalPrice * Double.parseDouble(discountOffer.getOfferPrice())) / 100;
+                        if (percentDisc > maxDiscount) {
+                            percentDisc = maxDiscount;
+                        }
+                        netAmount = netAmount - percentDisc;
+                        tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", percentDisc));
+                    } else if (discountOffer.getOfferType().equalsIgnoreCase(FLAT_OFFERS) && totalPrice > Double.parseDouble(discountOffer.getMin_value())) {
+
+                        double flatDisc = Double.parseDouble(discountOffer.getOfferPrice());
+                        if (flatDisc > maxDiscount) {
+                            flatDisc = maxDiscount;
+                        }
+                        netAmount = netAmount - flatDisc;
+                        tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", flatDisc));
+                    }
+                } else {
+                    tvdiscount.setText(getString(R.string.pound) + String.format("%.2f", 0f));
+                }
+            }
+            totalCount.setText(String.valueOf(totalCartIterm));
+            footerTotalCount.setText(String.valueOf(totalCartIterm));
+            totalAmmount.setText(String.format("%.2f", netAmount));
+            footerTotalAmount.setText(String.format("%.2f", netAmount));
+            init();
         }
-        totalCount.setText(String.valueOf(totalCartIterm));
-        footerTotalCount.setText(String.valueOf(totalCartIterm));
-        totalAmmount.setText(String.format("%.2f", netAmount));
-        footerTotalAmount.setText(String.format("%.2f", netAmount));
-        init();
     }
+
 
     VoucherApplyResponse.Data voucherData;
 
@@ -1579,35 +1878,56 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                 try {
                     dialog.hide();
                     if (response.body().getSuccess()) {
+                        PrefManager.getInstance(getActivity()).savePreference(IS_OFFERED, true);
                         discountOffer = new DiscountOffer();
                         voucherData = response.body().getData();
                         /*TODO: Voucher Apply Calculation*/
                         coponcode.setEnabled(false);
                         btnApplyVoucherCode.setTag("remove");
                         btnApplyVoucherCode.setText("Remove");
-
+                        isCouponApplied = true;
                         minOrderValue = Double.parseDouble(response.body().getData().getMinimum_order_value());
+                        maxDiscount = Double.parseDouble(response.body().getData().getMax_discounts());
                         voucherType = response.body().getData().getVoucher_type();
-                        voucherValue = Double.parseDouble(response.body().getData().getVoucher_value());
-                        voucherCode = voucher_code;
-                        voucherValidOn = response.body().getData().getVoucher_valid_on();
 
+                        voucherValue = Double.parseDouble(response.body().getData().getVoucher_value());
+
+                        voucherCode = voucher_code;
+                        // voucherValidOn = response.body().getData().getVoucher_valid_on();
+
+                        voucherValidOn = response.body().getData().getMinimum_order_value();
+
+
+//voucherType,minOrderValue,maxDiscount,voucherCode
+
+                        //PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_TYPE, offerType);
+                        //
+                        //PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_ID, offerId);
+                        //PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(MIN_VALUE, minValue);
+                        //
+                        // PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(MAX_DISCOUNTS, maxValue);
+                        // PrefManager.getInstance(RestaurantDetailsActivity.this).savePreference(OFFER_PRICE, offerPrice);
 
                         if (voucherType.equalsIgnoreCase(PERCENTAGE_OFFERS)) {
                             if (totalPrice >= minOrderValue) {
                                 Double voucherCal = (netAmount * voucherValue) / 100;
+                                if (voucherCal > maxDiscount) {
+                                    voucherCal = maxDiscount;
+                                }
                                 appliedVoucherAmount = voucherCal;
                                 netAmount = netAmount - voucherCal;
                                 appliedVoucherCode = voucherCode;
                                 appliedVoucherPaymentType = voucherValidOn;
-                                alertDailogVoucher("Voucher code has been accepted", "You got " + voucherValue + "% Off");
-                                tvVoucherStatus.setVisibility(View.VISIBLE);
+
+                                int vall = Integer.valueOf(voucherValue.intValue());
+                                alertDailogVoucher("Voucher code has been accepted", "You got " + String.valueOf(vall) + "% OFF");
                                 tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherCal));
                                 voucherCodeUsed = voucher_code;
 
                                 discountOffer.setOfferType(voucherType);
                                 discountOffer.setMin_value(String.valueOf(minOrderValue));
                                 discountOffer.setOfferPrice(String.valueOf(voucherValue));
+                                discountOffer.setMax_discounts(String.valueOf(maxDiscount));
 
                                 showPriceAndView();
                             } else {
@@ -1618,12 +1938,16 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                         } else if (voucherType.equalsIgnoreCase(FLAT_OFFERS)) {
 
                             if (totalPrice >= minOrderValue) {
+                                if (voucherValue > maxDiscount)
+                                    voucherValue = maxDiscount;
                                 Double voucherCal = netAmount - voucherValue;
                                 appliedVoucherAmount = voucherCal;
                                 appliedVoucherCode = voucherCode;
                                 appliedVoucherPaymentType = voucherValidOn;
                                 netAmount = voucherCal;
-                                alertDailogVoucher("Voucher code has been accepted", "You got  " + getString(R.string.currency) + "" + String.format("%.2f", voucherValue) + " Off.");
+                                int vllll;
+                                vllll = Integer.valueOf(voucherValue.intValue());
+                                alertDailogVoucher("Voucher code has been accepted", "You got  " + getString(R.string.currency) + "" + String.valueOf(vllll) + " OFF");
                                 tvVoucherStatus.setVisibility(View.VISIBLE);
                                 tvVoucherStatus.setText("Voucher Applied " + getString(R.string.currency) + " " + String.format("%.2f", voucherValue));
                                 voucherCodeUsed = voucher_code;
@@ -1632,7 +1956,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                                 discountOffer.setOfferType(voucherType);
                                 discountOffer.setMin_value(String.valueOf(minOrderValue));
                                 discountOffer.setOfferPrice(String.valueOf(voucherValue));
-
+                                discountOffer.setMax_discounts(String.valueOf(maxDiscount));
                                 showPriceAndView();
                             } else {
                                 alertDailogVoucher("Voucher code has been accepted", "This voucher is applicable on minimum spend of " + getString(R.string.currency) + " " + String.format("%.2f", minOrderValue));
@@ -1645,6 +1969,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                         setPriceCalculation(totalCartIterm);
                     } else {
                         dialog.hide();
+                        PrefManager.getInstance(getActivity()).savePreference(IS_OFFERED, false);
                         alertDailogVoucher(response.body().getMessage(), "Unfortunately " + voucher_code + " is invalid. Please try again with a valid code.");
                         tvVoucherStatus.setVisibility(View.VISIBLE);
                         tvVoucherStatus.setText(response.body().getMessage());
@@ -1772,6 +2097,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                     i.putExtra("RESTAURANTID", val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     db.deleteCart();
+                    mDb.saveOrderHistry().deleteAll();
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
@@ -1864,8 +2190,16 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                         mlat = Double.parseDouble(res.getData().getRestaurants().getLat());
                         mlong = Double.parseDouble(res.getData().getRestaurants().getLng());
                         restaurantCuisines.setText(res.getData().getRestaurants().getRestaurantCuisines());
+                        Double deliveryCharge = 0.0;
+                        Double minOrderValue = 0.0;
+                        if (res.getData().getRestaurants().getDeliveryCharge() != null && !res.getData().getRestaurants().getDeliveryCharge().trim().isEmpty()) {
+                            deliveryCharge = Double.parseDouble(res.getData().getRestaurants().getDeliveryCharge());
+                        }
+                        if (res.getData().getRestaurants().getMinOrderValue() != null && !res.getData().getRestaurants().getMinOrderValue().trim().isEmpty()) {
+                            minOrderValue = Double.parseDouble(res.getData().getRestaurants().getMinOrderValue());
+                        }
 
-                        restaurantDeliveryMinOrder.setText("£" + res.getData().getRestaurants().getDeliveryCharge() + " delivery  •  £" + res.getData().getRestaurants().getMinOrderValue() + " min order");
+                        restaurantDeliveryMinOrder.setText("£" + String.format("%.2f", deliveryCharge) + " delivery  •  £" + String.format("%.2f", minOrderValue) + " min order");
                         minimumValue = Double.parseDouble(res.getData().getRestaurants().getMinOrderValue());
 
 
@@ -2187,7 +2521,8 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                         intent.putExtra("MOBILE_NUMBER", etMobile.getText().toString().trim());
                         intent.putExtra("ORDER_TOTAL", netAmount);
                         intent.putExtra("ORDER_SUB_TOTAL", totalPrice);
-                        intent.putExtra("voucherDiscount", voucherDiscount);
+
+                        intent.putExtra("voucherDiscount", discount);
                         intent.putExtra("notes", tvAddNoteData.getText().toString());
                         intent.putExtra("appliedVoucherCode", appliedVoucherCode);
                         intent.putExtra("appliedVoucherAmount", appliedVoucherAmount);
@@ -2379,6 +2714,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                             db.deleteCart();
+                            mDb.saveOrderHistry().deleteAll();
                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                             sharePre.setString(sharePre.RESTUARANT_ID, restaurentId);
                             sharePre.setString(sharePre.DELIVERY_MOBILE_NUMBER, val.getMobileNo());
@@ -2429,6 +2765,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                             db.deleteCart();
+                            mDb.saveOrderHistry().deleteAll();
                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                             sharePre.setString(sharePre.RESTUARANT_ID, restaurentId);
                             sharePre.setString(sharePre.DELIVERY_MOBILE_NUMBER, val.getMobileNo());
@@ -2466,6 +2803,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                             db.deleteCart();
+                            mDb.saveOrderHistry().deleteAll();
                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                             sharePre.setString(sharePre.RESTUARANT_ID, restaurentId);
                             sharePre.setString(sharePre.DELIVERY_MOBILE_NUMBER, val.getMobileNo());
@@ -2637,11 +2975,10 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_remove:
-                int removePos= (int) v.getTag();
-                if (cartProdctList.get(removePos).getItemCount()>1)
-                {
-                    OrderSaveModel orderSaveModel=new OrderSaveModel(cartProdctList.get(removePos).getId(),
-                            cartProdctList.get(removePos).getItemCount()-1,
+                int removePos = (int) v.getTag();
+                if (cartProdctList.get(removePos).getItemCount() > 1) {
+                    OrderSaveModel orderSaveModel = new OrderSaveModel(cartProdctList.get(removePos).getId(),
+                            cartProdctList.get(removePos).getItemCount() - 1,
                             cartProdctList.get(removePos).getMealID(),
                             cartProdctList.get(removePos).getRestaurantID(),
                             cartProdctList.get(removePos).getMealName(),
@@ -2649,7 +2986,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                             cartProdctList.get(removePos).getVegType(),
                             cartProdctList.get(removePos).getMenuCategoryId(),
                             cartProdctList.get(removePos).getDescription(),
-                            String.valueOf((Double.parseDouble(cartProdctList.get(removePos).getTotalAmoutOfMeal())/cartProdctList.get(removePos).getItemCount())*(cartProdctList.get(removePos).getItemCount()-1)),
+                            String.valueOf((Double.parseDouble(cartProdctList.get(removePos).getTotalAmoutOfMeal()) / cartProdctList.get(removePos).getItemCount()) * (cartProdctList.get(removePos).getItemCount() - 1)),
                             true,
                             cartProdctList.get(removePos).getData());
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -2658,22 +2995,40 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                             mDb.saveOrderHistry().insertOrUpdate(orderSaveModel);
                         }
                     });
-                }else
-                {
+                } else {
+
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
-                            mDb.saveOrderHistry().deleteAllMessage(cartProdctList.get(removePos).getMealID());
+                            mDb.saveOrderHistry().deleteAllOrders(cartProdctList.get(removePos).getId());
+
+
+                            /*if (cartProdctList.get(removePos).getMealID()!=null)
+                            {
+                                mDb.saveOrderHistry().deleteAllMessage(cartProdctList.get(removePos).getMealID());
+
+                            }else
+                            {
+
+
+                            }*/
                         }
                     });
+                    Intent i = new Intent(getContext(), RestaurantDetailsActivity.class);
+                    if (val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId() != null && !val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId().equalsIgnoreCase("")) {
+                        i.putExtra("RESTAURANTID", val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
+                        i.putExtra("IS_FROM_LOGIN", false);
+                        i.putExtra("ServeStyle", sharedPreferencesClass.getString(SERVE_STYLE));
+                        startActivity(i);
+                    }
                 }
 
                 break;
 
             case R.id.btn_add:
-                int addPos= (int) v.getTag();
-                OrderSaveModel orderSaveModel=new OrderSaveModel(cartProdctList.get(addPos).getId(),
-                        cartProdctList.get(addPos).getItemCount()+1,
+                int addPos = (int) v.getTag();
+                OrderSaveModel orderSaveModel = new OrderSaveModel(cartProdctList.get(addPos).getId(),
+                        cartProdctList.get(addPos).getItemCount() + 1,
                         cartProdctList.get(addPos).getMealID(),
                         cartProdctList.get(addPos).getRestaurantID(),
                         cartProdctList.get(addPos).getMealName(),
@@ -2681,7 +3036,7 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                         cartProdctList.get(addPos).getVegType(),
                         cartProdctList.get(addPos).getMenuCategoryId(),
                         cartProdctList.get(addPos).getDescription(),
-                        String.valueOf((Double.parseDouble(cartProdctList.get(addPos).getTotalAmoutOfMeal())/cartProdctList.get(addPos).getItemCount())*(cartProdctList.get(addPos).getItemCount()+1)),
+                        String.valueOf((Double.parseDouble(cartProdctList.get(addPos).getTotalAmoutOfMeal()) / cartProdctList.get(addPos).getItemCount()) * (cartProdctList.get(addPos).getItemCount() + 1)),
                         true,
                         cartProdctList.get(addPos).getData());
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -2693,14 +3048,11 @@ public class MyCartFragment extends Fragment implements MenuCartAdapter.OnMenuCa
                 break;
 
             case R.id.ly_item:
-                int counterPos= (int) v.getTag();
-                if (cartProdctList!=null && cartProdctList.size()>0)
-                {
-                    if (cartProdctList.get(counterPos).isOpen())
-                    {
+                int counterPos = (int) v.getTag();
+                if (cartProdctList != null && cartProdctList.size() > 0) {
+                    if (cartProdctList.get(counterPos).isOpen()) {
                         cartProdctList.get(counterPos).setOpen(false);
-                    }else
-                    {
+                    } else {
                         cartProdctList.get(counterPos).setOpen(true);
                     }
 

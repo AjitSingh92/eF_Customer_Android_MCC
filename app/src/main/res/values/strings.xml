@@ -1,14 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Easy Food</string>
+    <string name="app_name">easyFood</string>
     <string name="currency">\u00a3</string>
 
 
-    <!-- <string name="facebook_app_id">2246223352155867</string>
-     <string name="fb_login_protocol_scheme">fb2246223352155867</string>-->
+    <!-- <string name="facebook_app_id">2926429941018379</string>
+     <string name="fb_login_protocol_scheme">fb2926429941018379</string>-->
+
+    <string name="facebook_app_id">2926429941018379</string>
+    <string name="fb_login_protocol_scheme">fb2926429941018379</string>
+<!--   // <string name="facebook_app_id">2926429941018379</string>
+    //<string name="fb_login_protocol_scheme">fb2926429941018379</string>-->
 
 
-    <string name="facebook_app_id">535154387295634</string>
-    <string name="fb_login_protocol_scheme">fb535154387295634</string>
+    <!--    <string name="facebook_app_id">535154387295634</string>
+    <string name="fb_login_protocol_scheme">fb535154387295634</string>-->
 
 
     <string name="geo_api_key">AIzaSyBOkNBvcKrG2iwG6b1kP2-fIBOzHZjfqFM</string>
@@ -229,5 +234,9 @@ ou will be sent a varification code to your mobile </string>
     <string name="please_add_comments_below_">Please add comments below (Optional)</string>
     <string name="please_note_changing_your_serve">Please note changing your serve\nstyle will empty your cart</string>
     <string name="are_sure_you_would_like_to_continue">Are you sure you would like\nto continue?</string>
+    <string name="read_more">Show More</string>
+    <string name="no_description_available">No Description Available.</string>
+    <string name="read_less">Show Less</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

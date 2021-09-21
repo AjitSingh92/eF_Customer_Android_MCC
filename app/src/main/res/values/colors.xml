@@ -35,6 +35,7 @@
     <color name="dot_dark_screen3">#f98da5</color>
     <color name="dot_dark_screen4">#f98da5</color>
     <color name="seme_transparent">#95000000</color>
+    <color name="seme_transparentt">#27000000</color>
     <!-- dots active colors -->
     <color name="dot_light_screen1">#ffffff</color>
     <color name="dot_light_screen2">#ffffff</color>

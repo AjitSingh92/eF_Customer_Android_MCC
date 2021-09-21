@@ -159,7 +159,7 @@ public class MealProductCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
             tvItemTitle.setText(mItem.get(position).getCategoryName());
-            tvItemPick.setText("Pick " + mItem.get(position).getQuantity());
+            tvItemPick.setText("Select " + mItem.get(position).getQuantity());
             mealProductAdapter = new MealProductAdapter(context, openOnClick, dialog, mItem.get(position).getQuantity(), position, parentPosition, childPosition, qtyLayout, item_count, itemCount, action, menuCategory, isSubCat, itemClickListener, onMealProductItemSelect, this);
             mealProductAdapters.put(position, mealProductAdapter);
             listProduct.setAdapter(mealProductAdapter);

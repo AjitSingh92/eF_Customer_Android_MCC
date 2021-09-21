@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1028511164813-lbhn0d9stq3l4mcdq7cj7364072qeh7r.apps.googleusercontent.com",
+          "client_id": "1028511164813-4bjki9vjet52lfiaavju1dj15jca3nmb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.easyfoodcustomer",
-            "certificate_hash": "1c609eb200acb17079dbc3837f831a58e76fb892"
+            "certificate_hash": "f05d373edd15986d8361f8a8eda89b874db3f103"
           }
         },
         {
@@ -28,6 +28,30 @@
           "android_info": {
             "package_name": "com.easyfoodcustomer",
             "certificate_hash": "352c4a1ce35111fea27090795771e759c433ab98"
+          }
+        },
+        {
+          "client_id": "1028511164813-br9u9n4rj3qk9hd7j483cdkkm51stbq0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.easyfoodcustomer",
+            "certificate_hash": "6e8562d63e63dbd484b2609ed1e76de3724e99d8"
+          }
+        },
+        {
+          "client_id": "1028511164813-hd4197pqbi8o1c78vdj44i0dn33fid1e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.easyfoodcustomer",
+            "certificate_hash": "534fd21cec00701d7e7d06cf1d3f71129e0d5a7c"
+          }
+        },
+        {
+          "client_id": "1028511164813-lbhn0d9stq3l4mcdq7cj7364072qeh7r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.easyfoodcustomer",
+            "certificate_hash": "1c609eb200acb17079dbc3837f831a58e76fb892"
           }
         },
         {

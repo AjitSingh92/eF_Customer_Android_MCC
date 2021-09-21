@@ -28,10 +28,11 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/tv_itemcount"
-            android:layout_toStartOf="@+id/tv.price"
+
+            android:layout_toStartOf="@+id/price"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:fontFamily="@font/avenir_black"

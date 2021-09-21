@@ -25,15 +25,16 @@ public class ProductModifierSingleAdapter extends RecyclerView.Adapter<ProductMo
     private List<MealDetailsModel.MealConfigBean.ProductsBean.MenuProductSizeBean.SizeModifiersBean.SizeModifierProductsBean> size_modifier_products;
     private int positionParent;
     private MenuProductSizeModifierInterface menuProductSizeModifierInterface;
+
     public ProductModifierSingleAdapter(Context context, View.OnClickListener onClickListener,
                                         List<MealDetailsModel.MealConfigBean.ProductsBean.MenuProductSizeBean.SizeModifiersBean.SizeModifierProductsBean> size_modifier_products,
                                         int positionParent, MenuProductSizeModifierInterface menuProductSizeModifierInterface) {
 
-        this.context=context;
-        this.onClickListener=onClickListener;
-        this.size_modifier_products=size_modifier_products;
-        this.positionParent=positionParent;
-        this.menuProductSizeModifierInterface=menuProductSizeModifierInterface;
+        this.context = context;
+        this.onClickListener = onClickListener;
+        this.size_modifier_products = size_modifier_products;
+        this.positionParent = positionParent;
+        this.menuProductSizeModifierInterface = menuProductSizeModifierInterface;
 
     }
 
@@ -48,26 +49,24 @@ public class ProductModifierSingleAdapter extends RecyclerView.Adapter<ProductMo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.title.setText(size_modifier_products.get(position).getProduct_name());
-        holder.price.setText(context.getResources().getString(R.string.currency) + "" +size_modifier_products.get(position).getModifier_product_price());
+        if (size_modifier_products.get(position).getModifier_product_price() != null && Double.parseDouble(size_modifier_products.get(position).getModifier_product_price()) > 0)
+            holder.price.setText(context.getResources().getString(R.string.currency) + "" + size_modifier_products.get(position).getModifier_product_price());
 
-        if (size_modifier_products.get(position).getNoOfCount()>0)
-        {
+
+        if (size_modifier_products.get(position).getNoOfCount() > 0) {
             holder.itemSelected.setChecked(true);
-        }else
-        {
+        } else {
             holder.itemSelected.setChecked(false);
         }
 
         holder.titleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (size_modifier_products.get(position).getNoOfCount()>0)
-                {
-                    menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent,position,false,size_modifier_products.get(position).getNoOfCount(),true);
+                if (size_modifier_products.get(position).getNoOfCount() > 0) {
+                    menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent, position, false, size_modifier_products.get(position).getNoOfCount(), true);
 
-                }else
-                {
-                    menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent,position,true,size_modifier_products.get(position).getNoOfCount(),true);
+                } else {
+                    menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent, position, true, size_modifier_products.get(position).getNoOfCount(), true);
 
                 }
             }
@@ -80,12 +79,14 @@ public class ProductModifierSingleAdapter extends RecyclerView.Adapter<ProductMo
     public int getItemCount() {
         return size_modifier_products.size();
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private CheckBox itemSelected;
         private TextView title;
         private TextView price;
         private TextView modifiers;
         private RelativeLayout titleLayout;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);

@@ -10,6 +10,10 @@ public class DiscountOffer {
     @Expose
     private String min_value;
 
+    @SerializedName("max_discounts")
+    @Expose
+    private String max_discounts;
+
     @SerializedName("offer_id")
     @Expose
     private String offerId;
@@ -155,5 +159,13 @@ public class DiscountOffer {
 
     public void setMin_value(String min_value) {
         this.min_value = min_value;
+    }
+
+    public String getMax_discounts() {
+        return max_discounts;
+    }
+
+    public void setMax_discounts(String max_discounts) {
+        this.max_discounts = max_discounts;
     }
 }

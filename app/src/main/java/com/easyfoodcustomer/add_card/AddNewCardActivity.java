@@ -36,6 +36,7 @@ import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_re
 import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_response.MenuProduct;
 import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_response.MenuProductList;
 import com.easyfoodcustomer.restaurant_details.model.restaurantmenumodel.menu_response.Modifier;
+import com.easyfoodcustomer.roomData.AppDatabase;
 import com.easyfoodcustomer.select_payment_method.SelectPaymentMethodActivity;
 import com.easyfoodcustomer.select_payment_method.model.checkout_request.CreatePaymentRequest;
 import com.easyfoodcustomer.select_payment_method.model.checkout_response.CreatePaymentResponse;
@@ -150,7 +151,7 @@ public class AddNewCardActivity extends AppCompatActivity {
     private String mobileNo;
     FirebaseAnalytics mFirebaseAnalytics;
     private String deliveryPartnerId = "";
-
+    private AppDatabase mDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        mDB = AppDatabase.getInstance(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         Log.e("EXTRA>>>", "//" + extras);
         if (extras != null) {
@@ -794,7 +795,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         request.setEmailId(val.getLoginResponse().getData().getEmail());
         request.setSaveCard(isSaveCard);
         request.setMakeDefault(isMakeDefault);
-        request.setCardData(makeData());
+        //request.setCardData(makeData());
         request.setDeliveryDateTime(sharedPreferencesClass.getString(sharedPreferencesClass.DELIVERY_DATE_TIME));
         request.setUseragent(Helper.getDeviceName() + "," + Build.VERSION.RELEASE);
         request.setOrder_time_postcode(PrefManager.getInstance(AddNewCardActivity.this).getPreference(POST_CODE_NEW, ""));
@@ -875,6 +876,7 @@ public class AddNewCardActivity extends AppCompatActivity {
                         getSupportFragmentManager().popBackStack();
                     }
                     db.deleteCart();
+                    mDB.saveOrderHistry().deleteAll();
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
@@ -948,6 +950,7 @@ public class AddNewCardActivity extends AppCompatActivity {
 
                     String restaurentName = sharedPreferencesClass.getString(sharedPreferencesClass.RESTUARANT_NAME);
                     db.deleteCart();
+                    mDB.saveOrderHistry().deleteAll();
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");

@@ -13,8 +13,7 @@
             android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/cancel_tv"
-            android:layout_below="@+id/toolbarid"
+
             android:background="@color/orange"
             android:fillViewport="true"
 

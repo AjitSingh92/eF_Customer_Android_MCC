@@ -2,15 +2,11 @@ package com.easyfoodcustomer.login.model.response;
 
 public class CheckAccountBean {
 
-    /**
-     * success : true
-     * message : Found.
-     * data : {"isRegisterd":true,"phone":null}
-     * error : {}
-     */
 
     private boolean success;
     private String message;
+
+
     private DataBean data;
     private ErrorBean error;
 
@@ -47,13 +43,9 @@ public class CheckAccountBean {
     }
 
     public static class DataBean {
-        /**
-         * isRegisterd : true
-         * phone : null
-         */
-
         private boolean isRegisterd;
         private String phone;
+        private String email;
 
         public boolean isIsRegisterd() {
             return isRegisterd;
@@ -69,6 +61,14 @@ public class CheckAccountBean {
 
         public void setPhone(String phone) {
             this.phone = phone;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
         }
     }
 

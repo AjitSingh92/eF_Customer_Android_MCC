@@ -26,7 +26,7 @@
             android:id="@+id/privacy_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fm"
+
             android:layout_marginTop="@dimen/_20sdp"
             android:fontFamily="@font/avenir_black"
             android:gravity="center"

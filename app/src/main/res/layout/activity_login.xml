@@ -28,17 +28,33 @@
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/_15sdp">
 
-                <TextView
-                    android:id="@+id/tv.headline"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/avenir_black"
-                    android:gravity="center"
-                    android:text="Sign into account"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_home"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_home"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tv.headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:fontFamily="@font/avenir_black"
+                        android:gravity="center"
+                        android:text="Sign into account"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14sdp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_guest_user"
@@ -49,10 +65,11 @@
                     android:fontFamily="@font/avenir_black"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    android:text="Continue as a Guest>"
+                    android:text="Go to Home Page"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_16sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/des"
@@ -115,11 +132,45 @@
                     android:fontFamily="@font/avenir_medium"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:maxLength="20"
+                    android:maxLength="16"
                     android:padding="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
                     android:textSize="@dimen/_12sdp" />
+
+                <LinearLayout
+                    android:id="@+id/forgatPassTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    android:paddingEnd="@dimen/_15sdp">
+
+                    <TextView
+                        android:id="@+id/btn_forgot_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoText="true"
+                        android:fontFamily="@font/avenir_medium"
+                        android:gravity="center"
+                        android:text="Forgot password?"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/btn_forgot_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoText="true"
+                        android:fontFamily="@font/helvetica_neue_bold"
+                        android:gravity="center"
+                        android:text=" Reset"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/sendVerivication"
@@ -146,80 +197,54 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/forgatPassTv"
+
+            <RelativeLayout
+                android:id="@+id/llview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ll"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/btn_forgot_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoText="true"
-                    android:fontFamily="@font/avenir_medium"
-                    android:gravity="center"
-                    android:text="Forgot password?"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/btn_forgot_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoText="true"
-                    android:fontFamily="@font/avenir_medium"
-                    android:gravity="center"
-                    android:text=" Reset"
-                    android:textColor="@color/orange"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_below="@+id/forgatPassTv"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:layout_marginRight="@dimen/_15sdp"
+
+                android:layout_marginTop="@dimen/_12sdp"
+
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <View
-                    android:layout_width="200dp"
-                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/tv_social"
                     android:background="#646363">
 
                 </View>
 
                 <TextView
 
+                    android:id="@+id/tv_social"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fm"
-
+                    android:layout_centerInParent="true"
 
                     android:autoText="true"
-                    android:fontFamily="@font/avenir_black"
-                    android:padding="@dimen/_5sdp"
-                    android:text="or"
-                    android:textColor="#646363"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
+
+
+                    android:text="Sign in with social"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_13sdp" />
 
                 <View
-                    android:layout_width="200dp"
-                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/tv_social"
                     android:background="#646363">
 
                 </View>
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/lll"
@@ -233,7 +258,7 @@
                 <LinearLayout
                     android:id="@+id/btn_facebook"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="@dimen/_38sdp"
                     android:layout_below="@+id/ll"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
@@ -258,12 +283,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/fm"
-                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_40sdp"
                         android:fontFamily="@font/avenir_medium"
                         android:gravity="center"
-                        android:paddingEnd="@dimen/_20sdp"
-                        android:paddingRight="@dimen/_20sdp"
-                        android:text="Log in with Facebook"
+
+                        android:text="Sign in with Facebook"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
@@ -274,7 +299,7 @@
                 <LinearLayout
                     android:id="@+id/btn_google_plus"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="@dimen/_38sdp"
                     android:layout_below="@+id/ll"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
@@ -282,7 +307,7 @@
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:background="@drawable/rounded_rectangle"
-                    android:gravity="center_vertical"
+
                     android:visibility="visible">
 
                     <ImageView
@@ -297,12 +322,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/fm"
-                        android:layout_marginLeft="@dimen/_16sdp"
+
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_40sdp"
                         android:fontFamily="@font/avenir_medium"
                         android:gravity="center"
-                        android:paddingEnd="@dimen/_20sdp"
-                        android:paddingRight="@dimen/_20sdp"
-                        android:text="Log in with Google"
+                        android:text="Sign in with Google"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />

@@ -40,7 +40,7 @@ public class MenuCatagoryListAdapter extends RecyclerView.Adapter<MenuCatagoryLi
     private List<MealDetailsModel.MealConfigBean.ProductsBean> products;
     private MealDetailsModel mealDetailsModel;
     private MealDetailsModel.MealConfigBean mealConfigBean;
-    private  MenuProductModifierInterface menuProductModifierInterface;
+    private MenuProductModifierInterface menuProductModifierInterface;
     private int parentPosition;
     private double finalPriceAll;
 
@@ -70,14 +70,19 @@ public class MenuCatagoryListAdapter extends RecyclerView.Adapter<MenuCatagoryLi
     public void onBindViewHolder(@NonNull MenuCatagoryListAdapter.MyViewHolder holder, int position) {
 
         holder.tvItemTitle.setText(products.get(position).getProduct_name() + " " + products.get(position).getProduct_size_name());
+        if (!products.get(position).getSelling_price().isEmpty() && products.get(position).getSelling_price() != null) {
+            if (Double.parseDouble(products.get(position).getSelling_price()) > 0) {
+                holder.tvItemPrice.setText("£" + products.get(position).getSelling_price());
+                holder.tvItemPrice.setVisibility(View.VISIBLE);
+            }
+        }
 
         holder.itemCountAll.setText(String.valueOf(products.get(position).getNoOfCount()));
         holder.itemRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (products.get(position).getNoOfCount()>0)
-                {
-                    menuProductModifierInterface.updateMeanProductSizeModifier(parentPosition,position,false,products.get(position).getNoOfCount(),products.get(position));
+                if (products.get(position).getNoOfCount() > 0) {
+                    menuProductModifierInterface.updateMeanProductSizeModifier(parentPosition, position, false, products.get(position).getNoOfCount(), products.get(position));
 
                 }
             }
@@ -87,22 +92,28 @@ public class MenuCatagoryListAdapter extends RecyclerView.Adapter<MenuCatagoryLi
             @Override
             public void onClick(View view) {
 
+                if (mealConfigBean.getAllowed_quantity() > 0) {
 
-                if (getCurrentnumberOfCount(products)<mealConfigBean.getAllowed_quantity())
-                {
-                    if (products.get(position).getMenu_product_size()!=null && products.get(position).getMenu_product_size().size() >0)
-                    {
-                        new MenuMealModifyDialog(context, products.get(position),mealDetailsModel,mealConfigBean,menuProductModifierInterface,position,parentPosition,finalPriceAll).show();
+                    if (getCurrentnumberOfCount(products) < mealConfigBean.getAllowed_quantity()) {
+                        if (products.get(position).getMenu_product_size() != null && products.get(position).getMenu_product_size().size() > 0) {
+                            new MenuMealModifyDialog(context, products.get(position), mealDetailsModel, mealConfigBean, menuProductModifierInterface, position, parentPosition, finalPriceAll).show();
 
-                    }else
-                    {
-                        menuProductModifierInterface.updateMeanProductSizeModifier(parentPosition,position,true,products.get(position).getNoOfCount(),products.get(position));
+                        } else {
+                            menuProductModifierInterface.updateMeanProductSizeModifier(parentPosition, position, true, products.get(position).getNoOfCount(), products.get(position));
+
+                        }
+
+                    } else {
+                        Toast.makeText(context, "You reached out to your maximum Limit", Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    if (products.get(position).getMenu_product_size() != null && products.get(position).getMenu_product_size().size() > 0) {
+                        new MenuMealModifyDialog(context, products.get(position), mealDetailsModel, mealConfigBean, menuProductModifierInterface, position, parentPosition, finalPriceAll).show();
+
+                    } else {
+                        menuProductModifierInterface.updateMeanProductSizeModifier(parentPosition, position, true, products.get(position).getNoOfCount(), products.get(position));
 
                     }
-
-                }else
-                {
-                    Toast.makeText(context,"You reached out to your maximum Limit",Toast.LENGTH_LONG).show();
                 }
 
 
@@ -111,10 +122,9 @@ public class MenuCatagoryListAdapter extends RecyclerView.Adapter<MenuCatagoryLi
     }
 
     private int getCurrentnumberOfCount(List<MealDetailsModel.MealConfigBean.ProductsBean> productsBean) {
-        int nofoCount=0;
-        for (int i=0;i<productsBean.size();i++)
-        {
-            nofoCount=nofoCount+productsBean.get(i).getNoOfCount();
+        int nofoCount = 0;
+        for (int i = 0; i < productsBean.size(); i++) {
+            nofoCount = nofoCount + productsBean.get(i).getNoOfCount();
         }
 
 
@@ -127,7 +137,7 @@ public class MenuCatagoryListAdapter extends RecyclerView.Adapter<MenuCatagoryLi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvItemTitle, itemCountAll;
+        private TextView tvItemTitle, tvItemPrice, itemCountAll;
         private LinearLayout itemRemove, itemAdd;
         private final ProgressBar progressBar;
 
@@ -135,6 +145,7 @@ public class MenuCatagoryListAdapter extends RecyclerView.Adapter<MenuCatagoryLi
             super(itemView);
 
             tvItemTitle = itemView.findViewById(R.id.tv_productname);
+            tvItemPrice = itemView.findViewById(R.id.txtprice);
             itemCountAll = itemView.findViewById(R.id.item_count_all);
 
             itemRemove = itemView.findViewById(R.id.item_remove);

@@ -26,12 +26,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.easyfoodcustomer.databinding.LayoutConfirmationDialogBinding;
 import com.easyfoodcustomer.databinding.LayoutServestyleDialogBinding;
+import com.easyfoodcustomer.model.landing_page_response.DiscountOffer;
+import com.easyfoodcustomer.roomData.AppDatabase;
 import com.easyfoodcustomer.utility.Helper;
 import com.easyfoodcustomer.utility.PrefManager;
 import com.google.gson.Gson;
@@ -62,6 +65,7 @@ import static com.easyfoodcustomer.utility.SharedPreferencesClass.OFFERR_DETAL_D
 public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyViewHolder> implements View.OnClickListener {
 
     RestaurantsDealResponse.Data.Restaurant response;
+
     private Context mContext;
     int mSize = 0, mListPosition;
     String userID = "";
@@ -69,28 +73,30 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
     SharedPreferencesClass sharePre;
     DatabaseHelper db;
     GlobalValues val;
+    AppDatabase mDB;
 
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.closed_design) {
-            if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
-                sharePre.setString(OFFERR_DETAL_DFG, null);
-                if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
-                    if (sharePre.getString(SERVE_STYLE) != null && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                        serveStylePopupp(response.getServe_style(), response.getId());
+            if (!response.getMode().equalsIgnoreCase("development")) {
+                if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
+                    sharePre.setString(OFFERR_DETAL_DFG, null);
+                    if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
+                        if (sharePre.getString(SERVE_STYLE) != null && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                            serveStylePopupp(response.getServe_style(), response.getId(), false, null);
 
-                    } else {
-                        serveStylePopup(response.getServe_style(), response.getId());
-                    }
+                        } else {
+                            serveStylePopup(response.getServe_style(), response.getId(), false, null);
+                        }
 //                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                } else {
-                    if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                        String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
-                        alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
-
                     } else {
-                        serveStylePopup(response.getServe_style(), response.getId());
+                        if (mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                            String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                            alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
+
+                        } else {
+                            serveStylePopup(response.getServe_style(), response.getId(), false, null);
                     /*if (sharePre.getString(SERVE_STYLE) != null) {
 
                         new Thread(new Runnable() {
@@ -117,31 +123,33 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                     } else {
                         serveStylePopup(response.getServe_style(), response.getId());
                     }*/
+                        }
                     }
+                } else {
+
+                    serveStylePopup(response.getServe_style(), response.getId(), false, null);
+
                 }
-            } else {
-
-                serveStylePopup(response.getServe_style(), response.getId());
-
             }
         } else if (v.getId() == R.id.pre_order) {
-            if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
-                sharePre.setString(OFFERR_DETAL_DFG, null);
-                if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
-                    if (sharePre.getString(SERVE_STYLE) != null && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                        serveStylePopupp(response.getServe_style(), response.getId());
+            if (!response.getMode().equalsIgnoreCase("development")) {
+                if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
+                    sharePre.setString(OFFERR_DETAL_DFG, null);
+                    if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
+                        if (sharePre.getString(SERVE_STYLE) != null && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                            serveStylePopupp(response.getServe_style(), response.getId(), false, null);
 
-                    } else {
-                        serveStylePopup(response.getServe_style(), response.getId());
-                    }
+                        } else {
+                            serveStylePopup(response.getServe_style(), response.getId(), false, null);
+                        }
 //                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                } else {
-                    if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                        String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
-                        alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
-
                     } else {
-                        serveStylePopup(response.getServe_style(), response.getId());
+                        if (mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                            String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                            alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
+
+                        } else {
+                            serveStylePopup(response.getServe_style(), response.getId(), false, null);
                     /*if (sharePre.getString(SERVE_STYLE) != null) {
 
                         new Thread(new Runnable() {
@@ -168,31 +176,35 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                     } else {
                         serveStylePopup(response.getServe_style(), response.getId());
                     }*/
+                        }
                     }
+                } else {
+
+                    serveStylePopup(response.getServe_style(), response.getId(), false, null);
+
                 }
-            } else {
-
-                serveStylePopup(response.getServe_style(), response.getId());
-
             }
         } else if (v.getId() == R.id.layout_restaurant) {
-            if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
-                sharePre.setString(OFFERR_DETAL_DFG, null);
-                if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
-                    if (sharePre.getString(SERVE_STYLE) != null && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                        serveStylePopupp(response.getServe_style(), response.getId());
+            if (!response.getMode().equalsIgnoreCase("development")) {
+                if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
+                    sharePre.setString(OFFERR_DETAL_DFG, null);
+                    if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
+                        if (sharePre.getString(SERVE_STYLE) != null && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                            serveStylePopupp(response.getServe_style(), response.getId(), false, null);
 
-                    } else {
-                        serveStylePopup(response.getServe_style(), response.getId());
-                    }
+                        } else {
+                            serveStylePopup(response.getServe_style(), response.getId(), false, null);
+                        }
+
+
 //                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                } else {
-                    if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                        String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
-                        alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
-
                     } else {
-                        serveStylePopup(response.getServe_style(), response.getId());
+                        if (mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                            String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                            alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
+
+                        } else {
+                            serveStylePopup(response.getServe_style(), response.getId(), false, null);
                     /*if (sharePre.getString(SERVE_STYLE) != null) {
 
                         new Thread(new Runnable() {
@@ -219,10 +231,10 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                     } else {
                         serveStylePopup(response.getServe_style(), response.getId());
                     }*/
+                        }
                     }
-                }
-            } else {
-                // if (sharePre.getString(SERVE_STYLE) != null) {
+                } else {
+                    // if (sharePre.getString(SERVE_STYLE) != null) {
 
                 /*new Thread(new Runnable() {
                     @Override
@@ -243,24 +255,26 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         mContext.startActivity(i);
                     }
                 }).start();*/
-                serveStylePopup(response.getServe_style(), response.getId());
+                    serveStylePopup(response.getServe_style(), response.getId(), false, null);
             /*} else {
                 serveStylePopup(response.getServe_style(), response.getId());
             }*/
+                }
             }
-
         }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView logo, bgImage, menuLogo, favIcon, arraowAnimation;
         TextView offerTitle, offerItems/*, offerPrice*/;
+        ImageView ivOffer;
         LinearLayout clickRestaurant;
         Button btnSeeMenu, btnGetDeals;
 
 
         //////////////////////////////
         LinearLayout btnPreOrder, layoutDeliveryPrice, layoutDeliveryTime, llEnd;
+        RelativeLayout comingSoon;
         TextView name, cuisines, rating, deliveryMin, deliveryVal, deliveryTime, preOrder, tvPreOrderMsg, tvDistance;
         ImageView delivery, dine_in, collection;
         LinearLayout llMain, llClosed;
@@ -279,6 +293,8 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
 //            this.offerPrice = (TextView) itemView.findViewById(R.id.txt_price);
             this.btnSeeMenu = (Button) itemView.findViewById(R.id.btn_see_full_menu);
             this.btnGetDeals = (Button) itemView.findViewById(R.id.btn_get_deals);
+
+            this.ivOffer = (ImageView) itemView.findViewById(R.id.iv_offer);
             this.offerTitle = (TextView) itemView.findViewById(R.id.dealNameId);
             this.clickRestaurant = (LinearLayout) itemView.findViewById(R.id.layout_restaurant);
             this.menuLogo = (ImageView) itemView.findViewById(R.id.image_menu_logo);
@@ -287,6 +303,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             /////////////////////////////////////////////////////
             this.tvPreOrderMsg = (TextView) itemView.findViewById(R.id.tv_PreOrderMsg);
             this.btnPreOrder = (LinearLayout) itemView.findViewById(R.id.layout_btnPreOrder);
+            this.comingSoon = (RelativeLayout) itemView.findViewById(R.id.layout_comingsoon);
             this.layoutDeliveryPrice = (LinearLayout) itemView.findViewById(R.id.layout_deliveryPrice);
             this.layoutDeliveryTime = (LinearLayout) itemView.findViewById(R.id.layout_deliveryTime);
 
@@ -318,6 +335,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
         this.mListPosition = lPos;
         this.userID = userid;
         this.activity = activity;
+        mDB = AppDatabase.getInstance(getApplicationContext());
         val = (GlobalValues) getApplicationContext();
     }
 
@@ -348,12 +366,21 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
         final MyViewHolder mHolder = holder;
         sharePre = new SharedPreferencesClass(mContext);
         db = new DatabaseHelper(mContext);
+
+
         if (position == 0) {
             if (response.getFavourite() == 1) {
                 holder.favIcon.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_active));
             } else {
                 holder.favIcon.setBackground(mContext.getResources().getDrawable(R.drawable.favourite_white));
             }
+           /* if (!response.getMode().equalsIgnoreCase("live")) {
+                holder.comingSoon.setVisibility(View.VISIBLE);
+                holder.btnPreOrder.setVisibility(View.GONE);
+                Log.e("PrintMode", "" + response.getMode());
+            } else {
+                holder.comingSoon.setVisibility(View.GONE);
+            }*/
 
             Glide.with(mContext).asGif().load(R.drawable.animated_arrow2).into(holder.arraowAnimation);
             holder.favIcon.setOnClickListener(new View.OnClickListener() {
@@ -420,20 +447,30 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
 
             String status = response.getStatus();
 
-            try {
-                if (status.trim().equalsIgnoreCase("closed")) {
-                    holder.llClosed.setVisibility(View.VISIBLE);
-                    holder.preOrder.setVisibility(View.VISIBLE);
-                    holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed));
-                } else if (status.trim().equalsIgnoreCase("not_serving")) {
-                    holder.preOrder.setVisibility(View.GONE);
-                    holder.llClosed.setVisibility(View.VISIBLE);
-                    holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed3));
-                } else {
-                    holder.llClosed.setVisibility(View.GONE);
+            if (!response.getMode().equalsIgnoreCase("live")) {
+                holder.llClosed.setVisibility(View.GONE);
+                holder.btnPreOrder.setVisibility(View.GONE);
+                holder.comingSoon.setVisibility(View.VISIBLE);
+
+            } else {
+
+                try {
+
+
+                    if (status.trim().equalsIgnoreCase("closed")) {
+                        holder.llClosed.setVisibility(View.VISIBLE);
+                        holder.preOrder.setVisibility(View.VISIBLE);
+                        holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed));
+                    } else if (status.trim().equalsIgnoreCase("not_serving")) {
+                        holder.preOrder.setVisibility(View.GONE);
+                        holder.llClosed.setVisibility(View.VISIBLE);
+                        holder.tvPreOrderMsg.setText(mContext.getResources().getString(R.string.restaurent_closed3));
+                    } else {
+                        holder.llClosed.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
             holder.llCollection.setVisibility(View.GONE);
@@ -470,8 +507,19 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
 
 
             if (sharePre.getInt(SharedPreferencesClass.IS_FOR_TABLE) == 0) {
-                holder.deliveryMin.setText(mContext.getResources().getString(R.string.currency) + response.getDelivery_charge() + " delivery ");
-                holder.deliveryVal.setText(mContext.getResources().getString(R.string.currency) + response.getMin_order_value() + " min order");
+               /* if (response.getDelivery_charge() != null && !response.getDelivery_charge().trim().isEmpty()) {
+                    holder.deliveryMin.setText(mContext.getResources().getString(R.string.currency) + String.format("%.2f", Double.parseDouble(response.getDelivery_charge())) + " delivery ");
+                } else {
+                    holder.deliveryMin.setText(mContext.getResources().getString(R.string.currency) + "0.00" + " delivery ");
+                }*/
+
+                holder.deliveryMin.setText(response.getService_charge());
+
+                if (response.getMin_order_value() != null && !response.getMin_order_value().trim().isEmpty()) {
+                    holder.deliveryVal.setText(mContext.getResources().getString(R.string.currency) + String.format("%.2f", Double.parseDouble(response.getMin_order_value())) + " min order");
+                } else {
+                    holder.deliveryVal.setText(mContext.getResources().getString(R.string.currency) + "0.00" + " min order");
+                }
                 holder.deliveryTime.setText(response.getAvgDeliveryTime() + " min");
             } else {
                 holder.deliveryMin.setVisibility(View.GONE);
@@ -484,161 +532,55 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
 
             //////////////////////////
         } else if (position > 0 && position <= mSize) {
+
             if (response.getDiscountOffers().size() > 0) {
                 holder.offerItems.setText(response.getDiscountOffers().get(position - 1).getTerms_conditions());
 //                holder.offerPrice.setText(response.getDiscountOffers().get(position - 1).getOfferPriceLabel());
                 holder.offerTitle.setText(response.getDiscountOffers().get(position - 1).getDetail());
+
+
+                Glide.with(activity).load(response.getDiscountOffers().get(position - 1).getOffer_image()).apply(new RequestOptions()
+                        .placeholder(R.drawable.easy_food_image))
+                        .into(holder.ivOffer);
+
             }
 
 
             holder.btnGetDeals.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //// for saving offer detail and will be used when we go for checkout in MyBasketFragment
-                    sharePre.setString(OFFERR_DETAL_DFG, new Gson().toJson(response.getDiscountOffers().get(mHolder.getAdapterPosition() - 1)));
 
-                    if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
-                        if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
-                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                            i.putExtra("RESTAURANTID", response.getId());
-                            i.putExtra("RESTAURANTNAME", response.getRestaurantName());
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(i);
-                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                        } else {
-                            if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
-                                alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
+                /*    //offer_price
+                    offer_type
+                            offer_id
+                    min_value*/
 
-                            } else {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        GlobalValues.getInstance().getDb().menuMaster().nuke();
-                                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
-                                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
-                                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
-                                        sharePre.setString(sharePre.NOTEPAD, "");
-                                        db.getCartData();
-                                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                                        sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
-                                        sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
-                                        i.putExtra("RESTAURANTID", response.getId());
-                                        i.putExtra("RESTAURANTNAME", response.getRestaurantName());
-                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        mContext.startActivity(i);
-                                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                                    }
-                                }).start();
-                            }
-                        }
-                    } else {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                GlobalValues.getInstance().getDb().menuMaster().nuke();
-                                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
-                                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
-                                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
-                                sharePre.setString(sharePre.NOTEPAD, "");
-                                db.getCartData();
-                                sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
-                                sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
-
-                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                                i.putExtra("RESTAURANTID", response.getId());
-                                i.putExtra("RESTAURANTNAME", response.getRestaurantName());
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(i);
-                            }
-                        }).start();
-                    }
-
-                }
-            });
-
-
-        } else if (position > mSize) {
-            Glide.with(activity).load(response.getLogo()).apply(new RequestOptions()
-                    .placeholder(R.drawable.easy_food_image))
-                    .into(holder.menuLogo);
-
-
-            holder.btnSeeMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                    Log.e("Discount", "" + response.getDiscountOffers().get(position - 1).getOffer_available());
 
                     if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
                         sharePre.setString(OFFERR_DETAL_DFG, null);
                         if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
-                            if (sharePre.getString(SERVE_STYLE) != null && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
-                                serveStylePopupp(response.getServe_style(), response.getId());
+                            if (sharePre.getString(SERVE_STYLE) != null && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                                serveStylePopupp(response.getServe_style(), response.getId(), true, response.getDiscountOffers().get(position - 1));
 
                             } else {
-                                serveStylePopup(response.getServe_style(), response.getId());
+                                serveStylePopup(response.getServe_style(), response.getId(), true, response.getDiscountOffers().get(position - 1));
                             }
 //                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                         } else {
-                            if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                            if (mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
                                 String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
                                 alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
 
                             } else {
-                                serveStylePopup(response.getServe_style(), response.getId());
-                    /*if (sharePre.getString(SERVE_STYLE) != null) {
+                                serveStylePopup(response.getServe_style(), response.getId(), true, response.getDiscountOffers().get(position - 1));
 
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                GlobalValues.getInstance().getDb().menuMaster().nuke();
-                                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
-                                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
-                                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
-                                sharePre.setString(sharePre.NOTEPAD, "");
-
-                                db.getCartData();
-                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                                sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
-                                sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
-                                i.putExtra("RESTAURANTID", response.getId());
-                                i.putExtra("RESTAURANTNAME", response.getRestaurantName());
-                                i.putExtra("ServeStyle", sharePre.getString(SERVE_STYLE));
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(i);
-                                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                            }
-                        }).start();
-                    } else {
-                        serveStylePopup(response.getServe_style(), response.getId());
-                    }*/
                             }
                         }
                     } else {
-                        // if (sharePre.getString(SERVE_STYLE) != null) {
 
-                /*new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GlobalValues.getInstance().getDb().menuMaster().nuke();
-                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
-                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
-                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
-                        sharePre.setString(sharePre.NOTEPAD, "");
-                        db.getCartData();
-                        sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
-                        sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
-                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
-                        i.putExtra("RESTAURANTID", response.getId());
-                        i.putExtra("RESTAURANTNAME", response.getRestaurantName());
-                        i.putExtra("ServeStyle", sharePre.getString(SERVE_STYLE));
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(i);
-                    }
-                }).start();*/
-                        serveStylePopup(response.getServe_style(), response.getId());
-            /*} else {
-                serveStylePopup(response.getServe_style(), response.getId());
-            }*/
+                        serveStylePopup(response.getServe_style(), response.getId(), true, response.getDiscountOffers().get(position - 1));
+
                     }
 
 
@@ -703,17 +645,243 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         }).start();
                     }
 */
+
+
+                    //// for saving offer detail and will be used when we go for checkout in MyBasketFragment
+                /*    sharePre.setString(OFFERR_DETAL_DFG, new Gson().toJson(response.getDiscountOffers().get(mHolder.getAdapterPosition() - 1)));
+
+                    if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                        if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
+                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                            i.putExtra("RESTAURANTID", response.getId());
+                            i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(i);
+                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                        } else {
+                            if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                                String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                                alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
+
+                            } else {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                                        sharePre.setString(sharePre.NOTEPAD, "");
+                                        db.getCartData();
+                                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                        sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
+                                        sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
+                                        i.putExtra("RESTAURANTID", response.getId());
+                                        i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        mContext.startActivity(i);
+                                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                                    }
+                                }).start();
+                            }
+                        }
+                    } else {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                                sharePre.setString(sharePre.NOTEPAD, "");
+                                db.getCartData();
+                                sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
+                                sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
+
+                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                i.putExtra("RESTAURANTID", response.getId());
+                                i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(i);
+                            }
+                        }).start();
+                    }*/
+
+
                 }
             });
 
 
+           /* if (!response.getMode().equalsIgnoreCase("live")) {
+                holder.comingSoon.setVisibility(View.VISIBLE);
+                holder.btnPreOrder.setVisibility(View.GONE);
+                Log.e("PrintMode", "" + response.getMode());
+            } else {
+                holder.comingSoon.setVisibility(View.GONE);
+            }*/
+
+        } else if (position > mSize) {
+            ///''
+            if (response.getMode().equalsIgnoreCase("live")) {
+                Glide.with(activity).load(response.getLogo()).apply(new RequestOptions()
+                        .placeholder(R.drawable.easy_food_image))
+                        .into(holder.menuLogo);
+
+
+                holder.btnSeeMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).isEmpty()) {
+                            sharePre.setString(OFFERR_DETAL_DFG, null);
+                            if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
+                                if (sharePre.getString(SERVE_STYLE) != null && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                                    serveStylePopupp(response.getServe_style(), response.getId(), false, null);
+
+                                } else {
+                                    serveStylePopup(response.getServe_style(), response.getId(), false, null);
+                                }
+//                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                            } else {
+                                if (mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
+                                    String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                                    alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
+
+                                } else {
+                                    serveStylePopup(response.getServe_style(), response.getId(), false, null);
+                    /*if (sharePre.getString(SERVE_STYLE) != null) {
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                                sharePre.setString(sharePre.NOTEPAD, "");
+
+                                db.getCartData();
+                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
+                                sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
+                                i.putExtra("RESTAURANTID", response.getId());
+                                i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                                i.putExtra("ServeStyle", sharePre.getString(SERVE_STYLE));
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(i);
+                                activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                            }
+                        }).start();
+                    } else {
+                        serveStylePopup(response.getServe_style(), response.getId());
+                    }*/
+                                }
+                            }
+                        } else {
+                            // if (sharePre.getString(SERVE_STYLE) != null) {
+
+                /*new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GlobalValues.getInstance().getDb().menuMaster().nuke();
+                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                        sharePre.setString(sharePre.NOTEPAD, "");
+                        db.getCartData();
+                        sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
+                        sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
+                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                        i.putExtra("RESTAURANTID", response.getId());
+                        i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                        i.putExtra("ServeStyle", sharePre.getString(SERVE_STYLE));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(i);
+                    }
+                }).start();*/
+                            serveStylePopup(response.getServe_style(), response.getId(), false, null);
+            /*} else {
+                serveStylePopup(response.getServe_style(), response.getId());
+            }*/
+                        }
+
+
+                  /*   ,m
+
+                    sharePre.setString(OFFERR_DETAL_DFG, null);
+
+                    if (sharePre.getString(sharePre.RESTUARANT_ID) != null && !sharePre.getString(sharePre.RESTUARANT_ID).equals("")) {
+                        if (sharePre.getString(sharePre.RESTUARANT_ID).equalsIgnoreCase(response.getId())) {
+                            Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                            i.putExtra("RESTAURANTID", response.getId());
+                            i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(i);
+                            activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                        } else {
+                            if (db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                                String msg = "You have already placing an order with " + sharePre.getString(sharePre.RESTUARANT_NAME);
+                                alreadyAlertDialog(msg, sharePre.getString(sharePre.RESTUARANT_NAME), response.getRestaurantName(), response.getId(), response.getServe_style());
+
+                            } else {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                        GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                        GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                        sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                                        sharePre.setString(sharePre.NOTEPAD, "");
+                                        db.getCartData();
+                                        Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                        sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
+                                        sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
+                                        i.putExtra("RESTAURANTID", response.getId());
+                                        i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        mContext.startActivity(i);
+                                        activity.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                                    }
+                                }).start();
+                            }
+                        }
+                    } else {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GlobalValues.getInstance().getDb().menuMaster().nuke();
+                                GlobalValues.getInstance().getDb().menuProductMaster().nuke();
+                                GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
+                                sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
+                                sharePre.setString(sharePre.NOTEPAD, "");
+                                db.getCartData();
+                                sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
+                                sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
+
+                                Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
+                                i.putExtra("RESTAURANTID", response.getId());
+                                i.putExtra("RESTAURANTNAME", response.getRestaurantName());
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(i);
+                            }
+                        }).start();
+                    }
+*/
+                    }
+                });
+
+            }
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return mSize + 2;
+        if (response.getMode().equalsIgnoreCase("live")) {
+            return mSize + 2;
+        } else {
+            return mSize + 1;
+        }
     }
 
     @Override
@@ -722,6 +890,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
         if (position == 0) {
             return 0;
         } else if (position == mSize + 1) {
+
             return 2;
         } else {
             return 1;
@@ -789,7 +958,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(i);
                 } else {
-                    serveStylePopup(response.getServe_style(), sharePre.getString(sharePre.RESTUARANT_ID));
+                    serveStylePopup(response.getServe_style(), sharePre.getString(sharePre.RESTUARANT_ID), false, null);
                 }
                 alertDialog.dismiss();
             }
@@ -807,6 +976,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                         db.deleteCart();
+                        mDB.saveOrderHistry().deleteAll();
                         sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                         sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
                         sharePre.setString(sharePre.RESTUARANT_NAME, response.getRestaurantName());
@@ -822,7 +992,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                     }
                 }).start();
 
-                serveStylePopup(serveStyle, currentRestId);
+                serveStylePopup(serveStyle, currentRestId, false, null);
             }
         });
         mDialogVieww.findViewById(R.id.cross_tv).setOnClickListener(new View.OnClickListener() {
@@ -837,7 +1007,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
     }
 
 
-    public void serveStylePopup(String deliverOption, final String currentRestId) {
+    public void serveStylePopup(String deliverOption, final String currentRestId, final boolean isOffer, final DiscountOffer discountOffer) {
         View dialogView = LayoutInflater.from(mContext).inflate(R.layout.layout_servestyle_dialog, null);
         LayoutServestyleDialogBinding dialogBinding = DataBindingUtil.bind(dialogView);
         final Dialog dialog = new Dialog(mContext);
@@ -850,9 +1020,9 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             if (Helper.isPreOrder(response.getRestaurantTiming().get(0).getCollectionStartTime(), response.getRestaurantTiming().get(0).getCollectionEndTime())) {
                 dialogBinding.tvCollection.setText("Collection (Pre Order)");
             }
-            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("collection")){
+            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("collection")) {
                 dialogBinding.ivCollection.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_selected));
-            }else {
+            } else {
                 dialogBinding.ivCollection.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_unselected));
             }
             dialogBinding.rlCollection.setVisibility(View.VISIBLE);
@@ -864,9 +1034,9 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             if (Helper.isPreOrder(response.getRestaurantTiming().get(0).getDeliveryStartTime(), response.getRestaurantTiming().get(0).getDeliveryEndTime())) {
                 dialogBinding.tvDelivery.setText("Delivery (Pre Order)");
             }
-            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("delivery")){
+            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("delivery")) {
                 dialogBinding.ivDelivery.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_selected));
-            }else {
+            } else {
                 dialogBinding.ivDelivery.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_unselected));
             }
             dialogBinding.rlDelivery.setVisibility(View.VISIBLE);
@@ -878,9 +1048,9 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             if (Helper.isPreOrder(response.getRestaurantTiming().get(0).getOpeningStartTime(), response.getRestaurantTiming().get(0).getOpeningEndTime())) {
                 dialogBinding.tvDineIn.setText("Dine In (Pre Order)");
             }
-            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("dine_in")){
+            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("dine_in")) {
                 dialogBinding.ivDineIn.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_selected));
-            }else {
+            } else {
                 dialogBinding.ivDineIn.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_unselected));
             }
             dialogBinding.rlDineIn.setVisibility(View.VISIBLE);
@@ -907,6 +1077,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                         db.deleteCart();
+                        mDB.saveOrderHistry().deleteAll();
                         sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                         sharePre.setString(DELIVERY_MOBILE_NUMBER, "");
                         sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
@@ -919,6 +1090,15 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         i.putExtra("RESTAURANTID", currentRestId);
                         i.putExtra("RESTAURANTNAME", response.getRestaurantName());
                         i.putExtra("ServeStyle", "delivery");
+                        i.putExtra("isOffer", isOffer);
+                        if (isOffer) {
+                            i.putExtra("offer_price", discountOffer.getOfferPrice());
+                            i.putExtra("offer_type", discountOffer.getOfferType());
+                            i.putExtra("offer_id", discountOffer.getOfferId());
+                            i.putExtra("min_value", discountOffer.getMin_value());
+                            i.putExtra("max_value", discountOffer.getMax_discounts());
+                        }
+
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(i);
                     }
@@ -938,6 +1118,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                         db.deleteCart();
+                        mDB.saveOrderHistry().deleteAll();
                         sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                         sharePre.setString(DELIVERY_MOBILE_NUMBER, "");
                         sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
@@ -950,6 +1131,14 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         i.putExtra("RESTAURANTID", currentRestId);
                         i.putExtra("RESTAURANTNAME", response.getRestaurantName());
                         i.putExtra("ServeStyle", "collection");
+                        i.putExtra("isOffer", isOffer);
+                        if (isOffer) {
+                            i.putExtra("offer_price", discountOffer.getOfferPrice());
+                            i.putExtra("offer_type", discountOffer.getOfferType());
+                            i.putExtra("offer_id", discountOffer.getOfferId());
+                            i.putExtra("min_value", discountOffer.getMin_value());
+                            i.putExtra("max_value", discountOffer.getMax_discounts());
+                        }
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(i);
                     }
@@ -967,6 +1156,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                         db.deleteCart();
+                        mDB.saveOrderHistry().deleteAll();
                         sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                         sharePre.setString(DELIVERY_MOBILE_NUMBER, "");
                         sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
@@ -979,6 +1169,14 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         i.putExtra("RESTAURANTID", currentRestId);
                         i.putExtra("RESTAURANTNAME", response.getRestaurantName());
                         i.putExtra("ServeStyle", "dine_in");
+                        i.putExtra("isOffer", isOffer);
+                        if (isOffer) {
+                            i.putExtra("offer_price", discountOffer.getOfferPrice());
+                            i.putExtra("offer_type", discountOffer.getOfferType());
+                            i.putExtra("offer_id", discountOffer.getOfferId());
+                            i.putExtra("min_value", discountOffer.getMin_value());
+                            i.putExtra("max_value", discountOffer.getMax_discounts());
+                        }
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(i);
                     }
@@ -1006,7 +1204,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
     }
 
 
-    public void serveStylePopupp(String deliverOption, final String currentRestId) {
+    public void serveStylePopupp(String deliverOption, final String currentRestId, final boolean isOffer, final DiscountOffer discountOffer) {
         View dialogView = LayoutInflater.from(mContext).inflate(R.layout.layout_servestyle_dialog, null);
         LayoutServestyleDialogBinding dialogBinding = DataBindingUtil.bind(dialogView);
         final Dialog dialog = new Dialog(mContext);
@@ -1016,17 +1214,15 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
         String[] serve_styles = deliverOption.split(",");
 
 
-
-
         if (Arrays.asList(serve_styles).contains("collection")) {
             if (Helper.isPreOrder(response.getRestaurantTiming().get(0).getCollectionStartTime(), response.getRestaurantTiming().get(0).getCollectionEndTime())) {
                 dialogBinding.tvCollection.setText("Collection (Pre Order)");
             }
 
 
-            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("collection")){
+            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("collection")) {
                 dialogBinding.ivCollection.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_selected));
-            }else {
+            } else {
                 dialogBinding.ivCollection.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_unselected));
             }
             dialogBinding.rlCollection.setVisibility(View.VISIBLE);
@@ -1039,9 +1235,9 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                 dialogBinding.tvDelivery.setText("Delivery (Pre Order)");
             }
 
-            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("delivery")){
+            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("delivery")) {
                 dialogBinding.ivDelivery.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_selected));
-            }else {
+            } else {
                 dialogBinding.ivDelivery.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_unselected));
             }
             dialogBinding.rlDelivery.setVisibility(View.VISIBLE);
@@ -1054,9 +1250,9 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                 dialogBinding.tvDineIn.setText("Dine In (Pre Order)");
             }
 
-            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("dine_in")){
+            if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("dine_in")) {
                 dialogBinding.ivDineIn.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_selected));
-            }else {
+            } else {
                 dialogBinding.ivDineIn.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_unselected));
             }
             dialogBinding.rlDineIn.setVisibility(View.VISIBLE);
@@ -1069,15 +1265,24 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("delivery") && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                // if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("delivery") && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("delivery") && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
 
                     Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                     i.putExtra("RESTAURANTID", response.getId());
                     i.putExtra("RESTAURANTNAME", response.getRestaurantName());
                     i.putExtra("ServeStyle", sharePre.getString(SERVE_STYLE));
+                    i.putExtra("isOffer", isOffer);
+                    if (isOffer) {
+                        i.putExtra("offer_price", discountOffer.getOfferPrice());
+                        i.putExtra("offer_type", discountOffer.getOfferType());
+                        i.putExtra("offer_id", discountOffer.getOfferId());
+                        i.putExtra("min_value", discountOffer.getMin_value());
+                        i.putExtra("max_value", discountOffer.getMax_discounts());
+                    }
                     mContext.startActivity(i);
                 } else {
-                    confirmationDialog(currentRestId, "delivery");
+                    confirmationDialog(currentRestId, "delivery", isOffer, discountOffer);
                 }
 
 
@@ -1088,15 +1293,23 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("collection") && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("collection") && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
 
                     Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                     i.putExtra("RESTAURANTID", response.getId());
                     i.putExtra("RESTAURANTNAME", response.getRestaurantName());
                     i.putExtra("ServeStyle", sharePre.getString(SERVE_STYLE));
+                    i.putExtra("isOffer", isOffer);
+                    if (isOffer) {
+                        i.putExtra("offer_price", discountOffer.getOfferPrice());
+                        i.putExtra("offer_type", discountOffer.getOfferType());
+                        i.putExtra("offer_id", discountOffer.getOfferId());
+                        i.putExtra("min_value", discountOffer.getMin_value());
+                        i.putExtra("max_value", discountOffer.getMax_discounts());
+                    }
                     mContext.startActivity(i);
                 } else {
-                    confirmationDialog(currentRestId, "collection");
+                    confirmationDialog(currentRestId, "collection", isOffer, discountOffer);
                 }
 
             }
@@ -1105,15 +1318,23 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("dine_in") && db.getCartData().getMenuCategoryCarts().size() + db.getCartData().getSpecialOffers().size() + db.getCartData().getUpsellProducts().size() > 0) {
+                if (sharePre.getString(SERVE_STYLE) != null && sharePre.getString(SERVE_STYLE).equalsIgnoreCase("dine_in") && mDB.saveOrderHistry().loadAllHistoryOfOrder().size() > 0) {
 
                     Intent i = new Intent(mContext, RestaurantDetailsActivity.class);
                     i.putExtra("RESTAURANTID", response.getId());
                     i.putExtra("RESTAURANTNAME", response.getRestaurantName());
                     i.putExtra("ServeStyle", sharePre.getString(SERVE_STYLE));
+                    i.putExtra("isOffer", isOffer);
+                    if (isOffer) {
+                        i.putExtra("offer_price", discountOffer.getOfferPrice());
+                        i.putExtra("offer_type", discountOffer.getOfferType());
+                        i.putExtra("offer_id", discountOffer.getOfferId());
+                        i.putExtra("min_value", discountOffer.getMin_value());
+                        i.putExtra("max_value", discountOffer.getMax_discounts());
+                    }
                     mContext.startActivity(i);
                 } else {
-                    confirmationDialog(currentRestId, "dine_in");
+                    confirmationDialog(currentRestId, "dine_in", isOffer, discountOffer);
                 }
 
             }
@@ -1138,7 +1359,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
         // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.seme_transparent)));
     }
 
-    public void confirmationDialog(final String currentRestId, final String serveStyle) {
+    public void confirmationDialog(final String currentRestId, final String serveStyle, final boolean isOffer, final DiscountOffer discountOffer) {
         View dialogView = LayoutInflater.from(mContext).inflate(R.layout.layout_confirmation_dialog, null);
         LayoutConfirmationDialogBinding confirmBinding = DataBindingUtil.bind(dialogView);
         final Dialog confirmDialog = new Dialog(mContext);
@@ -1165,6 +1386,7 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                         db.deleteCart();
+                        mDB.saveOrderHistry().deleteAll();
                         sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                         sharePre.setString(DELIVERY_MOBILE_NUMBER, "");
                         sharePre.setString(sharePre.RESTUARANT_ID, response.getId());
@@ -1177,6 +1399,14 @@ public class DealCardAdapter extends RecyclerView.Adapter<DealCardAdapter.MyView
                         i.putExtra("RESTAURANTID", currentRestId);
                         i.putExtra("RESTAURANTNAME", response.getRestaurantName());
                         i.putExtra("ServeStyle", serveStyle);
+                        i.putExtra("isOffer", isOffer);
+                        if (isOffer) {
+                            i.putExtra("offer_price", discountOffer.getOfferPrice());
+                            i.putExtra("offer_type", discountOffer.getOfferType());
+                            i.putExtra("offer_id", discountOffer.getOfferId());
+                            i.putExtra("min_value", discountOffer.getMin_value());
+                            i.putExtra("max_value", discountOffer.getMax_discounts());
+                        }
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(i);
                     }

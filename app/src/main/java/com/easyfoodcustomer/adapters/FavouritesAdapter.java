@@ -22,12 +22,15 @@ import com.easyfoodcustomer.R;
 import com.easyfoodcustomer.cart_db.DatabaseHelper;
 import com.easyfoodcustomer.model.FavouriteList;
 import com.easyfoodcustomer.restaurant_details.RestaurantDetailsActivity;
+import com.easyfoodcustomer.roomData.AppDatabase;
 import com.easyfoodcustomer.utility.Constants;
 import com.easyfoodcustomer.utility.GlobalValues;
 import com.easyfoodcustomer.utility.SharedPreferencesClass;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.MyViewHolder> {
@@ -37,6 +40,8 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
     FavouritesAdapter.PostionInterface postionInterface;
     SharedPreferencesClass sharePre;
     DatabaseHelper db;
+    private AppDatabase mDB;
+
     FavouriteList fav;
     Activity activity;
 
@@ -87,6 +92,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
         this.mContext = context;
         this.postionInterface = postionInterface;
         this.activity = activity;
+        mDB = AppDatabase.getInstance(getApplicationContext());
     }
 
     @Override
@@ -327,6 +333,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.My
                         GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                         GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                         db.deleteCart();
+                        mDB.saveOrderHistry().deleteAll();
                         sharePre.setString(sharePre.RESTUARANT_ID, "");
                         sharePre.setString(sharePre.RESTUARANT_NAME, "");
                         Intent i = new Intent(mContext, RestaurantDetailsActivity.class);

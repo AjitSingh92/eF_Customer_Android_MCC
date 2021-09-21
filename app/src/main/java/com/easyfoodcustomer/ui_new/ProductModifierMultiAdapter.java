@@ -51,38 +51,36 @@ public class ProductModifierMultiAdapter extends RecyclerView.Adapter<ProductMod
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.title.setText(size_modifier_products.get(position).getProduct_name());
-        holder.price.setText(context.getResources().getString(R.string.currency) + "" + size_modifier_products.get(position).getModifier_product_price());
+        if (size_modifier_products.get(position).getModifier_product_price() != null && Double.parseDouble(size_modifier_products.get(position).getModifier_product_price()) > 0)
+            holder.price.setText(context.getResources().getString(R.string.currency) + "" + size_modifier_products.get(position).getModifier_product_price());
 
         holder.item_count.setText(String.valueOf(size_modifier_products.get(position).getNoOfCount()));
 
         holder.item_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (size_modifier_products.get(position).getNoOfCount()>0)
-                menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent,position,false,size_modifier_products.get(position).getNoOfCount(),false);
+                if (size_modifier_products.get(position).getNoOfCount() > 0)
+                    menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent, position, false, size_modifier_products.get(position).getNoOfCount(), false);
             }
         });
 
         holder.item_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getNumberOfCurrentCount(size_modifier_products)<sizeModifiersBean.getMax_allowed_quantity())
-                {
-                    menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent,position,true,size_modifier_products.get(position).getNoOfCount(),false);
+                if (getNumberOfCurrentCount(size_modifier_products) < sizeModifiersBean.getMax_allowed_quantity()) {
+                    menuProductSizeModifierInterface.updateMeanProductSizeModifier(positionParent, position, true, size_modifier_products.get(position).getNoOfCount(), false);
 
-                }else
-                {
-                    Toast.makeText(context,"You reached out to your maximum Limit",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "You reached out to your maximum Limit", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
     private int getNumberOfCurrentCount(List<MealDetailsModel.MealConfigBean.ProductsBean.MenuProductSizeBean.SizeModifiersBean.SizeModifierProductsBean> size_modifier_products) {
-        int maxAllowedSize=0;
-        for (int i=0;i<size_modifier_products.size();i++)
-        {
-            maxAllowedSize=maxAllowedSize+size_modifier_products.get(i).getNoOfCount();
+        int maxAllowedSize = 0;
+        for (int i = 0; i < size_modifier_products.size(); i++) {
+            maxAllowedSize = maxAllowedSize + size_modifier_products.get(i).getNoOfCount();
         }
         return maxAllowedSize;
     }

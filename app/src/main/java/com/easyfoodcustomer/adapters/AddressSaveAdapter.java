@@ -116,7 +116,7 @@ public class AddressSaveAdapter extends RecyclerView.Adapter<AddressSaveAdapter.
 
 
         holder.txtAddress.setText(address);
-        Log.e(TAG, "onBindViewHolder: address id: " + add.getID());
+
 
         if (add.getIsDefault() == 1) {
             holder.tvDefault.setVisibility(View.VISIBLE); // hide default default option

@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -21,6 +22,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +34,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easyfoodcustomer.adapters.previous_order.DeleteOderListener;
+import com.easyfoodcustomer.adapters.previous_order.DeleteResponse;
+import com.easyfoodcustomer.utility.DialogUtils;
+import com.easyfoodcustomer.utility.MyDialogUtils;
+import com.easyfoodcustomer.utility.OnDialogClickListener;
 import com.easyfoodcustomer.utility.PrefManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.easyfoodcustomer.R;
@@ -48,6 +56,7 @@ import com.easyfoodcustomer.utility.ApiClient;
 import com.easyfoodcustomer.utility.Constants;
 import com.easyfoodcustomer.utility.GlobalValues;
 import com.easyfoodcustomer.utility.SharedPreferencesClass;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +74,7 @@ import static com.easyfoodcustomer.utility.UserContants.AUTH_TOKEN;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, OrderPositionListner {
+public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, OrderPositionListner, DeleteOderListener {
 
     @BindView(R.id.previousList)
     RecyclerView previousList;
@@ -198,7 +207,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
 
     private void initView(List<PreviousOrderDetail> previousOrderDetaillist) {
         try {
-            myorderAdapter = new MyorderAdapter(previousOrderDetaillist, mContext, (DashboardActivity) getActivity(), orderPositionListner);
+            myorderAdapter = new MyorderAdapter(previousOrderDetaillist, mContext, (DashboardActivity) getActivity(), orderPositionListner, this);
             @SuppressLint("WrongConstant")
             LinearLayoutManager horizontalLayoutManagaer
                     = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -218,7 +227,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         String custId = val.getLoginResponse().getData().getUserId();
         int offset = 0, limit = 50;
         final ReqstPrevOrder request = new ReqstPrevOrder(custId, offset, limit);
-        Call<PreviousOrderResponse> call = apiInterface.mLogin(PrefManager.getInstance(getActivity()).getPreference(AUTH_TOKEN, ""),request);
+        Call<PreviousOrderResponse> call = apiInterface.mLogin(PrefManager.getInstance(getActivity()).getPreference(AUTH_TOKEN, ""), request);
         call.enqueue(new Callback<PreviousOrderResponse>() {
             @Override
             public void onResponse(Call<PreviousOrderResponse> call, Response<PreviousOrderResponse> response) {
@@ -269,7 +278,7 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         CancelInterface apiInterface = ApiClient.getClient(mContext).create(CancelInterface.class);
         CancelRequest request = new CancelRequest();
         request.setOrderNumber(orderNo);
-        Call<CancelOrderResponse> call = apiInterface.mCancelOrder(PrefManager.getInstance(getActivity()).getPreference(AUTH_TOKEN, ""),request);
+        Call<CancelOrderResponse> call = apiInterface.mCancelOrder(PrefManager.getInstance(getActivity()).getPreference(AUTH_TOKEN, ""), request);
         call.enqueue(new Callback<CancelOrderResponse>() {
             @Override
             public void onResponse(Call<CancelOrderResponse> call, Response<CancelOrderResponse> response) {
@@ -385,5 +394,84 @@ public class PreviousOrderFragment extends Fragment implements SwipeRefreshLayou
         });
 
         alertDialog.show();
+    }
+
+    @Override
+    public void onDelete(int pos, String order_number) {
+        if (previousOrderDetails != null && previousOrderDetails.size() > pos) {
+            MyDialogUtils.showAlertDialog(getActivity(), "Are you sure you want to delete this order?", new OnDialogClickListener() {
+                @Override
+                public void onPositiveClick() {
+                    if (isInternetOn(getActivity())) {
+                        deleteOrder(order_number, val.getLoginResponse().getData().getUserId(), pos);
+                    } else {
+                        dialogNoInternetConnection("Please check internet connection.");
+                    }
+
+                }
+            });
+        }
+    }
+
+
+    private void deleteOrder(String orderNUm, String customerId, final int position) {
+
+        if (dialog != null)
+            dialog.show();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("order_num", orderNUm);
+        jsonObject.addProperty("customer_id", customerId);
+        PreviousOrderInterface apiInterface = ApiClient.getClient(getContext()).create(PreviousOrderInterface.class);
+        Call<DeleteResponse> call = apiInterface.deleteOrder(PrefManager.getInstance(getActivity()).getPreference(AUTH_TOKEN, ""), jsonObject);
+
+        Log.e("Enquiry Api Call", "" + call);
+        call.enqueue(new Callback<DeleteResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<DeleteResponse> call, @NonNull Response<DeleteResponse> response) {
+                try {
+
+                    if (dialog != null)
+                        dialog.dismiss();
+
+                    if (response.isSuccessful()) {
+                        final DeleteResponse commonResponseBean = response.body();
+                        if (commonResponseBean.isSuccess()) {
+                            MyDialogUtils.showAlertDialogWithSingleButton(getActivity(), commonResponseBean.getMessage(), new OnDialogClickListener() {
+                                @Override
+                                public void onPositiveClick() {
+                                    if (previousOrderDetails != null && previousOrderDetails.size() > position) {
+                                        previousOrderDetails.remove(position);
+                                        myorderAdapter.notifyDataSetChanged();
+
+                                    }
+                                   /* if (isInternetOn(getActivity())) {
+                                        getCardList();
+                                    } else {
+                                        dialogNoInternetConnection("Please check internet connection.");
+                                    }*/
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(getActivity(), commonResponseBean.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DeleteResponse> call, @NonNull Throwable throwable) {
+
+                if (dialog != null)
+                    dialog.dismiss();
+                Toast.makeText(getActivity(), getString(R.string.msg_please_try_later), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
 }

@@ -65,16 +65,39 @@ public class MenuProductSizeAdapter extends RecyclerView.Adapter<MenuProductSize
         } else {
             if (menu_product_size.get(position).getFree_qty_limit() > 0)
                 holder.title.setText(menu_product_size.get(position).getModifier_name() + " (Choose " + menu_product_size.get(position).getFree_qty_limit() + " Free.)");
-            else
-                holder.title.setText(menu_product_size.get(position).getModifier_name() + " (All items will be chargeable.)");
+            else {
+                //..
+                boolean isShow = true;
+                for (int m = 0; m < menu_product_size.get(position).getSize_modifier_products().size(); m++) {
+                    if (menu_product_size.get(position).getSize_modifier_products().get(m).getModifier_product_price() != null && !menu_product_size.get(position).getSize_modifier_products().get(m).getModifier_product_price().isEmpty()
+                            && Double.parseDouble(menu_product_size.get(position).getSize_modifier_products().get(m).getModifier_product_price()) > 0) {
+                        isShow = true;
+                    } else {
+                        isShow = false;
+                        break;
+                    }
+                }
+                if (isShow) {
+                    // holder.title.setText(menu_product_size.get(position).getModifier_name() + " (All items will be chargeable.)");
+                    holder.title.setText(menu_product_size.get(position).getModifier_name());
+
+                } else {
+                    if (menu_product_size.get(position).getMin_allowed_quantity() > 0) {
+                        holder.title.setText("Select " + menu_product_size.get(position).getModifier_name());
+                    } else {
+                        holder.title.setText("Optional " + menu_product_size.get(position).getModifier_name());
+                    }
+                }
+
+                // holder.title.setText(menu_product_size.get(position).getModifier_name() + " (All items will be chargeable.)");
+            }
         }
 
         if (menu_product_size.get(position).getMax_allowed_quantity() > 1) {
-            ProductModifierMultiAdapter productModifierMultiAdapter = new ProductModifierMultiAdapter(context, onClickListener, menu_product_size.get(position).getSize_modifier_products(),position,menuProductSizeModifierInterface,menu_product_size.get(position));
+            ProductModifierMultiAdapter productModifierMultiAdapter = new ProductModifierMultiAdapter(context, onClickListener, menu_product_size.get(position).getSize_modifier_products(), position, menuProductSizeModifierInterface, menu_product_size.get(position));
             holder.recy_productModifier.setAdapter(productModifierMultiAdapter);
-        }else
-        {
-            ProductModifierSingleAdapter productModifierSingleAdapter=new ProductModifierSingleAdapter(context, onClickListener, menu_product_size.get(position).getSize_modifier_products(),position,menuProductSizeModifierInterface);
+        } else {
+            ProductModifierSingleAdapter productModifierSingleAdapter = new ProductModifierSingleAdapter(context, onClickListener, menu_product_size.get(position).getSize_modifier_products(), position, menuProductSizeModifierInterface);
             holder.recy_productModifier.setAdapter(productModifierSingleAdapter);
         }
 

@@ -103,6 +103,15 @@ public class MealDetailsModel {
         private String selling_price;
         private String categoryslugname;
         private boolean isShown;
+        private int noOfCount;
+
+        public int getNoOfCount() {
+            return noOfCount;
+        }
+
+        public void setNoOfCount(int noOfCount) {
+            this.noOfCount = noOfCount;
+        }
 
         public boolean isShown() {
             return isShown;

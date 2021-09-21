@@ -16,12 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +94,9 @@ import retrofit2.Response;
 import static com.easyfoodcustomer.utility.Helper.isInternetOn;
 import static com.easyfoodcustomer.utility.UserContants.AUTH_TOKEN;
 import static com.easyfoodcustomer.utility.UserContants.POST_CODE_NEW;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -104,6 +109,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @BindView(R.id.tv_guest_user)
     TextView tvGuestUser;
+
+    @BindView(R.id.iv_home)
+    ImageView ivHome;
     @BindView(R.id.btn_forgot_one)
     TextView btnForgotOne;
     @BindView(R.id.btn_forgot_two)
@@ -154,6 +162,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         dialog.setContentView(R.layout.progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
+
         findViewById(R.id.tv_headline).setOnClickListener(this);
         if (sharedPreferencesClass.getString(sharedPreferencesClass.FB_TOKEN_ID) == null) {
             sharedPreferencesClass.setString(sharedPreferencesClass.FB_TOKEN_ID, FirebaseInstanceId.getInstance().getToken());
@@ -162,14 +171,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         callFacebookLogin();
         googlePlusSignin();
 
-
+        ivHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isfromRestaurent) {
+                    Intent i = new Intent(LoginActivity.this, RestaurantDetailsActivity.class);
+                    i.putExtra("IS_FROM_LOGIN", false);
+                    i.putExtra("RESTAURANTID", restaurentId);
+                    startActivity(i);
+                    finish();
+                } else {
+                    startActivity(new Intent(LoginActivity.this, SearchPostCodeActivity.class));
+                    finish();
+                }
+            }
+        });
     }
 
     public void getDataFromIntent() {
 
         isfromRestaurent = getIntent().getBooleanExtra("IS_RESTAURENT", false);
         if (isfromRestaurent) {
-            tvGuestUser.setText("Back>");
+            // tvGuestUser.setText("Back");
             restaurentId = getIntent().getStringExtra("RESTAURANTID");
         }
     }
@@ -237,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             googleID = account.getId();
             firstName = account.getGivenName();
             lastName = account.getFamilyName();
-            checkAccountApi(account.getEmail(), "        ", Constants.LOGIN_WITH_GPLUS, account.getDisplayName());
+            checkAccountApi(account.getEmail(), "        ", Constants.LOGIN_WITH_GPLUS, account.getDisplayName(), googleID);
             signOut();
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -296,7 +319,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         profilePic = person.getImage().getUrl();
                     }
                     //callAPI(email, "        ", Constants.LOGIN_WITH_GPLUS, personName);
-                    checkAccountApi(email, "        ", Constants.LOGIN_WITH_GPLUS, personName);
+                    checkAccountApi(email, "        ", Constants.LOGIN_WITH_GPLUS, personName, googleID);
                 } else {
                     Toast.makeText(this, "Some error occurred. Please try again.", Toast.LENGTH_LONG).show();
                     dialog.hide();
@@ -370,7 +393,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 if (!email.equalsIgnoreCase("")) {
                                     dialog.show();
                                     //callAPI(email, "", Constants.LOGIN_WITH_FB, userName);
-                                    checkAccountApi(email, "", Constants.LOGIN_WITH_FB, userName);
+                                    checkAccountApi(email, "", Constants.LOGIN_WITH_FB, userName, facebookId);
 
                                 } else {
                                     alertDialogEmail();
@@ -430,6 +453,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             showDialog("Please enter email address.");
 
             editEmail.requestFocus();
+        } else if (!Constants.isValidEmail(email.trim())) {
+            showDialog("Please enter valid email address.");
+            editEmail.requestFocus();
+        } else {
+            if (ApiClient.isConnected(getApplicationContext())) {
+                dialog.show();
+                //callAPI(email, "       ", Constants.LOGIN_WITH_FB, userName);
+                checkAccountApi(email, "       ", Constants.LOGIN_WITH_FB, userName, facebookId);
+            } else {
+                showDialog("Please check internet connection.");
+            }
+        }
+
+    }
+
+
+    private void validationMobile(String email, AlertDialog fDialog) {
+
+        if (TextUtils.isEmpty(email.trim())) {
+            showDialog("Please enter email address.");
+
+            editEmail.requestFocus();
         } else if (!Constants.isValidEmail(editEmail.getText().toString())) {
 
             showDialog("Please enter valid email address.");
@@ -438,7 +483,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             if (ApiClient.isConnected(getApplicationContext())) {
                 dialog.show();
                 //callAPI(email, "       ", Constants.LOGIN_WITH_FB, userName);
-                checkAccountApi(email, "       ", Constants.LOGIN_WITH_FB, userName);
+                checkAccountApi(email, "       ", Constants.LOGIN_WITH_FB, userName, facebookId);
             } else {
                 showDialog("Please check internet connection.");
             }
@@ -503,6 +548,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     finish();
                 }
                 break;
+
+       /*     case R.id.iv_home:
+                if (isfromRestaurent) {
+                    Intent i = new Intent(LoginActivity.this, RestaurantDetailsActivity.class);
+                    i.putExtra("IS_FROM_LOGIN", false);
+                    i.putExtra("RESTAURANTID", restaurentId);
+                    startActivity(i);
+                    finish();
+                } else {
+                    startActivity(new Intent(LoginActivity.this, SearchPostCodeActivity.class));
+                    finish();
+                }
+                break;*/
             case R.id.btn_forgot_one:
                 alertDialogforgotPassword();
                 break;
@@ -841,14 +899,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    public void checkAccountApi(final String email, final String password, final String other, final String name) {
+    public void checkAccountApi(final String email, final String password, final String other, final String name, final String socialId) {
         LoginRequestInterface apiInterface = ApiClient.getClient(getApplicationContext()).create(LoginRequestInterface.class);
 
         String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("email", email);
 
+        jsonObject.addProperty("email", email);
+        jsonObject.addProperty("social_id", socialId);
+        jsonObject.addProperty("social_type", other);
 
         Call<CheckAccountBean> call3 = apiInterface.checkAccount(PrefManager.getInstance(LoginActivity.this).getPreference(AUTH_TOKEN, ""), jsonObject);
         call3.enqueue(new Callback<CheckAccountBean>() {
@@ -858,13 +918,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                     // Log.e("Success ><<<<<<<", ">>>>> Success" + response.code() + "//" + response.body().getSuccess() + "//" + response.body().getMessage());
                     if (response.code() == 200 && response.body().isSuccess()) {
-                        if (response.body().getData().getPhone() != null && !response.body().getData().getPhone().isEmpty()) {
-                            callAPI(email, password, other, name, response.body().getData().getPhone());
+                        if (response.body().getData().isIsRegisterd()) {
+                            dialog.show();
+                            if (isInternetOn(LoginActivity.this)) {
+
+                                callAPI(response.body().getData().getEmail(), password, other, name, response.body().getData().getPhone());
+                            } else {
+                                showDialog("Please check internet connection.");
+                                dialog.dismiss();
+                            }
                         } else {
                             dialog.hide();
                             updateMobileNumber(email, password, other, name);
-
                         }
+
 
                     } else {
                         dialog.hide();
@@ -894,32 +961,68 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mobileDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mobileDialog.setContentView(dialogView);
         mobileDialog.setCancelable(false);
+
+        final TextView tvMsg = (TextView) dialogView.findViewById(R.id.tv_sucess_msg);
         final EditText mobileNo = (EditText) dialogView.findViewById(R.id.edittextMobile);
+        final EditText emailAddress = (EditText) dialogView.findViewById(R.id.edittextEmail);
+        if (email != null && !email.trim().isEmpty()) {
+            tvMsg.setText("Please enter your mobile number to continue");
+            mobileNo.setVisibility(View.VISIBLE);
+            emailAddress.setVisibility(View.GONE);
+        } else {
+            tvMsg.setText("Please enter your mobile number and Email to continue");
+            mobileNo.setVisibility(View.VISIBLE);
+            emailAddress.setVisibility(View.VISIBLE);
+        }
         TextView tvOk = (TextView) dialogView.findViewById(R.id.tv_submit);
 
 
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(mobileNo.getText().toString().trim())) {
-                    mobileNo.setError("Please enter mobile number.");
-                    mobileNo.requestFocus();
-                } else if (mobileNo.getText().toString().trim().length() < 8) {
-                    mobileNo.setError("Please enter valid mobile number.");
-                    mobileNo.requestFocus();
-                } else {
-                    mobileDialog.dismiss();
 
-                    dialog.show();
-                    if (isInternetOn(LoginActivity.this)) {
-
-                        callAPI(email, password, other, name, mobileNo.getText().toString().trim());
+                if (email != null && !email.trim().isEmpty()) {
+                    if (mobileNo.getText().toString().trim().isEmpty()) {
+                        mobileNo.setError("Please enter mobile number");
+                        mobileNo.requestFocus();
+                    } else if (mobileNo.getText().toString().trim().length() < 8) {
+                        mobileNo.setError("Please enter valid mobile number.");
+                        mobileNo.requestFocus();
                     } else {
-                        showDialog("Please check internet connection.");
-                        dialog.dismiss();
-                    }
+                        dialog.show();
+                        if (isInternetOn(LoginActivity.this)) {
 
+                            callAPI(email, password, other, name, mobileNo.getText().toString().trim());
+                        } else {
+                            showDialog("Please check internet connection.");
+                            dialog.dismiss();
+                        }
+                    }
+                } else {
+                    if (mobileNo.getText().toString().trim().isEmpty()) {
+                        mobileNo.setError("Please enter mobile number");
+                        mobileNo.requestFocus();
+                    } else if (mobileNo.getText().toString().trim().length() < 8) {
+                        mobileNo.setError("Please enter valid mobile number.");
+                        mobileNo.requestFocus();
+                    } else if (emailAddress.getText().toString().trim().isEmpty()) {
+                        emailAddress.setError("Please enter email address.");
+                        emailAddress.requestFocus();
+                    } else if (!isValidEmail(emailAddress.getText().toString().trim())) {
+                        emailAddress.setError("Please enter a valid email address.");
+                        emailAddress.requestFocus();
+                    } else {
+                        dialog.show();
+                        if (isInternetOn(LoginActivity.this)) {
+
+                            callAPI(emailAddress.getText().toString().trim(), password, other, name, mobileNo.getText().toString().trim());
+                        } else {
+                            showDialog("Please check internet connection.");
+                            dialog.dismiss();
+                        }
+                    }
                 }
+
             }
         });
 
@@ -928,8 +1031,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         lp.gravity = Gravity.CENTER;
-        mobileDialog.getWindow().setAttributes(lp);
-        mobileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mobileDialog.getWindow().
+
+                setAttributes(lp);
+        mobileDialog.getWindow().
+
+                setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(), R.color.seme_transparent)));
     }
+
+
+    public static boolean isValidEmail(String emailAddress) {
+        return Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches();
+    }
+
+
 }

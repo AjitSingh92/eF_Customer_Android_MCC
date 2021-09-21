@@ -43,12 +43,12 @@ public class MenuMealListAdapter extends RecyclerView.Adapter<MenuMealListAdapte
     public MenuMealListAdapter(Context context, View.OnClickListener onClickListener,
                                List<MealDetailsModel.MealConfigBean> meal_config, MealDetailsModel mealDetailsModel,
                                MenuProductModifierInterface menuProductModifierInterface, double finalPriceAll) {
-        this.context=context;
-        this.onClickListener=onClickListener;
-        this.meal_config=meal_config;
-        this.mealDetailsModel=mealDetailsModel;
-        this.menuProductModifierInterface=menuProductModifierInterface;
-        this.finalPriceAll=finalPriceAll;
+        this.context = context;
+        this.onClickListener = onClickListener;
+        this.meal_config = meal_config;
+        this.mealDetailsModel = mealDetailsModel;
+        this.menuProductModifierInterface = menuProductModifierInterface;
+        this.finalPriceAll = finalPriceAll;
 
     }
 
@@ -63,17 +63,21 @@ public class MenuMealListAdapter extends RecyclerView.Adapter<MenuMealListAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.tvItemTitle.setText(meal_config.get(position).getName());
-        holder.tvItemPick.setText("Pick " + meal_config.get(position).getAllowed_quantity());
+        if (meal_config.get(position).getAllowed_quantity() > 0) {
+            holder.tvItemPick.setText("Select " + meal_config.get(position).getAllowed_quantity());
+            holder.tvItemPick.setVisibility(View.VISIBLE);
 
-        List<MealDetailsModel.MealConfigBean.ProductsBean> products =new ArrayList<>();
-        for (int i=0;i<meal_config.get(position).getProducts().size();i++)
-        {
-            if (!meal_config.get(position).getProducts().get(i).isShown())
-            {
+        } else {
+            holder.tvItemPick.setVisibility(View.GONE);
+        }
+
+        List<MealDetailsModel.MealConfigBean.ProductsBean> products = new ArrayList<>();
+        for (int i = 0; i < meal_config.get(position).getProducts().size(); i++) {
+            if (!meal_config.get(position).getProducts().get(i).isShown()) {
                 products.add(meal_config.get(position).getProducts().get(i));
             }
         }
-        MenuCatagoryListAdapter  menuCatagoryListAdapter = new MenuCatagoryListAdapter(context, onClickListener,products,mealDetailsModel,meal_config.get(position),menuProductModifierInterface,position,finalPriceAll);
+        MenuCatagoryListAdapter menuCatagoryListAdapter = new MenuCatagoryListAdapter(context, onClickListener, products, mealDetailsModel, meal_config.get(position), menuProductModifierInterface, position, finalPriceAll);
         holder.listProduct.setAdapter(menuCatagoryListAdapter);
         holder.alertMsg.setVisibility(View.GONE);
     }
@@ -82,10 +86,12 @@ public class MenuMealListAdapter extends RecyclerView.Adapter<MenuMealListAdapte
     public int getItemCount() {
         return meal_config.size();
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvItemTitle, tvItemPick, alertMsg;
         private RecyclerView listProduct;
         private RecyclerLayoutManager layoutManager;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvItemTitle = itemView.findViewById(R.id.tv_ItemTitle);

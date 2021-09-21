@@ -56,6 +56,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.easyfoodcustomer.databinding.LayoutConfirmationDialogBinding;
 import com.easyfoodcustomer.databinding.LayoutRestaurentDialogBinding;
 import com.easyfoodcustomer.databinding.LayoutServestyleDialogBinding;
+import com.easyfoodcustomer.roomData.AppDatabase;
 import com.easyfoodcustomer.utility.Helper;
 import com.easyfoodcustomer.utility.PrefManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -140,6 +141,7 @@ import static com.easyfoodcustomer.utility.SharedPreferencesClass.TABLE_TYPE;
 import static com.easyfoodcustomer.utility.SharedPreferencesClass.UNIT_ID;
 import static com.easyfoodcustomer.utility.SharedPreferencesClass.UNIT_TYPE;
 import static com.easyfoodcustomer.utility.UserContants.AUTH_TOKEN;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -389,6 +391,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
     //LayoutRestaurentDialogBinding dialogBinding;
     LayoutRestaurentDialogBinding dialogBinding;
     private String partnerID;
+    private AppDatabase mDB;
 
     public MyBasketFragment(Activity mActivity, Context mContext, boolean isFavorite) {
         this.mActivity = mActivity;
@@ -408,7 +411,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
         View view = inflater.inflate(R.layout.fragment_my_basket, container, false);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         unbinder = ButterKnife.bind(this, view);
-
+        mDB = AppDatabase.getInstance(getApplicationContext());
 
         val = (GlobalValues) getActivity().getApplication();
         sharePre = new SharedPreferencesClass(getActivity());
@@ -1734,6 +1737,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                     i.putExtra("RESTAURANTID", val.getRestaurantDetailsResponse().getData().getRestaurants().getRestaurantId());
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     db.deleteCart();
+                    mDB.saveOrderHistry().deleteAll();
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_ID, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.RESTUARANT_NAME, "");
                     sharedPreferencesClass.setString(sharedPreferencesClass.NOTEPAD, "");
@@ -2341,6 +2345,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                             db.deleteCart();
+                            mDB.saveOrderHistry().deleteAll();
                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                             sharePre.setString(sharePre.RESTUARANT_ID, restaurentId);
                             sharePre.setString(sharePre.DELIVERY_MOBILE_NUMBER, val.getMobileNo());
@@ -2391,6 +2396,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                             db.deleteCart();
+                            mDB.saveOrderHistry().deleteAll();
                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                             sharePre.setString(sharePre.RESTUARANT_ID, restaurentId);
                             sharePre.setString(sharePre.DELIVERY_MOBILE_NUMBER, val.getMobileNo());
@@ -2428,6 +2434,7 @@ public class MyBasketFragment extends Fragment implements MenuCartAdapter.OnMenu
                             GlobalValues.getInstance().getDb().menuProductMaster().nuke();
                             GlobalValues.getInstance().getDb().productSizeAndModifierMaster().nuke();
                             db.deleteCart();
+                            mDB.saveOrderHistry().deleteAll();
                             sharePre.setString(sharePre.DEFAULT_ADDRESS, null);
                             sharePre.setString(sharePre.RESTUARANT_ID, restaurentId);
                             sharePre.setString(sharePre.DELIVERY_MOBILE_NUMBER, val.getMobileNo());

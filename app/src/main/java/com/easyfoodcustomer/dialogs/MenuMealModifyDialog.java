@@ -54,6 +54,7 @@ public class MenuMealModifyDialog extends Dialog implements View.OnClickListener
 
     private boolean isSelected;
     private double finalPriceAll;
+    private String name = "";
 
 
     public MenuMealModifyDialog(@NonNull Context context, MealDetailsModel.MealConfigBean.ProductsBean mealDetailsModel,
@@ -70,6 +71,7 @@ public class MenuMealModifyDialog extends Dialog implements View.OnClickListener
         this.positionChild = positionChild;
         this.finalPriceAll = finalPriceAll;
         isSelected = false;
+        name = "";
     }
 
     @Override
@@ -133,13 +135,20 @@ public class MenuMealModifyDialog extends Dialog implements View.OnClickListener
                 break;
 
             case R.id.add_items:
+
+                //  if(mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().get())
                 if (isSelected) {
                     menuProductModifierInterface.updateMeanProductSizeModifier(positionParent, positionChild, true, mealDetailsModel.getNoOfCount(), mealDetailsModel);
                     dismiss();
                 } else {
-                    Toast.makeText(context, "Please select One item", Toast.LENGTH_LONG).show();
-                }
+                    if (mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().size() == 0) {
+                        menuProductModifierInterface.updateMeanProductSizeModifier(positionParent, positionChild, true, mealDetailsModel.getNoOfCount(), mealDetailsModel);
+                        dismiss();
+                    } else {
+                        Toast.makeText(context, "Please select One item", Toast.LENGTH_LONG).show();
 
+                    }
+                }
                 break;
 
 
@@ -201,11 +210,16 @@ public class MenuMealModifyDialog extends Dialog implements View.OnClickListener
             }
 
         }*/
-
-        double finalPrice = finalPriceAll;
+        int count = 0;
+        Double finalPrice = finalPriceAll;
         for (int i = 0; i < mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().size(); i++) {
             int noOfFree = mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().get(i).getFree_qty_limit();
+
+            if (mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().get(i).getMin_allowed_quantity() == 0) {
+                count = count + 1;
+            }
             for (int j = 0; j < mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().get(i).getSize_modifier_products().size(); j++) {
+
                 for (int a = 0; a < mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().get(i).getSize_modifier_products().get(j).getNoOfCount(); a++) {
                     isSelected = true;
                     if (noOfFree == 0) {
@@ -218,6 +232,13 @@ public class MenuMealModifyDialog extends Dialog implements View.OnClickListener
 
             }
         }
-        total_price.setText(String.valueOf(new DecimalFormat("##.##").format(finalPrice)));
+
+
+        if (count == mealDetailsModel.getMenu_product_size().get(0).getSize_modifiers().size()) {
+            isSelected = true;
+        }
+        total_price.setText(String.format("%.2f", finalPrice));
+        // total_price.setText(String.valueOf(new DecimalFormat("##.##").format(finalPrice)));
     }
+
 }

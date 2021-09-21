@@ -121,10 +121,30 @@ public class SizeModifierAdapter extends RecyclerView.Adapter<SizeModifierAdapte
                 title.setText(mItem.get(position).getModifierName() + " (Choose " + mItem.get(position).getMaxAllowedQuantity() + " Free. Additional items will be chargeable.)");
             } else {
                 //   title.setText(mItem.get(position).getModifierName() + " (All Paid)");
-                if (mItem.get(position).getFreeAllowedQuantity() > 0)
+                if (mItem.get(position).getFreeAllowedQuantity() > 0) {
                     title.setText(mItem.get(position).getModifierName() + " (Choose " + mItem.get(position).getFreeAllowedQuantity() + " Free.)");
-                else
-                    title.setText(mItem.get(position).getModifierName() + " (All items will be chargeable.)");
+                } else {
+                    boolean isShow = true;
+                    for (int m = 0; m < mItem.get(position).getModifier().size(); m++) {
+                        if (mItem.get(position).getModifier().get(m).getModifierProductPrice() != null && !mItem.get(position).getModifier().get(m).getModifierProductPrice().isEmpty()
+                                && Double.parseDouble(mItem.get(position).getModifier().get(m).getModifierProductPrice()) > 0) {
+                            isShow = true;
+                        } else {
+                            isShow = false;
+                            break;
+                        }
+                    }
+                    if (isShow) {
+                       // title.setText(mItem.get(position).getModifierName() + " (All items will be chargeable.)");
+                        title.setText(mItem.get(position).getModifierName());
+
+                    } else {
+                        title.setText(mItem.get(position).getModifierName());
+                    }
+
+
+                    //  title.setText(mItem.get(position).getModifierName() + " (All items will be chargeable.)");
+                }
             }
 
             RecyclerLayoutManager layoutManager = new RecyclerLayoutManager(1, RecyclerLayoutManager.VERTICAL);

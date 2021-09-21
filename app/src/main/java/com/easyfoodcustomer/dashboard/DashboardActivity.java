@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.StrictMode;
 
 import com.easyfoodcustomer.fragments.MyCartFragment;
+import com.easyfoodcustomer.roomData.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.fragment.app.FragmentTransaction;
@@ -187,6 +188,8 @@ public class DashboardActivity extends AppCompatActivity {
     FirebaseAnalytics mFirebaseAnalytics;
     private static DashboardActivity instance = null;
     String islonch, islogin;
+    private AppDatabase mDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,6 +200,7 @@ public class DashboardActivity extends AppCompatActivity {
                 "eu01xxae9ccb44aafd9f746b5862b2dcb19769290d"
         ).start(this.getApplicationContext());
         instance = this;
+        mDB = AppDatabase.getInstance(getApplicationContext());
         ButterKnife.bind(this);
         val = (GlobalValues) getApplicationContext();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -205,7 +209,9 @@ public class DashboardActivity extends AppCompatActivity {
         val = (GlobalValues) getApplicationContext();
         db = new DatabaseHelper(this);
         sharedPreferencesClass = new SharedPreferencesClass(getApplicationContext());
-
+        Double vv=59.00;
+        int vllll = Integer.valueOf(vv.intValue());
+        Log.e("Vll", "" + vllll);
         mDialog = new Dialog(DashboardActivity.this);
         mDialog.setTitle("");
         mDialog.setCancelable(true);
@@ -978,7 +984,7 @@ public class DashboardActivity extends AppCompatActivity {
                 ivFilter.setVisibility(View.GONE);
                 tvToolbarTitle.setText("Order Summary");
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().addToBackStack(null);
-             //   transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(), isFavorite));
+                //   transaction.replace(R.id.frameLayout, new MyBasketFragment(DashboardActivity.this, getApplicationContext(), isFavorite));
                 transaction.replace(R.id.frameLayout, new MyCartFragment(DashboardActivity.this, getApplicationContext(), isFavorite));
                 transaction.commitAllowingStateLoss();
             }
@@ -1056,11 +1062,12 @@ public class DashboardActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         db.deleteCart();
+                                        mDB.saveOrderHistry().deleteAll();
                                         sharedPreferencesClass.setloginpref(null);
                                         sharedPreferencesClass.deleteAllPreference();
 
                                         sharedPreferencesClass.logout();
-                                        Intent i = new Intent(DashboardActivity.this, LoginActivity.class);
+                                        Intent i = new Intent(DashboardActivity.this, SearchPostCodeActivity.class);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(i);
                                         finish();

@@ -506,18 +506,22 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                             isUpdated = true;
                         }
                         data = response.body().getData();
+                        Log.e("CURRENT", "" + data.getCurrent_records());
+                        Log.e("SIze", "" + data.getRestaurants().size());
+
+
                         if (data.getRestaurants().size() > 0) {
                             mDealAdapter.clearItems();
                             mDealAdapter.addItem(data.getRestaurants());
                             oopsLayout.setVisibility(View.GONE);
                             restaurantList.setVisibility(View.VISIBLE);
-                            if (data.getTotalRecords() == 1) {
+                            if (data.getCurrent_records() == 1) {
 
                                 if (PrefManager.getInstance(getActivity()).getPreference(IS_FROM_TABLE, 0) == 1) {
-                                    tvCount.setText(String.valueOf(data.getTotalRecords()));
+                                    tvCount.setText(String.valueOf(data.getCurrent_records()));
                                     restaurauntCount.setText("location found");
                                 } else {
-                                    tvCount.setText(String.valueOf(data.getTotalRecords()));
+                                    tvCount.setText(String.valueOf(data.getCurrent_records()));
                                     restaurauntCount.setText("restaurant delivering to");
                                 }
 
@@ -525,12 +529,12 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                                     restaurauntCount.setText(data.getTotalRecords() + " Locations Found");
                                 else
                                     restaurauntCount.setText(data.getTotalRecords() + " Restaurant delivering to");*/
-                            } else if (data.getTotalRecords() > 1) {
+                            } else if (data.getCurrent_records() > 1) {
                                 if (PrefManager.getInstance(getActivity()).getPreference(IS_FROM_TABLE, 0) == 1) {
-                                    tvCount.setText(String.valueOf(data.getTotalRecords()));
+                                    tvCount.setText(String.valueOf(data.getCurrent_records()));
                                     restaurauntCount.setText("locations found");
                                 } else {
-                                    tvCount.setText(String.valueOf(data.getTotalRecords()));
+                                    tvCount.setText(String.valueOf(data.getCurrent_records()));
                                     restaurauntCount.setText("restaurants delivering to");
                                 }
 
@@ -559,13 +563,13 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                             // alertDialogNoRestaurant();
                             restaurantList.setVisibility(View.GONE);
                         }
-                        if (response.body().getData().getTotalRecords() == 1) {
+                        if (response.body().getData().getCurrent_records() == 1) {
 
                             if (PrefManager.getInstance(getActivity()).getPreference(IS_FROM_TABLE, 0) == 1) {
-                                tvCount.setText(String.valueOf(response.body().getData().getTotalRecords()));
+                                tvCount.setText(String.valueOf(response.body().getData().getCurrent_records()));
                                 restaurauntCount.setText("location found");
                             } else {
-                                tvCount.setText(String.valueOf(response.body().getData().getTotalRecords()));
+                                tvCount.setText(String.valueOf(response.body().getData().getCurrent_records()));
                                 restaurauntCount.setText("restaurant delivering to");
                             }
 
@@ -574,13 +578,12 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                                 restaurauntCount.setText(response.body().getData().getTotalRecords() + " Location Found");
                             else
                                 restaurauntCount.setText(response.body().getData().getTotalRecords() + " Restaurant delivering to");*/
-                        } else if (response.body().getData().getTotalRecords() > 1) {
+                        } else if (response.body().getData().getCurrent_records() > 1) {
                             if (PrefManager.getInstance(getActivity()).getPreference(IS_FROM_TABLE, 0) == 1) {
-                                tvCount.setText(String.valueOf(response.body().getData().getTotalRecords()));
+                                tvCount.setText(String.valueOf(response.body().getData().getCurrent_records()));
                                 restaurauntCount.setText("locations found");
-                            }
-                            else {
-                                tvCount.setText(String.valueOf(response.body().getData().getTotalRecords() ));
+                            } else {
+                                tvCount.setText(String.valueOf(response.body().getData().getCurrent_records()));
                                 restaurauntCount.setText("restaurants delivering to");
                             }
                            /*
@@ -607,7 +610,7 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
                         swipreferesh.setRefreshing(false);
                     dialog.hide();
                     if (restaurauntCount != null) {
-                        restaurauntCount.setText("restaurants delivering to");
+                        restaurauntCount.setText("No restaurants delivering to");
                     }
 
                 }
@@ -880,8 +883,9 @@ public class DealsFragment extends Fragment implements FilterSortByAdapter.Posit
 
                 filterRestaurantTyped.clear();
                 for (int i = 0; i < restFilter.size(); i++) {
-                    if (filter[i])
-                        filterRestaurantTyped.add(restFilter.get(i));
+                    if (filter.length > i)
+                        if (filter[i])
+                            filterRestaurantTyped.add(restFilter.get(i));
                 }
 
                 if (isInternetOn(getActivity())) {

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,8 +49,8 @@ public class Constants {
 
     public static final String DEVELOPER_KEY = "AIzaSyB_0zHJbmm00TBeEaSq0PXF3wUU0IGRKn4";
     //public static final String STRIPE_PUBLISH_KEY = "pk_test_6rAH6H3qgWJluvv26MXlQcKw";
-    public static final String STRIPE_PUBLISH_KEY = "pk_live_KVhKkdTGEbjB20Ux6f6funsR";
-
+    //public static final String STRIPE_PUBLISH_KEY = "pk_live_KVhKkdTGEbjB20Ux6f6funsR";
+    public static final String STRIPE_PUBLISH_KEY = "pk_live_51DdF4XBy4zwyhFgo7Oht7o1RK4gTBtXiJIdG60XJfMCaYPZkWzSTyDlZbxwnGbvhg2UotthWzqCOWyOFax5gjxC500yOWLYcYA";
     public static final String NOTIFICATION_TYPE = "NOTIFICATION_TYPE";
     public static final String NOTIFICATION_ORDER_ID = "NOTIFICATION_ORDER_ID";
     public static final String PAYMENT_MODE = "PAYMENT_MODE";
@@ -77,7 +78,6 @@ public class Constants {
     }
 
     public static boolean isValidEmail(String email) {
-
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
     }
@@ -116,6 +116,7 @@ public class Constants {
 
         return dayofweek;
     }
+
     public static boolean isInternetOn(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = null;
@@ -147,9 +148,6 @@ public class Constants {
         }
         return inetAddress != null && !inetAddress.equals("");
     }
-
-
-
 
 
     public static void showDialog(Activity activity, String msg) {

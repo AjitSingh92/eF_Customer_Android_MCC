@@ -94,9 +94,6 @@ import retrofit2.Response;
 import static com.easyfoodcustomer.utility.Helper.isInternetOn;
 import static com.easyfoodcustomer.utility.UserContants.AUTH_TOKEN;
 import static com.easyfoodcustomer.utility.UserContants.POST_CODE_NEW;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {

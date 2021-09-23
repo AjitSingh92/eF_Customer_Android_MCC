@@ -132,7 +132,7 @@
                     android:fontFamily="@font/avenir_medium"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:maxLength="16"
+                    android:maxLength="20"
                     android:padding="@dimen/_10sdp"
                     android:text=""
                     android:textColor="#706f6f"
